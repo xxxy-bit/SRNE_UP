@@ -24,7 +24,6 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
     def i18n_init(self):
         # 加载设置项，根据设置参数切换语言
         set_dir = os.path.join(os.getcwd(), 'settings', 'settings.ini')
-        print(set_dir)
         setting = QSettings(set_dir, QSettings.IniFormat)
         
         lang_zh = gettext.translation('AcCharge', localedir=os.path.join(os.getcwd(), 'locales'), languages=[setting.value('language')])
