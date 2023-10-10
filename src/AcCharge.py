@@ -2,10 +2,10 @@
 
 import serial, functools, datetime, os, gettext
 from .OrderList import *
-from urls.Common import Common
+from utils.Common import Common
 from settings.ac_modbus import get_ac_data_list
-from urls.CRC16Util import calc_crc
-from urls.DataPars import pars_data
+from utils.CRC16Util import calc_crc
+from utils.DataPars import pars_data
 from ui.ac_layout import Ui_MainWindow as ac_layout
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import QSettings
