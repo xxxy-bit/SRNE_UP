@@ -1,0 +1,94 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2023-09-18 14:52+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:33
+msgid "打开串口"
+msgstr "OpenPort"
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:34
+msgid "关闭串口"
+msgstr "ClosePort"
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:35
+msgid "打开串口失败"
+msgstr "Port opening failure"
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:37
+msgid "开启数据监控"
+msgstr "OpenDataMonitor"
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:38
+msgid "关闭数据监控"
+msgstr "CloseDataMonitor"
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:53
+msgid "写入数据"
+msgstr "DataInput"
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:40
+msgid "产品类型,产品规格,产品序列号,设备名称,设备地址,硬件版本,软件版本,系统电压,额定充电电流,额定放电电流,原始数据(Hex)"
+msgstr "Product type,Product specification,Serial number,Device name,Device address,Hardware version,Software version,System voltage,Rated charging current,Rated discharge current,Raw data(Hex)"
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:41
+msgid "充电电流,设备温度,蓄电池电压,蓄电池温度,充电状态,故障/告警信息,原始数据(Hex)"
+msgstr "Charging current,Device temperature,Battery voltage,Battery temperature,Charging state,Fault/alarm information,Raw data(Hex)"
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:43
+msgid "文件被占用，请关闭Excel文件后重试."
+msgstr "The file is occupied. Please close the Excel file and try again."
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:44
+msgid "未知错误，请截图并联系相关开发人员."
+msgstr "Unknown error, please take a screenshot and contact the relevant developer."
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:46
+msgid "导出成功，目录位置为"
+msgstr "The export is successful. The directory is in"
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:47
+msgid "是否需要打开该目录?"
+msgstr "Do you want to open this directory?"
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:49
+msgid "为保准数据准确性，请在实时监控中停止数据监控，需要暂停吗?"
+msgstr "To ensure data accuracy, stop data monitoring in real-time monitoring. Do you want to stop?"
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:50
+msgid "请输入参数."
+msgstr "Please enter parameters."
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:51
+msgid "请修改参数."
+msgstr "Please modify the parameters."
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:52
+msgid "写入中..."
+msgstr "Writing datat..."
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:54
+msgid "是否要写入以下参数:"
+msgstr "Are you sure to write the following parameters:"
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:55
+msgid "数据已写入，请重新获取数据."
+msgstr "Data has been written. Please obtain the data again."
+
+msgid "请先打开串口."
+msgstr "Please open the port first."
+
+msgid "请输入正确的数值."
+msgstr "Please enter the correct value"

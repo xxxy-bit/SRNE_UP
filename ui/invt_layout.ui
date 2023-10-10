@@ -1,0 +1,1025 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1016</width>
+    <height>495</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>逆变器</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>实时监控</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="2,1">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>2</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QGroupBox" name="groupBox">
+              <property name="title">
+               <string>基本信息</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_5">
+               <item>
+                <layout class="QGridLayout" name="gridLayout">
+                 <item row="0" column="3">
+                  <widget class="QLineEdit" name="ivt_product_type"/>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_5">
+                   <property name="text">
+                    <string>设备地址</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_6">
+                   <property name="text">
+                    <string>生产日期</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label">
+                   <property name="text">
+                    <string>系统最高支持电压</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QLineEdit" name="ivt_sys_vol"/>
+                 </item>
+                 <item row="0" column="5">
+                  <widget class="QLineEdit" name="ivt_product_model"/>
+                 </item>
+                 <item row="0" column="4">
+                  <widget class="QLabel" name="label_3">
+                   <property name="text">
+                    <string>产品型号</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QLabel" name="label_2">
+                   <property name="text">
+                    <string>产品类型</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_4">
+                   <property name="text">
+                    <string>软件版本</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0">
+                  <widget class="QLabel" name="label_7">
+                   <property name="text">
+                    <string>产品序列号字符串</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QLineEdit" name="ivt_software_ver"/>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QLineEdit" name="ivt_dev_addr"/>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="QLineEdit" name="ivt_birth"/>
+                 </item>
+                 <item row="4" column="1">
+                  <widget class="QLineEdit" name="ivt_serial_num_str"/>
+                 </item>
+                 <item row="1" column="3">
+                  <widget class="QLineEdit" name="ivt_hardware_ver"/>
+                 </item>
+                 <item row="2" column="3">
+                  <widget class="QLineEdit" name="ivt_type_code"/>
+                 </item>
+                 <item row="3" column="3">
+                  <widget class="QLineEdit" name="ivt_site_code"/>
+                 </item>
+                 <item row="1" column="5">
+                  <widget class="QLineEdit" name="ivt_serial_num"/>
+                 </item>
+                 <item row="2" column="5">
+                  <widget class="QLineEdit" name="ivt_rs485_ver"/>
+                 </item>
+                 <item row="3" column="5">
+                  <widget class="QLineEdit" name="ivt_compile_time"/>
+                 </item>
+                 <item row="3" column="2">
+                  <widget class="QLabel" name="label_8">
+                   <property name="text">
+                    <string>产地编码</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="2">
+                  <widget class="QLabel" name="label_9">
+                   <property name="text">
+                    <string>机型编码</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QLabel" name="label_10">
+                   <property name="text">
+                    <string>硬件版本</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="4">
+                  <widget class="QLabel" name="label_11">
+                   <property name="text">
+                    <string>产品序列号</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="4">
+                  <widget class="QLabel" name="label_12">
+                   <property name="text">
+                    <string>RS485版本</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="4">
+                  <widget class="QLabel" name="label_13">
+                   <property name="text">
+                    <string>软件编译时间</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="2">
+                  <widget class="QLabel" name="label_14">
+                   <property name="text">
+                    <string>设备名称</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="3">
+                  <widget class="QLineEdit" name="ivt_dev_name"/>
+                 </item>
+                 <item row="4" column="5">
+                  <widget class="QPushButton" name="ivt_clear_monitor_btn">
+                   <property name="text">
+                    <string>清屏</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_2">
+              <property name="title">
+               <string>设备数据</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <item>
+                <layout class="QGridLayout" name="gridLayout_2">
+                 <item row="1" column="1">
+                  <widget class="QLineEdit" name="ivt_generatrix_vol"/>
+                 </item>
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_20">
+                   <property name="text">
+                    <string>负载PF</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_15">
+                   <property name="text">
+                    <string>蓄电池电压</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="2">
+                  <widget class="QLabel" name="label_25">
+                   <property name="text">
+                    <string>散热片B温度</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="2">
+                  <widget class="QLabel" name="label_23">
+                   <property name="text">
+                    <string>逆变频率</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_19">
+                   <property name="text">
+                    <string>逆变电流</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="3">
+                  <widget class="QLineEdit" name="inv_inverse_frequency"/>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_18">
+                   <property name="text">
+                    <string>母线电压</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QLabel" name="label_22">
+                   <property name="text">
+                    <string>母线电流</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="3">
+                  <widget class="QLineEdit" name="ivt_generatrix_current"/>
+                 </item>
+                 <item row="1" column="4">
+                  <widget class="QLabel" name="label_26">
+                   <property name="text">
+                    <string>逆变电压</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QLabel" name="label_16">
+                   <property name="text">
+                    <string>当前故障码</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0">
+                  <widget class="QLabel" name="label_21">
+                   <property name="text">
+                    <string>散热片A温度</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="QLineEdit" name="inv_load_pf"/>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QLineEdit" name="ivt_inverse_current"/>
+                 </item>
+                 <item row="0" column="5">
+                  <widget class="QLineEdit" name="ivt_status"/>
+                 </item>
+                 <item row="0" column="3">
+                  <widget class="QLineEdit" name="ivt_error_code"/>
+                 </item>
+                 <item row="4" column="1">
+                  <widget class="QLineEdit" name="ivt_coolFin_a"/>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QLineEdit" name="ivt_battery_vol"/>
+                 </item>
+                 <item row="3" column="4">
+                  <widget class="QLabel" name="label_28">
+                   <property name="text">
+                    <string>负载视在功率</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="2">
+                  <widget class="QLabel" name="label_24">
+                   <property name="text">
+                    <string>负载有功功率</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="4">
+                  <widget class="QLabel" name="label_17">
+                   <property name="text">
+                    <string>机器当前状态</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="4">
+                  <widget class="QLabel" name="label_27">
+                   <property name="text">
+                    <string>负载电流</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="4">
+                  <widget class="QLabel" name="label_29">
+                   <property name="text">
+                    <string>负载功率百分比</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="3">
+                  <widget class="QLineEdit" name="ivt_load_active_power"/>
+                 </item>
+                 <item row="4" column="3">
+                  <widget class="QLineEdit" name="ivt_coolFin_b"/>
+                 </item>
+                 <item row="1" column="5">
+                  <widget class="QLineEdit" name="ivt_inverse_vol"/>
+                 </item>
+                 <item row="2" column="5">
+                  <widget class="QLineEdit" name="ivt_load_current"/>
+                 </item>
+                 <item row="3" column="5">
+                  <widget class="QLineEdit" name="ivt_load_apparent_power"/>
+                 </item>
+                 <item row="4" column="5">
+                  <widget class="QLineEdit" name="ivt_load_power_percent"/>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <property name="leftMargin">
+             <number>6</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QGroupBox" name="groupBox_3">
+              <property name="title">
+               <string>操作台</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_4">
+               <item>
+                <layout class="QGridLayout" name="gridLayout_4">
+                 <item row="2" column="2">
+                  <widget class="QPushButton" name="ivt_open_monitor_btn">
+                   <property name="text">
+                    <string>开启数据监控</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QComboBox" name="ivt_baud">
+                   <item>
+                    <property name="text">
+                     <string>9600</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>19200</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>57600</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>115200</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_35">
+                   <property name="text">
+                    <string>管理员密码</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QComboBox" name="ivt_port_list"/>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QPushButton" name="ivt_login_btn">
+                   <property name="text">
+                    <string>登录</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="2">
+                  <widget class="QPushButton" name="ivt_export_data_btn">
+                   <property name="text">
+                    <string>导出数据</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_36">
+                   <property name="text">
+                    <string>串口号</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QLineEdit" name="ivt_pwd"/>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_37">
+                   <property name="text">
+                    <string>波特率</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QPushButton" name="ivt_open_port_btn">
+                   <property name="text">
+                    <string>打开串口</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_4">
+              <property name="title">
+               <string>开关控制</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_7">
+               <item>
+                <layout class="QGridLayout" name="gridLayout_3">
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_30">
+                   <property name="text">
+                    <string>复位控制</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QLabel" name="label_31">
+                   <property name="text">
+                    <string>恢复出厂</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_32">
+                   <property name="text">
+                    <string>清除当前告警</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QLabel" name="label_33">
+                   <property name="text">
+                    <string>清除统计量</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_34">
+                   <property name="text">
+                    <string>清除历史记录</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QPushButton" name="ivt_reset_btn">
+                   <property name="text">
+                    <string>打开</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="3">
+                  <widget class="QPushButton" name="ivt_fact_recovery_btn">
+                   <property name="text">
+                    <string>打开</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QPushButton" name="ivt_clear_error_btn">
+                   <property name="text">
+                    <string>打开</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QPushButton" name="ivt_clear_history_btn">
+                   <property name="text">
+                    <string>打开</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="3">
+                  <widget class="QPushButton" name="ivt_clear_statistics_btn">
+                   <property name="text">
+                    <string>打开</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab2">
+       <attribute name="title">
+        <string>参数设置</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <layout class="QGridLayout" name="gridLayout_5">
+          <item row="1" column="6">
+           <widget class="QSpinBox" name="ivt_overshoot_vol">
+            <property name="minimum">
+             <number>9</number>
+            </property>
+            <property name="maximum">
+             <number>17</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="4">
+           <widget class="QSpinBox" name="ivt_eco_start_power">
+            <property name="minimum">
+             <number>30</number>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QSpinBox" name="ivt_overshoot_vol_return">
+            <property name="minimum">
+             <number>9</number>
+            </property>
+            <property name="maximum">
+             <number>17</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="3">
+           <widget class="QLabel" name="label_51">
+            <property name="text">
+             <string>ECO启动功率/节能阈值</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="4">
+           <widget class="QSpinBox" name="ivt_set_dev_addr">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLabel" name="label_50">
+            <property name="text">
+             <string>风扇启动温度</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QLabel" name="label_39">
+            <property name="text">
+             <string>电池额定电压(V)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <widget class="QSpinBox" name="ivt_bat_vol">
+            <property name="minimumSize">
+             <size>
+              <width>150</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="minimum">
+             <number>12</number>
+            </property>
+            <property name="maximum">
+             <number>48</number>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="7">
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="5">
+           <widget class="QLabel" name="label_46">
+            <property name="text">
+             <string>并机模式</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="5">
+           <widget class="QLabel" name="label_55">
+            <property name="text">
+             <string>状态模式</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QSpinBox" name="ivt_bat_capacity">
+            <property name="minimumSize">
+             <size>
+              <width>150</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximum">
+             <number>400</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="5">
+           <widget class="QLabel" name="label_43">
+            <property name="text">
+             <string>过放电压(V)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="6">
+           <widget class="QSpinBox" name="ivt_outpu_priority">
+            <property name="maximum">
+             <number>2</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="5">
+           <widget class="QLabel" name="label_49">
+            <property name="text">
+             <string>输出优先级</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QLabel" name="label_48">
+            <property name="text">
+             <string>密码输入</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QLabel" name="label_45">
+            <property name="text">
+             <string>设备地址设置（RS485）</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QSpinBox" name="ivt_fan_start_tep">
+            <property name="minimum">
+             <number>40</number>
+            </property>
+            <property name="maximum">
+             <number>65</number>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="1" column="2">
+           <widget class="QSpinBox" name="ivt_reoverpre_vol">
+            <property name="maximum">
+             <number>17</number>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="4">
+           <widget class="QPushButton" name="ivt_write_data_btn">
+            <property name="text">
+             <string>写入数据</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="label_38">
+            <property name="text">
+             <string>电池标称容量(AH)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="5">
+           <widget class="QLabel" name="label_40">
+            <property name="text">
+             <string>超压电压(V)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="3">
+           <widget class="QLabel" name="label_54">
+            <property name="text">
+             <string>ECO启动时间</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="5">
+           <widget class="QLabel" name="label_52">
+            <property name="text">
+             <string>交流输出电压</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="6">
+           <widget class="QSpinBox" name="ivt_status_mode">
+            <property name="maximum">
+             <number>2</number>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLabel" name="label_53">
+            <property name="text">
+             <string>交流输出频率</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="6">
+           <widget class="QSpinBox" name="ivt_overpre_vol">
+            <property name="minimumSize">
+             <size>
+              <width>150</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="minimum">
+             <number>9</number>
+            </property>
+            <property name="maximum">
+             <number>17</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="label_41">
+            <property name="text">
+             <string>超压恢复电压(V)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="6">
+           <widget class="QSpinBox" name="ivt_paraller_operation">
+            <property name="maximum">
+             <number>7</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="label_47">
+            <property name="text">
+             <string>用户密码设置值</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QLabel" name="label_42">
+            <property name="text">
+             <string>过放返回电压(V)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="4">
+           <widget class="QSpinBox" name="ivt_eco_start_time">
+            <property name="maximum">
+             <number>30</number>
+            </property>
+            <property name="singleStep">
+             <number>1800</number>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QLabel" name="label_56">
+            <property name="text">
+             <string>过载自动重启</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="2">
+           <widget class="QPushButton" name="ivt_read_data_btn">
+            <property name="text">
+             <string>读取数据</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="3">
+           <widget class="QLabel" name="label_57">
+            <property name="text">
+             <string>过温自动重启</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="2">
+           <widget class="QSpinBox" name="ivt_over_duty_autoReset">
+            <property name="maximum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="4">
+           <widget class="QSpinBox" name="ivt_overTep_autoReset">
+            <property name="maximum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="6">
+           <widget class="QDoubleSpinBox" name="ivt_acOutput_vol">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>100.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>264.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QDoubleSpinBox" name="ivt_acOutput_frequency">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>45.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>65.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QSpinBox" name="ivt_set_pwd">
+            <property name="maximum">
+             <number>65535</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="4">
+           <widget class="QSpinBox" name="ivt_write_pwd">
+            <property name="maximum">
+             <number>65535</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="label_58">
+            <property name="text">
+             <string>记录故障码</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QSpinBox" name="ivt_mark_error_code">
+            <property name="maximum">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>实时数据</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QPushButton" name="ivt_clear_now_data">
+            <property name="text">
+             <string>清空内容</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="ivt_data_tableWidget">
+            <column>
+             <property name="text">
+              <string>Time</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Direction</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Send/Receive Data(Hex)</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1016</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

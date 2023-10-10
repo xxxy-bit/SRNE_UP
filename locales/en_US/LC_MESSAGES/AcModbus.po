@@ -1,0 +1,82 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2023-09-18 16:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:39
+msgid "空闲"
+msgstr "Idle"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:40
+msgid "测试充电"
+msgstr "Test charge"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:41
+msgid "大电流充电"
+msgstr "High current charge"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:42
+msgid "均衡充电"
+msgstr "Balanced charge"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:43
+msgid "提升充电"
+msgstr "Lift charge"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:44
+msgid "浮充充电"
+msgstr "Floating charge"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:45
+msgid "限流充电"
+msgstr "Current limiting charge"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:46
+msgid "充满"
+msgstr "Battery charge"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:47
+msgid "储存充电"
+msgstr "Storage charge"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:50
+msgid "未接蓄电池"
+msgstr "Disconnected battery"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:51
+msgid "设备低温保护"
+msgstr "Equipment low temperature protection"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:53
+msgid "输出超压保护"
+msgstr "Output overpressure protection"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:54
+msgid "高温限流"
+msgstr "High temperature current limiting"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:55
+msgid "高温保护"
+msgstr "High temperature protection"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:56
+msgid "过流保护"
+msgstr "Overcurrent protection"
+
+msgid "AC-DC 充电器"
+msgstr "AC-DC Charger"
+
+msgid "DC-DC 充电器"
+msgstr "DC-DC Charger"

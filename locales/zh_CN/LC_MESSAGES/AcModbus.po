@@ -1,0 +1,107 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2023-09-18 16:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:39
+msgid "空闲"
+msgstr "空闲"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:40
+msgid "测试充电"
+msgstr "测试充电"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:41
+msgid "大电流充电"
+msgstr "大电流充电"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:42
+msgid "均衡充电"
+msgstr "均衡充电"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:43
+msgid "提升充电"
+msgstr "提升充电"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:44
+msgid "Floating charge"
+msgstr "浮充充电"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:45
+msgid "限流充电"
+msgstr "限流充电"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:46
+msgid "充满"
+msgstr "充满"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:47
+msgid "储存充电"
+msgstr "储存充电"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:50
+msgid "未接蓄电池"
+msgstr "未接蓄电池"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:51
+msgid "设备低温保护"
+msgstr "设备低温保护"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:53
+msgid "输出超压保护"
+msgstr "输出超压保护"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:54
+msgid "高温限流"
+msgstr "高温限流"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:55
+msgid "高温保护"
+msgstr "高温保护"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:56
+msgid "过流保护"
+msgstr "过流保护"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:65
+msgid "自定义铅酸"
+msgstr "自定义铅酸"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:66
+msgid "开口(FLD)"
+msgstr "开口(FLD)"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:67
+msgid "密封(SLD)"
+msgstr "密封(SLD)"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:68
+msgid "胶体(GEL)"
+msgstr "胶体(GEL)"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:69
+msgid "锂电池(LI)"
+msgstr "锂电池(LI)"
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:70
+msgid "自定义锂电池(Li-ion)"
+msgstr "自定义锂电池(Li-ion)"
+
+msgid "AC-DC 充电器"
+msgstr "AC-DC 充电器"
+
+msgid "DC-DC 充电器"
+msgstr "DC-DC 充电器"
+

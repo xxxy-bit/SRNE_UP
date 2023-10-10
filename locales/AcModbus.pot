@@ -1,0 +1,101 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2023-09-18 16:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:39
+msgid "Idle"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:40
+msgid "Test charge"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:41
+msgid "High current charge"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:42
+msgid "Balanced charge"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:43
+msgid "Lift charge"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:44
+msgid "Floating charge"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:45
+msgid "Current limiting charge"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:46
+msgid "Battery charge"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:47
+msgid "Storage charge"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:50
+msgid "Disconnected battery"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:51
+msgid "Equipment low temperature protection"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:53
+msgid "Output overpressure protection"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:54
+msgid "High temperature current limiting"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:55
+msgid "High temperature protection"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:56
+msgid "Overcurrent protection"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:65
+msgid "Custom lead acid"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:66
+msgid "Opening (FLD)"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:67
+msgid "Seal (SLD)"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:68
+msgid "GEL"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:69
+msgid "Lithium Battery (LI)"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:70
+msgid "Custom Lithium Battery (Li-ion)"
+msgstr ""
+

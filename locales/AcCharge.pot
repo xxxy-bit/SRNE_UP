@@ -1,0 +1,85 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2023-09-18 14:52+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:33
+msgid "Open port"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:34
+msgid "Close port"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:35
+msgid "Port opening failure"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:37
+msgid "Open data monitor"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:38
+msgid "Close data monitor"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:40
+msgid "Product type,Product specification,Serial number,Device name,Device address,Hardware version,Software version,System voltage,Rated charging current,Rated discharge current,Raw data(Hex)"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:41
+msgid "Charging current,Device temperature,Battery voltage,Battery temperature,Charging state,Fault/alarm information,Raw data(Hex)"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:43
+msgid "The file is occupied. Please close the Excel file and try again."
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:44
+msgid "Unknown error, please take a screenshot and contact the relevant developer."
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:46
+msgid "The export is successful. The directory is in"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:47
+msgid "Do you want to open this directory?"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:49
+msgid "To ensure data accuracy, stop data monitoring in real-time monitoring. Do you want to stop?"
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:50
+msgid "Please enter parameters."
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:51
+msgid "Please modify the parameters."
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:52
+msgid "Writing datat..."
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:53
+msgid "Enter parameters."
+msgstr ""
+
+#: E:\xy\xy\project\AC_charger\src\AcCharge.py:54
+msgid "Are you sure to write the following parameters:"
+msgstr ""
+
