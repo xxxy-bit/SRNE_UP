@@ -355,7 +355,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
                 # 写入监控日志
                 self.m1_csv += f'{temp1},{temp2},{temp3},{temp4},{temp5},{temp6},{temp7},{temp8},{temp9},{temp10},{arg[1]}\n'
             # 实时监控2
-            elif res[:6] == f'{ac_monitor2[:4]}0e' and len(res) == 38:
+            elif res[:6] == f'{ac_monitor2[:4]}46' and len(res) == 150:
                 arg = pars_data(res, ac_monitor2)
                 result = arg[0]
                 temp1 = result['充电电流']

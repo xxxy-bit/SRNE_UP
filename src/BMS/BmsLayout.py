@@ -129,8 +129,18 @@ class BmsLayout(QWidget):
         self.com_label8 = _('开始监控')
         
         # 开关控制
+        self.switch_label1 = _('充电')
+        self.switch_label2 = _('放电')
+        self.switch_label3 = _('强制休眠')
+        self.switch_label4 = _('打开')
     
         # 系统状态
+        self.sys_label1 = _('有效充电电流')
+        self.sys_label2 = _('有效放电电流')
+        self.sys_label3 = _('充电MOS管开启')
+        self.sys_label4 = _('放电MOS管开启')
+        self.sys_label5 = _('充电器接入')
+        self.sys_label6 = _('满充')
         
     # 并机监控
     def pal_monitorUI(self):
@@ -384,7 +394,7 @@ class BmsLayout(QWidget):
             tem_form1.addRow(k, v)
 
         for i in range(8, 16):
-            self.cell_temp_16[f'cell{self.temp_label1}{i+1}'] = QLineEdit()
+            self.cell_temp_16[f'cell{i+1}_{self.temp_label1}'] = QLineEdit()
         for k,v in self.cell_temp_16.items():
             self.cell_temp_16[k].setReadOnly(True)
             self.cell_temp_16[k].setAlignment(Qt.AlignCenter)
@@ -474,12 +484,12 @@ class BmsLayout(QWidget):
 
         sysStatus_groupBox = QGroupBox(self.group_tabel7)
         sysStatus_groupBox_grid = QGridLayout()
-        self.charg_status = QLabel('●' + '有效充电电流')
-        self.disCharg_status = QLabel('●' + '有效放电电流')
-        self.chargMos_status = QLabel('●' + '充电MOS管开启')
-        self.disChargMos_status = QLabel('●' + '放电MOS管开启')
-        self.batCharg_status = QLabel('●' + '充电器接入')
-        self.full_status = QLabel('●' + '满充')
+        self.charg_status = QLabel('●' + self.sys_label1)
+        self.disCharg_status = QLabel('●' + self.sys_label2)
+        self.chargMos_status = QLabel('●' + self.sys_label3)
+        self.disChargMos_status = QLabel('●' + self.sys_label4)
+        self.batCharg_status = QLabel('●' + self.sys_label5)
+        self.full_status = QLabel('●' + self.sys_label6)
         sg = [
             self.charg_status, self.chargMos_status, self.batCharg_status,
             self.disCharg_status, self.disChargMos_status, self.full_status
@@ -512,18 +522,18 @@ class BmsLayout(QWidget):
 
         openStatus_groupBox = QGroupBox(self.group_tabel6)
         openStatus_groupBox_grid = QGridLayout()
-        charge_lab = QLabel('充电')
+        charge_lab = QLabel(self.switch_label1)
         charge_lab.setMaximumWidth(50)
         # charge_lab.setAlignment(Qt.AlignCenter)
-        self.charge_btn = QPushButton('打开')
+        self.charge_btn = QPushButton(self.switch_label4)
         self.charge_btn.setEnabled(False)
-        discharge_lab = QLabel('放电')
+        discharge_lab = QLabel(self.switch_label2)
         discharge_lab.setMaximumWidth(50)
-        self.disCharge_btn = QPushButton('打开')
+        self.disCharge_btn = QPushButton(self.switch_label4)
         self.disCharge_btn.setEnabled(False)
-        sleep_lab = QLabel('强制休眠')
+        sleep_lab = QLabel(self.switch_label3)
         sleep_lab.setMaximumWidth(100)
-        self.dormancy_btn = QPushButton('打开')
+        self.dormancy_btn = QPushButton(self.switch_label4)
         self.dormancy_btn.setStyleSheet(color_close)
         self.dormancy_btn.setEnabled(False)
         og = [

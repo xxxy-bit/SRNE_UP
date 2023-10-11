@@ -5,7 +5,7 @@ color_close = 'background-color: #F26659'   # 按钮关闭的颜色
 # 指令集
 # Ac充电器
 ac_monitor1 = 'ff03000a005f' # 获取实时数据1
-ac_monitor2 = 'ff0301010007' # 获取实时数据2
+ac_monitor2 = 'ff0301000023' # 获取实时数据2
 ac_get_setting = 'ff03e001003a'   # 获取参数设置
 
 ac_sw_onoff = 'ff06df000001'    # 开关机
