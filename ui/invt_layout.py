@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'E:\xy\xy\project\AC_charger\ui\invt_layout.ui'
+# Form implementation generated from reading ui file 'E:\svn\SrneUpperComputer\ui\invt_layout.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(998, 560)
+        MainWindow.resize(1016, 495)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -514,7 +514,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self.tabWidget)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 998, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1016, 22))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -614,4 +614,4 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Direction"))
         item = self.ivt_data_tableWidget.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "Send/Receive Data(Hex)"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "实时数据"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "串口数据"))

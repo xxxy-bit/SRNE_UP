@@ -111,6 +111,10 @@ def pars_data(res, send_data):
             else:
                 temp = int(''.join(str(i) for i in temp), 16)
                 print_dic[k] = f'{Common.format_num(temp / v[2])} {v[3]}'
+    elif send_data == ac_get_chgstatus:
+        print_dic['开关机'] = int(data_cut[0], 16)
+    elif send_data == ac_get_testmode:
+        print_dic['测试模式'] = int(data_cut[0], 16)
     elif send_data == ac_get_setting:
         for k,v in ac_data_list[send_data].items():
             temp = data_cut[v[0]:v[0]+v[1]]

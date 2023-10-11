@@ -285,7 +285,48 @@
         <property name="rightMargin">
          <number>10</number>
         </property>
-        <item row="2" column="1">
+        <item row="1" column="1">
+         <widget class="QComboBox" name="port_cmb"/>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>波特率(bps)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QPushButton" name="login">
+          <property name="text">
+           <string>登录</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>串口号</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QPushButton" name="ac_port_refresh">
+          <property name="text">
+           <string>刷新串口</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="pwd"/>
+        </item>
+        <item row="1" column="2">
+         <widget class="QPushButton" name="port_btn">
+          <property name="text">
+           <string>打开串口</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
          <widget class="QComboBox" name="baud_cmb">
           <item>
            <property name="text">
@@ -310,36 +351,9 @@
          </widget>
         </item>
         <item row="3" column="2">
-         <widget class="QPushButton" name="ac_output_monitor">
-          <property name="text">
-           <string>导出监控数据</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QComboBox" name="port_cmb"/>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="pwd"/>
-        </item>
-        <item row="2" column="2">
          <widget class="QPushButton" name="startMonitor_btn">
           <property name="text">
            <string>开启数据监控</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QPushButton" name="login">
-          <property name="text">
-           <string>登录</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QPushButton" name="port_btn">
-          <property name="text">
-           <string>打开串口</string>
           </property>
          </widget>
         </item>
@@ -350,17 +364,10 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_3">
+        <item row="4" column="2">
+         <widget class="QPushButton" name="ac_output_monitor">
           <property name="text">
-           <string>波特率</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>串口号</string>
+           <string>导出监控数据</string>
           </property>
          </widget>
         </item>
@@ -398,21 +405,14 @@
         <item row="1" column="1">
          <widget class="QPushButton" name="reset_default_btn">
           <property name="text">
-           <string>打开</string>
+           <string>发送</string>
           </property>
          </widget>
         </item>
         <item row="1" column="3">
          <widget class="QPushButton" name="clear_history_btn">
           <property name="text">
-           <string>打开</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>设备复位</string>
+           <string>发送</string>
           </property>
          </widget>
         </item>
@@ -420,13 +420,6 @@
          <widget class="QLabel" name="label_7">
           <property name="text">
            <string>清除历史记录</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <widget class="QPushButton" name="prod_reset_btn">
-          <property name="text">
-           <string>打开</string>
           </property>
          </widget>
         </item>
@@ -447,21 +440,35 @@
         <item row="0" column="1">
          <widget class="QPushButton" name="switch_machine_btn">
           <property name="text">
-           <string>打开</string>
+           <string>开启</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="0" column="3">
+         <widget class="QPushButton" name="ac_testmode_btn">
+          <property name="text">
+           <string>开启</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
          <widget class="QLabel" name="label_40">
           <property name="text">
            <string>测试模式</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
-         <widget class="QPushButton" name="ac_testmode_btn">
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>打开</string>
+           <string>设备复位</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="prod_reset_btn">
+          <property name="text">
+           <string>发送</string>
           </property>
          </widget>
         </item>
@@ -1087,7 +1094,7 @@
     </widget>
     <widget class="QWidget" name="ac_tab_data">
      <attribute name="title">
-      <string>实时数据</string>
+      <string>串口数据</string>
      </attribute>
      <widget class="QWidget" name="verticalLayoutWidget">
       <property name="geometry">

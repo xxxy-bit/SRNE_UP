@@ -127,10 +127,11 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
         
         # 加载-实时数据信号槽
         self.ac_nowData_slots()
-        
+    
     # 信号槽-实时监控
     def ac_monitor_slots(self):
         self.port_btn.clicked.connect(self.ac_openPort)
+        self.ac_port_refresh.clicked.connect(self.ac_port_refresh_func)
         self.startMonitor_btn.clicked.connect(self.ac_get_monitor)
         self.switch_machine_btn.clicked.connect(self.ac_switch_onoff)
         self.prod_reset_btn.clicked.connect(self.ac_resetting)
@@ -305,6 +306,55 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
             self.port_btn.setStyleSheet(color_close)
             self.port_cmb.setEnabled(True)
     
+    # 按钮-刷新串口
+    def ac_port_refresh_func(self):
+        self.port_cmb.clear()
+        self.port_cmb.addItems(Common.load_serial_list())
+    
+    
+    # 提示语-串口未打开
+    def ac_port_nostart_tips(self):
+        if self.ser.isOpen() == False:
+            QtWidgets.QMessageBox.critical(self, 'Error', self.port_nostart_tips, QtWidgets.QMessageBox.Ok)  
+            return False
+    
+    # 按钮-开启/关闭数据监控
+    def ac_get_monitor(self):
+        self.timer_get_monitor = QtCore.QTimer()
+        if self.startMonitor_btn.text() == self.open_monitor_i18n:
+            if self.ac_port_nostart_tips() == False: return 0
+            self.startMonitor_btn.setText(self.close_monitor_i18n)
+            self.startMonitor_btn.setStyleSheet(color_open)
+            self.ac_monitor_on = True
+            
+            # 定时器-开启数据监控
+            self.timer_get_monitor.timeout.connect(self.timer_get_monitor_func)
+            self.timer_get_monitor_step = 1
+            self.timer_get_monitor.start(1500)
+        else:
+            self.startMonitor_btn.setText(self.open_monitor_i18n)
+            self.startMonitor_btn.setStyleSheet(color_close)
+            self.ac_monitor_on = False
+            self.timer_get_monitor.stop()
+    
+    # 定时器方法-开启数据监控
+    def timer_get_monitor_func(self):
+        if self.timer_get_monitor_step == 1:
+            # 发 实时监控数据1
+            self.send_msg(f'{ac_monitor1}{calc_crc(ac_monitor1)}')
+        elif self.timer_get_monitor_step == 2:
+            # 发 实时监控数据2
+            self.send_msg(f'{ac_monitor2}{calc_crc(ac_monitor2)}')
+        elif self.timer_get_monitor_step == 3:
+            # 发 开关机状态数据
+            self.send_msg(f'{ac_get_chgstatus}{calc_crc(ac_get_chgstatus)}')
+        else:
+            # 发 测试模式状态数据
+            self.send_msg(f'{ac_get_testmode}{calc_crc(ac_get_testmode)}')
+            self.timer_get_monitor_step = 1
+            return 0
+        self.timer_get_monitor_step += 1
+
     # 接收数据定时器
     def timer_recevice_func(self):
         try:
@@ -372,6 +422,22 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
                 self.error_msg.setText(temp6)
                 temp6 = temp6.replace('\n', ' | ')
                 self.m2_csv += f'{temp1},{temp2},{temp3},{temp4},{temp5},{temp6},{arg[1]}\n'
+            elif res[:6] == f'{ac_get_chgstatus[:4]}02' and self.timer_get_monitor_step == 4:
+                arg = pars_data(res, ac_get_chgstatus)[0]['开关机']
+                if arg == 1:
+                    self.switch_machine_btn.setText('关闭')
+                    self.switch_machine_btn.setStyleSheet(color_open)
+                else:
+                    self.switch_machine_btn.setText('开启')
+                    self.switch_machine_btn.setStyleSheet(color_close)
+            elif res[:6] == f'{ac_get_testmode[:4]}02' and self.timer_get_monitor_step == 1:
+                arg = pars_data(res, ac_get_testmode)[0]['测试模式']
+                if arg == 8888:
+                    self.ac_testmode_btn.setText('关闭')
+                    self.ac_testmode_btn.setStyleSheet(color_open)
+                else:
+                    self.ac_testmode_btn.setText('开启')
+                    self.ac_testmode_btn.setStyleSheet(color_close)
             # 参数设置
             elif res[:6] == f'{ac_get_setting[:4]}74' and len(res) == 242:
                 # 解析的数据
@@ -426,48 +492,15 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
                     obj.blockSignals(False)
             
             self.add_tableItem('receive', res, self.ac_show_tab_data)
-            
-    # 提示语-串口未打开
-    def ac_port_nostart_tips(self):
-        if self.ser.isOpen() == False:
-            QtWidgets.QMessageBox.critical(self, 'Error', self.port_nostart_tips, QtWidgets.QMessageBox.Ok)  
-            return False
-    
-    # 按钮-开启/关闭数据监控
-    def ac_get_monitor(self):
-        self.timer_get_monitor = QtCore.QTimer()
-        if self.startMonitor_btn.text() == self.open_monitor_i18n:
-            if self.ac_port_nostart_tips() == False: return 0
-            self.startMonitor_btn.setText(self.close_monitor_i18n)
-            self.startMonitor_btn.setStyleSheet(color_open)
-            self.ac_monitor_on = True
-            
-            # 定时器-开启数据监控
-            self.timer_get_monitor.timeout.connect(self.timer_get_monitor_func)
-            self.timer_get_monitor_step = 1
-            self.timer_get_monitor.start(2000)
-        else:
-            self.startMonitor_btn.setText(self.open_monitor_i18n)
-            self.startMonitor_btn.setStyleSheet(color_close)
-            self.ac_monitor_on = False
-            self.timer_get_monitor.stop()
-    
-    # 定时器方法-开启数据监控
-    def timer_get_monitor_func(self):
-        if self.timer_get_monitor_step == 1:
-            # 发 实时监控数据1
-            self.send_msg(f'{ac_monitor1}{calc_crc(ac_monitor1)}')
-            self.timer_get_monitor_step += 1
-        else:
-            # 发 实时监控数据2
-            self.send_msg(f'{ac_monitor2}{calc_crc(ac_monitor2)}')
-            self.timer_get_monitor_step = 1
 
     # 按钮-开关控制-开关机
     def ac_switch_onoff(self):
         if self.ac_port_nostart_tips() == False: return 0
         # 1 开机， 0 关机
-        self.send_msg(f'{ac_sw_onoff}{calc_crc(ac_sw_onoff)}')
+        if self.switch_machine_btn.text() == '开启':
+            self.send_msg(f'{ac_sw_on}{calc_crc(ac_sw_on)}')
+        else:
+            self.send_msg(f'{ac_sw_off}{calc_crc(ac_sw_off)}')
 
     # 按钮-开关控制-设备复位
     def ac_resetting(self):
@@ -487,7 +520,10 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
     # 按钮-开关控制-测试模式
     def ac_testmode_func(self):
         if self.ac_port_nostart_tips() == False: return 0
-        self.send_msg(f'{ac_testmode}{calc_crc(ac_testmode)}')
+        if self.ac_testmode_btn.text() == '开启':
+            self.send_msg(f'{ac_testmode_on}{calc_crc(ac_testmode_on)}')
+        else:
+            self.send_msg(f'{ac_device_reset}{calc_crc(ac_device_reset)}')
 
     # 按钮-参数设置-读取数据
     def ac_read_data(self):
@@ -565,19 +601,26 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
     def ac_write_data(self):
         if self.ac_port_nostart_tips() == False: return 0
         if len(self.setting_dic) != 0:
-            if self.ac_close_monitor():
-                self.timer_txt = []
-                for k, v in self.setting_dic.items():
-                    self.timer_txt.append(v)
-                # show_txt = ''
-                # for k, v in self.setting_show.items():
-                #     show_txt += f'{k}: {v}\n'
-                # if QtWidgets.QMessageBox.question(self, 'Tips', \
-                # f'{self.sure_param_tips}\n{show_txt}', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
-                self.ac_send_setting_timer = QtCore.QTimer()
-                self.ac_send_setting_timer_step = 0
-                self.ac_send_setting_timer.timeout.connect(self.ac_send_setting_timer_func)
-                self.ac_send_setting_timer.start(2000)
-        else:
-            return QtWidgets.QMessageBox.critical(self, 'Error', self.mdf_data_tips, QtWidgets.QMessageBox.Ok)  
+        #     if self.ac_close_monitor():
+        #         self.timer_txt = []
+        #         for k, v in self.setting_dic.items():
+        #             self.timer_txt.append(v)
+        #         # show_txt = ''
+        #         # for k, v in self.setting_show.items():
+        #         #     show_txt += f'{k}: {v}\n'
+        #         # if QtWidgets.QMessageBox.question(self, 'Tips', \
+        #         # f'{self.sure_param_tips}\n{show_txt}', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
+        #         self.ac_send_setting_timer = QtCore.QTimer()
+        #         self.ac_send_setting_timer_step = 0
+        #         self.ac_send_setting_timer.timeout.connect(self.ac_send_setting_timer_func)
+        #         self.ac_send_setting_timer.start(1000)
+        # else:
+        #     return QtWidgets.QMessageBox.critical(self, 'Error', self.mdf_data_tips, QtWidgets.QMessageBox.Ok)  
 
+            self.timer_txt = []
+            for k, v in self.setting_dic.items():
+                self.timer_txt.append(v)
+            self.ac_send_setting_timer = QtCore.QTimer()
+            self.ac_send_setting_timer_step = 0
+            self.ac_send_setting_timer.timeout.connect(self.ac_send_setting_timer_func)
+            self.ac_send_setting_timer.start(500)

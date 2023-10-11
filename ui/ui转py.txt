@@ -1,2 +1,2 @@
-打开python目录下的Scripts目录，然后运行cmd
+打开python目录下的Scripts目录（E:\env_310\Scripts），然后运行cmd
 pyuic5 -o E:\xy\xy\project\AC_charger\ui\ac_layout.py E:\xy\xy\project\AC_charger\ui\ac_layout.ui
