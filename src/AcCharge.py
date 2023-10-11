@@ -18,7 +18,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
         self.setupUi(self)
         self.ac_layout_init()
         self.i18n_init()
-        self.setWindowTitle(f'{self.windowTitle()} v0.0.2')
+        self.setWindowTitle(f'{self.windowTitle()} v0.0.3')
     
     # 加载国际化i18n
     def i18n_init(self):
