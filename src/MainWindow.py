@@ -14,6 +14,10 @@ class MainWindow(QtWidgets.QMainWindow, main_menu):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi(self)
+        
+        # 设置样式
+        # self.setStyleSheet("QMainWindow {background-color: #FF0000;}")
+        
         self.trans = QtCore.QTranslator()  # 实例翻译者
         
         # 设置项的保存路径

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'E:\xy\xy\project\AC_charger\ui\main_meun.ui'
+# Form implementation generated from reading ui file 'E:\svn\SrneUpperComputer\ui\main_meun.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -14,7 +14,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(300, 400)
+        MainWindow.resize(297, 418)
+        MainWindow.setAutoFillBackground(False)
+        MainWindow.setStyleSheet("")
+        MainWindow.setIconSize(QtCore.QSize(111, 32))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
@@ -55,7 +58,7 @@ class Ui_MainWindow(object):
         self.bmsButton.setObjectName("bmsButton")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 300, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 297, 22))
         self.menubar.setObjectName("menubar")
         self.menu = QtWidgets.QMenu(self.menubar)
         self.menu.setObjectName("menu")
@@ -76,7 +79,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "主菜单"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "SRNE"))
         self.label.setText(_translate("MainWindow", "选择连接的设备"))
         self.InverterButton.setText(_translate("MainWindow", "逆变器"))
         self.acchargeButton.setText(_translate("MainWindow", "AC/DC 充电器"))

@@ -84,8 +84,9 @@ class BmsLayout(QWidget):
         # 组名称
         self.group_tabel1 = _('电池信息')
         self.group_tabel2 = _('温度信息')
-        self.group_tabel3 = _('单体电压(V)')
+        self.group_tabel3 = _('单体电压')
         self.group_tabel4 = _('管理员登录')
+        self.group_tabel55 = _('串口信息')
         self.group_tabel5 = _('串口')
         self.group_tabel6 = _('开关控制')
         self.group_tabel7 = _('系统状态')
@@ -94,14 +95,13 @@ class BmsLayout(QWidget):
         self.group_tabel10 = _('保护状态')
         
         # 电池信息
-        self.battery_label1 = _('pack电池电压')
-        self.battery_label2 = _('pack电池电池')
+        self.battery_label1 = _('Pack电池电压')
+        self.battery_label2 = _('Pack电池电流')
         self.battery_label3 = _('剩余容量')
         self.battery_label4 = _('充满容量')
         self.battery_label5 = _('循环次数')
         
         # 温度信息
-        self.temp_label1 = _('温度')
         self.temp_label19 = _('环境温度')
         self.temp_label20 = _('Pack正极端子温度')
         self.temp_label21 = _('Pack负极端子温度')
@@ -111,7 +111,6 @@ class BmsLayout(QWidget):
         self.temp_label25 = _('Mos管2温度')
         
         # 单体电压
-        self.vol_label1 = _('电压')
         self.vol_label17 = _('cell最大压差')
         self.vol_label18 = _('cell最大电压')
         self.vol_label19 = _('cell最小电压')
@@ -142,6 +141,52 @@ class BmsLayout(QWidget):
         self.sys_label5 = _('充电器接入')
         self.sys_label6 = _('满充')
         
+        # 并机监控页
+        # 组名称
+        self.pal_label1 = _('并联连接')
+        self.pal_label2 = _('报警状态')
+        self.pal_label3 = _('并联数据')
+        self.pal_label4 = _('电芯数据')
+
+        # 并联设置
+        self.palset_label1 = _('Pack 数量')
+        self.palset_label2 = _('获取数据')
+        
+        # 报警状态
+        self.error_label1 = _('充电状态')
+        self.error_label2 = _('放电状态')
+        self.error_label3 = _('总高压报警')
+        self.error_label4 = _('总低压报警')
+        
+        # 并联数据
+        self.paldata_label1 = _('平均电压')
+        self.paldata_label2 = _('平均SOC')
+        self.paldata_label3 = _('总电流')
+        
+        # 电芯数据
+        self.celldata_label1 = _('最高电芯电压')
+        self.celldata_label2 = _('最高电芯电压位置')
+        self.celldata_label3 = _('最低电芯电压')
+        self.celldata_label4 = _('最低电芯电压位置')
+        self.celldata_label5 = _('最高电芯温度')
+        self.celldata_label6 = _('最高电芯温度位置')
+        self.celldata_label7 = _('最低电芯温度')
+        self.celldata_label8 = _('最低电芯温度位置')
+        
+        # 并机数据
+        self.palnum_label1 = _('电压')
+        self.palnum_label2 = _('温度')
+        self.palnum_label3 = _('PACK电流')
+        self.palnum_label7 = _('充放电循环次数')
+        self.palnum_label8 = _('PACK设计容量')
+        self.palnum_label9 = _('告警')
+        self.palnum_label10 = _('PACK充电电流告警')
+        self.palnum_label11 = _('PACK总电压告警')
+        self.palnum_label12 = _('PACK放电电流告警')
+        self.palnum_label14 = _('指示状态')
+        self.palnum_label15 = _('控制状态')
+        self.palnum_label16 = _('均衡状态')
+        
     # 并机监控
     def pal_monitorUI(self):
         # 最外层
@@ -150,16 +195,15 @@ class BmsLayout(QWidget):
         # 上方
         pal_layout_top = QHBoxLayout()
         
-        pal_sys_groupBox = QGroupBox('并联设置')
+        pal_sys_groupBox = QGroupBox(self.pal_label1)
         pal_sys_groupBox_grid = QGridLayout()
         
         self.pack_total = QComboBox()
         self.pack_total.addItems([str(i) for i in range(1, 16)])
-        self.pal_check = QPushButton('确认地址')
-        self.pal_start = QPushButton('获取数据')
+        self.pal_start = QPushButton(self.palset_label2)
         
         ed4 = [
-            QLabel('Pack 数量：'), self.pack_total,
+            QLabel(self.palset_label1 + '：'), self.pack_total,
             '', self.pal_start
         ]
         positions4 = [(i, j) for i in range(2) for j in range(2)]
@@ -170,13 +214,13 @@ class BmsLayout(QWidget):
         pal_sys_groupBox.setLayout(pal_sys_groupBox_grid)
         pal_layout_top.addWidget(pal_sys_groupBox)
         
-        status_groupBox = QGroupBox('报警状态')
+        status_groupBox = QGroupBox(self.pal_label2)
         status_groupBox_grid = QGridLayout()
         
-        self.pal_char_status = QLabel('●充电状态')
-        self.pal_dischar_status = QLabel('●放电状态')
-        self.pal_higvol_status = QLabel('●总高压报警')
-        self.pal_lowvol_status = QLabel('●总低压报警')
+        self.pal_char_status = QLabel('●' + self.error_label1)
+        self.pal_dischar_status = QLabel('●' + self.error_label2)
+        self.pal_higvol_status = QLabel('●' + self.error_label3)
+        self.pal_lowvol_status = QLabel('●' + self.error_label4)
         
         ed3 = [
             self.pal_char_status,
@@ -191,7 +235,7 @@ class BmsLayout(QWidget):
         status_groupBox.setLayout(status_groupBox_grid)
         pal_layout_top.addWidget(status_groupBox)
         
-        data_groupBox = QGroupBox('并联数据')
+        data_groupBox = QGroupBox(self.pal_label3)
         data_groupBox_grid = QGridLayout()
         self.avg_voltage = QLineEdit()
         self.avg_soc = QLineEdit()
@@ -202,9 +246,9 @@ class BmsLayout(QWidget):
         self.loop_num = QLineEdit()
         
         ed = [
-            QLabel('平均电压(V)：'), self.avg_voltage ,QLabel(self.battery_label3 + '(AH)：'), self.sur_cap,
-            QLabel('平均SOC(%)：'), self.avg_soc ,QLabel(self.battery_label4 + '(AH)：'), self.full_cap,
-            QLabel('总电流(V)：'), self.total_elc ,QLabel('SOH(AH)：'), self.soh,
+            QLabel(self.paldata_label1 + '(V)：'), self.avg_voltage ,QLabel(self.battery_label3 + '(AH)：'), self.sur_cap,
+            QLabel(self.paldata_label2 + '(%)：'), self.avg_soc ,QLabel(self.battery_label4 + '(AH)：'), self.full_cap,
+            QLabel(self.paldata_label3 + '(V)：'), self.total_elc ,QLabel('SOH(AH)：'), self.soh,
             '','',QLabel(self.battery_label1 + '：'), self.loop_num
         ]
         positions = [(i, j) for i in range(4) for j in range(4)]
@@ -215,7 +259,7 @@ class BmsLayout(QWidget):
         data_groupBox.setLayout(data_groupBox_grid)
         pal_layout_top.addWidget(data_groupBox)
         
-        celldata_groupBox = QGroupBox('电芯数据')
+        celldata_groupBox = QGroupBox(self.pal_label4)
         celldata_groupBox_grid = QGridLayout()
         self.cell_max = QLineEdit()
         self.cell_max_posi = QLineEdit()
@@ -228,10 +272,10 @@ class BmsLayout(QWidget):
         self.cell_min_tmp_posi = QLineEdit()
         
         ed2 = [
-            QLabel('最高电芯电压(mV)：'), self.cell_max ,QLabel('最高电芯温度(%)：'), self.cell_max_tmp,
-            QLabel('最高电芯电压位置：'), self.cell_max_posi ,QLabel('最高电芯温度位置：'), self.cell_max_tmp_posi,
-            QLabel('最低电芯电压(mV)：'), self.cell_min ,QLabel('最低电芯温度(%)：'), self.cell_min_tmp,
-            QLabel('最低电芯电压位置：'), self.cell_min_posi,QLabel('最低电芯温度位置：'), self.cell_min_tmp_posi
+            QLabel(self.celldata_label1 + '(mV)：'), self.cell_max ,QLabel(self.celldata_label5 + '(%)：'), self.cell_max_tmp,
+            QLabel(self.celldata_label2 + '：'), self.cell_max_posi ,QLabel(self.celldata_label6 + '：'), self.cell_max_tmp_posi,
+            QLabel(self.celldata_label3 + '(mV)：'), self.cell_min ,QLabel(self.celldata_label7 + '(%)：'), self.cell_min_tmp,
+            QLabel(self.celldata_label4 + '：'), self.cell_min_posi,QLabel(self.celldata_label8 + '：'), self.cell_min_tmp_posi
         ]
         positions2 = [(i, j) for i in range(4) for j in range(4)]
         for positions2, ed2 in zip(positions2, ed2):
@@ -245,23 +289,23 @@ class BmsLayout(QWidget):
         # self.palTable.setColumnCount(4)
         # self.palTable.setHorizontalHeaderLabels(['11','12','13','14'])
         self.col_labels = [
-            'cell1电压','cell2电压','cell3电压','cell4电压',
-            'cell5电压','cell6电压','cell7电压','cell8电压',
-            'cell9电压','cell10电压','cell11电压','cell12电压',
-            'cell13电压','cell14电压','cell15电压','cell16电压',
-            '温度1','温度2','温度3','温度4','温度5',
-            '温度6','温度7','温度8','温度9',
-            'PACK电流','PACK总电流','PACK' + self.battery_label3,'PACK满充容量',
-            '充放电循环次数','PACK设计容量','PACK SOC',
-            'cell1告警','cell2告警','cell3告警','cell4告警',
-            'cell5告警','cell6告警','cell7告警','cell8告警',
-            'cell9告警','cell10告警','cell11告警','cell12告警',
-            'cell13告警','cell14告警','cell15告警','cell16告警',
-            '温度1告警','温度2告警','温度3告警','温度4告警','温度5告警',
-            '温度6告警','温度7告警','温度8告警','温度9告警',
-            'PACK充电电流告警','PACK总电压告警','PACK放电电流告警',f'{self.group_tabel10}1',
-            f'{self.group_tabel10}2','指示状态','控制状态',self.group_tabel8,
-            '均衡状态1','均衡状态2',f'{self.group_tabel9}1',f'{self.group_tabel9}2',
+            'Cell' + self.palnum_label1 + '_1','Cell' + self.palnum_label1 + '_2','Cell' + self.palnum_label1 + '_3','Cell' + self.palnum_label1 + '_4',
+            'Cell' + self.palnum_label1 + '_5','Cell' + self.palnum_label1 + '_6','Cell' + self.palnum_label1 + '_7','Cell' + self.palnum_label1 + '_8',
+            'Cell' + self.palnum_label1 + '_9','Cell' + self.palnum_label1 + '_10','Cell' + self.palnum_label1 + '_11','Cell' + self.palnum_label1 + '_12',
+            'Cell' + self.palnum_label1 + '_13','Cell' + self.palnum_label1 + '_14','Cell' + self.palnum_label1 + '_15','Cell' + self.palnum_label1 + '_16',
+            self.palnum_label2 + '_1',self.palnum_label2 + '_2',self.palnum_label2 + '_3',self.palnum_label2 + '_4',self.palnum_label2 + '_5',
+            self.palnum_label2 + '_6',self.palnum_label2 + '_7',self.palnum_label2 + '_8',self.palnum_label2 + '_9',
+            self.palnum_label3,'PACK' + self.paldata_label3,'PACK' + self.battery_label3,'PACK' + self.battery_label4,
+            self.palnum_label7, self.palnum_label8,'PACK SOC',
+            'Cell' + self.palnum_label9 + '_1','Cell' + self.palnum_label9 + '_2','Cell' + self.palnum_label9 + '_3','Cell' + self.palnum_label9 + '_4',
+            'Cell' + self.palnum_label9 + '_5','Cell' + self.palnum_label9 + '_6','Cell' + self.palnum_label9 + '_7','Cell' + self.palnum_label9 + '_8',
+            'Cell' + self.palnum_label9 + '_9','Cell' + self.palnum_label9 + '_1','Cell' + self.palnum_label9 + '_11','Cell' + self.palnum_label9 + '_12',
+            'Cell' + self.palnum_label9 + '_13','Cell' + self.palnum_label9 + '_14','Cell' + self.palnum_label9 + '_15','Cell' + self.palnum_label9 + '_16',
+            self.palnum_label2 + self.palnum_label9 +  '_1',self.palnum_label2 + self.palnum_label9 + '_2',self.palnum_label2 + self.palnum_label9 + '_3',self.palnum_label2 + self.palnum_label9 + '_4',self.palnum_label2 + self.palnum_label9 + '_5',
+            self.palnum_label2 + self.palnum_label9 + '_6' ,self.palnum_label2 + self.palnum_label9 + '_7',self.palnum_label2 + self.palnum_label9 + '_8',self.palnum_label2 + self.palnum_label9 + '_9',
+            self.palnum_label10,self.palnum_label11,self.palnum_label12,f'{self.group_tabel10}_1',
+            f'{self.group_tabel10}_2',self.palnum_label14,self.palnum_label15,self.group_tabel8,
+            self.palnum_label16 + '_1',self.palnum_label16 + '_2',f'{self.group_tabel9}_1',f'{self.group_tabel9}_2',
         ]
         self.palTable.setRowCount(len(self.col_labels))
         self.palTable.setVerticalHeaderLabels(self.col_labels)
@@ -387,27 +431,27 @@ class BmsLayout(QWidget):
         self.cell_temp_16 = {}
         
         for i in range(8):
-            self.cell_temp_8[f'cell{i+1}_{self.temp_label1}'] = QLineEdit()
+            self.cell_temp_8[f'cell_{i+1}(℃)'] = QLineEdit()
         for k,v in self.cell_temp_8.items():
             self.cell_temp_8[k].setReadOnly(True)
             self.cell_temp_8[k].setAlignment(Qt.AlignCenter)
             tem_form1.addRow(k, v)
 
         for i in range(8, 16):
-            self.cell_temp_16[f'cell{i+1}_{self.temp_label1}'] = QLineEdit()
+            self.cell_temp_16[f'cell_{i+1}(℃)'] = QLineEdit()
         for k,v in self.cell_temp_16.items():
             self.cell_temp_16[k].setReadOnly(True)
             self.cell_temp_16[k].setAlignment(Qt.AlignCenter)
             tem_form2.addRow(k, v)
         
         self.tem_other = {
-            self.temp_label19: QLineEdit(),
-            self.temp_label20: QLineEdit(),
-            self.temp_label21: QLineEdit(),
-            self.temp_label22: QLineEdit(),
-            self.temp_label23: QLineEdit(),
-            self.temp_label24: QLineEdit(),
-            self.temp_label25: QLineEdit()
+            self.temp_label19 + '(℃)': QLineEdit(),
+            self.temp_label20 + '(℃)': QLineEdit(),
+            self.temp_label21 + '(℃)': QLineEdit(),
+            self.temp_label22 + '(℃)': QLineEdit(),
+            self.temp_label23 + '(℃)': QLineEdit(),
+            self.temp_label24 + '(℃)': QLineEdit(),
+            self.temp_label25 + '(℃)': QLineEdit()
         }
         for k,v in self.tem_other.items():
             self.tem_other[k].setReadOnly(True)
@@ -426,23 +470,23 @@ class BmsLayout(QWidget):
         self.cell_vol_16 = {}
         
         for i in range(8):
-            self.cell_vol_8[f'cell{i+1}_{self.vol_label1}'] = QLineEdit()
+            self.cell_vol_8[f'cell_{i+1}(V)'] = QLineEdit()
         for k,v in self.cell_vol_8.items():
             self.cell_vol_8[k].setReadOnly(True)
             self.cell_vol_8[k].setAlignment(Qt.AlignCenter)
             vol_form1.addRow(k, v)
 
         for i in range(8, 16):
-            self.cell_vol_16[f'cell{i+1}_{self.vol_label1}'] = QLineEdit()
+            self.cell_vol_16[f'cell_{i+1}(V)'] = QLineEdit()
         for k,v in self.cell_vol_16.items():
             self.cell_vol_16[k].setReadOnly(True)
             self.cell_vol_16[k].setAlignment(Qt.AlignCenter)
             vol_form2.addRow(k, v)
 
         self.vol_other = {
-            self.vol_label17: QLineEdit(),
-            self.vol_label18: QLineEdit(),
-            self.vol_label19: QLineEdit()
+            self.vol_label17 + '(V)': QLineEdit(),
+            self.vol_label18 + '(V)': QLineEdit(),
+            self.vol_label19 + '(V)': QLineEdit()
         }
         for k,v in self.vol_other.items():
             self.vol_other[k].setReadOnly(True)
@@ -454,7 +498,7 @@ class BmsLayout(QWidget):
 
         # 右边-上
         tab1_layout_right_top = QVBoxLayout()
-        port_groupBox = QGroupBox(self.group_tabel5)
+        port_groupBox = QGroupBox(self.group_tabel55)
         port_H = QHBoxLayout()
         port_grid = QGridLayout()
 
