@@ -187,6 +187,103 @@ class BmsLayout(QWidget):
         self.palnum_label15 = _('控制状态')
         self.palnum_label16 = _('均衡状态')
         
+        # 参数设置页
+        # 组名称
+        self.parset_label1 = _('单体过充设置')
+        self.parset_label2 = _('单体过放设置')
+        self.parset_label3 = _('总体过充设置')
+        self.parset_label4 = _('总体过放设置')
+        self.parset_label5 = _('高温设置')
+        self.parset_label6 = _('低温设置')
+        self.parset_label7 = _('放电过流设置')
+        self.parset_label8 = _('充电过流设置')
+        
+        # 单体过充设置
+        self.parset1_label1 = _('单体过充告警')
+        self.parset1_label2 = _('单体过充保护')
+        self.parset1_label3 = _('单体过充保护恢复')
+        self.parset1_label4 = _('单体过充保护延时')
+        
+        # 单体过放设置
+        self.parset2_label1 = _('单体过放告警')
+        self.parset2_label2 = _('单体过放保护')
+        self.parset2_label3 = _('单体过放保护恢复')
+        self.parset2_label4 = _('单体过放保护延时')
+        
+        # 总体过充设置
+        self.parset3_label1 = _('总体过充告警')
+        self.parset3_label2 = _('总体过充保护')
+        self.parset3_label3 = _('总体过充保护恢复')
+        self.parset3_label4 = _('总体过充保护延时')
+        
+        # 总体过放设置
+        self.parset4_label1 = _('总体过放告警')
+        self.parset4_label2 = _('总体过放保护')
+        self.parset4_label3 = _('总体过放保护恢复')
+        self.parset4_label4 = _('总体过放保护延时')
+    
+        # 高温设置
+        self.parset5_label1 = _('充电高温告警')
+        self.parset5_label2 = _('充电高温保护')
+        self.parset5_label3 = _('充电高温保护恢复')
+        self.parset5_label4 = _('放电高温告警')
+        self.parset5_label5 = _('放电高温保护')
+        self.parset5_label6 = _('放电高温保护恢复')
+        self.parset5_label7 = _('均衡开启电压')
+        self.parset5_label8 = _('均衡开启压差')
+        self.parset5_label9 = _('单体休眠电压')
+        self.parset5_label10 = _('单体休眠延时')
+    
+        # 低温设置
+        self.parset6_label1 = _('充电低温告警')
+        self.parset6_label2 = _('充电低温保护')
+        self.parset6_label3 = _('充电低温保护恢复')
+        self.parset6_label4 = _('放电低温告警')
+        self.parset6_label5 = _('放电低温保护')
+        self.parset6_label6 = _('放电低温保护恢复')
+        self.parset6_label7 = _('电池包截止电压')
+        self.parset6_label8 = _('电池包截止电流')
+        self.parset6_label9 = _('低电量告警')
+    
+        # 放电过流设置
+        self.parset7_label1 = _('放电过流告警')
+        self.parset7_label2 = _('放电过流保护1')
+        self.parset7_label3 = _('放电过流保护延时1')
+        self.parset7_label4 = _('放电过流保护2')
+        self.parset7_label5 = _('放电过流保护延时2')
+        self.parset7_label6 = _('短路保护延时')
+    
+        # 充电过流设置
+        self.parset8_label1 = _('充电过流告警')
+        self.parset8_label2 = _('充电过流保护1')
+        self.parset8_label3 = _('充电过流保护延时1')
+        self.parset8_label4 = _('充电过流保护2')
+        self.parset8_label5 = _('充电过流保护延时2')
+        
+        # 按钮
+        self.parset9_label1 = _('读取参数')
+        self.parset9_label2 = _('清屏')
+        self.parset9_label3 = _('写入参数')
+        self.parset9_label4 = _('恢复默认值')
+        self.parset9_label5 = _('导出参数')
+        
+        # 系统设置页
+        self.sysset_label1 = _('电量')
+        self.sysset_label2 = _('设计容量')
+        self.sysset_label4 = _('总容量')
+        self.sysset_label5 = _('读取')
+        self.sysset_label6 = _('设置')
+        
+        # 历史数据页
+        self.hisdata_label1 = _('获取最近历史数据(1~100)')
+        self.hisdata_label2 = _('擦除历史数据')
+        
+        # 实时数据页
+        self.realdata_label1 = _('清空内容')
+        
+        # 底边栏
+        self.ver_label1 = _('版本')
+    
     # 并机监控
     def pal_monitorUI(self):
         # 最外层
@@ -325,7 +422,7 @@ class BmsLayout(QWidget):
         # 左边
         sys_layout_left = QVBoxLayout()
         
-        elect_groupBox = QGroupBox('电量')
+        elect_groupBox = QGroupBox(self.sysset_label1)
         elect_groupBox.setMaximumHeight(500)
         elect_groupBox.setMaximumWidth(500)
         elect_groupBox_grid = QGridLayout()
@@ -333,14 +430,14 @@ class BmsLayout(QWidget):
         self.designCap = QLineEdit()
         self.remainCap = QLineEdit()
         self.fullCap = QLineEdit()
-        self.readCap = QPushButton('读取')
-        self.writeCap = QPushButton('设置')
+        self.readCap = QPushButton(self.sysset_label5)
+        self.writeCap = QPushButton(self.sysset_label6)
         self.writeCap.setEnabled(False)
         
         ed = [
-            QLabel('设计容量(AH)：'), self.designCap,
+            QLabel(f'{self.sysset_label2}(AH)：'), self.designCap,
             QLabel(self.battery_label3 + '(AH)：'), self.remainCap,
-            QLabel('总容量(AH)：'), self.fullCap,
+            QLabel(f'{self.sysset_label4}(AH)：'), self.fullCap,
             self.readCap, self.writeCap
         ]
         positions = [(i, j) for i in range(4) for j in range(2)]
@@ -367,7 +464,7 @@ class BmsLayout(QWidget):
     # 状态栏
     def status_Ui(self):
         self.status_hlayout.setContentsMargins(10, 0, 10, 15)
-        self.version = QLabel('版本：')
+        self.version = QLabel(f'{self.ver_label1}:')
         # self.version.setAlignment(Qt.AlignLeft)
         self.bms_sn = QLabel('BMS S/N:')
         self.pack_sn = QLabel('PACK S/N:')
@@ -675,12 +772,12 @@ class BmsLayout(QWidget):
         self.tableWidget.setHorizontalHeaderLabels(['Time', 'Direction','Send/Receive Data(Hex)'])
         self.tableWidget.setColumnWidth(0,150)
         self.tableWidget.setColumnWidth(1,100)
-        self.tableWidget.setColumnWidth(2,1700)
+        self.tableWidget.setColumnWidth(2,750)
 
         # 隐藏水平方向表格头
         self.tableWidget.verticalHeader().setVisible(False)
 
-        self.clearRowbtn = QPushButton('清空内容')
+        self.clearRowbtn = QPushButton(self.realdata_label1)
 
         tab2_layout_H.addWidget(self.clearRowbtn)
         tab2_layout.addLayout(tab2_layout_H)
@@ -693,20 +790,20 @@ class BmsLayout(QWidget):
         tab3_layout_H1 = QHBoxLayout()
         self.tab3_form_dic = {}
 
-        monVolWarn_groupBox = QGroupBox('单体过充设置')
-        monVolWarn_form = self.tab3_createForm(self.tab3_form_dic, '单体过充告警(V)', '单体过充保护(V)', '单体过充保护恢复(V)', '单体过充保护延时(S)')
+        monVolWarn_groupBox = QGroupBox(self.parset_label1)
+        monVolWarn_form = self.tab3_createForm(self.tab3_form_dic, f'{self.parset1_label1}(V)', f'{self.parset1_label2}(V)', f'{self.parset1_label3}(V)', f'{self.parset1_label4}(S)')
         monVolWarn_groupBox.setLayout(monVolWarn_form)
 
-        monVolProt_groupBox = QGroupBox('单体过放设置')
-        monVolProt_form = self.tab3_createForm(self.tab3_form_dic, '单体过放告警(V)', '单体过放保护(V)', '单体过放保护恢复(V)', '单体过放保护延时(S)')
+        monVolProt_groupBox = QGroupBox(self.parset_label2)
+        monVolProt_form = self.tab3_createForm(self.tab3_form_dic, f'{self.parset2_label1}(V)', f'{self.parset2_label2}(V)', f'{self.parset2_label3}(V)', f'{self.parset2_label4}(S)')
         monVolProt_groupBox.setLayout(monVolProt_form)
 
-        allVolWarn_groupBox = QGroupBox('总体过充设置')
-        allVolWarn_form = self.tab3_createForm(self.tab3_form_dic, '总体过充告警(V)', '总体过充保护(V)', '总体过充保护恢复(V)', '总体过充保护延时(S)')
+        allVolWarn_groupBox = QGroupBox(self.parset_label3)
+        allVolWarn_form = self.tab3_createForm(self.tab3_form_dic, f'{self.parset3_label1}(V)', f'{self.parset3_label2}(V)', f'{self.parset3_label3}(V)', f'{self.parset3_label4}(S)')
         allVolWarn_groupBox.setLayout(allVolWarn_form)
 
-        allVolProt_groupBox = QGroupBox('总体过放设置')
-        allVolProt_form = self.tab3_createForm(self.tab3_form_dic, '总体过放告警(V)', '总体过放保护(V)', '总体过放保护恢复(V)', '总体过放保护延时(S)')
+        allVolProt_groupBox = QGroupBox(self.parset_label4)
+        allVolProt_form = self.tab3_createForm(self.tab3_form_dic, f'{self.parset4_label1}(V)', f'{self.parset4_label2}(V)', f'{self.parset4_label3}(V)', f'{self.parset4_label4}(S)')
         allVolProt_groupBox.setLayout(allVolProt_form)
 
         tab3_layout_H1.addWidget(monVolWarn_groupBox)   # 单体过充设置
@@ -715,32 +812,32 @@ class BmsLayout(QWidget):
         tab3_layout_H1.addWidget(allVolProt_groupBox)   # 总体过放设置
         
         tab3_layout_H2 = QHBoxLayout()
-        temWarn_groupBox = QGroupBox('高温设置')
+        temWarn_groupBox = QGroupBox(self.parset_label5)
         temWarn_form = self.tab3_createForm(self.tab3_form_dic,
-            '充电高温告警(℃)', '充电高温保护(℃)', '充电高温保护恢复(℃)', 
-            '放电高温告警(℃)', '放电高温保护(℃)', '放电高温保护恢复(℃)',
-            '均衡开启电压(V)', '均衡开启压差(mV)', '单体休眠电压(V)', '单体休眠延时(min)'
+            f'{self.parset5_label1}(℃)', f'{self.parset5_label2}(℃)', f'{self.parset5_label3}(℃)', 
+            f'{self.parset5_label4}(℃)', f'{self.parset5_label5}(℃)', f'{self.parset5_label6}(℃)',
+            f'{self.parset5_label7}(V)', f'{self.parset5_label8}(mV)', f'{self.parset5_label9}(V)', f'{self.parset5_label10}(min)'
         )
         temWarn_groupBox.setLayout(temWarn_form)
 
-        temProt_groupBox = QGroupBox('低温设置')
+        temProt_groupBox = QGroupBox(self.parset_label6)
         temProt_form = self.tab3_createForm(self.tab3_form_dic,
-            '充电低温告警(℃)', '充电低温保护(℃)', '充电低温保护恢复(℃)',
-            '放电低温告警(℃)', '放电低温保护(℃)', '放电低温保护恢复(℃)',
-            '电池包截止电压(V)', '电池包截止电流(A)', '低电量告警(%)'
+            f'{self.parset6_label1}(℃)', f'{self.parset6_label2}(℃)', f'{self.parset6_label3}(℃)',
+            f'{self.parset6_label4}(℃)', f'{self.parset6_label5}(℃)', f'{self.parset6_label6}(℃)',
+            f'{self.parset6_label7}(V)', f'{self.parset6_label8}(A)', f'{self.parset6_label9}(%)'
         )
         temProt_groupBox.setLayout(temProt_form)
 
-        ecProt_groupBox = QGroupBox('放电过流设置')
+        ecProt_groupBox = QGroupBox(self.parset_label7)
         ecProt_form = self.tab3_createForm(self.tab3_form_dic, 
-            '放电过流告警(A)', '放电过流保护1(A)', '放电过流保护1延时(S)', 
-            '放电过流保护2(A)', '放电过流保护2延时(S)', '短路保护延时(uS)')
+            f'{self.parset7_label1}(A)', f'{self.parset7_label2}(A)', f'{self.parset7_label3}(S)', 
+            f'{self.parset7_label4}(A)', f'{self.parset7_label5}(S)', f'{self.parset7_label6}(uS)')
         ecProt_groupBox.setLayout(ecProt_form)
 
-        ecWarn_groupBox = QGroupBox('充电过流设置')
+        ecWarn_groupBox = QGroupBox(self.parset_label8)
         ecWarn_form = self.tab3_createForm(self.tab3_form_dic, 
-            '充电过流告警(A)', '充电过流保护1(A)', '充电过流保护1延时(S)', 
-            '充电过流保护2(A)', '充电过流保护2延时(S)')
+            f'{self.parset8_label1}(A)', f'{self.parset8_label2}(A)', f'{self.parset8_label3}(S)', 
+            f'{self.parset8_label4}(A)', f'{self.parset8_label5}(S)')
         ecWarn_groupBox.setLayout(ecWarn_form)
 
         tab3_layout_H2.addWidget(temWarn_groupBox)   # 高温设置
@@ -749,22 +846,22 @@ class BmsLayout(QWidget):
         tab3_layout_H2.addWidget(ecWarn_groupBox)   # 充电过流设置
 
         tab3_layout_H3 = QHBoxLayout()
-        self.getTab3Res = QPushButton('读取参数')
-        self.clsTab3Res = QPushButton('清屏')
-        self.writeParam = QPushButton('写入参数')
+        self.getTab3Res = QPushButton(self.parset9_label1)
+        self.clsTab3Res = QPushButton(self.parset9_label2)
+        self.writeParam = QPushButton(self.parset9_label3)
         self.writeParam.setEnabled(False)
-        self.resetTab3 = QPushButton('恢复默认值')
+        self.resetTab3 = QPushButton(self.parset9_label4)
         self.resetTab3.setEnabled(False)
-        self.importParam = QPushButton('导入参数(不可用)')
-        self.importParam.setEnabled(False)
-        self.deriveParam = QPushButton('导出参数')
+        # self.importParam = QPushButton('导入参数(不可用)')
+        # self.importParam.setEnabled(False)
+        self.deriveParam = QPushButton(self.parset9_label5)
         self.deriveParam.setEnabled(False)
 
         tab3_layout_H3.addWidget(self.getTab3Res)   # 读取参数
         tab3_layout_H3.addWidget(self.clsTab3Res)   # 清屏
         tab3_layout_H3.addWidget(self.writeParam)   # 写入参数
         tab3_layout_H3.addWidget(self.resetTab3)   # 恢复默认值
-        tab3_layout_H3.addWidget(self.importParam)   # 导入参数
+        # tab3_layout_H3.addWidget(self.importParam)   # 导入参数
         tab3_layout_H3.addWidget(self.deriveParam)   # 导出参数
 
         tab3_layout.addLayout(tab3_layout_H1)
@@ -789,8 +886,8 @@ class BmsLayout(QWidget):
         tab4_layout = QVBoxLayout()
         tab4_layout_table = QVBoxLayout()
         tab4_layout_table_btn_H = QHBoxLayout()
-        self.hisShow = QPushButton('获取最近历史数据(1~100)')
-        self.clearShow = QPushButton('擦除历史数据')
+        self.hisShow = QPushButton(self.hisdata_label1)
+        self.clearShow = QPushButton(self.hisdata_label2)
         self.hisTable = QTableWidget()
         
         cloumn_name = self.json_modbus['0103f0010036a71c']
