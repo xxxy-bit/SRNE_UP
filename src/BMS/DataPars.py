@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import os, sys, json
+from settings.bms_modbus import get_bms_modbus_list
+from src.i18n.Bms_i18n import *
 from src.BMS.tools.Common import Common
 from src.BMS.tools.CRC16Util import calc_crc
 
@@ -25,8 +27,9 @@ def pars_data(res, data):
     data_cut = [res[i:i+4] for i in range(0, len(res), 4)]
 
     # 3、加载协议内容并解析
-    with open(os.path.join(os.getcwd(), 'settings', 'MODBUS.json'), 'r', encoding='utf-8') as f:
-        json_file = json.load(f)
+    # with open(os.path.join(os.getcwd(), 'settings', 'MODBUS.json'), 'r', encoding='utf-8') as f:
+    #     json_file = json.load(f)
+    json_file = get_bms_modbus_list()
     print_dic = {}
     # 实时监控
     if data == '01030300005ec476':
@@ -61,35 +64,34 @@ def pars_data(res, data):
     elif data[:5] == '0103f':
         for k,v in json_file['0103f0010036a71c'].items():
             temp = data_cut[v[0]:v[0]+v[1]]
-            if k == '时间':
+            if k == bms_history_label1:
                 # 年/月
-                year = f'{int(temp[0][:2], 16):02}年'
-                month = f'{int(temp[0][2:], 16):02}月'
+                year = f'{int(temp[0][:2], 16):02}/'
+                month = f'{int(temp[0][2:], 16):02}/'
                 # 日/时
-                day = f'{int(temp[1][:2], 16):02}日'
+                day = f'{int(temp[1][:2], 16):02} '
                 hour = f'{int(temp[1][2:], 16):02}'
                 # 分/秒
                 minute = f'{int(temp[2][:2], 16):02}'
                 second = f'{int(temp[2][2:], 16):02}'
                 print_dic[k] = f'{year}{month}{day} {hour}:{minute}:{second}'
-                # print_dic[k] = datetime.datetime.now().strftime('%H:%M:%S:%f')[:-3]
-            elif k == '状态位1' or k == '状态位2' or k == '故障位' or k == '警告位1' \
-            or k == '警告位2' or k == '保护位1' or k == '保护位2':
+            elif k == bms_history_label4 + '1' or k == bms_history_label4 + '2' or k == bms_history_label7 or k == bms_history_label6 + '1' \
+            or k == bms_history_label6 + '2' or k == bms_history_label5 + '1' or k == bms_history_label5 + '2':
                 temp = data_cut[v[0]:v[0]+v[1]]
                 temp = bin(int(temp[0], 16))[2:].rjust(16, '0')
                 error_list = []
                 for a,b in v[4].items():
                     if temp[-(int(a)+1)] == '1':
                         error_list.append(b)
-                txt = ' '.join(str(i) for i in error_list)
+                txt = ', '.join(str(i) for i in error_list)
                 print_dic[k] = txt
-            elif k == '最高压对应cell':
+            elif k == bms_history_label11:
                 print_dic[k] = f'{int(temp[0][0], 16)+1}'
-            elif k == '最低压对应cell':
+            elif k == bms_history_label12:
                 print_dic[k] = f'{int(temp[0][1], 16)+1}'
-            elif k == '最高温度对应cell':
+            elif k == bms_history_label13:
                 print_dic[k] = f'{int(temp[0][2], 16)+1}'
-            elif k == '最低温度对应cell':
+            elif k == bms_history_label14:
                 print_dic[k] = f'{int(temp[0][3], 16)+1}'
             else:
                 if v[2] < 0:

@@ -335,7 +335,6 @@ msgstr ""
 msgid "版本"
 msgstr ""
 
-
 msgid "关闭串口"
 msgstr ""
 msgid "停止监控"

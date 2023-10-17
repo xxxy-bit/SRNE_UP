@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import time, datetime, serial, logging, os, functools, re
+import time, datetime, serial, logging, os, functools
 import serial.tools.list_ports
+from src.i18n.Bms_i18n import *
 from src.BMS.tools.CRC16Util import calc_crc
 from src.BMS.tools.Common import Common
 from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox
-from PyQt5.QtCore import QTimer, QWaitCondition, Qt, QThread, pyqtSignal, QMutex
+from PyQt5.QtCore import QTimer, QWaitCondition, Qt, QThread, pyqtSignal, QMutex, QSettings
 from PyQt5.QtGui import QFont
 from .BmsLayout import BmsLayout
 from .DataPars import pars_data
@@ -99,6 +100,7 @@ class Portbms(BmsLayout):
         self.ser = serial.Serial()
         self.SendMsg = SendMsg()
         self.ResMsg = ResMsg()
+        # self.bms_logic_i18n()
 
         # 创建日志文件
         now = datetime.datetime.now().strftime('%Y-%m-%d_%H_%M_%S')
@@ -123,7 +125,7 @@ class Portbms(BmsLayout):
         self.step = 0
         self.proTimer = QTimer()
         self.proTimer.timeout.connect(self.pro_timer_func)
-        self.connStatus.setFormat('通信中断')
+        self.connStatus.setFormat(bms_logic_label16)
         self.proTimer.start(100)
         
         # 是否开启实时监控
@@ -162,10 +164,10 @@ class Portbms(BmsLayout):
     # 用得比较多的错误提示
     def assertStatus(self):
         if self.ser.isOpen() == False:
-            QMessageBox.information(self, 'Error', '请在实时监控中打开串口', QMessageBox.Ok)
+            QMessageBox.information(self, 'Error', bms_logic_label7, QMessageBox.Ok)
             return False
         elif self.his_status:
-            QMessageBox.information(self, 'Error', '正在获取100条历史数据，请稍等...', QMessageBox.Ok)
+            QMessageBox.information(self, 'Error', bms_logic_label8, QMessageBox.Ok)
             return False
         return True
     
@@ -173,11 +175,11 @@ class Portbms(BmsLayout):
     def assert_P01_status(self):
         if self.P01_status:
             if QMessageBox.information(self, 'tip', \
-                '为保证数据准确性，需要先停止实时监控中的数据监控，是否停止？', QMessageBox.Yes | QMessageBox.No) == QMessageBox.Yes:
+                bms_logic_label9, QMessageBox.Yes | QMessageBox.No) == QMessageBox.Yes:
                 self.SendMsg.pause()
                 self.send_P01_on = False
                 self.P01_status = False
-                self.getP01_data_btn.setText('开始监控')
+                self.getP01_data_btn.setText(com_label8)
                 self.getP01_data_btn.setStyleSheet(color_close)
                 return True
             else:
@@ -250,7 +252,7 @@ class Portbms(BmsLayout):
         if self.assert_P01_status() == False: return False
         self.rs485_res_status = True
         self.repeat = False
-        self.pal_check.setEnabled(False)
+        # self.pal_check.setEnabled(False)
         self.palTable.setColumnCount(int(self.pack_total.currentText()))
         self.palTable.clearContents()
         
@@ -277,7 +279,7 @@ class Portbms(BmsLayout):
         else:
             self.pal_start_time.stop()
             self.rs485_res_status = False
-            self.pal_check.setEnabled(True)
+            # self.pal_check.setEnabled(True)
 
     # 并联监控-确认地址按钮
     def pal_check_func(self):
@@ -308,7 +310,7 @@ class Portbms(BmsLayout):
 
     # 开关充电
     def charge_mos_switch(self):
-        if self.charge_btn.text() == '打开':
+        if self.charge_btn.text() == switch_label4:
             self.charge_mos_status = 1
         else:
             self.charge_mos_status = 0
@@ -320,7 +322,7 @@ class Portbms(BmsLayout):
 
     # 开关放电
     def discharge_mos_switch(self):
-        if self.disCharge_btn.text() == '打开':
+        if self.disCharge_btn.text() == switch_label4:
             self.discharge_mos_status = 1
         else:
             self.discharge_mos_status = 0
@@ -332,7 +334,7 @@ class Portbms(BmsLayout):
 
     # 开关强制休眠
     def dormancy_switch(self):
-        if self.dormancy_btn.text() == '打开':
+        if self.dormancy_btn.text() == switch_label4:
             if self.assert_P01_status() == False: return False
             # 强制休眠定时器
             self.sleep_step = 6
@@ -343,7 +345,7 @@ class Portbms(BmsLayout):
             self.disCharge_btn.setEnabled(False)
         else:
             msg = '01 06 300c 0000'
-            self.dormancy_btn.setText('打开')
+            self.dormancy_btn.setText(switch_label4)
             self.dormancy_btn.setStyleSheet(color_close)
             self.send_msg(msg + calc_crc(msg))
 
@@ -351,10 +353,10 @@ class Portbms(BmsLayout):
     def sleep_timer_func(self):
         self.sleep_step -= 1
         self.dormancy_btn.setEnabled(False)
-        self.dormancy_btn.setText(f'请稍等{self.sleep_step}')
+        self.dormancy_btn.setText(f'wating {self.sleep_step}')
         if self.sleep_step == 0:
             msg = '01 06 300c 0001'
-            self.dormancy_btn.setText('关闭')
+            self.dormancy_btn.setText(bms_logic_label6)
             self.dormancy_btn.setStyleSheet(color_open)
             self.sleepTimer.stop()
             self.dormancy_btn.setEnabled(True)
@@ -368,7 +370,7 @@ class Portbms(BmsLayout):
                 num = int(float(text)*100)
             except ValueError:
                 key.setText('')
-                return QMessageBox.critical(self, 'Error', '请输入正确的数据', QMessageBox.Ok)
+                return QMessageBox.critical(self, 'Error', bms_logic_label11, QMessageBox.Ok)
             
             if key == self.designCap:
                 send_num = '01064000'
@@ -382,7 +384,7 @@ class Portbms(BmsLayout):
                 self.sys_edit_dic[key] = f'{send_num}{calc_crc(send_num)}'
             except ValueError:
                 key.setText('')
-                return QMessageBox.critical(self, 'Error', '超出数据接收范围', QMessageBox.Ok)
+                return QMessageBox.critical(self, 'Error', bms_logic_label12, QMessageBox.Ok)
 
     # 读取系统设置-电量
     def readCap_func(self):
@@ -419,26 +421,26 @@ class Portbms(BmsLayout):
             self.writeCap_timer.start(1000)
             self.writeCap.setEnabled(False)
         else:
-            return QMessageBox.critical(self, 'Error', '请先修改数据', QMessageBox.Ok)
+            return QMessageBox.critical(self, 'Error', bms_logic_label13, QMessageBox.Ok)
         
     # 设置系统设置-电量-计时器
     def writeCap_func_timer(self):
         if self.writeCap_timer_step < len(self.sys_edit_dic):
             self.send_msg(self.ls_trv[self.writeCap_timer_step][1])
             self.writeCap_timer_step += 1
-            self.writeCap.setText('正在写入...')
+            self.writeCap.setText('Writing...')
         else:
             self.writeCap_timer.stop()
             self.writeCap.setEnabled(True)
-            self.writeCap.setText('设置')
+            self.writeCap.setText(sysset_label6)
 
     # 显示进度条
     def pro_timer_func(self):
         if self.respondStatus:
-            self.connStatus.setFormat('通信正常')
+            self.connStatus.setFormat(bms_logic_label15)
             self.connStatus.setStyleSheet(GREEN_ProgressBar)
         else:
-            self.connStatus.setFormat('通信中断')
+            self.connStatus.setFormat(bms_logic_label16)
             self.connStatus.setStyleSheet(RED_ProgressBar)
         self.step += 1
         self.connStatus.setValue(self.step)
@@ -453,18 +455,18 @@ class Portbms(BmsLayout):
     # 登录
     def pwd_btn_func(self):
         if self.pwd_line.text() == '123456':
-            self.tabWidget.addTab(self.tab_data,'实时数据')
+            self.tabWidget.addTab(self.tab_data,tab_tabel6)
             self.pwd_line.setText('')
             self.pwd_btn.setEnabled(False)
             self.writeParam.setEnabled(True)
             self.resetTab3.setEnabled(True)
-            QMessageBox.information(self, 'tips', '登录成功', QMessageBox.Ok)
+            QMessageBox.information(self, 'tips', bms_logic_label18, QMessageBox.Ok)
         else:
-            QMessageBox.information(self, 'Error', '密码错误', QMessageBox.Ok)
+            QMessageBox.information(self, 'Error', bms_logic_label19, QMessageBox.Ok)
 
     # 打开/关闭串口
     def openPort(self):
-        if self.open_port_btn.text() == '打开串口':
+        if self.open_port_btn.text() == com_label6:
             self.port = self.port_combobox.currentText()
             self.baud = self.baud_combobox.currentText()
             self.ser.port = self.port
@@ -472,8 +474,8 @@ class Portbms(BmsLayout):
             try:
                 self.ser.open()
             except serial.SerialException:
-                QMessageBox.information(self, 'Error', '串口打开失败', QMessageBox.Ok)
-            self.open_port_btn.setText('关闭串口')
+                QMessageBox.information(self, 'Error', bms_logic_label20, QMessageBox.Ok)
+            self.open_port_btn.setText(bms_logic_label2)
             self.open_port_btn.setStyleSheet(color_open)
             if  self.respond_on == False:
                 self.ResMsg.resume()
@@ -484,7 +486,7 @@ class Portbms(BmsLayout):
         else:
             self.ResMsg.pause()
             self.ser.close()
-            self.open_port_btn.setText('打开串口')
+            self.open_port_btn.setText(com_label6)
             self.open_port_btn.setStyleSheet(color_close)
             self.respondStatus = False
             self.respond_on = False
@@ -492,7 +494,7 @@ class Portbms(BmsLayout):
 
     # 按钮-开始监控
     def get_p01(self):
-        if self.getP01_data_btn.text() == '开始监控':
+        if self.getP01_data_btn.text() == com_label8:
             if self.assertStatus() == False: return False
             self.send_msg('01 03 0014 0002 840f')
             time.sleep(0.5)
@@ -502,7 +504,7 @@ class Portbms(BmsLayout):
             else:
                 self.send_P01_on = True
                 self.send_p01()
-            self.getP01_data_btn.setText('停止监控')
+            self.getP01_data_btn.setText(bms_logic_label4)
             self.getP01_data_btn.setStyleSheet(color_open)
             self.charge_btn.setEnabled(True)
             self.disCharge_btn.setEnabled(True)
@@ -515,7 +517,7 @@ class Portbms(BmsLayout):
                 self.SendMsg.pause()
             except Exception as e:
                 print(e)
-            self.getP01_data_btn.setText('开始监控')
+            self.getP01_data_btn.setText(com_label8)
             self.getP01_data_btn.setStyleSheet(color_close)
             self.charge_btn.setEnabled(False)
             self.disCharge_btn.setEnabled(False)
@@ -595,19 +597,19 @@ class Portbms(BmsLayout):
                     txt = int(float(self.tab3_form_dic[key].text()) * 1000)
                     if txt > 4000:
                         self.tab3_form_dic[key].setText('')
-                        return QMessageBox.critical(self, 'Error', '数据不能大于4', QMessageBox.Ok)      
+                        return QMessageBox.critical(self, 'Error', bms_logic_label21, QMessageBox.Ok)      
                 elif key == '总体过充告警(V)' or key == '总体过充保护(V)' or key == '总体过充保护恢复(V)' \
                 or key == '总体过放告警(V)' or key == '总体过放保护(V)' or key == '总体过放保护恢复(V)':
                     txt = int(float(self.tab3_form_dic[key].text()) * 1000)
                     if txt > 60000:
                         self.tab3_form_dic[key].setText('')
-                        return QMessageBox.critical(self, 'Error', '数据不能大于60', QMessageBox.Ok)
+                        return QMessageBox.critical(self, 'Error', bms_logic_label22, QMessageBox.Ok)
                 else:
                     txt = int(self.tab3_form_dic[key].text())
                 keyTxt = f"0106{self.json_modbus['01032007005bbe30'][key][3]}{txt:04x}"
             except Exception as e:
                 print(e)
-                return QMessageBox.critical(self, 'Error', '请输入正确的数据', QMessageBox.Ok)
+                return QMessageBox.critical(self, 'Error', bms_logic_label11, QMessageBox.Ok)
             self.tab3_dic[key] = keyTxt+calc_crc(keyTxt)
 
     # 写入参数
@@ -615,11 +617,11 @@ class Portbms(BmsLayout):
         if self.assertStatus() == False: return False
         if self.assert_P01_status() == False: return False
         if len(self.tab3_dic) == 0:
-            return QMessageBox.information(self, 'tips', '请先修改参数', QMessageBox.Ok)
+            return QMessageBox.information(self, 'tips', bms_logic_label13, QMessageBox.Ok)
         txt = ''
         for k,v in self.tab3_dic.items():
             txt += f'{k}: {self.tab3_form_dic[k].text()}\n'
-        btn = QMessageBox.question(self, '写入参数', f'是否确定写入以下参数：\n{txt}', QMessageBox.Yes | QMessageBox.No)
+        btn = QMessageBox.question(self, parset9_label3, f'{bms_logic_label24}：\n{txt}', QMessageBox.Yes | QMessageBox.No)
         if btn == QMessageBox.Yes:
             for k,v in self.tab3_dic.items():
                 self.send_msg(v)
@@ -631,17 +633,18 @@ class Portbms(BmsLayout):
         if self.assert_P01_status() == False: return False
         self.tab3_dic.clear()
         self.send_msg(order_list['P03'])
+        self.writeParam.setEnabled(True)
         self.deriveParam.setEnabled(True)
 
     # 保存参数设置为txt
     def deriveTab3Params(self):
         # print(os.getcwd())
-        file_name = os.getcwd() + '\\参数设置.txt'
+        file_name =os.path.join(os.getcwd, f'{tab_tabel3}.txt')
         if len(self.p03) != 0:
             with open(file_name, 'w', encoding='utf-8') as f:
                 for k,v in self.p03.items():
                     f.write(f'{k}:{v}\n')
-        QMessageBox.information(self, 'tips', f'保存成功，文件位置在:\n{file_name}', QMessageBox.Ok)
+        QMessageBox.information(self, 'tips', f'{bms_logic_label26}:\n{file_name}', QMessageBox.Ok)
 
     # 参数设置清屏
     def clearTab3(self):
@@ -658,7 +661,7 @@ class Portbms(BmsLayout):
     # 擦除历史数据
     def clear_his_msg(self):
         if self.ser.isOpen() == False:
-            return QMessageBox.information(self, 'Error', '请在实时监控中打开串口', QMessageBox.Ok)
+            return QMessageBox.information(self, 'Error', bms_logic_label7, QMessageBox.Ok)
         if self.assert_P01_status() == False: return False
         self.send_msg('0106300b000136c8')
         self.clearRow_btn(self.hisTable)
@@ -666,7 +669,7 @@ class Portbms(BmsLayout):
     # 获取历史数据
     def his_show(self):
         if self.ser.isOpen() == False:
-            return QMessageBox.information(self, 'Error', '请在实时监控中打开串口', QMessageBox.Ok)
+            return QMessageBox.information(self, 'Error', bms_logic_label7, QMessageBox.Ok)
         if self.assert_P01_status() == False: return False
         self.clearRow_btn(self.hisTable)
         
@@ -677,7 +680,7 @@ class Portbms(BmsLayout):
         self.hisTime.start(1000)
         self.hisNum = 1
         self.his_status = True
-        self.getP01_data_btn.setText('开始监控')
+        self.getP01_data_btn.setText(com_label8)
         self.hisShow.setEnabled(False)
     
     # 获取最近历史数据计时器
@@ -686,7 +689,7 @@ class Portbms(BmsLayout):
             self.send_msg('0103f0000001b70a')
         try:
             if self.num_max == 0:
-                QMessageBox.information(self, 'tip', '历史数据为0', QMessageBox.Ok)
+                QMessageBox.information(self, 'tip', bms_logic_label27, QMessageBox.Ok)
                 self.hisTime.stop()
         except Exception:
             return
@@ -734,46 +737,46 @@ class Portbms(BmsLayout):
                         crc_error = True
                     else:
                         # BMS工作状态1（系统状态）
-                        if '有效充电电流' in p01['BMS工作状态1']:
+                        if sys_label1 in p01['BMS工作状态1']:
                             self.charg_status.setStyleSheet('color:green')
                         else:
                             self.charg_status.setStyleSheet('color:black')
                             
-                        if '有效放电电流' in p01['BMS工作状态1']:
+                        if sys_label2 in p01['BMS工作状态1']:
                             self.disCharg_status.setStyleSheet('color:green')
                         else:
                             self.disCharg_status.setStyleSheet('color:black')
                             
-                        if '充电MOS管开启' in p01['BMS工作状态1']:
-                            self.charge_btn.setText('关闭')
+                        if sys_label3 in p01['BMS工作状态1']:
+                            self.charge_btn.setText(bms_logic_label6)
                             self.charge_btn.setStyleSheet(color_open)
                             self.charge_mos_status = 1
                             self.chargMos_status.setStyleSheet('color:green')
                         else:
-                            self.charge_btn.setText('打开')
+                            self.charge_btn.setText(switch_label4)
                             self.charge_btn.setStyleSheet(color_close)
                             self.charge_mos_status = 0
                             self.chargMos_status.setStyleSheet('color:black')
                         self.dis_charge_mos_num[-1] = self.charge_mos_status
                         
-                        if '放电MOS管开启' in p01['BMS工作状态1']:
-                            self.disCharge_btn.setText('关闭')
+                        if sys_label4 in p01['BMS工作状态1']:
+                            self.disCharge_btn.setText(bms_logic_label6)
                             self.disCharge_btn.setStyleSheet(color_open)
                             self.discharge_mos_status = 1
                             self.disChargMos_status.setStyleSheet('color:green')
                         else:
-                            self.disCharge_btn.setText('打开')
+                            self.disCharge_btn.setText(switch_label4)
                             self.disCharge_btn.setStyleSheet(color_close)
                             self.discharge_mos_status = 0
                             self.disChargMos_status.setStyleSheet('color:black')
                         self.dis_charge_mos_num[-2] = self.discharge_mos_status
                         
-                        if '充电器接入' in p01['BMS工作状态1']:
+                        if sys_label5 in p01['BMS工作状态1']:
                             self.batCharg_status.setStyleSheet('color:green')
                         else:
                             self.batCharg_status.setStyleSheet('color:black')
                             
-                        if '满充' in p01['BMS工作状态1']:
+                        if sys_label6 in p01['BMS工作状态1']:
                             self.full_status.setStyleSheet('color:green')
                         else:
                             self.full_status.setStyleSheet('color:black')
@@ -807,9 +810,9 @@ class Portbms(BmsLayout):
                             self.SendMsg.pause()
                             self.send_P01_on = False
                             self.P01_status = False
-                            self.getP01_data_btn.setText('开始监控')
+                            self.getP01_data_btn.setText(com_label8)
                             self.getP01_data_btn.setStyleSheet(color_close)
-                            QMessageBox.information(self, 'tips', 'cell低压或pack低压，已停止监控', QMessageBox.Ok)
+                            QMessageBox.information(self, 'tips', bms_logic_label28, QMessageBox.Ok)
                 # 参数设置
                 elif res[:6] == '0103b6' and len(res) == 374:
                     self.p03 = pars_data(res, order_list['P03'])
@@ -839,16 +842,16 @@ class Portbms(BmsLayout):
                     v2 = int(res[8:10], 16)
                     v3 = int(res[10:12], 16)
                     v4 = int(res[12:14], 16)
-                    self.version.setText(f'版本：{v1}.{v2}.{v3}.{v4}')
+                    self.version.setText(f'Version：{v1}.{v2}.{v3}.{v4}')
                 # 读取系统设置-电量数据
                 elif res[:6] == '010306' and len(res) == 22:
                     ele_data = pars_data(res, order_list['318'])
-                    self.remainCap.setText(ele_data['剩余容量(AH)'])
-                    self.fullCap.setText(ele_data['总容量(AH)'])
+                    self.remainCap.setText(ele_data[f'{battery_label3}(AH)'])
+                    self.fullCap.setText(ele_data[f'总容量(AH)'])
                 # 读取系统设置-电量数据2
                 elif res[:6] == '010302' and len(res) == 14 and self.sys_status == True:
                     ele_data = pars_data(res, order_list['4000'])
-                    self.designCap.setText(ele_data['设计容量(AH)'])
+                    self.designCap.setText(ele_data[f'设计容量(AH)'])
                     self.sys_status = False
                 # 历史数据总数 
                 elif res[:6] == '010302' and len(res) == 14:
@@ -857,7 +860,7 @@ class Portbms(BmsLayout):
                 if crc_error == False:
                     self.add_tableItem('↑', res)
                 else:
-                    self.add_tableItem('返回的校验码不正确', res)
+                    self.add_tableItem(bms_logic_label29, res)
             else:
                 # 接收 rs485 报文并处理
                 if res[:2] == '7e' and len(res) == 40:  # 确认 pack 地址
