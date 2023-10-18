@@ -494,6 +494,7 @@ class Portbms(BmsLayout):
 
     # 按钮-开始监控
     def get_p01(self):
+        self.stop_monitor = 0   # 用于监测低压次数，如果达到600则自动停止监控
         if self.getP01_data_btn.text() == com_label8:
             if self.assertStatus() == False: return False
             self.send_msg('01 03 0014 0002 840f')
@@ -806,13 +807,16 @@ class Portbms(BmsLayout):
                                 display_data[index][k].setText(p01[k])
                                 
                         if (f'cell{bms_parse_label2}' in protect_txt or f'pack{bms_parse_label2}' in protect_txt) and self.low_vol == False:
-                            self.low_vol = True
-                            self.SendMsg.pause()
-                            self.send_P01_on = False
-                            self.P01_status = False
-                            self.getP01_data_btn.setText(com_label8)
-                            self.getP01_data_btn.setStyleSheet(color_close)
-                            QMessageBox.information(self, 'tips', bms_logic_label28, QMessageBox.Ok)
+                            self.stop_monitor += 1
+                            # print(self.stop_monitor)
+                            if self.stop_monitor >= 5:
+                                self.low_vol = True
+                                self.SendMsg.pause()
+                                self.send_P01_on = False
+                                self.P01_status = False
+                                self.getP01_data_btn.setText(com_label8)
+                                self.getP01_data_btn.setStyleSheet(color_close)
+                                QMessageBox.information(self, 'tips', bms_logic_label28, QMessageBox.Ok)
                 # 参数设置
                 elif res[:6] == '0103b6' and len(res) == 374:
                     self.p03 = pars_data(res, order_list['P03'])
@@ -896,32 +900,33 @@ class Portbms(BmsLayout):
                         data = int(temp, 16)
                         if k == 'Command':
                             adr = int(temp, 16)
-                        elif 'Cell' in k or 'PACK总电压' in k:
+                        elif 'Cell' in k or palnum_label11 in k:    # 'PACK总电压'
                             if data == 0:
-                                data = '正常'
+                                data = bms_pal_logic_label1
                             elif data == 1:
-                                data = '欠压'
+                                data = bms_pal_logic_label2
                                 pack_warn = True
                             elif data == 2:
-                                data = '超压'
+                                data = bms_parse_label1
                                 pack_warn = True
-                        elif 'PACK充电' in k or 'PACK放电' in k:
+                        elif palnum_label10 in k or palnum_label12 in k:  # 'PACK充电'、'PACK放电'
                             if data == 0:
-                                data = '正常'
+                                data = bms_pal_logic_label1
                             elif data == 2:
-                                data = '电流过高'
+                                data = bms_pal_logic_label3
                                 pack_warn = True
-                        elif '温度' in k:
+                        elif palnum_label2 in k:    # '温度'
                             if data == 0:
-                                data = '正常'
+                                data = bms_pal_logic_label1
                             if data == 1:
-                                data = '温度过低'
+                                data = bms_pal_logic_label4
                                 pack_warn = True
                             elif data == 2:
-                                data = '温度过高'
+                                data = bms_pal_logic_label5
                                 pack_warn = True
-                        elif k == '保护状态1' or k == '保护状态2' or k == '指示状态' or k == '控制状态' \
-                         or k == '故障状态' or k == '告警状态1' or k == '告警状态2':
+                        # 保护状态_1、保护状态_2、指示状态、控制状态、故障状态、告警状态_1、告警状态_2
+                        elif k == f'{group_tabel10}_1' or k == f'{group_tabel10}_2' or k == palnum_label14 or k == palnum_label15 \
+                         or k == group_tabel8 or k == f'{group_tabel9}_1' or k == f'{group_tabel9}_2':
                             data = bin(int(temp, 16))[2:].zfill(8)
                             warn_list = []
                             for a,b in v[4].items():
