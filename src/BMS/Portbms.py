@@ -458,7 +458,7 @@ class Portbms(BmsLayout):
             self.tabWidget.addTab(self.tab_data,tab_tabel6)
             self.pwd_line.setText('')
             self.pwd_btn.setEnabled(False)
-            self.writeParam.setEnabled(True)
+            # self.writeParam.setEnabled(True)
             self.resetTab3.setEnabled(True)
             QMessageBox.information(self, 'tips', bms_logic_label18, QMessageBox.Ok)
         else:
@@ -809,7 +809,7 @@ class Portbms(BmsLayout):
                         if (f'cell{bms_parse_label2}' in protect_txt or f'pack{bms_parse_label2}' in protect_txt) and self.low_vol == False:
                             self.stop_monitor += 1
                             # print(self.stop_monitor)
-                            if self.stop_monitor >= 5:
+                            if self.stop_monitor >= 600:
                                 self.low_vol = True
                                 self.SendMsg.pause()
                                 self.send_P01_on = False
