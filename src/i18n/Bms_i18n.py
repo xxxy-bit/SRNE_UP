@@ -1,6 +1,7 @@
 import os, gettext
 from PyQt5.QtCore import QSettings
 
+print('reload')
 set_dir = os.path.join(os.getcwd(), 'settings', 'settings.ini')
 setting = QSettings(set_dir, QSettings.IniFormat)
 

@@ -6,7 +6,7 @@ from PyQt5.QtCore import QSettings
 from ui.main_meun import Ui_MainWindow as main_menu
 from .AcCharge import AcLayout
 from .Inverter import InvLayout
-from .BMS.Portbms import Portbms as BmsLayout
+
 
 
 class MainWindow(QtWidgets.QMainWindow, main_menu):
@@ -46,7 +46,8 @@ class MainWindow(QtWidgets.QMainWindow, main_menu):
         self.inv_layout.show()
 
     def goBms(self):
-        self.bms_layout = BmsLayout()
+        from .BMS.Portbms import Portbms
+        self.bms_layout = Portbms()
         self.close()
         self.bms_layout.show()
 
