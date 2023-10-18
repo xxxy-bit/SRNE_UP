@@ -14,10 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(297, 418)
-        MainWindow.setAutoFillBackground(False)
-        MainWindow.setStyleSheet("")
-        MainWindow.setIconSize(QtCore.QSize(111, 32))
+        MainWindow.resize(301, 278)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
@@ -47,18 +44,18 @@ class Ui_MainWindow(object):
         self.InverterButton.setStyleSheet("font: 9pt \"微软雅黑\";")
         self.InverterButton.setObjectName("InverterButton")
         self.acchargeButton = QtWidgets.QPushButton(self.centralwidget)
-        self.acchargeButton.setGeometry(QtCore.QRect(70, 112, 161, 50))
+        self.acchargeButton.setGeometry(QtCore.QRect(70, 310, 161, 50))
         self.acchargeButton.setMinimumSize(QtCore.QSize(0, 50))
         self.acchargeButton.setStyleSheet("font: 9pt \"微软雅黑\";")
         self.acchargeButton.setObjectName("acchargeButton")
         self.bmsButton = QtWidgets.QPushButton(self.centralwidget)
-        self.bmsButton.setGeometry(QtCore.QRect(70, 180, 161, 50))
+        self.bmsButton.setGeometry(QtCore.QRect(70, 130, 161, 50))
         self.bmsButton.setMinimumSize(QtCore.QSize(0, 50))
         self.bmsButton.setStyleSheet("font: 9pt \"微软雅黑\";")
         self.bmsButton.setObjectName("bmsButton")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 297, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 301, 22))
         self.menubar.setObjectName("menubar")
         self.menu = QtWidgets.QMenu(self.menubar)
         self.menu.setObjectName("menu")
@@ -79,7 +76,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "SRNE"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "主菜单"))
         self.label.setText(_translate("MainWindow", "选择连接的设备"))
         self.InverterButton.setText(_translate("MainWindow", "逆变器"))
         self.acchargeButton.setText(_translate("MainWindow", "AC/DC 充电器"))
