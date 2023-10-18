@@ -32,8 +32,8 @@ class MainWindow(QtWidgets.QMainWindow, main_menu):
         self.lang_zh.triggered.connect(functools.partial(self.change_language, 'zh_CN'))
         
         # 隐藏 充电器 和 逆变器 的按钮，仅提供给bms使用
-        self.acchargeButton.hide()
-        self.InverterButton.hide()
+        # self.acchargeButton.hide()
+        # self.InverterButton.hide()
         
         self.acchargeButton.clicked.connect(self.goAcCharge) # 跳转AC/DC充电器
         self.InverterButton.clicked.connect(self.goInverter) # 跳转逆变器
