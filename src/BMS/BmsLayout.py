@@ -177,7 +177,7 @@ class BmsLayout(QWidget):
             palnum_label7, palnum_label8,'PACK SOC',
             'Cell' + palnum_label9 + '_1','Cell' + palnum_label9 + '_2','Cell' + palnum_label9 + '_3','Cell' + palnum_label9 + '_4',
             'Cell' + palnum_label9 + '_5','Cell' + palnum_label9 + '_6','Cell' + palnum_label9 + '_7','Cell' + palnum_label9 + '_8',
-            'Cell' + palnum_label9 + '_9','Cell' + palnum_label9 + '_1','Cell' + palnum_label9 + '_11','Cell' + palnum_label9 + '_12',
+            'Cell' + palnum_label9 + '_9','Cell' + palnum_label9 + '_10','Cell' + palnum_label9 + '_11','Cell' + palnum_label9 + '_12',
             'Cell' + palnum_label9 + '_13','Cell' + palnum_label9 + '_14','Cell' + palnum_label9 + '_15','Cell' + palnum_label9 + '_16',
             palnum_label2 + palnum_label9 +  '_1',palnum_label2 + palnum_label9 + '_2',palnum_label2 + palnum_label9 + '_3',palnum_label2 + palnum_label9 + '_4',palnum_label2 + palnum_label9 + '_5',
             palnum_label2 + palnum_label9 + '_6' ,palnum_label2 + palnum_label9 + '_7',palnum_label2 + palnum_label9 + '_8',palnum_label2 + palnum_label9 + '_9',

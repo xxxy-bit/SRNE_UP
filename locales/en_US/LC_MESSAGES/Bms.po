@@ -372,7 +372,7 @@ msgstr "Saved successfully, file location is"
 msgid "历史数据为0"
 msgstr "Historical data is 0"
 msgid "cell低压或pack低压，已停止监控"
-msgstr "Cell low pressure or pack low pressure, monitoring has stopped"
+msgstr "cell Low pressure or pack Low pressure, monitoring has stopped"
 msgid "返回的校验码不正确"
 msgstr "The check code returned is incorrect"
 

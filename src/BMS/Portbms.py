@@ -282,31 +282,31 @@ class Portbms(BmsLayout):
             # self.pal_check.setEnabled(True)
 
     # 并联监控-确认地址按钮
-    def pal_check_func(self):
-        self.rs485_res_status = True
-        self.pal_start.setEnabled(False)
-        self.palTable.setColumnCount(int(self.pack_total.currentText()))
-        self.palTable.clearContents()
+    # def pal_check_func(self):
+    #     self.rs485_res_status = True
+    #     self.pal_start.setEnabled(False)
+    #     self.palTable.setColumnCount(int(self.pack_total.currentText()))
+    #     self.palTable.clearContents()
         
-        self.pal_check_time = QTimer()
-        self.pal_check_time_setp = 1
-        self.pal_check_time.timeout.connect(self.pal_check_func_timer)
-        self.pal_check_time.start(2000)
+    #     self.pal_check_time = QTimer()
+    #     self.pal_check_time_setp = 1
+    #     self.pal_check_time.timeout.connect(self.pal_check_func_timer)
+    #     self.pal_check_time.start(2000)
 
-    # 并联监控-确认地址按钮-计时器
-    def pal_check_func_timer(self):
-        num = f'{self.pal_check_time_setp:02d}'
-        adr = ''
-        for i in num:
-            adr += hex(ord(i))[2:]
-        if self.pal_check_time_setp <= int(self.pack_total.currentText()):
-            txt = f'7E 32 35 {adr} 34 36 39 30 30 30 30 30'
-            self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
-            self.pal_check_time_setp += 1
-        else:
-            self.pal_check_time.stop()
-            self.rs485_res_status = False
-            self.pal_start.setEnabled(True)
+    # # 并联监控-确认地址按钮-计时器
+    # def pal_check_func_timer(self):
+    #     num = f'{self.pal_check_time_setp:02d}'
+    #     adr = ''
+    #     for i in num:
+    #         adr += hex(ord(i))[2:]
+    #     if self.pal_check_time_setp <= int(self.pack_total.currentText()):
+    #         txt = f'7E 32 35 {adr} 34 36 39 30 30 30 30 30'
+    #         self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
+    #         self.pal_check_time_setp += 1
+    #     else:
+    #         self.pal_check_time.stop()
+    #         self.rs485_res_status = False
+    #         self.pal_start.setEnabled(True)
 
     # 开关充电
     def charge_mos_switch(self):
@@ -805,7 +805,7 @@ class Portbms(BmsLayout):
                             for k,v in display_data[index].items():
                                 display_data[index][k].setText(p01[k])
                                 
-                        if ('cell低压' in protect_txt or 'pack低压' in protect_txt) and self.low_vol == False:
+                        if (f'cell{bms_parse_label2}' in protect_txt or f'pack{bms_parse_label2}' in protect_txt) and self.low_vol == False:
                             self.low_vol = True
                             self.SendMsg.pause()
                             self.send_P01_on = False
@@ -873,13 +873,13 @@ class Portbms(BmsLayout):
                 elif res[:2] == '7e' and len(res) == 312:  # 获取 PACK 模拟量响应信息
                     msg = res[30:-10]  # 去掉前缀报文和校验码
                     adr = ''
-                    for k,v in self.json_rs485['获取 PACK 模拟量响应信息'].items():
+                    for k,v in self.json_rs485['获取PACK模拟量响应信息'].items():
                         temp = ''
                         for i in range(v[0], v[0]+v[1], 2):
                             temp += chr(int(msg[i:i + 2], 16))
                         if k == 'Command':
                             adr = int(temp, 16)
-                        elif '温度' in k or '电流' in k:
+                        elif palnum_label2 in k or bms_history_label3 in k: # 温度、电流
                             data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))} {v[3]}'
                         else:
                             data = f'{int(temp, 16)} {v[3]}'
@@ -888,7 +888,7 @@ class Portbms(BmsLayout):
                 elif res[:2] == '7e' and len(res) == 200:  # 获取 PACK 告警量
                     msg = res[30:-10]
                     adr = ''
-                    for k,v in self.json_rs485['获取 PACK 告警量'].items():
+                    for k,v in self.json_rs485['获取PACK告警量'].items():
                         pack_warn = False
                         temp = ''
                         for i in range(v[0], v[0]+v[1], 2):
@@ -896,7 +896,7 @@ class Portbms(BmsLayout):
                         data = int(temp, 16)
                         if k == 'Command':
                             adr = int(temp, 16)
-                        elif 'cell' in k or 'PACK总电压' in k:
+                        elif 'Cell' in k or 'PACK总电压' in k:
                             if data == 0:
                                 data = '正常'
                             elif data == 1:
