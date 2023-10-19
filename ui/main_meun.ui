@@ -6,12 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>297</width>
-    <height>418</height>
+    <width>1000</width>
+    <height>689</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>SRNE</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/images/ui.qrc">
+    <normaloff>:/硕日logo.svg</normaloff>:/硕日logo.svg</iconset>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
@@ -26,70 +30,13 @@
    </size>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="gridLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>9</x>
-      <y>9</y>
-      <width>281</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="1">
-      <widget class="QLabel" name="label">
-       <property name="font">
-        <font>
-         <family>微软雅黑</family>
-         <pointsize>16</pointsize>
-         <weight>50</weight>
-         <italic>false</italic>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">font: 16pt &quot;微软雅黑&quot;;</string>
-       </property>
-       <property name="text">
-        <string>选择连接的设备</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="0">
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </widget>
    <widget class="QPushButton" name="InverterButton">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>248</y>
-      <width>161</width>
-      <height>50</height>
+      <x>664</x>
+      <y>234</y>
+      <width>200</width>
+      <height>251</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -99,19 +46,19 @@
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 9pt &quot;微软雅黑&quot;;</string>
+     <string notr="true">background: transparent;</string>
     </property>
     <property name="text">
-     <string>逆变器</string>
+     <string/>
     </property>
    </widget>
    <widget class="QPushButton" name="acchargeButton">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>112</y>
-      <width>161</width>
-      <height>50</height>
+      <x>135</x>
+      <y>233</y>
+      <width>200</width>
+      <height>250</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -121,19 +68,19 @@
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 9pt &quot;微软雅黑&quot;;</string>
+     <string notr="true">background: transparent;</string>
     </property>
     <property name="text">
-     <string>AC/DC 充电器</string>
+     <string/>
     </property>
    </widget>
    <widget class="QPushButton" name="bmsButton">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>180</y>
-      <width>161</width>
-      <height>50</height>
+      <x>401</x>
+      <y>233</y>
+      <width>200</width>
+      <height>251</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -143,19 +90,254 @@
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 9pt &quot;微软雅黑&quot;;</string>
+     <string notr="true">background: transparent;</string>
     </property>
     <property name="text">
-     <string>BMS 电池管理器</string>
+     <string/>
     </property>
    </widget>
+   <widget class="QListView" name="listView">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1000</width>
+      <height>689</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image:url(:/背景.png)</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+   </widget>
+   <widget class="QListView" name="listView_2">
+    <property name="geometry">
+     <rect>
+      <x>55</x>
+      <y>134</y>
+      <width>891</width>
+      <height>436</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image:url(:/选择连接设备框.png)</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>111</y>
+      <width>231</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>微软雅黑</family>
+      <pointsize>-1</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background: transparent;
+font-size: 32px;
+font-family: &quot;微软雅黑&quot;;
+color:#F37C00;</string>
+    </property>
+    <property name="text">
+     <string>选择连接的设备</string>
+    </property>
+   </widget>
+   <widget class="QListView" name="ac_bg">
+    <property name="geometry">
+     <rect>
+      <x>136</x>
+      <y>237</y>
+      <width>200</width>
+      <height>244</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:#FEFEFE;
+border: 1px solid #E8E8E8;
+</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="viewMode">
+     <enum>QListView::ListMode</enum>
+    </property>
+   </widget>
+   <widget class="QListView" name="bms_bg">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>237</y>
+      <width>200</width>
+      <height>244</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: #FEFEFE;
+border: 1px solid #E8E8E8;</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+   </widget>
+   <widget class="QListView" name="inverter_bg">
+    <property name="geometry">
+     <rect>
+      <x>664</x>
+      <y>237</y>
+      <width>200</width>
+      <height>244</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: #FEFEFE;
+border: 1px solid #E8E8E8;</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+   </widget>
+   <widget class="QListView" name="listView_6">
+    <property name="geometry">
+     <rect>
+      <x>208</x>
+      <y>277</y>
+      <width>55</width>
+      <height>113</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image:url(:/AC充电器.png)</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="ac_text">
+    <property name="geometry">
+     <rect>
+      <x>191</x>
+      <y>419</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:#8A4600;
+font-size:16pt;
+text-align: center;
+font-family: &quot;微软雅黑&quot;;</string>
+    </property>
+    <property name="text">
+     <string>AC 充电器</string>
+    </property>
+   </widget>
+   <widget class="QListView" name="listView_7">
+    <property name="geometry">
+     <rect>
+      <x>465</x>
+      <y>277</y>
+      <width>70</width>
+      <height>113</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image:url(:/bms(暂用).png)</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="bms_text">
+    <property name="geometry">
+     <rect>
+      <x>476</x>
+      <y>419</y>
+      <width>51</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:#8A4600;
+font-size:16pt;
+text-align: center;
+font-family: &quot;微软雅黑&quot;;</string>
+    </property>
+    <property name="text">
+     <string>BMS</string>
+    </property>
+   </widget>
+   <widget class="QListView" name="listView_8">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>282</y>
+      <width>124</width>
+      <height>102</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image:url(:/逆变器.png)</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="inverter_text">
+    <property name="geometry">
+     <rect>
+      <x>736</x>
+      <y>419</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:#8A4600;
+font-size:16pt;
+text-align: center;
+font-family: &quot;微软雅黑&quot;;</string>
+    </property>
+    <property name="text">
+     <string>逆变器</string>
+    </property>
+   </widget>
+   <zorder>listView</zorder>
+   <zorder>listView_2</zorder>
+   <zorder>label</zorder>
+   <zorder>ac_bg</zorder>
+   <zorder>bms_bg</zorder>
+   <zorder>inverter_bg</zorder>
+   <zorder>listView_6</zorder>
+   <zorder>ac_text</zorder>
+   <zorder>listView_7</zorder>
+   <zorder>bms_text</zorder>
+   <zorder>listView_8</zorder>
+   <zorder>inverter_text</zorder>
+   <zorder>acchargeButton</zorder>
+   <zorder>InverterButton</zorder>
+   <zorder>bmsButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>297</width>
+     <width>1000</width>
      <height>22</height>
     </rect>
    </property>
@@ -168,7 +350,6 @@
    </widget>
    <addaction name="menu"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <action name="lang_zh">
    <property name="text">
     <string>中文</string>
@@ -180,6 +361,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources/images/ui.qrc"/>
+ </resources>
  <connections/>
 </ui>

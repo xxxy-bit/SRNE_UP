@@ -1,4 +1,4 @@
-import sys, os
+import sys
 from PyQt5.QtWidgets import QApplication
 from src.MainWindow import MainWindow
 from PyQt5 import QtCore
@@ -10,5 +10,8 @@ app = QApplication(sys.argv)
 #     app.setStyleSheet(f.read())
 MainWindow = MainWindow()
 MainWindow.show()
+
+# 主界面导入资源包
+# from resources.images import ui
 
 sys.exit(app.exec_())
