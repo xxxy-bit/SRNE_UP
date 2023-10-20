@@ -69,20 +69,31 @@ class Ui_MainWindow(object):
         self.ac_bg.setGeometry(QtCore.QRect(136, 237, 200, 244))
         self.ac_bg.setStyleSheet("background-color:#FEFEFE;\n"
 "border: 1px solid #E8E8E8;\n"
-"")
+"border-top-left-radius:10px;\n"
+"border-top-right-radius:10px;\n"
+"border-bottom-left-radius:10px;\n"
+"border-bottom-right-radius:10px;")
         self.ac_bg.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.ac_bg.setViewMode(QtWidgets.QListView.ListMode)
         self.ac_bg.setObjectName("ac_bg")
         self.bms_bg = QtWidgets.QListView(self.centralwidget)
         self.bms_bg.setGeometry(QtCore.QRect(400, 237, 200, 244))
         self.bms_bg.setStyleSheet("background-color: #FEFEFE;\n"
-"border: 1px solid #E8E8E8;")
+"border: 1px solid #E8E8E8;\n"
+"border-top-left-radius:10px;\n"
+"border-top-right-radius:10px;\n"
+"border-bottom-left-radius:10px;\n"
+"border-bottom-right-radius:10px;")
         self.bms_bg.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.bms_bg.setObjectName("bms_bg")
         self.inverter_bg = QtWidgets.QListView(self.centralwidget)
         self.inverter_bg.setGeometry(QtCore.QRect(664, 237, 200, 244))
         self.inverter_bg.setStyleSheet("background-color: #FEFEFE;\n"
-"border: 1px solid #E8E8E8;")
+"border: 1px solid #E8E8E8;\n"
+"border-top-left-radius:10px;\n"
+"border-top-right-radius:10px;\n"
+"border-bottom-left-radius:10px;\n"
+"border-bottom-right-radius:10px;")
         self.inverter_bg.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.inverter_bg.setObjectName("inverter_bg")
         self.listView_6 = QtWidgets.QListView(self.centralwidget)
@@ -133,9 +144,9 @@ class Ui_MainWindow(object):
         self.bms_text.raise_()
         self.listView_8.raise_()
         self.inverter_text.raise_()
-        self.InverterButton.raise_()
         self.acchargeButton.raise_()
         self.bmsButton.raise_()
+        self.InverterButton.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 22))

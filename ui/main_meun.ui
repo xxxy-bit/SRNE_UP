@@ -168,7 +168,10 @@ color:#F37C00;</string>
     <property name="styleSheet">
      <string notr="true">background-color:#FEFEFE;
 border: 1px solid #E8E8E8;
-</string>
+border-top-left-radius:10px;
+border-top-right-radius:10px;
+border-bottom-left-radius:10px;
+border-bottom-right-radius:10px;</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::NoFrame</enum>
@@ -188,7 +191,11 @@ border: 1px solid #E8E8E8;
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: #FEFEFE;
-border: 1px solid #E8E8E8;</string>
+border: 1px solid #E8E8E8;
+border-top-left-radius:10px;
+border-top-right-radius:10px;
+border-bottom-left-radius:10px;
+border-bottom-right-radius:10px;</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::NoFrame</enum>
@@ -205,7 +212,11 @@ border: 1px solid #E8E8E8;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: #FEFEFE;
-border: 1px solid #E8E8E8;</string>
+border: 1px solid #E8E8E8;
+border-top-left-radius:10px;
+border-top-right-radius:10px;
+border-bottom-left-radius:10px;
+border-bottom-right-radius:10px;</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::NoFrame</enum>
@@ -328,9 +339,9 @@ font-family: &quot;微软雅黑&quot;;</string>
    <zorder>bms_text</zorder>
    <zorder>listView_8</zorder>
    <zorder>inverter_text</zorder>
-   <zorder>InverterButton</zorder>
    <zorder>acchargeButton</zorder>
    <zorder>bmsButton</zorder>
+   <zorder>InverterButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

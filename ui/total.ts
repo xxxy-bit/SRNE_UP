@@ -816,7 +816,7 @@
     <message>
         <location filename="main_meun.ui" line="246"/>
         <source>AC 充电器</source>
-        <translation type="unfinished">Ac charger</translation>
+        <translation type="unfinished">AC charger</translation>
     </message>
     <message>
         <location filename="main_meun.ui" line="281"/>

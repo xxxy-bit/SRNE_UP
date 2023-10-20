@@ -2,6 +2,10 @@ main_ac_bg_ent_event = """
     QListView {
         background-color: #FFF7EE;
         border: 1px solid #FFA548;
+        border-top-left-radius:10px;
+        border-top-right-radius:10px;
+        border-bottom-left-radius:10px;
+        border-bottom-right-radius:10px;
     }
 """
 
@@ -9,6 +13,10 @@ main_ac_bg_lev_event = """
     QListView {
         background-color: #FEFEFE;
         border: 1px solid #E8E8E8;
+        border-top-left-radius:10px;
+        border-top-right-radius:10px;
+        border-bottom-left-radius:10px;
+        border-bottom-right-radius:10px;
     }
 """
 
