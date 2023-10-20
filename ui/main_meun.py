@@ -91,7 +91,7 @@ class Ui_MainWindow(object):
         self.listView_6.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.listView_6.setObjectName("listView_6")
         self.ac_text = QtWidgets.QLabel(self.centralwidget)
-        self.ac_text.setGeometry(QtCore.QRect(191, 419, 131, 21))
+        self.ac_text.setGeometry(QtCore.QRect(186, 415, 131, 31))
         self.ac_text.setStyleSheet("color:#8A4600;\n"
 "font-size:16pt;\n"
 "text-align: center;\n"
@@ -133,8 +133,8 @@ class Ui_MainWindow(object):
         self.bms_text.raise_()
         self.listView_8.raise_()
         self.inverter_text.raise_()
-        self.acchargeButton.raise_()
         self.InverterButton.raise_()
+        self.acchargeButton.raise_()
         self.bmsButton.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
