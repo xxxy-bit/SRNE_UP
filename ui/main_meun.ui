@@ -241,9 +241,9 @@ border-bottom-right-radius:10px;</string>
    <widget class="QLabel" name="ac_text">
     <property name="geometry">
      <rect>
-      <x>186</x>
+      <x>170</x>
       <y>415</y>
-      <width>131</width>
+      <width>141</width>
       <height>31</height>
      </rect>
     </property>
@@ -254,7 +254,7 @@ text-align: center;
 font-family: &quot;微软雅黑&quot;;</string>
     </property>
     <property name="text">
-     <string>AC 充电器</string>
+     <string>AC-DC 充电器</string>
     </property>
    </widget>
    <widget class="QListView" name="listView_7">
@@ -339,9 +339,9 @@ font-family: &quot;微软雅黑&quot;;</string>
    <zorder>bms_text</zorder>
    <zorder>listView_8</zorder>
    <zorder>inverter_text</zorder>
-   <zorder>acchargeButton</zorder>
    <zorder>bmsButton</zorder>
    <zorder>InverterButton</zorder>
+   <zorder>acchargeButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

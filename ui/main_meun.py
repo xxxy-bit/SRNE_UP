@@ -102,7 +102,7 @@ class Ui_MainWindow(object):
         self.listView_6.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.listView_6.setObjectName("listView_6")
         self.ac_text = QtWidgets.QLabel(self.centralwidget)
-        self.ac_text.setGeometry(QtCore.QRect(186, 415, 131, 31))
+        self.ac_text.setGeometry(QtCore.QRect(170, 415, 141, 31))
         self.ac_text.setStyleSheet("color:#8A4600;\n"
 "font-size:16pt;\n"
 "text-align: center;\n"
@@ -144,9 +144,9 @@ class Ui_MainWindow(object):
         self.bms_text.raise_()
         self.listView_8.raise_()
         self.inverter_text.raise_()
-        self.acchargeButton.raise_()
         self.bmsButton.raise_()
         self.InverterButton.raise_()
+        self.acchargeButton.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 22))
@@ -169,7 +169,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "SRNE"))
         self.label.setText(_translate("MainWindow", "选择连接的设备"))
-        self.ac_text.setText(_translate("MainWindow", "AC 充电器"))
+        self.ac_text.setText(_translate("MainWindow", "AC-DC 充电器"))
         self.bms_text.setText(_translate("MainWindow", "BMS"))
         self.inverter_text.setText(_translate("MainWindow", "逆变器"))
         self.menu.setTitle(_translate("MainWindow", "语言"))

@@ -14,7 +14,7 @@
    <cursorShape>ArrowCursor</cursorShape>
   </property>
   <property name="windowTitle">
-   <string>AC/DC 充电器</string>
+   <string>AC-DC 充电器</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTabWidget" name="ac_tabwidget">
@@ -68,9 +68,6 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="5">
-         <widget class="QLineEdit" name="prod_tp"/>
-        </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_14">
           <property name="text">
@@ -78,27 +75,10 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="3">
-         <widget class="QLineEdit" name="rate_discharg_current"/>
-        </item>
         <item row="2" column="4">
          <widget class="QLabel" name="label_23">
           <property name="text">
            <string>设备地址</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="QLabel" name="label_25">
-          <property name="text">
-           <string>额定放电电流</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="4">
-         <widget class="QLabel" name="label_26">
-          <property name="text">
-           <string>设备温度</string>
           </property>
          </widget>
         </item>
@@ -181,32 +161,42 @@
         <item row="0" column="5">
          <widget class="QLineEdit" name="prod_num"/>
         </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_27">
-          <property name="text">
-           <string>蓄电池电压</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QLineEdit" name="battery_current"/>
-        </item>
-        <item row="4" column="2">
-         <widget class="QLabel" name="label_28">
-          <property name="text">
-           <string>蓄电池温度</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="3">
-         <widget class="QLineEdit" name="battery_tp"/>
-        </item>
         <item row="4" column="5">
          <widget class="QPushButton" name="clearMonitor">
           <property name="text">
            <string>清屏</string>
           </property>
          </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QLabel" name="label_26">
+          <property name="text">
+           <string>设备温度</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="3">
+         <widget class="QLineEdit" name="prod_tp"/>
+        </item>
+        <item row="3" column="5">
+         <widget class="QLineEdit" name="battery_current"/>
+        </item>
+        <item row="3" column="4">
+         <widget class="QLabel" name="label_27">
+          <property name="text">
+           <string>蓄电池电压</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_28">
+          <property name="text">
+           <string>蓄电池温度</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLineEdit" name="battery_tp"/>
         </item>
        </layout>
       </widget>
@@ -822,22 +812,6 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
-        <widget class="QDoubleSpinBox" name="set_charge_elec">
-         <property name="minimumSize">
-          <size>
-           <width>150</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="whatsThis">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;充电电流设置(A)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="maximum">
-          <double>25.000000000000000</double>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="4">
         <widget class="QSpinBox" name="set_battery_cap">
          <property name="minimumSize">
@@ -873,105 +847,6 @@
          </property>
          <property name="value">
           <number>12</number>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="4">
-        <widget class="QDoubleSpinBox" name="set_battery_overpressure">
-         <property name="whatsThis">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;超压电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-         <property name="minimum">
-          <double>9.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>17.000000000000000</double>
-         </property>
-         <property name="value">
-          <double>9.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="6">
-        <widget class="QDoubleSpinBox" name="set_charge_limit">
-         <property name="whatsThis">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;充电限制电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-         <property name="minimum">
-          <double>9.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>17.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QDoubleSpinBox" name="set_even_current">
-         <property name="whatsThis">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;均衡充电电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-         <property name="minimum">
-          <double>9.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>17.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="4">
-        <widget class="QDoubleSpinBox" name="set_promote_current">
-         <property name="whatsThis">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;提升充电电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-         <property name="minimum">
-          <double>9.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>17.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="6">
-        <widget class="QDoubleSpinBox" name="set_float_current">
-         <property name="whatsThis">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;浮充充电电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-         <property name="minimum">
-          <double>9.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>17.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="QDoubleSpinBox" name="set_store_current">
-         <property name="whatsThis">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;储存充电电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-         <property name="minimum">
-          <double>9.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>17.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -1013,11 +888,17 @@
        </item>
        <item row="4" column="4">
         <widget class="QSpinBox" name="set_tp_redress">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="whatsThis">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;温度补偿系数(mV/℃/2V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
+         <property name="minimum">
+          <number>-5</number>
+         </property>
          <property name="maximum">
-          <number>5</number>
+          <number>0</number>
          </property>
         </widget>
        </item>
@@ -1041,10 +922,26 @@
          </property>
         </widget>
        </item>
-       <item row="7" column="2">
-        <widget class="QDoubleSpinBox" name="ac_powerMode_outV">
+       <item row="0" column="2">
+        <widget class="QDoubleSpinBox" name="set_charge_elec">
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="whatsThis">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;电源模式输出电压&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;充电电流设置(A)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="maximum">
+          <double>25.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="6">
+        <widget class="QDoubleSpinBox" name="ac_powerMode_stopV">
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;电源模式停止充电电压&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="decimals">
           <number>1</number>
@@ -1053,7 +950,7 @@
           <double>10.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>30.000000000000000</double>
+          <double>16.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -1073,10 +970,10 @@
          </property>
         </widget>
        </item>
-       <item row="7" column="6">
-        <widget class="QDoubleSpinBox" name="ac_powerMode_stopV">
+       <item row="7" column="2">
+        <widget class="QDoubleSpinBox" name="ac_powerMode_outV">
          <property name="whatsThis">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;电源模式停止充电电压&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;电源模式输出电压&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="decimals">
           <number>1</number>
@@ -1085,7 +982,106 @@
           <double>10.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>16.000000000000000</double>
+          <double>30.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="6">
+        <widget class="QDoubleSpinBox" name="set_float_current">
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;浮充充电电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>9.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>17.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="6">
+        <widget class="QDoubleSpinBox" name="set_charge_limit">
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;充电限制电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>9.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>17.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="4">
+        <widget class="QDoubleSpinBox" name="set_promote_current">
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;提升充电电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>9.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>17.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="4">
+        <widget class="QDoubleSpinBox" name="set_battery_overpressure">
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;超压电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>9.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>17.000000000000000</double>
+         </property>
+         <property name="value">
+          <double>9.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QDoubleSpinBox" name="set_store_current">
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;储存充电电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>9.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>17.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QDoubleSpinBox" name="set_even_current">
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;均衡充电电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>9.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>17.000000000000000</double>
          </property>
         </widget>
        </item>

@@ -311,7 +311,6 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
         self.port_cmb.clear()
         self.port_cmb.addItems(Common.load_serial_list())
     
-    
     # 提示语-串口未打开
     def ac_port_nostart_tips(self):
         if self.ser.isOpen() == False:
@@ -391,7 +390,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
                     self.set_full_stop.addItems([str(i) for i in ls])
                     self.rate_charge_monitor = True
                 
-                temp10 = result['额定放电电流']
+                # temp10 = result['额定放电电流']   # 不显示
                 self.prod_type.setText(temp1)
                 self.prod_spec.setText(temp2)
                 self.prod_num.setText(temp3)
@@ -401,9 +400,9 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
                 self.soft_ver.setText(temp7)
                 self.sys_current.setText(temp8)
                 self.rate_charg_current.setText(temp9)
-                self.rate_discharg_current.setText(temp10)
+                # self.rate_discharg_current.setText(temp10)
                 # 写入监控日志
-                self.m1_csv += f'{temp1},{temp2},{temp3},{temp4},{temp5},{temp6},{temp7},{temp8},{temp9},{temp10},{arg[1]}\n'
+                self.m1_csv += f'{temp1},{temp2},{temp3},{temp4},{temp5},{temp6},{temp7},{temp8},{temp9},{arg[1]}\n'
             # 实时监控2
             elif res[:6] == f'{ac_monitor2[:4]}46' and len(res) == 150:
                 arg = pars_data(res, ac_monitor2)
@@ -551,7 +550,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
         self.prod_spec.setText('')
         self.hard_ver.setText('')
         self.rate_charg_current.setText('')
-        self.rate_discharg_current.setText('')
+        # self.rate_discharg_current.setText('')
         self.battery_tp.setText('')
         self.prod_num.setText('')
         self.prod_name.setText('')
@@ -601,22 +600,6 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
     def ac_write_data(self):
         if self.ac_port_nostart_tips() == False: return 0
         if len(self.setting_dic) != 0:
-        #     if self.ac_close_monitor():
-        #         self.timer_txt = []
-        #         for k, v in self.setting_dic.items():
-        #             self.timer_txt.append(v)
-        #         # show_txt = ''
-        #         # for k, v in self.setting_show.items():
-        #         #     show_txt += f'{k}: {v}\n'
-        #         # if QtWidgets.QMessageBox.question(self, 'Tips', \
-        #         # f'{self.sure_param_tips}\n{show_txt}', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
-        #         self.ac_send_setting_timer = QtCore.QTimer()
-        #         self.ac_send_setting_timer_step = 0
-        #         self.ac_send_setting_timer.timeout.connect(self.ac_send_setting_timer_func)
-        #         self.ac_send_setting_timer.start(1000)
-        # else:
-        #     return QtWidgets.QMessageBox.critical(self, 'Error', self.mdf_data_tips, QtWidgets.QMessageBox.Ok)  
-
             self.timer_txt = []
             for k, v in self.setting_dic.items():
                 self.timer_txt.append(v)

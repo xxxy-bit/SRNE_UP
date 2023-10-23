@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# ac-dc 充电器解析
 
 import os, sys, binascii
 from .Common import Common
@@ -129,6 +130,8 @@ def pars_data(res, send_data):
                 print_dic[k] = f'{tp}'
             elif k == '温度补偿系数(mV/℃/2V)':
                 temp = int(temp[0], 16)
+                if temp != 0:
+                    temp = -(temp)
                 print_dic[k] = f'{Common.format_num(temp / v[2])}'
             else:
                 temp = int(''.join(str(i) for i in temp), 16)
