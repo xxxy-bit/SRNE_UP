@@ -542,35 +542,35 @@
                  <item row="0" column="1">
                   <widget class="QPushButton" name="ivt_reset_btn">
                    <property name="text">
-                    <string>打开</string>
+                    <string>发送</string>
                    </property>
                   </widget>
                  </item>
                  <item row="0" column="3">
                   <widget class="QPushButton" name="ivt_fact_recovery_btn">
                    <property name="text">
-                    <string>打开</string>
+                    <string>发送</string>
                    </property>
                   </widget>
                  </item>
                  <item row="1" column="1">
                   <widget class="QPushButton" name="ivt_clear_error_btn">
                    <property name="text">
-                    <string>打开</string>
+                    <string>发送</string>
                    </property>
                   </widget>
                  </item>
                  <item row="2" column="1">
                   <widget class="QPushButton" name="ivt_clear_history_btn">
                    <property name="text">
-                    <string>打开</string>
+                    <string>发送</string>
                    </property>
                   </widget>
                  </item>
                  <item row="1" column="3">
                   <widget class="QPushButton" name="ivt_clear_statistics_btn">
                    <property name="text">
-                    <string>打开</string>
+                    <string>发送</string>
                    </property>
                   </widget>
                  </item>

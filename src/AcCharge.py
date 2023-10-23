@@ -68,6 +68,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
         self.startMonitor_btn.setStyleSheet(color_close)
         self.ac_monitor_on = False
         
+        
         # 加载-串口
         self.port_cmb.addItems(Common.load_serial_list())
         
@@ -325,6 +326,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
             self.startMonitor_btn.setText(self.close_monitor_i18n)
             self.startMonitor_btn.setStyleSheet(color_open)
             self.ac_monitor_on = True
+            self.ac_sys_vol_on = False    # 系统电压是否已获取
             
             # 定时器-开启数据监控
             self.timer_get_monitor.timeout.connect(self.timer_get_monitor_func)
@@ -380,7 +382,40 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
                 temp5 = result['设备地址']
                 temp6 = result['硬件版本']
                 temp7 = result['软件版本']
+                
+                """
+                    从 12/24/48/AUTO(255) 里面取，
+                    额定系统电压值如果是24，则显示12/24/AUTO;
+                    12则只显示12，不显示AUTO;
+                    电池类型为Li，系统电压不显示AUTO
+                """
                 temp8 = result['系统电压']
+                if self.ac_sys_vol_on == False:
+                    temp8_vol = ['12', '24', '48', 'AUTO']
+                    num = temp8[:-2]
+                    if num != '12':
+                        # 清空下拉项会触发改变数值的信号，此处拦截信号
+                        self.set_sys_current.blockSignals(True)
+                        
+                        # 下拉项的列表
+                        temp8_vol_list = temp8_vol[:temp8_vol.index(num) + 1]
+                        temp8_vol_list.append(temp8_vol[-1])
+                        
+                        self.set_sys_current.clear()
+                        self.set_sys_current.addItems(temp8_vol_list)
+
+                        # 下拉项内容添加完成，释放信号
+                        self.set_sys_current.blockSignals(False)
+                    else:
+                        # 12则只显示12，不显示AUTO
+                        self.set_sys_current.blockSignals(True)
+                        self.set_sys_current.clear()
+                        self.set_sys_current.addItem('12')
+                        self.set_sys_current.blockSignals(False)
+                        
+                    # 系统电压设置下拉项添加完成，不再设置
+                    self.ac_sys_vol_on = True
+                    
                 temp9 = result['额定充电电流']
                 # 保存 额定充电电流，提供给 充满截止电流 使用
                 # 充满截止电流可选范围最大值 为 额定充电电流 %40
@@ -462,7 +497,12 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
                 self.set_balanced_time.setValue(int(result['均衡充电时间(min)']))
                 self.set_tp_redress.setValue(int(result['温度补偿系数(mV/℃/2V)']))
                 self.set_full_stop_delay.setValue(int(result['充满截止延时(S)']))
-                self.set_sys_current.setValue(int(result['系统电压设置(V)']))
+                
+                if result['系统电压设置(V)'] == '255':
+                    self.set_sys_current.setCurrentText('AUTO')
+                else:
+                    self.set_sys_current.setCurrentText(result['系统电压设置(V)'])
+                
                 self.set_charge_limit.setValue(float(result['充电限制电压(V)']))
                 self.set_float_current.setValue(float(result['浮充充电电压(V)']))
                 self.set_promote_time.setValue(int(result['提升充电时间(min)']))
@@ -528,7 +568,6 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
     def ac_read_data(self):
         if self.ac_port_nostart_tips() == False: return 0
         self.setting_dic = {}
-        self.ac_powerMode_stopV.blockSignals(True)
         self.send_msg(f'{ac_get_setting}{calc_crc(ac_get_setting)}')
 
     # 按钮-参数设置-清屏
@@ -581,7 +620,12 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
                 name_data = self.set_charge_floor_tp.value()
                 if name_data < 0:
                     name_data = abs(name_data) + 128
-                print(name_data)
+            elif name == '系统电压设置(V)':
+                name_data = self.set_sys_current.currentText()
+                if name_data == 'AUTO':
+                    name_data = 255
+                else:
+                    name_data = int(temp) * int(ac_data_list[ac_get_setting][name][2])
             else:
                 try:
                     name_data = int(temp) * int(ac_data_list[ac_get_setting][name][2])

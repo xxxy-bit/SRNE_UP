@@ -122,6 +122,8 @@ def pars_data(res, send_data):
             if k == '系统电压设置(V)':
                 temp = int(temp[0][:2], 16)
                 print_dic[k] = f'{Common.format_num(temp / v[2])}'
+                print('1111')
+                print(print_dic[k])
             elif k == '电池充电下限温度(℃)':
                 temp = bin(int(temp[0][2:], 16))[2:].rjust(8, '0')
                 tp = int(temp[1:],2)
