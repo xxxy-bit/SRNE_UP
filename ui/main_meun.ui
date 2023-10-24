@@ -311,9 +311,9 @@ font-family: &quot;微软雅黑&quot;;</string>
    <widget class="QLabel" name="inverter_text">
     <property name="geometry">
      <rect>
-      <x>736</x>
+      <x>718</x>
       <y>419</y>
-      <width>91</width>
+      <width>111</width>
       <height>21</height>
      </rect>
     </property>
@@ -324,9 +324,10 @@ text-align: center;
 font-family: &quot;微软雅黑&quot;;</string>
     </property>
     <property name="text">
-     <string>逆变器</string>
+     <string>工频逆变器</string>
     </property>
    </widget>
+   <zorder>InverterButton</zorder>
    <zorder>listView</zorder>
    <zorder>listView_2</zorder>
    <zorder>label</zorder>
@@ -340,7 +341,6 @@ font-family: &quot;微软雅黑&quot;;</string>
    <zorder>listView_8</zorder>
    <zorder>inverter_text</zorder>
    <zorder>bmsButton</zorder>
-   <zorder>InverterButton</zorder>
    <zorder>acchargeButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
