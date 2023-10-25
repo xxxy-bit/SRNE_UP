@@ -5,9 +5,7 @@ from PyQt5 import QtCore, QtWidgets, QtCore
 from PyQt5.QtCore import QSettings
 from ui.main_meun import Ui_MainWindow as main_menu
 from .AcCharge import AcLayout
-from .Inverter import InvLayout
 from .QssStyle import *
-
 
 
 class MainWindow(QtWidgets.QMainWindow, main_menu):
@@ -60,7 +58,7 @@ class MainWindow(QtWidgets.QMainWindow, main_menu):
     def bms_leEvent(self, event):
         self.bms_bg.setStyleSheet(main_ac_bg_lev_event)
         self.bms_text.setStyleSheet(main_ac_txt_lev_event)
-
+            
     def inv_enEvent(self, event):
         self.inverter_bg.setStyleSheet(main_ac_bg_ent_event)
         self.inverter_text.setStyleSheet(main_ac_txt_ent_event)
@@ -75,7 +73,8 @@ class MainWindow(QtWidgets.QMainWindow, main_menu):
         self.ac_layout.show()
 
     def goInverter(self):
-        self.inv_layout = InvLayout()
+        from .Inverter_pf_off import Invt_pf_off_layout
+        self.inv_layout = Invt_pf_off_layout()
         self.close()
         self.inv_layout.show()
 

@@ -126,7 +126,7 @@ class Ui_MainWindow(object):
         self.listView_8.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.listView_8.setObjectName("listView_8")
         self.inverter_text = QtWidgets.QLabel(self.centralwidget)
-        self.inverter_text.setGeometry(QtCore.QRect(736, 419, 91, 21))
+        self.inverter_text.setGeometry(QtCore.QRect(694, 419, 151, 21))
         self.inverter_text.setStyleSheet("color:#8A4600;\n"
 "font-size:16pt;\n"
 "text-align: center;\n"
@@ -145,8 +145,8 @@ class Ui_MainWindow(object):
         self.listView_8.raise_()
         self.inverter_text.raise_()
         self.bmsButton.raise_()
-        self.InverterButton.raise_()
         self.acchargeButton.raise_()
+        self.InverterButton.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 22))
@@ -171,7 +171,7 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "选择连接的设备"))
         self.ac_text.setText(_translate("MainWindow", "AC-DC 充电器"))
         self.bms_text.setText(_translate("MainWindow", "BMS"))
-        self.inverter_text.setText(_translate("MainWindow", "逆变器"))
+        self.inverter_text.setText(_translate("MainWindow", "工频离网逆变器"))
         self.menu.setTitle(_translate("MainWindow", "语言"))
         self.lang_zh.setText(_translate("MainWindow", "中文"))
         self.lang_en.setText(_translate("MainWindow", "English"))
