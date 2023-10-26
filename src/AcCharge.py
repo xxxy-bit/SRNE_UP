@@ -68,7 +68,6 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
         self.startMonitor_btn.setStyleSheet(color_close)
         self.ac_monitor_on = False
         
-        
         # 加载-串口
         self.port_cmb.addItems(Common.load_serial_list())
         
@@ -119,8 +118,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
             os.mkdir('log')
         
         # 创建日志文件
-        self.now = datetime.datetime.now().strftime('%Y-%m-%d_%H_%M_%S')
-        self.log_name = f'log/{self.now}.txt'
+        self.log_name = Common.creat_log_file('log')
         
         # 创建监控日志文件
         self.m1_csv = ''
@@ -203,7 +201,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
             self.ser.close()
             print(e)
             return False
-        self.add_tableItem('send', bytes.hex(hex_data), self.ac_show_tab_data)    # 在表格中输出
+        self.add_tableItem('send', bytes.hex(hex_data), self.ac_show_tab_data, self.log_name)    # 在表格中输出
 
     # 清空表格
     def clearRow_btn(self, tableWidget):
@@ -212,7 +210,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
             tableWidget.removeRow(rows)
 
     # 增加一行数据收发
-    def add_tableItem(self, status: str, hexdata: str, tableWidget: QtWidgets.QTabWidget):
+    def add_tableItem(self, status: str, hexdata: str, tableWidget: QtWidgets.QTabWidget, log_dir):
         now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
         rows = tableWidget.rowCount()
         # 最大行数
@@ -238,7 +236,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
         hexdata = ''.join(space_hexdata)
 
         # 写入日志文件
-        with open(self.log_name, 'a+', encoding='utf-8') as f:
+        with open(log_dir, 'a+', encoding='utf-8') as f:
             f.write(f'{now}\t{status}\t{hexdata}\n')
         
         # 添加数据
@@ -530,7 +528,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
                 for obj in self.setting_edit:
                     obj.blockSignals(False)
             
-            self.add_tableItem('receive', res, self.ac_show_tab_data)
+            self.add_tableItem('receive', res, self.ac_show_tab_data, self.log_name)
 
     # 按钮-开关控制-开关机
     def ac_switch_onoff(self):

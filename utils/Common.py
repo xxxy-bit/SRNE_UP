@@ -1,4 +1,5 @@
 import serial.tools.list_ports
+import datetime, os
 
 
 class Common():
@@ -63,3 +64,10 @@ class Common():
         port_list = list(serial.tools.list_ports.comports())
         port_choice = [num.device for num in port_list]
         return port_choice
+
+    # 创建日志文件
+    @classmethod
+    def creat_log_file(cls, log_dir):
+        cls.now = datetime.datetime.now().strftime('%Y-%m-%d_%H_%M_%S')
+        cls.log_name = os.path.join(log_dir, f'{cls.now}.txt')
+        return cls.log_name
