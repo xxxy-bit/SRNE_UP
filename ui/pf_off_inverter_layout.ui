@@ -137,7 +137,7 @@
                  <item row="0" column="0">
                   <widget class="QLabel" name="label">
                    <property name="text">
-                    <string>最高支持电压</string>
+                    <string>系统电压</string>
                    </property>
                   </widget>
                  </item>

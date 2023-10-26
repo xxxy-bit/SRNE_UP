@@ -24,7 +24,7 @@ ivpo_sw_off = 'ff06df000000'    # 关机
 ivpo_resetting = 'ff06df010001' # 设备复位
 ivpo_fact_reset = 'ff06df020001'    # 恢复出厂
 
-ivpo_product_msg = 'ff03000a005f'   # 产品信息区
+ivpo_product_msg = 'ff03000a0062'   # 产品信息区
 ivpo_control_msg = 'ff0301000004'   # 控制器数据区
 ivpo_ivt_msg = 'ff0302040028'   # 逆变数据区
 ivpo_setting1 = 'ff03e0010020'  # 用户设置区1

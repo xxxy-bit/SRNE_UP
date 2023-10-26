@@ -340,8 +340,8 @@ font-family: &quot;微软雅黑&quot;;</string>
    <zorder>listView_8</zorder>
    <zorder>inverter_text</zorder>
    <zorder>acchargeButton</zorder>
-   <zorder>InverterButton</zorder>
    <zorder>bmsButton</zorder>
+   <zorder>InverterButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -353,6 +353,14 @@ font-family: &quot;微软雅黑&quot;;</string>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
+    <property name="geometry">
+     <rect>
+      <x>-1603</x>
+      <y>303</y>
+      <width>117</width>
+      <height>82</height>
+     </rect>
+    </property>
     <property name="title">
      <string>语言</string>
     </property>

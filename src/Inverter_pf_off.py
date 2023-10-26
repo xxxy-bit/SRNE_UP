@@ -59,6 +59,11 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             self.ivpo_open_port.setText('关闭串口')
             self.ivpo_open_port.setStyleSheet(color_open)
             self.ivpo_port_list.setEnabled(False)
+            
+            # 开启接收数据定时器
+            self.ivpo_timer_recevice = QtCore.QTimer()
+            self.ivpo_timer_recevice.timeout.connect(self.ivpo_timer_recevice_func)
+            self.ivpo_timer_recevice.start(100)
         else:
             try:
                 self.invt_po_ser.close()
@@ -113,7 +118,6 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             return 0
         self.ivpo_timer_get_monitor_step += 1
 
-
     # 增加一行数据收发
     def ivpo_add_tableItem(self, status: str, hexdata: str, tableWidget: QtWidgets.QTabWidget, log_dir):
         now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
@@ -163,5 +167,14 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         # 在表格中输出
         self.ivpo_add_tableItem('send', bytes.hex(hex_data), self.ivpo_port_tableWidget, self.log_name)
     
-    # 接收数据
-    
+    # 接收数据定时器
+    def ivpo_timer_recevice_func(self):
+        try:
+            res = self.invt_po_ser.readline()
+            res = res.hex()
+        except Exception as e:
+            print(e)
+            return False
+        if res != '':
+            print(res)
+            

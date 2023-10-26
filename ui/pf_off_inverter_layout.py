@@ -553,7 +553,7 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "硬件版本"))
         self.label_3.setText(_translate("MainWindow", "产品型号"))
         self.label_6.setText(_translate("MainWindow", "产品序列号"))
-        self.label.setText(_translate("MainWindow", "最高支持电压"))
+        self.label.setText(_translate("MainWindow", "系统电压"))
         self.label_4.setText(_translate("MainWindow", "软件版本"))
         self.label_7.setText(_translate("MainWindow", "设备地址"))
         self.label_8.setText(_translate("MainWindow", "设备名称"))
