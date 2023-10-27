@@ -903,6 +903,9 @@
           </item>
           <item row="10" column="4">
            <widget class="QPushButton" name="ivpo_write_data">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
              <string>写入数据</string>
             </property>

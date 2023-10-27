@@ -499,6 +499,7 @@ class Ui_MainWindow(object):
         self.ivpo_read_data.setObjectName("ivpo_read_data")
         self.gridLayout_8.addWidget(self.ivpo_read_data, 10, 2, 1, 1)
         self.ivpo_write_data = QtWidgets.QPushButton(self.sett)
+        self.ivpo_write_data.setEnabled(False)
         self.ivpo_write_data.setObjectName("ivpo_write_data")
         self.gridLayout_8.addWidget(self.ivpo_write_data, 10, 4, 1, 1)
         self.gridLayout_8.setColumnStretch(1, 1)
@@ -542,7 +543,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

@@ -800,6 +800,9 @@
        </item>
        <item row="8" column="4">
         <widget class="QPushButton" name="write_set_data">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>写入数据</string>
          </property>

@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# ac-dc 充电器解析
+
 
 import os, sys, binascii
-from .Common import Common
-from .CRC16Util import calc_crc
+from utils.Common import Common
+from utils.CRC16Util import calc_crc
 from settings.ac_modbus import get_ac_data_list
 from src.OrderList import *
 
 sys.path.append(os.getcwd())
 
-# 解析数据
+# AC-DC 充电器解析
 def pars_data(res, send_data):
     '''
         res: 串口接收到的数据
@@ -31,6 +31,7 @@ def pars_data(res, send_data):
 
     # 3、解析协议内容
     print_dic = {}
+    
     # 实时监控
     ac_data_list = get_ac_data_list()
     if send_data == ac_monitor1:
@@ -122,8 +123,6 @@ def pars_data(res, send_data):
             if k == '系统电压设置(V)':
                 temp = int(temp[0][:2], 16)
                 print_dic[k] = f'{Common.format_num(temp / v[2])}'
-                print('1111')
-                print(print_dic[k])
             elif k == '电池充电下限温度(℃)':
                 temp = bin(int(temp[0][2:], 16))[2:].rjust(8, '0')
                 tp = int(temp[1:],2)

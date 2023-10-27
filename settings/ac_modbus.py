@@ -85,6 +85,7 @@ def get_ac_data_list():
                     "6": _("高温保护"),
                     "13": _("过流保护"),
                     }],
+            
         },
         # 参数设置
         ac_get_setting:{

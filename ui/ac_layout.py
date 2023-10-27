@@ -332,6 +332,7 @@ class Ui_MainWindow(object):
         self.clear_set_data.setObjectName("clear_set_data")
         self.gridLayout_4.addWidget(self.clear_set_data, 8, 6, 1, 1)
         self.write_set_data = QtWidgets.QPushButton(self.gridLayoutWidget_4)
+        self.write_set_data.setEnabled(False)
         self.write_set_data.setObjectName("write_set_data")
         self.gridLayout_4.addWidget(self.write_set_data, 8, 4, 1, 1)
         self.read_set_data = QtWidgets.QPushButton(self.gridLayoutWidget_4)

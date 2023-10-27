@@ -5,7 +5,7 @@ from .OrderList import *
 from utils.Common import Common
 from settings.ac_modbus import get_ac_data_list
 from utils.CRC16Util import calc_crc
-from utils.DataPars import pars_data
+from .dataAnalysis.AcCharge_DA import pars_data
 from ui.ac_layout import Ui_MainWindow as ac_layout
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import QSettings
@@ -567,6 +567,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
         if self.ac_port_nostart_tips() == False: return 0
         self.setting_dic = {}
         self.send_msg(f'{ac_get_setting}{calc_crc(ac_get_setting)}')
+        self.write_set_data.setEnabled(True)
 
     # 按钮-参数设置-清屏
     def ac_clear_data(self):
