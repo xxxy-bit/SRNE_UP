@@ -122,7 +122,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         self.ivpo_timer_get_monitor_step += 1
 
     # 增加一行数据收发
-    def ivpo_add_tableItem(self, status: str, hexdata: str, tableWidget: QtWidgets.QTabWidget, log_dir):
+    def ivpo_add_tableItem(self, status: str, hexdata: str, tableWidget: QtWidgets.QTabWidget, log_name):
         now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
         rows = tableWidget.rowCount()
         # 最大行数
@@ -148,7 +148,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         hexdata = ''.join(space_hexdata)
 
         # 写入日志文件
-        with open(log_dir, 'a+', encoding='utf-8') as f:
+        with open(log_name, 'a+', encoding='utf-8') as f:
             f.write(f'{now}\t{status}\t{hexdata}\n')
         
         # 添加数据
@@ -215,7 +215,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                 self.ivpo_total_runner_days.setText(result['总运行天数'])
             
             # 控制器数据区
-            elif res[:6] == f'{ivpo_control_msg[:4]}04' and len(res) == 26:
+            elif res[:6] == f'{ivpo_control_msg[:4]}08' and len(res) == 26:
                 arg = ivpo_data_analysis(res, ivpo_control_msg)
                 result = arg[0]
                 

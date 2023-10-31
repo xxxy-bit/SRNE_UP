@@ -68,6 +68,8 @@ class Common():
     # 创建日志文件
     @classmethod
     def creat_log_file(cls, log_dir):
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
         cls.now = datetime.datetime.now().strftime('%Y-%m-%d_%H_%M_%S')
         cls.log_name = os.path.join(log_dir, f'{cls.now}.txt')
         return cls.log_name
