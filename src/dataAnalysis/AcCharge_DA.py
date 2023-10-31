@@ -13,8 +13,8 @@ sys.path.append(os.getcwd())
 # AC-DC 充电器解析
 def pars_data(res, send_data):
     '''
-        res: 串口接收到的数据
-        send_data: 给串口发送的指令
+        res:        串口接收的数据
+        send_data:  串口发送的指令
     '''
     
     # 0、记录原始数据res

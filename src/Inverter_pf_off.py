@@ -2,6 +2,7 @@ import serial, functools, gettext, datetime, os
 from .OrderList import *
 from utils.Common import Common
 from utils.CRC16Util import calc_crc
+from .dataAnalysis.ivpo_DA import ivpo_data_analysis
 from ui.pf_off_inverter_layout import Ui_MainWindow as invt_off_layout
 from PyQt5 import QtWidgets, QtCore
 
@@ -63,7 +64,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             # 开启接收数据定时器
             self.ivpo_timer_recevice = QtCore.QTimer()
             self.ivpo_timer_recevice.timeout.connect(self.ivpo_timer_recevice_func)
-            self.ivpo_timer_recevice.start(100)
+            self.ivpo_timer_recevice.start(500)
         else:
             try:
                 self.invt_po_ser.close()
@@ -111,8 +112,10 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         if self.ivpo_timer_get_monitor_step == 1:
             self.ivpo_send_msg(ivpo_product_msg + calc_crc(ivpo_product_msg))
         elif self.ivpo_timer_get_monitor_step == 2:
-            self.ivpo_send_msg(ivpo_control_msg + calc_crc(ivpo_control_msg))
+            self.ivpo_send_msg(ivpo_history_days + calc_crc(ivpo_history_days))
         elif self.ivpo_timer_get_monitor_step == 3:
+            self.ivpo_send_msg(ivpo_control_msg + calc_crc(ivpo_control_msg))
+        elif self.ivpo_timer_get_monitor_step == 4:
             self.ivpo_send_msg(ivpo_ivt_msg + calc_crc(ivpo_ivt_msg))
             self.ivpo_timer_get_monitor_step = 1
             return 0
@@ -176,5 +179,102 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             print(e)
             return False
         if res != '':
-            print(res)
+            # print(res)
+            # 实时监控
+            if res[:6] == f'{ivpo_product_msg[:4]}c4' and len(res) == 402:
+                arg = ivpo_data_analysis(res, ivpo_product_msg)
+                result = arg[0]
+
+                # 异常后打印问题字段，防止程序崩溃
+                try:
+                    temp1 = result['系统电压']
+                    temp2 = result['产品类型']
+                    temp3 = result['产品型号']
+                    temp4 = result['软件版本']
+                    temp5 = result['硬件版本']
+                    temp6 = result['产品序列号']
+                    temp7 = result['设备地址']
+                    temp8 = result['设备名称']
+                except Exception as e:
+                    self.ivpo_add_tableItem('receive', res, self.ivpo_port_tableWidget, self.log_name)
+                    return QtWidgets.QMessageBox.critical(self, 'Error', str(e), QtWidgets.QMessageBox.Ok)  
+                
+                self.ivpo_sys_vol.setText(temp1)
+                self.ivpo_product_type.setText(temp2)
+                self.ivpo_product_model.setText(temp3)
+                self.ivpo_software_ver.setText(temp4)
+                self.ivpo_hardware_ver.setText(temp5)
+                self.ivpo_serial_num.setText(temp6)
+                self.ivpo_dev_addr.setText(temp7)
+                self.ivpo_dev_name.setText(temp8)
+            
+            # 总运行天数
+            elif res[:6] == f'{ivpo_history_days[:4]}02' and len(res) == 14:
+                arg = ivpo_data_analysis(res, ivpo_history_days)
+                result = arg[0]
+                self.ivpo_total_runner_days.setText(result['总运行天数'])
+            
+            # 控制器数据区
+            elif res[:6] == f'{ivpo_control_msg[:4]}04' and len(res) == 26:
+                arg = ivpo_data_analysis(res, ivpo_control_msg)
+                result = arg[0]
+                
+                try:
+                    temp1 = result['蓄电池电压']
+                    temp2 = result['充电电流']
+                    temp3 = result['充电状态']
+                except Exception as e:
+                    return QtWidgets.QMessageBox.critical(self, 'Error', str(e), QtWidgets.QMessageBox.Ok)  
+                
+                self.ivpo_bat_vol.setText(temp1)
+                self.ivpo_char_cur.setText(temp2)
+                self.ivpo_char_status.setText(temp3)
+            # 逆变数据区
+            elif res[:6] == f'{ivpo_ivt_msg[:4]}50' and len(res) == 170:
+                arg = ivpo_data_analysis(res, ivpo_ivt_msg)
+                result = arg[0]
+                
+                try:
+                    temp1 = result['当前时间']
+                    temp2 = result['交流输出有功功率']
+                    temp3 = result['交流输出电压1']
+                    temp4 = result['交流输出电流']
+                    temp5 = result['交流输出频率']
+                    temp6 = result['温度A']
+                    temp7 = result['温度B']
+                    temp8 = result['温度C']
+                    temp9 = result['温度D']
+                    temp10 = result['外部温度']
+                    temp11 = result['交流输入频率']
+                    temp12 = result['交流输入有功功率']
+                    temp13 = result['交流输入电压A']
+                    temp14 = result['交流输入电流A']
+                    temp15 = result['交流输出电压2']
+                    temp16 = result['当前故障码']
+                except Exception as e:
+                    return QtWidgets.QMessageBox.critical(self, 'Error', str(e), QtWidgets.QMessageBox.Ok)  
+                
+                self.ivpo_now_time.setText(temp1)
+                self.ivpo_acout_active_power.setText(temp2)
+                self.ivpo_acout_vol1.setText(temp3)
+                self.ivpo_acout_cur.setText(temp4)
+                self.ivpo_acout_fre.setText(temp5)
+                self.ivpo_tmpA.setText(temp6)
+                self.ivpo_tmpB.setText(temp7)
+                self.ivpo_tmpC.setText(temp8)
+                self.ivpo_tmpD.setText(temp9)
+                self.ivpo_outside_tmp.setText(temp10)
+                self.ivpo_acinput_fre.setText(temp11)
+                self.ivpo_acinput_active_power.setText(temp12)
+                self.ivpo_acinput_volA.setText(temp13)
+                self.ivpo_acinput_curA.setText(temp14)
+                self.ivpo_acout_vol2.setText(temp15)
+                self.ivpo_now_error.setText(temp16)
+            
+            
+            
+            
+            
+            self.ivpo_add_tableItem('receive', res, self.ivpo_port_tableWidget, self.log_name)
+            
             

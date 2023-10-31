@@ -368,60 +368,66 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
             if res[:6] == f'{ac_monitor1[:4]}be' and len(res) == 390:
                 arg = pars_data(res, ac_monitor1)
                 result = arg[0]
-                temp1 = result['产品类型']
-                if temp1[:2] == 'DC':
-                    self.ac_chgmode.setEnabled(True)
-                else:
-                    self.ac_chgmode.setEnabled(False)
-                    
-                temp2 = result['产品规格']
-                temp3 = result['产品序列号']
-                temp4 = result['设备名称']
-                temp5 = result['设备地址']
-                temp6 = result['硬件版本']
-                temp7 = result['软件版本']
                 
-                """
-                    从 12/24/48/AUTO(255) 里面取，
-                    额定系统电压值如果是24，则显示12/24/AUTO;
-                    12则只显示12，不显示AUTO;
-                    电池类型为Li，系统电压不显示AUTO
-                """
-                temp8 = result['系统电压']
-                if self.ac_sys_vol_on == False:
-                    temp8_vol = ['12', '24', '48', 'AUTO']
-                    num = temp8[:-2]
-                    if num != '12':
-                        # 清空下拉项会触发改变数值的信号，此处拦截信号
-                        self.set_sys_current.blockSignals(True)
-                        
-                        # 下拉项的列表
-                        temp8_vol_list = temp8_vol[:temp8_vol.index(num) + 1]
-                        temp8_vol_list.append(temp8_vol[-1])
-                        
-                        self.set_sys_current.clear()
-                        self.set_sys_current.addItems(temp8_vol_list)
-
-                        # 下拉项内容添加完成，释放信号
-                        self.set_sys_current.blockSignals(False)
+                try:
+                    temp1 = result['产品类型']
+                    if temp1[:2] == 'DC':
+                        self.ac_chgmode.setEnabled(True)
                     else:
-                        # 12则只显示12，不显示AUTO
-                        self.set_sys_current.blockSignals(True)
-                        self.set_sys_current.clear()
-                        self.set_sys_current.addItem('12')
-                        self.set_sys_current.blockSignals(False)
+                        self.ac_chgmode.setEnabled(False)
                         
-                    # 系统电压设置下拉项添加完成，不再设置
-                    self.ac_sys_vol_on = True
+                    temp2 = result['产品规格']
+                    temp3 = result['产品序列号']
+                    temp4 = result['设备名称']
+                    temp5 = result['设备地址']
+                    temp6 = result['硬件版本']
+                    temp7 = result['软件版本']
                     
-                temp9 = result['额定充电电流']
-                # 保存 额定充电电流，提供给 充满截止电流 使用
-                # 充满截止电流可选范围最大值 为 额定充电电流 %40
-                if self.rate_charge_monitor == False:
-                    self.set_full_stop.setEnabled(True)
-                    ls = [i for i in range(1, int(int(result['额定充电电流'][:-2]) * 0.4)+1)]
-                    self.set_full_stop.addItems([str(i) for i in ls])
-                    self.rate_charge_monitor = True
+                    temp8 = result['系统电压']
+                    """
+                        从 12/24/48/AUTO(255) 里面取，
+                        额定系统电压值如果是24，则显示12/24/AUTO;
+                        12则只显示12，不显示AUTO;
+                        电池类型为Li，系统电压不显示AUTO
+                    """
+                    if self.ac_sys_vol_on == False:
+                        temp8_vol = ['12', '24', '48', 'AUTO']
+                        num = temp8[:-2]
+                        if num != '12':
+                            # 清空下拉项会触发改变数值的信号，此处拦截信号
+                            self.set_sys_current.blockSignals(True)
+                            
+                            # 下拉项的列表
+                            temp8_vol_list = temp8_vol[:temp8_vol.index(num) + 1]
+                            temp8_vol_list.append(temp8_vol[-1])
+                            
+                            self.set_sys_current.clear()
+                            self.set_sys_current.addItems(temp8_vol_list)
+
+                            # 下拉项内容添加完成，释放信号
+                            self.set_sys_current.blockSignals(False)
+                        else:
+                            # 12则只显示12，不显示AUTO
+                            self.set_sys_current.blockSignals(True)
+                            self.set_sys_current.clear()
+                            self.set_sys_current.addItem('12')
+                            self.set_sys_current.blockSignals(False)
+                            
+                        # 系统电压设置下拉项添加完成，不再设置
+                        self.ac_sys_vol_on = True
+                        
+                    temp9 = result['额定充电电流']
+                    # 保存 额定充电电流，提供给 充满截止电流 使用
+                    # 充满截止电流可选范围最大值 为 额定充电电流 %40
+                    if self.rate_charge_monitor == False:
+                        self.set_full_stop.setEnabled(True)
+                        ls = [i for i in range(1, int(int(result['额定充电电流'][:-2]) * 0.4)+1)]
+                        self.set_full_stop.addItems([str(i) for i in ls])
+                        self.rate_charge_monitor = True
+                except Exception as e:
+                    self.add_tableItem('receive', res, self.ac_show_tab_data, self.log_name)
+                    return QtWidgets.QMessageBox.critical(self, 'Error', str(e), QtWidgets.QMessageBox.Ok)  
+                
                 
                 # temp10 = result['额定放电电流']   # 不显示
                 self.prod_type.setText(temp1)

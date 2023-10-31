@@ -596,7 +596,14 @@
            </widget>
           </item>
           <item row="1" column="6">
-           <widget class="QSpinBox" name="ivpo_boost_char_vol"/>
+           <widget class="QSpinBox" name="ivpo_boost_char_vol">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>17</number>
+            </property>
+           </widget>
           </item>
           <item row="7" column="1">
            <widget class="QLabel" name="label_54">
@@ -619,14 +626,15 @@
             </property>
            </widget>
           </item>
-          <item row="8" column="2">
-           <widget class="QSpinBox" name="ivpo_inv_state_mode"/>
-          </item>
           <item row="4" column="2">
-           <widget class="QSpinBox" name="ivpo_tmp_comp_coe"/>
-          </item>
-          <item row="5" column="2">
-           <widget class="QSpinBox" name="ivpo_lead_active"/>
+           <widget class="QSpinBox" name="ivpo_tmp_comp_coe">
+            <property name="minimum">
+             <number>-10</number>
+            </property>
+            <property name="maximum">
+             <number>0</number>
+            </property>
+           </widget>
           </item>
           <item row="1" column="3">
            <widget class="QLabel" name="label_36">
@@ -635,11 +643,15 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="4">
-           <widget class="QSpinBox" name="ivpo_libat_low_tmp_char"/>
-          </item>
           <item row="2" column="4">
-           <widget class="QSpinBox" name="ivpo_inchar_rerturn_vol"/>
+           <widget class="QSpinBox" name="ivpo_inchar_rerturn_vol">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>17</number>
+            </property>
+           </widget>
           </item>
           <item row="6" column="1">
            <widget class="QLabel" name="label_51">
@@ -649,7 +661,14 @@
            </widget>
           </item>
           <item row="7" column="4">
-           <widget class="QSpinBox" name="ivpo_acout_fre_2"/>
+           <widget class="QSpinBox" name="ivpo_acout_fre_2">
+            <property name="minimum">
+             <number>45</number>
+            </property>
+            <property name="maximum">
+             <number>65</number>
+            </property>
+           </widget>
           </item>
           <item row="7" column="5">
            <widget class="QLabel" name="label_56">
@@ -665,11 +684,15 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="6">
-           <widget class="QSpinBox" name="ivpo_relay_out_func"/>
-          </item>
           <item row="7" column="6">
-           <widget class="QSpinBox" name="ivpo_eco_start_time"/>
+           <widget class="QSpinBox" name="ivpo_eco_start_time">
+            <property name="minimum">
+             <number>30</number>
+            </property>
+            <property name="maximum">
+             <number>1800</number>
+            </property>
+           </widget>
           </item>
           <item row="4" column="3">
            <widget class="QLabel" name="label_46">
@@ -679,7 +702,11 @@
            </widget>
           </item>
           <item row="9" column="2">
-           <widget class="QSpinBox" name="inpo_acinput_cur_set"/>
+           <widget class="QSpinBox" name="inpo_acinput_cur_set">
+            <property name="maximum">
+             <number>50</number>
+            </property>
+           </widget>
           </item>
           <item row="2" column="1">
            <widget class="QLabel" name="label_37">
@@ -703,7 +730,14 @@
            </widget>
           </item>
           <item row="7" column="2">
-           <widget class="QSpinBox" name="ivpo_acout_vol"/>
+           <widget class="QSpinBox" name="ivpo_acout_vol">
+            <property name="minimum">
+             <number>100</number>
+            </property>
+            <property name="maximum">
+             <number>264</number>
+            </property>
+           </widget>
           </item>
           <item row="0" column="1">
            <widget class="QLabel" name="label_33">
@@ -713,7 +747,11 @@
            </widget>
           </item>
           <item row="3" column="6">
-           <widget class="QSpinBox" name="ivpo_eq_char_interval"/>
+           <widget class="QSpinBox" name="ivpo_eq_char_interval">
+            <property name="maximum">
+             <number>255</number>
+            </property>
+           </widget>
           </item>
           <item row="4" column="5">
            <widget class="QLabel" name="label_47">
@@ -723,10 +761,21 @@
            </widget>
           </item>
           <item row="4" column="6">
-           <widget class="QSpinBox" name="ivpo_full_stop_cur"/>
+           <widget class="QSpinBox" name="ivpo_full_stop_cur">
+            <property name="maximum">
+             <number>120</number>
+            </property>
+           </widget>
           </item>
           <item row="3" column="4">
-           <widget class="QSpinBox" name="ivpo_boost_char_time"/>
+           <widget class="QSpinBox" name="ivpo_boost_char_time">
+            <property name="minimum">
+             <number>10</number>
+            </property>
+            <property name="maximum">
+             <number>600</number>
+            </property>
+           </widget>
           </item>
           <item row="5" column="5">
            <widget class="QLabel" name="label_50">
@@ -743,13 +792,27 @@
            </widget>
           </item>
           <item row="0" column="2">
-           <widget class="QSpinBox" name="ivpo_char_cur_set"/>
+           <widget class="QSpinBox" name="ivpo_char_cur_set">
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="value">
+             <number>0</number>
+            </property>
+           </widget>
           </item>
           <item row="4" column="4">
-           <widget class="QSpinBox" name="ivpo_bat_char_low_tmp"/>
-          </item>
-          <item row="6" column="2">
-           <widget class="QSpinBox" name="ivpo_out_pri"/>
+           <widget class="QSpinBox" name="ivpo_bat_char_low_tmp">
+            <property name="minimum">
+             <number>-40</number>
+            </property>
+            <property name="maximum">
+             <number>120</number>
+            </property>
+           </widget>
           </item>
           <item row="1" column="5">
            <widget class="QLabel" name="label_39">
@@ -758,20 +821,35 @@
             </property>
            </widget>
           </item>
-          <item row="8" column="4">
-           <widget class="QSpinBox" name="ivpo_buzz_set"/>
-          </item>
           <item row="6" column="4">
-           <widget class="QSpinBox" name="ivpo_fan_start_tmp"/>
-          </item>
-          <item row="8" column="6">
-           <widget class="QSpinBox" name="ivpo_out_switch_vol"/>
+           <widget class="QSpinBox" name="ivpo_fan_start_tmp">
+            <property name="minimum">
+             <number>40</number>
+            </property>
+            <property name="maximum">
+             <number>65</number>
+            </property>
+           </widget>
           </item>
           <item row="3" column="2">
-           <widget class="QSpinBox" name="ivpo_odc_vol"/>
+           <widget class="QSpinBox" name="ivpo_odc_vol">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>17</number>
+            </property>
+           </widget>
           </item>
           <item row="2" column="2">
-           <widget class="QSpinBox" name="ivpo_float_char_vol"/>
+           <widget class="QSpinBox" name="ivpo_float_char_vol">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>17</number>
+            </property>
+           </widget>
           </item>
           <item row="3" column="1">
            <widget class="QLabel" name="label_42">
@@ -781,13 +859,24 @@
            </widget>
           </item>
           <item row="6" column="6">
-           <widget class="QSpinBox" name="ivpo_eco_start_power"/>
+           <widget class="QSpinBox" name="ivpo_eco_start_power">
+            <property name="minimum">
+             <number>30</number>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+           </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QSpinBox" name="ivpo_char_limit_vol"/>
-          </item>
-          <item row="0" column="4">
-           <widget class="QSpinBox" name="ivpo_bat_type"/>
+           <widget class="QSpinBox" name="ivpo_char_limit_vol">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>17</number>
+            </property>
+           </widget>
           </item>
           <item row="8" column="5">
            <widget class="QLabel" name="label_59">
@@ -824,7 +913,14 @@
            </spacer>
           </item>
           <item row="0" column="6">
-           <widget class="QSpinBox" name="ivpo_over_vol"/>
+           <widget class="QSpinBox" name="ivpo_over_vol">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>17</number>
+            </property>
+           </widget>
           </item>
           <item row="7" column="3">
            <widget class="QLabel" name="label_55">
@@ -848,7 +944,14 @@
            </widget>
           </item>
           <item row="1" column="4">
-           <widget class="QSpinBox" name="ivpo_eq_char_vol"/>
+           <widget class="QSpinBox" name="ivpo_eq_char_vol">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>17</number>
+            </property>
+           </widget>
           </item>
           <item row="3" column="3">
            <widget class="QLabel" name="label_43">
@@ -872,7 +975,14 @@
            </widget>
           </item>
           <item row="2" column="6">
-           <widget class="QSpinBox" name="ivpo_op_returnvol"/>
+           <widget class="QSpinBox" name="ivpo_op_returnvol">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>17</number>
+            </property>
+           </widget>
           </item>
           <item row="3" column="5">
            <widget class="QLabel" name="label_44">
@@ -908,6 +1018,40 @@
             </property>
             <property name="text">
              <string>写入数据</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <widget class="QComboBox" name="ivpo_bat_type"/>
+          </item>
+          <item row="5" column="2">
+           <widget class="QComboBox" name="ivpo_lead_active"/>
+          </item>
+          <item row="5" column="4">
+           <widget class="QComboBox" name="ivpo_libat_low_tmp_char"/>
+          </item>
+          <item row="5" column="6">
+           <widget class="QComboBox" name="ivpo_relay_out_func"/>
+          </item>
+          <item row="6" column="2">
+           <widget class="QComboBox" name="ivpo_out_pri"/>
+          </item>
+          <item row="8" column="2">
+           <widget class="QComboBox" name="ivpo_inv_state_mode"/>
+          </item>
+          <item row="8" column="4">
+           <widget class="QComboBox" name="ivpo_buzz_set"/>
+          </item>
+          <item row="8" column="6">
+           <widget class="QDoubleSpinBox" name="ivpo_out_switch_vol">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>11.500000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>13.199999999999999</double>
             </property>
            </widget>
           </item>
