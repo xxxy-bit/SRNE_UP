@@ -33,6 +33,12 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         # 加载-实时监控信号槽
         self.ivpo_monitor_slots()
         
+        # 加载-参数设置信号槽
+        self.ivpo_parameter_slots()
+        
+        # 加载-串口数据信号槽
+        self.ivpo_clear_port_msg.clicked.connect(functools.partial(self.ivpo_clearRow_btn, self.ivpo_port_tableWidget))
+        
         # 设置串口数据单元格的长度
         self.ivpo_port_tableWidget.setColumnWidth(0,180)
         self.ivpo_port_tableWidget.setColumnWidth(1,100)
@@ -45,7 +51,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         self.ivpo_factory_reset.clicked.connect(self.ivpo_factory_reset_func)
         self.ivpo_reset.clicked.connect(self.ivpo_reset_func)
         self.ivpo_open_moni.clicked.connect(self.ivpo_open_moni_func)
-        
+    
     # 开/关串口信号
     def ivpo_open_port_func(self):
         if self.ivpo_open_port.text() == '打开串口':
@@ -75,6 +81,27 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             self.ivpo_port_list.setEnabled(True)
             self.ivpo_timer_recevice.stop()
     
+    # 参数设置信号槽
+    def ivpo_parameter_slots(self):
+        self.ivpo_read_data.clicked.connect(self.ivpo_read_data_func)
+    
+    # 参数设置-读取数据
+    def ivpo_read_data_func(self):
+        self.ivpo_timer_get_setting = QtCore.QTimer()
+        self.ivpo_timer_get_setting.timeout.connect(self.ivpo_timer_get_setting_func)
+        self.ivpo_timer_get_setting_step = 1
+        self.ivpo_timer_get_setting.start(1000)
+    
+    # 参数设置-读取数据-定时器
+    def ivpo_timer_get_setting_func(self):
+        if self.ivpo_timer_get_setting_step == 1:
+            self.ivpo_send_msg(ivpo_setting1 + calc_crc(ivpo_setting1))
+        else:
+            self.ivpo_send_msg(ivpo_setting2 + calc_crc(ivpo_setting2))
+            self.ivpo_timer_get_setting.stop()
+            return 0
+        self.ivpo_timer_get_setting_step += 1
+    
     # 开/关机
     def ivpo_power_on_func(self):
         if self.ivpo_power_on.text() == '开启':
@@ -83,7 +110,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         else:
             self.ivpo_send_msg(ivpo_sw_off + calc_crc(ivpo_sw_off))
             self.ivpo_power_on.setText('开启')
-            
+    
     # 恢复出厂
     def ivpo_factory_reset_func(self):
         self.ivpo_send_msg(ivpo_fact_reset + calc_crc(ivpo_fact_reset))
@@ -159,6 +186,12 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
 
         # 发送数据
     
+    # 清空表格
+    def ivpo_clearRow_btn(self, tableWidget):
+        rowPosition = tableWidget.rowCount()
+        for rows in range(rowPosition)[::-1]:
+            tableWidget.removeRow(rows)
+    
     # 发送数据
     def ivpo_send_msg(self, data: str):
         hex_data = bytes.fromhex(data)
@@ -173,12 +206,14 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
     
     # 接收数据定时器
     def ivpo_timer_recevice_func(self):
+        
         try:
             res = self.invt_po_ser.readline()
             res = res.hex()
         except Exception as e:
             print(e)
             return False
+        
         if res != '':
             # print(res)
             # 实时监控
@@ -230,6 +265,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                 self.ivpo_bat_vol.setText(temp1)
                 self.ivpo_char_cur.setText(temp2)
                 self.ivpo_char_status.setText(temp3)
+            
             # 逆变数据区
             elif res[:6] == f'{ivpo_ivt_msg[:4]}50' and len(res) == 170:
                 arg = ivpo_data_analysis(res, ivpo_ivt_msg)
@@ -272,9 +308,47 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                 self.ivpo_acout_vol2.setText(temp15)
                 self.ivpo_now_error.setText(temp16)
             
-            
-            
-            
+            # 用户设置区1
+            elif res[:6] == f'{ivpo_setting1[:4]}40':
+                arg = ivpo_data_analysis(res, ivpo_setting1)
+                result = arg[0]
+                
+                self.ivpo_char_cur_set.setValue(float(result['充电电流设置(A)']))
+                self.ivpo_bat_type.setCurrentIndex(int(result['蓄电池类型']))
+                self.ivpo_over_vol.setValue(float(result['超压电压(V)']))
+                self.ivpo_char_limit_vol.setValue(float(result['充电限制电压(V)']))
+                self.ivpo_eq_char_vol.setValue(float(result['均衡充电电压(V)']))
+                self.ivpo_boost_char_vol.setValue(float(result['提升充电电压(V)']))
+                self.ivpo_float_char_vol.setValue(float(result['浮充充电电压(V)']))
+                self.ivpo_inchar_rerturn_vol.setValue(float(result['提升充电返回电压(V)']))
+                self.ivpo_op_returnvol.setValue(float(result['过放返回电压(V)']))
+                self.ivpo_odc_vol.setValue(float(result['过放电压(V)']))
+                self.ivpo_boost_char_time.setValue(int(result['提升充电时间(Min)']))
+                self.ivpo_eq_char_interval.setValue(int(result['均衡充电间隔(day)']))
+                self.ivpo_tmp_comp_coe.setValue(int(result['温度补偿系数(mV/℃/2V)']))
+                self.ivpo_bat_char_low_tmp.setValue(int(result['电池充电下限温度(℃)']))
+                self.ivpo_full_stop_cur.setValue(int(result['充满截止电流(A)']))
+                self.ivpo_lead_active.setCurrentIndex(int(result['铅酸激活']))
+                self.ivpo_libat_low_tmp_char.setCurrentIndex(int(result['锂电池低温充电(℃)']))
+                self.ivpo_relay_out_func.setCurrentIndex(int(result['继电器输出功能']))
+                
+            # 用户设置区2
+            elif res[:6] == f'{ivpo_setting2[:4]}26':
+                arg = ivpo_data_analysis(res, ivpo_setting2)
+                result = arg[0]
+
+                print(result)
+                
+                self.ivpo_out_pri.setCurrentIndex(int(result['输出优先级']))
+                self.ivpo_fan_start_tmp.setValue(int(result['风扇启动温度(℃)']))
+                self.ivpo_eco_start_power.setValue(int(result['ECO启动功率(W)']))
+                self.ivpo_acout_vol.setValue(int(result['交流输出电压(V)']))
+                self.ivpo_acout_fre_2.setValue(int(result['交流输出频率(Hz)']))
+                self.ivpo_eco_start_time.setValue(int(result['ECO启动时间(S)']))
+                self.ivpo_inv_state_mode.setCurrentIndex(int(result['逆变状态模式']))
+                self.ivpo_buzz_set.setCurrentIndex(int(result['蜂鸣器设置']))
+                self.ivpo_out_switch_vol.setValue(int(result['输出切换电压(V)']))
+                self.inpo_acinput_cur_set.setValue(int(result['AC输入电流设置(A)']))
             
             self.ivpo_add_tableItem('receive', res, self.ivpo_port_tableWidget, self.log_name)
             

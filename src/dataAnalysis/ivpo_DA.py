@@ -73,7 +73,6 @@ def ivpo_data_analysis(res, send_data):
         for k,v in ivpo_data_list[send_data].items():
             temp = data_cut[v[0]:v[0]+v[1]]
             if k == '充电状态':
-                print(temp)
                 temp = temp[0][2:]
                 for a, b in v[4].items():
                     if temp == a:
@@ -121,17 +120,38 @@ def ivpo_data_analysis(res, send_data):
     elif send_data == ivpo_history_days:
         for k,v in ivpo_data_list[send_data].items():
             temp = data_cut[v[0]:v[0]+v[1]]
-        
-        temp = int(''.join(str(i) for i in temp), 16)
-        print_dic[k] = f'{Common.format_num(temp / v[2])} {v[3]}'
+            
+            temp = int(temp[0], 16)
+            print_dic[k] = f'{Common.format_num(temp / v[2])} {v[3]}'
         
     # 用户设置区1
     elif send_data == ivpo_setting1:
-        print('用户设置区1')
+        for k,v in ivpo_data_list[send_data].items():
+            temp = data_cut[v[0]:v[0]+v[1]]
+
+            if k == '电池充电下限温度(℃)':
+                # 取低8位： b7:符号位(0表示+，1表示 - ) b0-b6:温度值
+                temp = bin(int(temp[0][2:], 16))[2:].rjust(8, '0')
+                tp = int(temp[1:],2)
+                if temp[0] == '1':
+                    tp = -(tp)
+                print_dic[k] = f'{tp}'
+            elif k == '温度补偿系数(mV/℃/2V)':
+                temp = int(temp[0], 16)
+                if temp != 0:
+                    temp = -(temp)
+                print_dic[k] = temp
+            else:
+                temp = int(temp[0], 16)
+                print_dic[k] = f'{Common.format_num(temp / v[2])}'
         
     # 用户设置区2
     elif send_data == ivpo_setting2:
-        print('用户设置区2')
+        for k,v in ivpo_data_list[send_data].items():
+            temp = data_cut[v[0]:v[0]+v[1]]
+            
+            temp = int(temp[0], 16)
+            print_dic[k] = f'{Common.format_num(temp / v[2])}'
         
     return print_dic, source_res
     
