@@ -73,6 +73,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             self.ivpo_open_port.setText('打开串口')
             self.ivpo_open_port.setStyleSheet(color_close)
             self.ivpo_port_list.setEnabled(True)
+            self.ivpo_timer_recevice.stop()
     
     # 开/关机
     def ivpo_power_on_func(self):

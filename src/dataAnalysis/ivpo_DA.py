@@ -73,6 +73,7 @@ def ivpo_data_analysis(res, send_data):
         for k,v in ivpo_data_list[send_data].items():
             temp = data_cut[v[0]:v[0]+v[1]]
             if k == '充电状态':
+                print(temp)
                 temp = temp[0][2:]
                 for a, b in v[4].items():
                     if temp == a:
