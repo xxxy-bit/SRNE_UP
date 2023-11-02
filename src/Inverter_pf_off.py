@@ -42,7 +42,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         # 设置串口数据单元格的长度
         self.ivpo_port_tableWidget.setColumnWidth(0,180)
         self.ivpo_port_tableWidget.setColumnWidth(1,100)
-        self.ivpo_port_tableWidget.setColumnWidth(2,765)
+        self.ivpo_port_tableWidget.setColumnWidth(2,750)
         
     # 实时监控信号槽
     def ivpo_monitor_slots(self):
@@ -87,6 +87,11 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
     
     # 参数设置-读取数据
     def ivpo_read_data_func(self):
+        
+        # 记录实时监控是否在运行
+        self.monit_status = True
+        
+        # 创建定时器
         self.ivpo_timer_get_setting = QtCore.QTimer()
         self.ivpo_timer_get_setting.timeout.connect(self.ivpo_timer_get_setting_func)
         self.ivpo_timer_get_setting_step = 1
@@ -95,11 +100,23 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
     # 参数设置-读取数据-定时器
     def ivpo_timer_get_setting_func(self):
         if self.ivpo_timer_get_setting_step == 1:
+            # 如果监控已开启，则先停止，然后获取参数数据，获取完成后再启动监控
+            try:
+                if self.ivpo_timer_get_monitor.isActive():
+                    self.ivpo_timer_get_monitor.stop()
+                    self.monit_status = False
+            except Exception:
+                pass
+        elif self.ivpo_timer_get_setting_step == 2:
             self.ivpo_send_msg(ivpo_setting1 + calc_crc(ivpo_setting1))
         else:
             self.ivpo_send_msg(ivpo_setting2 + calc_crc(ivpo_setting2))
             self.ivpo_timer_get_setting.stop()
-            return 0
+            if self.monit_status == False:
+                self.monit_status = True
+                self.ivpo_timer_get_monitor.start(1500)
+            self.ivpo_write_data.setEnabled(True)
+            return QtWidgets.QMessageBox.about(self, 'Tips', '读取完成')
         self.ivpo_timer_get_setting_step += 1
     
     # 开/关机
@@ -313,6 +330,8 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                 arg = ivpo_data_analysis(res, ivpo_setting1)
                 result = arg[0]
                 
+                print(result)
+                
                 self.ivpo_char_cur_set.setValue(float(result['充电电流设置(A)']))
                 self.ivpo_bat_type.setCurrentIndex(int(result['蓄电池类型']))
                 self.ivpo_over_vol.setValue(float(result['超压电压(V)']))
@@ -336,7 +355,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             elif res[:6] == f'{ivpo_setting2[:4]}26':
                 arg = ivpo_data_analysis(res, ivpo_setting2)
                 result = arg[0]
-
+                
                 print(result)
                 
                 self.ivpo_out_pri.setCurrentIndex(int(result['输出优先级']))
