@@ -78,7 +78,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
         self.setting_dic = {}
         # self.setting_show = {}
         
-        # 接收框的内存地址
+        # 参数设置框的对象
         self.setting_edit = [
             self.set_charge_elec,
             self.set_battery_type,
@@ -243,19 +243,6 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
         tableWidget.setItem(rows, 2, QtWidgets.QTableWidgetItem(hexdata))
         # 滚动条滚动到最下方
         tableWidget.verticalScrollBar().setSliderPosition(tableWidget.rowCount())
-
-    # 定时器方法-写入参数
-    def ac_send_setting_timer_func(self):
-        if self.ac_send_setting_timer_step < len(self.setting_dic):
-            self.send_msg(self.timer_txt[self.ac_send_setting_timer_step])
-            self.ac_send_setting_timer_step += 1
-            self.write_set_data.setText(self.writing_data_tips)
-            self.write_set_data.setEnabled(False)
-        else:
-            self.ac_send_setting_timer.stop()
-            self.write_set_data.setText(self.write_param_tips)
-            self.write_set_data.setEnabled(True)
-            return QtWidgets.QMessageBox.about(self, 'Tips', self.write_data_ok_tips)
     
     # 关闭实时监控定时器
     def ac_close_monitor(self):
@@ -428,7 +415,6 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
                     self.add_tableItem('receive', res, self.ac_show_tab_data, self.log_name)
                     return QtWidgets.QMessageBox.critical(self, 'Error', str(e), QtWidgets.QMessageBox.Ok)  
                 
-                
                 # temp10 = result['额定放电电流']   # 不显示
                 self.prod_type.setText(temp1)
                 self.prod_spec.setText(temp2)
@@ -460,6 +446,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
                 self.error_msg.setText(temp6)
                 temp6 = temp6.replace('\n', ' | ')
                 self.m2_csv += f'{temp1},{temp2},{temp3},{temp4},{temp5},{temp6},{arg[1]}\n'
+            # 开关机状态
             elif res[:6] == f'{ac_get_chgstatus[:4]}02' and self.timer_get_monitor_step == 4:
                 arg = pars_data(res, ac_get_chgstatus)[0]['开关机']
                 if arg == 1:
@@ -468,6 +455,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
                 else:
                     self.switch_machine_btn.setText('开启')
                     self.switch_machine_btn.setStyleSheet(color_close)
+            # 测试模式状态
             elif res[:6] == f'{ac_get_testmode[:4]}02' and self.timer_get_monitor_step == 1:
                 arg = pars_data(res, ac_get_testmode)[0]['测试模式']
                 if arg == 8888:
@@ -656,3 +644,17 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
             self.ac_send_setting_timer_step = 0
             self.ac_send_setting_timer.timeout.connect(self.ac_send_setting_timer_func)
             self.ac_send_setting_timer.start(500)
+    
+    # 定时器方法-写入参数
+    def ac_send_setting_timer_func(self):
+        if self.ac_send_setting_timer_step < len(self.setting_dic):
+            self.send_msg(self.timer_txt[self.ac_send_setting_timer_step])
+            self.ac_send_setting_timer_step += 1
+            self.write_set_data.setText(self.writing_data_tips)
+            self.write_set_data.setEnabled(False)
+        else:
+            self.ac_send_setting_timer.stop()
+            self.write_set_data.setText(self.write_param_tips)
+            self.write_set_data.setEnabled(True)
+            return QtWidgets.QMessageBox.about(self, 'Tips', self.write_data_ok_tips)
+    

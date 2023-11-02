@@ -3,6 +3,7 @@ from .OrderList import *
 from utils.Common import Common
 from utils.CRC16Util import calc_crc
 from .dataAnalysis.ivpo_DA import ivpo_data_analysis
+from settings.ivpo_modbus import ivpo_data_list
 from ui.pf_off_inverter_layout import Ui_MainWindow as invt_off_layout
 from PyQt5 import QtWidgets, QtCore
 
@@ -33,16 +34,55 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         # 加载-实时监控信号槽
         self.ivpo_monitor_slots()
         
+        # 存储修改过的参数
+        self.ivpo_setting_dic = {}
+        
+        # 参数设置框的对象
+        self.ivpo_setting_edit = [
+            self.ivpo_char_cur_set,
+            # self.ivpo_bat_type,
+            self.ivpo_over_vol,
+            self.ivpo_char_limit_vol,
+            self.ivpo_eq_char_vol,
+            self.ivpo_boost_char_vol,
+            self.ivpo_float_char_vol,
+            self.ivpo_float_char_vol,
+            self.ivpo_op_returnvol,
+            self.ivpo_odc_vol,
+            self.ivpo_boost_char_time,
+            self.ivpo_eq_char_interval,
+            self.ivpo_tmp_comp_coe,
+            self.ivpo_bat_char_low_tmp,
+            self.ivpo_full_stop_cur,
+            # self.ivpo_lead_active,
+            # self.ivpo_libat_low_tmp_char,
+            # self.ivpo_relay_out_func,
+            # self.ivpo_out_pri,
+            self.ivpo_fan_start_tmp,
+            self.ivpo_eco_start_power,
+            self.ivpo_acout_vol,
+            self.ivpo_acout_fre_2,
+            self.ivpo_eco_start_time,
+            # self.ivpo_inv_state_mode,
+            # self.ivpo_buzz_set,
+            self.ivpo_out_switch_vol,
+            self.inpo_acinput_cur_set
+        ]
+        
         # 加载-参数设置信号槽
         self.ivpo_parameter_slots()
         
         # 加载-串口数据信号槽
         self.ivpo_clear_port_msg.clicked.connect(functools.partial(self.ivpo_clearRow_btn, self.ivpo_port_tableWidget))
+
+        # 隐藏行序号
+        self.ivpo_port_tableWidget.verticalHeader().setVisible(False)
         
         # 设置串口数据单元格的长度
+        print(self.tabWidget.width())
         self.ivpo_port_tableWidget.setColumnWidth(0,180)
         self.ivpo_port_tableWidget.setColumnWidth(1,100)
-        self.ivpo_port_tableWidget.setColumnWidth(2,750)
+        self.ivpo_port_tableWidget.setColumnWidth(2,760)
         
     # 实时监控信号槽
     def ivpo_monitor_slots(self):
@@ -84,12 +124,72 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
     # 参数设置信号槽
     def ivpo_parameter_slots(self):
         self.ivpo_read_data.clicked.connect(self.ivpo_read_data_func)
+        self.ivpo_write_data.clicked.connect(self.ivpo_write_data_func)
+
+        for s in self.ivpo_setting_edit:
+            s.valueChanged.connect(functools.partial(self.ivpo_setting_edit_func, s))
+        
+    # 获取修改过的参数
+    def ivpo_setting_edit_func(self, set_text):
+        temp = set_text.value()
+        print(temp)
+        
+        if temp != '':
+            name = set_text.whatsThis()[22:-18]
+            print(name)
+            
+            try:
+                send_msg = ivpo_setting1
+                name_data = int(temp) * int(ivpo_data_list[send_msg][name][2])
+            except KeyError:
+                send_msg = ivpo_setting2
+                name_data = int(temp) * int(ivpo_data_list[send_msg][name][2])
+                
+            print(name_data)
+            
+            # 获取地址位
+            addr = ivpo_data_list[send_msg][name][3]
+            send_setting_txt = f'{send_msg[:2]}06{addr}{name_data:04X}'
+            # 组合成发送的地址
+            self.ivpo_setting_dic[name] = f'{send_setting_txt}{calc_crc(send_setting_txt)}'
+            print(self.ivpo_setting_dic[name])
+            
+        else:
+            return QtWidgets.QMessageBox.critical(self, 'Error', '请先修改参数', QtWidgets.QMessageBox.Ok)  
+        
+    # 参数设置-写入数据
+    def ivpo_write_data_func(self):
+        
+        if len(self.ivpo_setting_dic) != 0:
+            self.ivpo_timer_txt = []
+            for k,v in self.ivpo_setting_dic.items():
+                self.ivpo_timer_txt.append(v)
+            self.ivpo_send_setting_timer = QtCore.QTimer()
+            self.ivpo_send_setting_timer_step = 0
+            self.ivpo_send_setting_timer.timeout.connect(self.ivpo_send_setting_timer_func)
+            self.ivpo_send_setting_timer.start(500)
+        print(self.ivpo_setting_dic)
     
+    # 写入参数定时器
+    def ivpo_send_setting_timer_func(self):
+        if self.ivpo_send_setting_timer_step < len(self.ivpo_timer_txt):
+            self.ivpo_send_msg(self.ivpo_timer_txt[self.ivpo_send_setting_timer_step])
+            self.ivpo_send_setting_timer_step += 1
+            self.ivpo_write_data.setEnabled(False)
+        else:
+            self.ivpo_send_setting_timer.stop()
+            self.ivpo_write_data.setEnabled(True)
+            return QtWidgets.QMessageBox.about(self, 'Tips', '数据已写入，请重新获取数据.')
+            
+            
     # 参数设置-读取数据
     def ivpo_read_data_func(self):
         
         # 记录实时监控是否在运行
         self.monit_status = True
+        
+        # 存储修改过的参数
+        self.ivpo_setting_dic = {}
         
         # 创建定时器
         self.ivpo_timer_get_setting = QtCore.QTimer()
@@ -326,11 +426,15 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                 self.ivpo_now_error.setText(temp16)
             
             # 用户设置区1
-            elif res[:6] == f'{ivpo_setting1[:4]}40':
+            elif res[:6] == f'{ivpo_setting1[:4]}40' and len(res) == 138:
                 arg = ivpo_data_analysis(res, ivpo_setting1)
                 result = arg[0]
                 
                 print(result)
+                
+                # 阻止信号发送的对象
+                for obj in self.ivpo_setting_edit:
+                    obj.blockSignals(True)
                 
                 self.ivpo_char_cur_set.setValue(float(result['充电电流设置(A)']))
                 self.ivpo_bat_type.setCurrentIndex(int(result['蓄电池类型']))
@@ -351,12 +455,19 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                 self.ivpo_libat_low_tmp_char.setCurrentIndex(int(result['锂电池低温充电(℃)']))
                 self.ivpo_relay_out_func.setCurrentIndex(int(result['继电器输出功能']))
                 
+                for obj in self.ivpo_setting_edit:
+                    obj.blockSignals(False)
+                
             # 用户设置区2
-            elif res[:6] == f'{ivpo_setting2[:4]}26':
+            elif res[:6] == f'{ivpo_setting2[:4]}26' and len(res) == 86:
                 arg = ivpo_data_analysis(res, ivpo_setting2)
                 result = arg[0]
                 
                 print(result)
+                
+                # 阻止信号发送的对象
+                for obj in self.ivpo_setting_edit:
+                    obj.blockSignals(True)
                 
                 self.ivpo_out_pri.setCurrentIndex(int(result['输出优先级']))
                 self.ivpo_fan_start_tmp.setValue(int(result['风扇启动温度(℃)']))
@@ -368,6 +479,9 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                 self.ivpo_buzz_set.setCurrentIndex(int(result['蜂鸣器设置']))
                 self.ivpo_out_switch_vol.setValue(int(result['输出切换电压(V)']))
                 self.inpo_acinput_cur_set.setValue(int(result['AC输入电流设置(A)']))
+
+                for obj in self.ivpo_setting_edit:
+                    obj.blockSignals(False)
             
             self.ivpo_add_tableItem('receive', res, self.ivpo_port_tableWidget, self.log_name)
             

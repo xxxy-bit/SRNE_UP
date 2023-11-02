@@ -618,6 +618,9 @@
           </item>
           <item row="4" column="2">
            <widget class="QSpinBox" name="ivpo_tmp_comp_coe">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;温度补偿系数(mV/℃/2V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="minimum">
              <number>-10</number>
             </property>
@@ -656,6 +659,9 @@
           </item>
           <item row="7" column="6">
            <widget class="QSpinBox" name="ivpo_eco_start_time">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ECO启动时间(S)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="minimum">
              <number>30</number>
             </property>
@@ -673,6 +679,9 @@
           </item>
           <item row="9" column="2">
            <widget class="QSpinBox" name="inpo_acinput_cur_set">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;AC输入电流设置(A)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="maximum">
              <number>50</number>
             </property>
@@ -708,6 +717,9 @@
           </item>
           <item row="3" column="6">
            <widget class="QSpinBox" name="ivpo_eq_char_interval">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;均衡充电间隔(day)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="maximum">
              <number>255</number>
             </property>
@@ -722,6 +734,9 @@
           </item>
           <item row="4" column="6">
            <widget class="QSpinBox" name="ivpo_full_stop_cur">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;充满截止电流(A)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="maximum">
              <number>120</number>
             </property>
@@ -729,6 +744,9 @@
           </item>
           <item row="3" column="4">
            <widget class="QSpinBox" name="ivpo_boost_char_time">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;提升充电时间(Min)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="minimum">
              <number>10</number>
             </property>
@@ -753,6 +771,9 @@
           </item>
           <item row="4" column="4">
            <widget class="QSpinBox" name="ivpo_bat_char_low_tmp">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;电池充电下限温度(℃)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="minimum">
              <number>-40</number>
             </property>
@@ -777,6 +798,9 @@
           </item>
           <item row="6" column="6">
            <widget class="QSpinBox" name="ivpo_eco_start_power">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ECO启动功率(W)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="minimum">
              <number>30</number>
             </property>
@@ -900,6 +924,9 @@
           </item>
           <item row="0" column="4">
            <widget class="QComboBox" name="ivpo_bat_type">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;蓄电池类型&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <item>
              <property name="text">
               <string>自定义</string>
@@ -929,6 +956,9 @@
           </item>
           <item row="5" column="2">
            <widget class="QComboBox" name="ivpo_lead_active">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;铅酸激活&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <item>
              <property name="text">
               <string>不充电</string>
@@ -943,6 +973,9 @@
           </item>
           <item row="5" column="4">
            <widget class="QComboBox" name="ivpo_libat_low_tmp_char">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;锂电池低温充电(℃)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <item>
              <property name="text">
               <string>关闭</string>
@@ -957,6 +990,9 @@
           </item>
           <item row="5" column="6">
            <widget class="QComboBox" name="ivpo_relay_out_func">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;继电器输出功能&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <item>
              <property name="text">
               <string>关闭</string>
@@ -976,6 +1012,9 @@
           </item>
           <item row="6" column="2">
            <widget class="QComboBox" name="ivpo_out_pri">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;输出优先级&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <item>
              <property name="text">
               <string>市电优先</string>
@@ -990,6 +1029,9 @@
           </item>
           <item row="8" column="2">
            <widget class="QComboBox" name="ivpo_inv_state_mode">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;逆变状态模式&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <item>
              <property name="text">
               <string>OFF</string>
@@ -1009,6 +1051,9 @@
           </item>
           <item row="8" column="4">
            <widget class="QComboBox" name="ivpo_buzz_set">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;蜂鸣器设置&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <item>
              <property name="text">
               <string>0</string>
@@ -1023,6 +1068,9 @@
           </item>
           <item row="8" column="6">
            <widget class="QDoubleSpinBox" name="ivpo_out_switch_vol">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;输出切换电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1036,6 +1084,9 @@
           </item>
           <item row="0" column="2">
            <widget class="QDoubleSpinBox" name="ivpo_char_cur_set">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;充电电流设置(A)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="maximum">
              <double>100.000000000000000</double>
             </property>
@@ -1043,6 +1094,9 @@
           </item>
           <item row="0" column="6">
            <widget class="QDoubleSpinBox" name="ivpo_over_vol">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;超压电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1056,6 +1110,9 @@
           </item>
           <item row="1" column="2">
            <widget class="QDoubleSpinBox" name="ivpo_char_limit_vol">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;充电限制电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1069,6 +1126,9 @@
           </item>
           <item row="1" column="4">
            <widget class="QDoubleSpinBox" name="ivpo_eq_char_vol">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;均衡充电电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1082,6 +1142,9 @@
           </item>
           <item row="1" column="6">
            <widget class="QDoubleSpinBox" name="ivpo_boost_char_vol">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;提升充电电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1095,6 +1158,9 @@
           </item>
           <item row="2" column="2">
            <widget class="QDoubleSpinBox" name="ivpo_float_char_vol">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;浮充充电电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1108,6 +1174,9 @@
           </item>
           <item row="2" column="4">
            <widget class="QDoubleSpinBox" name="ivpo_inchar_rerturn_vol">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;提升充电返回电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1121,6 +1190,9 @@
           </item>
           <item row="2" column="6">
            <widget class="QDoubleSpinBox" name="ivpo_op_returnvol">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;过放返回电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1134,6 +1206,9 @@
           </item>
           <item row="3" column="2">
            <widget class="QDoubleSpinBox" name="ivpo_odc_vol">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;过放电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1147,6 +1222,9 @@
           </item>
           <item row="6" column="4">
            <widget class="QDoubleSpinBox" name="ivpo_fan_start_tmp">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;风扇启动温度(℃)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1160,6 +1238,9 @@
           </item>
           <item row="7" column="2">
            <widget class="QDoubleSpinBox" name="ivpo_acout_vol">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;交流输出电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1173,6 +1254,9 @@
           </item>
           <item row="7" column="4">
            <widget class="QDoubleSpinBox" name="ivpo_acout_fre_2">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;交流输出频率(Hz)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="minimum">
              <double>45.000000000000000</double>
             </property>

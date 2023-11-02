@@ -108,7 +108,7 @@ def ivpo_data_analysis(res, send_data):
                 second = int(temp[2][2:], 16)
                 
                 if year == 0:
-                    time = 'not setting'
+                    time = 'not set'
                 else:
                     time = f'{year}/{month}/{day} {hour}:{minute}:{second}'
                 print_dic[k] = time
