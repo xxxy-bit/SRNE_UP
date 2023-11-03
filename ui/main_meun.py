@@ -144,14 +144,15 @@ class Ui_MainWindow(object):
         self.bms_text.raise_()
         self.listView_8.raise_()
         self.inverter_text.raise_()
-        self.bmsButton.raise_()
         self.acchargeButton.raise_()
+        self.bmsButton.raise_()
         self.InverterButton.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 22))
         self.menubar.setObjectName("menubar")
         self.menu = QtWidgets.QMenu(self.menubar)
+        self.menu.setGeometry(QtCore.QRect(-1603, 303, 117, 82))
         self.menu.setObjectName("menu")
         MainWindow.setMenuBar(self.menubar)
         self.lang_zh = QtWidgets.QAction(MainWindow)
@@ -167,7 +168,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "SRNE"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "SRNE v0.1"))
         self.label.setText(_translate("MainWindow", "选择连接的设备"))
         self.ac_text.setText(_translate("MainWindow", "AC-DC 充电器"))
         self.bms_text.setText(_translate("MainWindow", "BMS"))
