@@ -40,7 +40,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         # 参数设置框的对象
         self.ivpo_setting_edit = [
             self.ivpo_char_cur_set,
-            # self.ivpo_bat_type,
+            self.ivpo_bat_type,
             self.ivpo_over_vol,
             self.ivpo_char_limit_vol,
             self.ivpo_eq_char_vol,
@@ -54,17 +54,17 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             self.ivpo_tmp_comp_coe,
             self.ivpo_bat_char_low_tmp,
             self.ivpo_full_stop_cur,
-            # self.ivpo_lead_active,
-            # self.ivpo_libat_low_tmp_char,
-            # self.ivpo_relay_out_func,
-            # self.ivpo_out_pri,
+            self.ivpo_lead_active,
+            self.ivpo_libat_low_tmp_char,
+            self.ivpo_relay_out_func,
+            self.ivpo_out_pri,
             self.ivpo_fan_start_tmp,
             self.ivpo_eco_start_power,
             self.ivpo_acout_vol,
             self.ivpo_acout_fre_2,
             self.ivpo_eco_start_time,
-            # self.ivpo_inv_state_mode,
-            # self.ivpo_buzz_set,
+            self.ivpo_inv_state_mode,
+            self.ivpo_buzz_set,
             self.ivpo_out_switch_vol,
             self.inpo_acinput_cur_set
         ]
@@ -127,17 +127,31 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         self.ivpo_write_data.clicked.connect(self.ivpo_write_data_func)
 
         for s in self.ivpo_setting_edit:
-            s.valueChanged.connect(functools.partial(self.ivpo_setting_edit_func, s))
-        
+            try:
+                s.valueChanged.connect(functools.partial(self.ivpo_setting_edit_func, s))
+            except AttributeError:
+                s.currentIndexChanged.connect(functools.partial(self.ivpo_setting_edit_func, s))
+                
     # 获取修改过的参数
     def ivpo_setting_edit_func(self, set_text):
-        temp = set_text.value()
-        print(temp)
-        
+        try:
+            temp = set_text.value()
+        except AttributeError:
+            current_text = set_text.currentText()
+            
+            # 查找文本的下标
+            temp = set_text.findText(current_text)
+            
         if temp != '':
             name = set_text.whatsThis()[22:-18]
-            print(name)
+            # print(name)
             
+            if name == '温度补偿系数(mV/℃/2V)':
+                temp = abs(temp)
+            elif name == '电池充电下限温度(℃)':
+                if temp < 0:
+                    temp = abs(temp) + 128
+                
             try:
                 send_msg = ivpo_setting1
                 name_data = int(temp) * int(ivpo_data_list[send_msg][name][2])

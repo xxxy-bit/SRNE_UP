@@ -137,7 +137,7 @@
                  <item row="0" column="0">
                   <widget class="QLabel" name="label">
                    <property name="text">
-                    <string>系统电压</string>
+                    <string>系统最高支持电压</string>
                    </property>
                   </widget>
                  </item>
@@ -442,6 +442,9 @@
                  </item>
                  <item row="3" column="2">
                   <widget class="QPushButton" name="ivpo_export_monit_data">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
                    <property name="text">
                     <string>导出数据</string>
                    </property>
@@ -990,6 +993,9 @@
           </item>
           <item row="5" column="6">
            <widget class="QComboBox" name="ivpo_relay_out_func">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="whatsThis">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;继电器输出功能&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
