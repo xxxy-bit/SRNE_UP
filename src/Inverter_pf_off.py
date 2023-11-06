@@ -14,7 +14,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         self.setupUi(self)
         self.Invt_pf_off_layout_init()
         # self.Invt_pf_off_i18n_init()
-        self.setWindowTitle(f'{self.windowTitle()} v0.0.1')
+        self.setWindowTitle(f'{self.windowTitle()} v0.1.2')
         
     # 初始化加载所需
     def Invt_pf_off_layout_init(self):
@@ -354,7 +354,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
 
                 # 异常后打印问题字段，防止程序崩溃
                 try:
-                    temp1 = result['系统电压']
+                    temp1 = result['系统最高支持电压']
                     temp2 = result['产品类型']
                     temp3 = result['产品型号']
                     temp4 = result['软件版本']
@@ -467,7 +467,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                 self.ivpo_full_stop_cur.setValue(int(result['充满截止电流(A)']))
                 self.ivpo_lead_active.setCurrentIndex(int(result['铅酸激活']))
                 self.ivpo_libat_low_tmp_char.setCurrentIndex(int(result['锂电池低温充电(℃)']))
-                self.ivpo_relay_out_func.setCurrentIndex(int(result['继电器输出功能']))
+                self.ivpo_relay_out_func.setCurrentIndex(int(result['接地继电器']))
                 
                 for obj in self.ivpo_setting_edit:
                     obj.blockSignals(False)

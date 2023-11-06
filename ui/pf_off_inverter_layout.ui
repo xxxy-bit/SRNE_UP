@@ -761,7 +761,7 @@
           <item row="5" column="5">
            <widget class="QLabel" name="label_50">
             <property name="text">
-             <string>继电器输出功能</string>
+             <string>接地继电器</string>
             </property>
            </widget>
           </item>
@@ -994,10 +994,10 @@
           <item row="5" column="6">
            <widget class="QComboBox" name="ivpo_relay_out_func">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="whatsThis">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;继电器输出功能&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;接地继电器&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <item>
              <property name="text">
@@ -1006,12 +1006,7 @@
             </item>
             <item>
              <property name="text">
-              <string>逆变模式开启</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>控制反转</string>
+              <string>开启</string>
              </property>
             </item>
            </widget>
