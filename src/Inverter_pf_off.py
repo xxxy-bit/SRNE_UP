@@ -31,6 +31,12 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         # 加载串口列表
         self.ivpo_port_list.addItems(Common.load_serial_list())
         
+        # 创建监控日志文件
+        self.ivpo_now = datetime.datetime.now().strftime('%Y-%m-%d_%H_%M_%S')
+        self.pd_csv = ''
+        self.ct_csv = ''
+        self.iv_csv = ''
+        
         # 加载-实时监控信号槽
         self.ivpo_monitor_slots()
         
@@ -91,6 +97,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         self.ivpo_factory_reset.clicked.connect(self.ivpo_factory_reset_func)
         self.ivpo_reset.clicked.connect(self.ivpo_reset_func)
         self.ivpo_open_moni.clicked.connect(self.ivpo_open_moni_func)
+        self.ivpo_export_monit_data.clicked.connect(self.ivpo_export_monit_data_func)
     
     # 开/关串口信号
     def ivpo_open_port_func(self):
@@ -121,6 +128,51 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             self.ivpo_port_list.setEnabled(True)
             self.ivpo_timer_recevice.stop()
     
+    # 导出数据
+    def ivpo_export_monit_data_func(self):
+        # 创建监控日志
+        log_monitor_dir = os.path.join('log', f'ivpo_monitor_{self.ivpo_now}')
+        log_monitor_product_name = os.path.join(log_monitor_dir, f'product_{self.ivpo_now}.csv')
+        log_monitor_control_name = os.path.join(log_monitor_dir, f'control_{self.ivpo_now}.csv')
+        log_monitor_inverter_name = os.path.join(log_monitor_dir, f'inverter_{self.ivpo_now}.csv')
+        if os.path.exists(log_monitor_dir) == False:
+            os.makedirs(log_monitor_dir)
+            
+        if os.path.exists(log_monitor_product_name) == False:
+            with open(log_monitor_product_name, 'w') as f:
+                pd_txt = '系统最高支持电压,产品类型,产品型号,软件版本,硬件版本,产品序列号,设备地址,设备名称,原始数据(Hex)'
+                f.write(pd_txt + '\n')
+                
+        if os.path.exists(log_monitor_control_name) == False:
+            with open(log_monitor_control_name, 'w') as f:
+                ct_txt = '蓄电池电压,充电电流,充电状态,原始数据(Hex)'
+                f.write(ct_txt + '\n')
+                
+        if os.path.exists(log_monitor_inverter_name) == False:
+            with open(log_monitor_inverter_name, 'w') as f:
+                iv_txt = '当前时间,交流输出有功功率,交流输出电压1,交流输出电流,交流输出频率,温度A,温度B,温度C,温度D,外部温度,交流输入频率,交流输入有功功率,交流输入电压A,交流输入电流A,交流输出电压2,当前故障码,原始数据(Hex)'
+                f.write(iv_txt + '\n')
+                
+        # 写入监控日志
+        try:
+            with open(log_monitor_product_name, 'a') as f:
+                f.write(self.pd_csv)
+            with open(log_monitor_control_name, 'a') as f:
+                f.write(self.ct_csv)
+            with open(log_monitor_inverter_name, 'a') as f:
+                f.write(self.iv_csv)
+                
+        except PermissionError:
+            return QtWidgets.QMessageBox.critical(self, 'Error', '文件被占用，请关闭Excel文件后重试.', QtWidgets.QMessageBox.Ok)  
+        except Exception as e:
+            return QtWidgets.QMessageBox.critical(self, 'Error', f'{e}\n未知错误，请联系相关开发人员.', QtWidgets.QMessageBox.Ok)  
+        
+        # 是否需要主动打开目录
+        open_dir =os.path.join(os.getcwd(), log_monitor_dir)
+        if QtWidgets.QMessageBox.question(self, 'Tips', f'导出成功，目录位置为：{open_dir}\n是否需要打开该目录?', \
+                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
+            os.startfile(open_dir)
+            
     # 参数设置信号槽
     def ivpo_parameter_slots(self):
         self.ivpo_read_data.clicked.connect(self.ivpo_read_data_func)
@@ -194,7 +246,6 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             self.ivpo_send_setting_timer.stop()
             self.ivpo_write_data.setEnabled(True)
             return QtWidgets.QMessageBox.about(self, 'Tips', '数据已写入，请重新获取数据.')
-            
             
     # 参数设置-读取数据
     def ivpo_read_data_func(self):
@@ -375,6 +426,8 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                 self.ivpo_dev_addr.setText(temp7)
                 self.ivpo_dev_name.setText(temp8)
             
+                self.pd_csv += f'{temp1},{temp2},{temp3},{temp4},{temp5},{temp6},{temp7},{temp8},{arg[1]}\n'
+            
             # 总运行天数
             elif res[:6] == f'{ivpo_history_days[:4]}02' and len(res) == 14:
                 arg = ivpo_data_analysis(res, ivpo_history_days)
@@ -396,6 +449,8 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                 self.ivpo_bat_vol.setText(temp1)
                 self.ivpo_char_cur.setText(temp2)
                 self.ivpo_char_status.setText(temp3)
+            
+                self.ct_csv += f'{temp1},{temp2},{temp3},{arg[1]}\n'
             
             # 逆变数据区
             elif res[:6] == f'{ivpo_ivt_msg[:4]}50' and len(res) == 170:
@@ -438,7 +493,9 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                 self.ivpo_acinput_curA.setText(temp14)
                 self.ivpo_acout_vol2.setText(temp15)
                 self.ivpo_now_error.setText(temp16)
-            
+
+                self.iv_csv += f'{temp1},{temp2},{temp3},{temp4},{temp5},{temp6},{temp7},{temp8},{temp9},{temp10},{temp11},{temp12},{temp13},{temp14},{temp15},{temp16},{arg[1]}\n'
+                
             # 用户设置区1
             elif res[:6] == f'{ivpo_setting1[:4]}40' and len(res) == 138:
                 arg = ivpo_data_analysis(res, ivpo_setting1)
@@ -498,5 +555,3 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                     obj.blockSignals(False)
             
             self.ivpo_add_tableItem('receive', res, self.ivpo_port_tableWidget, self.log_name)
-            
-            

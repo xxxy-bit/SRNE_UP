@@ -254,7 +254,7 @@ class Ui_MainWindow(object):
         self.ivpo_open_port.setObjectName("ivpo_open_port")
         self.gridLayout_6.addWidget(self.ivpo_open_port, 1, 2, 1, 1)
         self.ivpo_export_monit_data = QtWidgets.QPushButton(self.groupBox_2)
-        self.ivpo_export_monit_data.setEnabled(False)
+        self.ivpo_export_monit_data.setEnabled(True)
         self.ivpo_export_monit_data.setObjectName("ivpo_export_monit_data")
         self.gridLayout_6.addWidget(self.ivpo_export_monit_data, 3, 2, 1, 1)
         self.label_28 = QtWidgets.QLabel(self.groupBox_2)

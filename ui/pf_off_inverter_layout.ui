@@ -443,7 +443,7 @@
                  <item row="3" column="2">
                   <widget class="QPushButton" name="ivpo_export_monit_data">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="text">
                     <string>导出数据</string>

@@ -113,11 +113,8 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
         self.ac_show_tab_data.setColumnWidth(1,100)
         self.ac_show_tab_data.setColumnWidth(2,765)
         
-        # 创建日志目录
-        if os.path.exists('log') == False:
-            os.mkdir('log')
-        
         # 创建日志文件
+        self.now = datetime.datetime.now().strftime('%Y-%m-%d_%H_%M_%S')
         self.log_name = Common.creat_log_file('log')
         
         # 创建监控日志文件
@@ -161,9 +158,9 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
     # 创建监控日志
     def ac_output_monitor_func(self):
         # 创建监控日志
-        log_monitor_dir = f'log/monitor_{self.now}'
-        log_monitor_m1_name = f'{log_monitor_dir}/m1_{self.now}.csv'
-        log_monitor_m2_name = f'{log_monitor_dir}/m2_{self.now}.csv'
+        log_monitor_dir = os.path.join('log', f'ac_monitor_{self.now}')
+        log_monitor_m1_name = os.path.join(log_monitor_dir, f'm1_{self.now}.csv')
+        log_monitor_m2_name = os.path.join(log_monitor_dir, f'm2_{self.now}.csv')
         if os.path.exists(log_monitor_dir) == False:
             os.makedirs(log_monitor_dir)
         if os.path.exists(log_monitor_m1_name) == False:
