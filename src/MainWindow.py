@@ -4,7 +4,6 @@ import os, locale, functools
 from PyQt5 import QtCore, QtWidgets, QtCore
 from PyQt5.QtCore import QSettings
 from ui.main_meun import Ui_MainWindow as main_menu
-from .AcCharge import AcLayout
 from .QssStyle import *
 
 
@@ -31,17 +30,21 @@ class MainWindow(QtWidgets.QMainWindow, main_menu):
         # self.acchargeButton.hide()
         # self.InverterButton.hide()
         
-        self.acchargeButton.clicked.connect(self.goAcCharge) # 跳转AC/DC充电器
-        self.acchargeButton.enterEvent = self.ac_enEvent
-        self.acchargeButton.leaveEvent = self.ac_leEvent
+        self.acchargerBtn.clicked.connect(self.goAcCharger) # 跳转AC充电器
+        self.acchargerBtn.enterEvent = self.ac_enEvent
+        self.acchargerBtn.leaveEvent = self.ac_leEvent
         
-        self.InverterButton.clicked.connect(self.goInverter) # 跳转逆变器
-        self.InverterButton.enterEvent = self.inv_enEvent
-        self.InverterButton.leaveEvent = self.inv_leEvent
+        self.dcchargerBtn.clicked.connect(self.goDcCharger) # 跳转DC充电器
+        self.dcchargerBtn.enterEvent = self.dc_enEvent
+        self.dcchargerBtn.leaveEvent = self.dc_leEvent
         
-        self.bmsButton.clicked.connect(self.goBms) # 跳转BMS
-        self.bmsButton.enterEvent = self.bms_enEvent
-        self.bmsButton.leaveEvent = self.bms_leEvent
+        self.InverterBtn.clicked.connect(self.goInverter) # 跳转逆变器
+        self.InverterBtn.enterEvent = self.inv_enEvent
+        self.InverterBtn.leaveEvent = self.inv_leEvent
+        
+        self.bmsBtn.clicked.connect(self.goBms) # 跳转BMS
+        self.bmsBtn.enterEvent = self.bms_enEvent
+        self.bmsBtn.leaveEvent = self.bms_leEvent
     
     def ac_enEvent(self, event):
         self.ac_bg.setStyleSheet(main_ac_bg_ent_event)
@@ -51,6 +54,14 @@ class MainWindow(QtWidgets.QMainWindow, main_menu):
         self.ac_bg.setStyleSheet(main_ac_bg_lev_event)
         self.ac_text.setStyleSheet(main_ac_txt_lev_event)
             
+    def dc_enEvent(self, event):
+        self.dc_bg.setStyleSheet(main_ac_bg_ent_event)
+        self.dc_text.setStyleSheet(main_ac_txt_ent_event)
+            
+    def dc_leEvent(self, event):
+        self.dc_bg.setStyleSheet(main_ac_bg_lev_event)
+        self.dc_text.setStyleSheet(main_ac_txt_lev_event)
+        
     def bms_enEvent(self, event):
         self.bms_bg.setStyleSheet(main_ac_bg_ent_event)
         self.bms_text.setStyleSheet(main_ac_txt_ent_event)
@@ -67,10 +78,17 @@ class MainWindow(QtWidgets.QMainWindow, main_menu):
         self.inverter_bg.setStyleSheet(main_ac_bg_lev_event)
         self.inverter_text.setStyleSheet(main_ac_txt_lev_event)
         
-    def goAcCharge(self):
+    def goAcCharger(self):
+        from .AcCharge import AcLayout
         self.ac_layout = AcLayout()
         self.close()
         self.ac_layout.show()
+
+    def goDcCharger(self):
+        from .DcCharger import DCLayout
+        self.dc_layout = DCLayout()
+        self.close()
+        self.dc_layout.show()
 
     def goInverter(self):
         from .Inverter_pf_off import Invt_pf_off_layout

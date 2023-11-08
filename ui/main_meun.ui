@@ -294,7 +294,7 @@ font-family: &quot;微软雅黑&quot;;</string>
        <enum>QFrame::NoFrame</enum>
       </property>
      </widget>
-     <widget class="QListView" name="ac_bg_2">
+     <widget class="QListView" name="dc_bg">
       <property name="geometry">
        <rect>
         <x>336</x>
@@ -318,7 +318,7 @@ border-bottom-right-radius:10px;</string>
        <enum>QListView::ListMode</enum>
       </property>
      </widget>
-     <widget class="QLabel" name="ac_text_2">
+     <widget class="QLabel" name="dc_text">
       <property name="geometry">
        <rect>
         <x>370</x>
@@ -353,7 +353,7 @@ font-family: &quot;微软雅黑&quot;;</string>
        <enum>QFrame::NoFrame</enum>
       </property>
      </widget>
-     <widget class="QPushButton" name="acchargeButton">
+     <widget class="QPushButton" name="acchargerBtn">
       <property name="geometry">
        <rect>
         <x>70</x>
@@ -375,7 +375,7 @@ font-family: &quot;微软雅黑&quot;;</string>
        <string/>
       </property>
      </widget>
-     <widget class="QPushButton" name="bmsButton">
+     <widget class="QPushButton" name="bmsBtn">
       <property name="geometry">
        <rect>
         <x>70</x>
@@ -397,7 +397,7 @@ font-family: &quot;微软雅黑&quot;;</string>
        <string/>
       </property>
      </widget>
-     <widget class="QPushButton" name="InverterButton">
+     <widget class="QPushButton" name="InverterBtn">
       <property name="geometry">
        <rect>
         <x>600</x>
@@ -419,6 +419,22 @@ font-family: &quot;微软雅黑&quot;;</string>
        <string/>
       </property>
      </widget>
+     <widget class="QPushButton" name="dcchargerBtn">
+      <property name="geometry">
+       <rect>
+        <x>336</x>
+        <y>62</y>
+        <width>201</width>
+        <height>241</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: transparent;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
      <zorder>ac_bg</zorder>
      <zorder>ac_text</zorder>
      <zorder>listView_6</zorder>
@@ -426,14 +442,15 @@ font-family: &quot;微软雅黑&quot;;</string>
      <zorder>inverter_bg</zorder>
      <zorder>inverter_text</zorder>
      <zorder>listView_8</zorder>
-     <zorder>ac_bg_2</zorder>
-     <zorder>ac_text_2</zorder>
+     <zorder>dc_bg</zorder>
+     <zorder>dc_text</zorder>
      <zorder>listView_9</zorder>
      <zorder>bms_text</zorder>
      <zorder>listView_7</zorder>
-     <zorder>acchargeButton</zorder>
-     <zorder>InverterButton</zorder>
-     <zorder>bmsButton</zorder>
+     <zorder>acchargerBtn</zorder>
+     <zorder>InverterBtn</zorder>
+     <zorder>bmsBtn</zorder>
+     <zorder>dcchargerBtn</zorder>
     </widget>
    </widget>
   </widget>

@@ -276,7 +276,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
             # 定时器-开启接收数据
             self.timer_recevice = QtCore.QTimer()
             self.timer_recevice.timeout.connect(self.timer_recevice_func)
-            self.timer_recevice.start(100)
+            self.timer_recevice.start(500)
         else:
             try:
                 self.ser.close()
