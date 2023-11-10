@@ -20,7 +20,7 @@ ac_testmode_on = 'ff06e00222b8'     # 进入测试模式
 
 # DC-DC充电器
 dc_product_monitor = 'ff03000a005f' # 获取产品信息
-dc_control_monitor = 'ff03e001003a' # 获取控制器信息
+dc_control_monitor = 'ff030100002b' # 获取控制器信息
 dc_sw_on = 'ff06df000001'           # 开机
 dc_sw_off = 'ff06df000000'          # 关机
 dc_device_reset = 'ff06df010001'    # 复位

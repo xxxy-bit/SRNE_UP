@@ -492,7 +492,7 @@
                  <item row="0" column="1">
                   <widget class="QPushButton" name="dc_onoff_power">
                    <property name="text">
-                    <string>开启</string>
+                    <string>开机</string>
                    </property>
                   </widget>
                  </item>
@@ -822,14 +822,14 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="dc_clear_table">
             <property name="text">
              <string>清空内容</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QTableWidget" name="tableWidget">
+           <widget class="QTableWidget" name="dc_tableWidget">
             <column>
              <property name="text">
               <string>Time</string>

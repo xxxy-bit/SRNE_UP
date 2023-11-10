@@ -85,7 +85,6 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         self.ivpo_port_tableWidget.verticalHeader().setVisible(False)
         
         # 设置串口数据单元格的长度
-        print(self.tabWidget.width())
         self.ivpo_port_tableWidget.setColumnWidth(0,180)
         self.ivpo_port_tableWidget.setColumnWidth(1,100)
         self.ivpo_port_tableWidget.setColumnWidth(2,760)
@@ -366,8 +365,6 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         # 滚动条滚动到最下方
         tableWidget.verticalScrollBar().setSliderPosition(tableWidget.rowCount())
 
-        # 发送数据
-    
     # 清空表格
     def ivpo_clearRow_btn(self, tableWidget):
         rowPosition = tableWidget.rowCount()
