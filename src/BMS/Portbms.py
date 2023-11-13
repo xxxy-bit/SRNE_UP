@@ -886,7 +886,8 @@ class Portbms(BmsLayout):
                         elif palnum_label2 in k or bms_history_label3 in k: # 温度、电流
                             data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))} {v[3]}'
                         else:
-                            data = f'{int(temp, 16)} {v[3]}'
+                            # data = f'{int(temp, 16)} {v[3]}'
+                            data = f'{Common.format_num(int(temp, 16) / abs(v[2]))} {v[3]}'
                         if k in self.col_labels:
                             self.palTable.setItem(self.col_labels.index(k), int(adr)-1, QTableWidgetItem(str(data)))
                 elif res[:2] == '7e' and len(res) == 200:  # 获取 PACK 告警量

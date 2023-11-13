@@ -173,7 +173,7 @@ class BmsLayout(QWidget):
             'Cell' + palnum_label1 + '_13','Cell' + palnum_label1 + '_14','Cell' + palnum_label1 + '_15','Cell' + palnum_label1 + '_16',
             palnum_label2 + '_1',palnum_label2 + '_2',palnum_label2 + '_3',palnum_label2 + '_4',palnum_label2 + '_5',
             palnum_label2 + '_6',palnum_label2 + '_7',palnum_label2 + '_8',palnum_label2 + '_9',
-            palnum_label3,'PACK' + paldata_label3,'PACK' + battery_label3,'PACK' + battery_label4,
+            palnum_label3,'PACK' + paldata_label4,'PACK' + battery_label3,'PACK' + battery_label4,
             palnum_label7, palnum_label8,'PACK SOC',
             'Cell' + palnum_label9 + '_1','Cell' + palnum_label9 + '_2','Cell' + palnum_label9 + '_3','Cell' + palnum_label9 + '_4',
             'Cell' + palnum_label9 + '_5','Cell' + palnum_label9 + '_6','Cell' + palnum_label9 + '_7','Cell' + palnum_label9 + '_8',
@@ -572,19 +572,19 @@ class BmsLayout(QWidget):
         self.tab3_form_dic = {}
 
         monVolWarn_groupBox = QGroupBox(parset_label1)
-        monVolWarn_form = self.tab3_createForm(self.tab3_form_dic, f'{parset1_label1}(V)', f'{parset1_label2}(V)', f'{parset1_label3}(V)', f'{parset1_label4}(S)')
+        monVolWarn_form = self.tab3_createForm(self.tab3_form_dic, f'{parset1_label1}(V)', f'{parset1_label2}(V)', f'{parset1_label3}(V)', f'{parset1_label4}(mS)')
         monVolWarn_groupBox.setLayout(monVolWarn_form)
 
         monVolProt_groupBox = QGroupBox(parset_label2)
-        monVolProt_form = self.tab3_createForm(self.tab3_form_dic, f'{parset2_label1}(V)', f'{parset2_label2}(V)', f'{parset2_label3}(V)', f'{parset2_label4}(S)')
+        monVolProt_form = self.tab3_createForm(self.tab3_form_dic, f'{parset2_label1}(V)', f'{parset2_label2}(V)', f'{parset2_label3}(V)', f'{parset2_label4}(mS)')
         monVolProt_groupBox.setLayout(monVolProt_form)
 
         allVolWarn_groupBox = QGroupBox(parset_label3)
-        allVolWarn_form = self.tab3_createForm(self.tab3_form_dic, f'{parset3_label1}(V)', f'{parset3_label2}(V)', f'{parset3_label3}(V)', f'{parset3_label4}(S)')
+        allVolWarn_form = self.tab3_createForm(self.tab3_form_dic, f'{parset3_label1}(V)', f'{parset3_label2}(V)', f'{parset3_label3}(V)', f'{parset3_label4}(mS)')
         allVolWarn_groupBox.setLayout(allVolWarn_form)
 
         allVolProt_groupBox = QGroupBox(parset_label4)
-        allVolProt_form = self.tab3_createForm(self.tab3_form_dic, f'{parset4_label1}(V)', f'{parset4_label2}(V)', f'{parset4_label3}(V)', f'{parset4_label4}(S)')
+        allVolProt_form = self.tab3_createForm(self.tab3_form_dic, f'{parset4_label1}(V)', f'{parset4_label2}(V)', f'{parset4_label3}(V)', f'{parset4_label4}(mS)')
         allVolProt_groupBox.setLayout(allVolProt_form)
 
         tab3_layout_H1.addWidget(monVolWarn_groupBox)   # 单体过充设置
@@ -611,14 +611,15 @@ class BmsLayout(QWidget):
 
         ecProt_groupBox = QGroupBox(parset_label7)
         ecProt_form = self.tab3_createForm(self.tab3_form_dic, 
-            f'{parset7_label1}(A)', f'{parset7_label2}(A)', f'{parset7_label3}(S)', 
-            f'{parset7_label4}(A)', f'{parset7_label5}(S)', f'{parset7_label6}(uS)')
+            f'{parset7_label1}(A)', f'{parset7_label2}(A)', f'{parset7_label3}(mS)', 
+            # f'{parset7_label4}(A)', f'{parset7_label5}(mS)', f'{parset7_label6}(uS)')
+            f'{parset7_label4}(A)', f'{parset7_label5}(mS)')
         ecProt_groupBox.setLayout(ecProt_form)
 
         ecWarn_groupBox = QGroupBox(parset_label8)
         ecWarn_form = self.tab3_createForm(self.tab3_form_dic, 
-            f'{parset8_label1}(A)', f'{parset8_label2}(A)', f'{parset8_label3}(S)', 
-            f'{parset8_label4}(A)', f'{parset8_label5}(S)')
+            f'{parset8_label1}(A)', f'{parset8_label2}(A)', f'{parset8_label3}(mS)', 
+            f'{parset8_label4}(A)', f'{parset8_label5}(mS)')
         ecWarn_groupBox.setLayout(ecWarn_form)
 
         tab3_layout_H2.addWidget(temWarn_groupBox)   # 高温设置
