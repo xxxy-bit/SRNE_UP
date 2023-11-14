@@ -1,12 +1,11 @@
 <RCC>
   <qresource prefix="/">
     <file>icon-语言.png</file>
+    <file>BMS.png</file>
     <file>硕日logo.svg</file>
     <file>背景.png</file>
-    <file>bms.png</file>
     <file>选择连接设备框.png</file>
     <file>AC充电器.png</file>
-    <file>bms(暂用).png</file>
     <file>逆变器.png</file>
   </qresource>
 </RCC>

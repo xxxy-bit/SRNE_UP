@@ -786,6 +786,8 @@ class Portbms(BmsLayout):
                             for _ in p01['故障位']:
                                 txt = '\n'.join(p01['故障位'])
                                 self.warn_status_txt.setText(txt)
+                        else:
+                            self.warn_status_txt.setText('')
 
                         warn_txt = '\n'.join(p01['警告位1']) + '\n' + '\n'.join(p01['警告位2'])
                         self.error_status_txt.setText(warn_txt)

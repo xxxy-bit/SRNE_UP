@@ -26,7 +26,7 @@ class BmsLayout(QWidget):
         #     self.json_rs485 = json.load(f)
         self.json_rs485 = get_bms_rs485_list()
         
-        self.setWindowTitle('Portbms v1.2.3')
+        self.setWindowTitle('Portbms v1.2.4')
         self.resize(1000, 765)   # 可拉伸
         # self.setFixedSize(1800, 950)   # 固定界面大小，不可拉伸
         
