@@ -111,7 +111,7 @@ color:#F37C00;</string>
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>-270</y>
+       <y>-248</y>
        <width>854</width>
        <height>650</height>
       </rect>
@@ -434,7 +434,6 @@ font-family: &quot;微软雅黑&quot;;</string>
        <string/>
       </property>
      </widget>
-     <zorder>bmsBtn</zorder>
      <zorder>ac_bg</zorder>
      <zorder>ac_text</zorder>
      <zorder>listView_6</zorder>
@@ -450,6 +449,7 @@ font-family: &quot;微软雅黑&quot;;</string>
      <zorder>InverterBtn</zorder>
      <zorder>dcchargerBtn</zorder>
      <zorder>listView_7</zorder>
+     <zorder>bmsBtn</zorder>
     </widget>
    </widget>
   </widget>

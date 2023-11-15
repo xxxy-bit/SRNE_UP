@@ -97,6 +97,9 @@ class Portbms(BmsLayout):
         
     # 初始化数据
     def initDate(self):
+        
+        self.setStyleSheet(all_btn)
+        
         self.ser = serial.Serial()
         self.SendMsg = SendMsg()
         self.ResMsg = ResMsg()
@@ -470,6 +473,7 @@ class Portbms(BmsLayout):
             self.port = self.port_combobox.currentText()
             self.baud = self.baud_combobox.currentText()
             self.ser.port = self.port
+            self.ser.timeout = 0.07
             self.ser.baudrate = int(self.baud)
             try:
                 self.ser.open()
