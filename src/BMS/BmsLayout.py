@@ -354,11 +354,11 @@ class BmsLayout(QWidget):
         tem_h = QHBoxLayout()
         
         tem_form1_bg = QWidget()
-        tem_form1_bg.setStyleSheet("background-color: rgb(249, 252, 255)")
+        tem_form1_bg.setStyleSheet("background-color: #F9FCFF")
         tem_form1 = QFormLayout(tem_form1_bg)
         
         tem_form2_bg = QWidget()
-        tem_form2_bg.setStyleSheet("background-color: rgb(249, 252, 255)")
+        tem_form2_bg.setStyleSheet("background-color: #F9FCFF")
         tem_form2 = QFormLayout(tem_form2_bg)
         
         tem_form3 = QFormLayout()
@@ -401,37 +401,71 @@ class BmsLayout(QWidget):
         # 左边-单体电压
         tab1_layout_left_mid = QHBoxLayout()
         voltage_groupBox = QGroupBox(group_tabel3)
-        vol_H = QHBoxLayout()
-        vol_form1 = QFormLayout()
-        vol_form2 = QFormLayout()
-        vol_form3 = QFormLayout()
+        vol_V = QVBoxLayout()
+        
+        vol_V_H1 = QHBoxLayout()
+        
+        vol_V_H1_1_bg = QWidget()
+        vol_V_H1_1_bg.setStyleSheet("background-color: #FFFAF5")
+        vol_V_H1_1 = QHBoxLayout(vol_V_H1_1_bg)
+        
+        self.cellLine1 = QLineEdit()
+        self.cellLine1.setStyleSheet(cellVol1_LineEdit)
+        vol_V_H1_1.addWidget(QLabel(vol_label17 + '(V)'))
+        vol_V_H1_1.addWidget(self.cellLine1)
+        vol_V_H1.addWidget(vol_V_H1_1_bg)
+        
+        vol_V_H1_2_bg = QWidget()
+        vol_V_H1_2_bg.setStyleSheet("background-color: #FFFAF5")
+        vol_V_H1_2 = QHBoxLayout(vol_V_H1_2_bg)
+        
+        self.cellLine2 = QLineEdit()
+        self.cellLine2.setStyleSheet(cellVol1_LineEdit)
+        vol_V_H1_2.addWidget(QLabel(vol_label18 + '(V)'))
+        vol_V_H1_2.addWidget(self.cellLine2)
+        vol_V_H1.addWidget(vol_V_H1_2_bg)
+        
+        vol_V_H1_3_bg = QWidget()
+        vol_V_H1_3_bg.setStyleSheet("background-color: #FFFAF5")
+        vol_V_H1_3 = QHBoxLayout(vol_V_H1_3_bg)
+        
+        self.cellLine3 = QLineEdit()
+        self.cellLine3.setStyleSheet(cellVol1_LineEdit)
+        vol_V_H1_3.addWidget(QLabel(vol_label19 + '(V)'))
+        vol_V_H1_3.addWidget(self.cellLine3)
+        
+        vol_V_H1.addWidget(vol_V_H1_3_bg)
 
-        self.cell_vol_8 = {}
+        vol_V_H2_bg = QWidget()
+        vol_V_H2_bg.setStyleSheet("background-color: #FDFCFB")
+        vol_V_H2 = QHBoxLayout(vol_V_H2_bg)
+        
+        vol_form4 = QFormLayout()
+        vol_form8 = QFormLayout()
+        vol_form12 = QFormLayout()
+        vol_form16 = QFormLayout()
+
+        vol_V_H2.addLayout(vol_form4)
+        vol_V_H2.addLayout(vol_form8)
+        vol_V_H2.addLayout(vol_form12)
+        vol_V_H2.addLayout(vol_form16)
+        
         self.cell_vol_16 = {}
         
-        for i in range(8):
-            self.cell_vol_8[f'cell_{i+1}(V)'] = QLineEdit()
-        for k,v in self.cell_vol_8.items():
-            self.cell_vol_8[k].setReadOnly(True)
-            self.cell_vol_8[k].setAlignment(Qt.AlignCenter)
-            vol_form1.addRow(k, v)
-
-        for i in range(8, 16):
+        for i in range(16):
             self.cell_vol_16[f'cell_{i+1}(V)'] = QLineEdit()
         for k,v in self.cell_vol_16.items():
+            self.cell_vol_16[k].setStyleSheet(cellVol2_LineEdit)
             self.cell_vol_16[k].setReadOnly(True)
             self.cell_vol_16[k].setAlignment(Qt.AlignCenter)
-            vol_form2.addRow(k, v)
-
-        self.vol_other = {
-            vol_label17 + '(V)': QLineEdit(),
-            vol_label18 + '(V)': QLineEdit(),
-            vol_label19 + '(V)': QLineEdit()
-        }
-        for k,v in self.vol_other.items():
-            self.vol_other[k].setReadOnly(True)
-            self.vol_other[k].setAlignment(Qt.AlignCenter)
-            vol_form3.addRow(k, v)
+            if int(k[5:-3]) <= 4:
+                vol_form4.addRow(k, v)
+            elif int(k[5:-3]) <= 8:
+                vol_form8.addRow(k, v)
+            elif int(k[5:-3]) <= 12:
+                vol_form12.addRow(k, v)
+            elif int(k[5:-3]) <= 16:
+                vol_form16.addRow(k, v)
 
         # 右边
         tab1_layout_right = QVBoxLayout()
@@ -544,12 +578,10 @@ class BmsLayout(QWidget):
         tab1_layout_left.addLayout(tab1_layout_left_top)
 
         # 单体电压
-        # vol_H.addStretch(2)
-        vol_H.addLayout(vol_form1)
-        vol_H.addLayout(vol_form2)
-        vol_H.addLayout(vol_form3)
-        # vol_H.addStretch(2)
-        voltage_groupBox.setLayout(vol_H)
+        vol_V.addLayout(vol_V_H1)
+        vol_V.addWidget(vol_V_H2_bg)
+        
+        voltage_groupBox.setLayout(vol_V)
         tab1_layout_left_mid.addWidget(voltage_groupBox)
         tab1_layout_left.addLayout(tab1_layout_left_mid)
         

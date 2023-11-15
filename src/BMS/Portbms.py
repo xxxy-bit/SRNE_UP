@@ -800,11 +800,16 @@ class Portbms(BmsLayout):
                         # 电池信息
                         self.soc_pr.setValue(int(p01['SOC']))
                         self.soh_pr.setValue(int(p01['SOH']))
-                        self.battery_label1_line.setText(p01['Pack电池电压'])
-                        self.battery_label2_line.setText(p01['Pack电池电流'])
-                        self.battery_label3_line.setText(p01['剩余容量'])
-                        self.battery_label4_line.setText(p01['充满容量'])
-                        self.battery_label5_line.setText(p01['循环次数'])
+                        self.battery_label1_line.setText(p01[battery_label1])
+                        self.battery_label2_line.setText(p01[battery_label2])
+                        self.battery_label3_line.setText(p01[battery_label3])
+                        self.battery_label4_line.setText(p01[battery_label4])
+                        self.battery_label5_line.setText(p01[battery_label5])
+                        
+                        # 单体电压
+                        self.cellLine1.setText(p01[vol_label17 + '(V)'])
+                        self.cellLine2.setText(p01[vol_label18 + '(V)'])
+                        self.cellLine3.setText(p01[vol_label19 + '(V)'])
                         
                         
                         # 数据显示
@@ -813,9 +818,9 @@ class Portbms(BmsLayout):
                             self.cell_temp_8, 
                             self.cell_temp_16, 
                             self.tem_other, 
-                            self.cell_vol_8, 
+                            # self.cell_vol_4, 
                             self.cell_vol_16,
-                            self.vol_other
+                            # self.vol_other
                         ]
                         for index in range(len(display_data)):
                             for k,v in display_data[index].items():

@@ -35,12 +35,27 @@ batl_LineEdit = """
 cellTmp_LineEdit = """
     QLineEdit{
         border: 0px;
-        background-color: rgb(229, 242, 252)
+        background-color: #E5F2FC
     }
 """
 
 cellTmp2_LineEdit = """
     QLineEdit{
-        border: 1px solid rgb(236, 236, 236);
+        border: 0px;
+        background-color: #F7F7F7
+    }
+"""
+
+cellVol1_LineEdit = """
+    QLineEdit{
+        border: 0px;
+        font: 20px
+    }
+"""
+
+cellVol2_LineEdit = """
+    QLineEdit{
+        border: 0px;
+        background-color: #FCF2EB
     }
 """
