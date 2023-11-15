@@ -98,8 +98,6 @@ class Portbms(BmsLayout):
     # 初始化数据
     def initDate(self):
         
-        self.setStyleSheet(all_btn)
-        
         self.ser = serial.Serial()
         self.SendMsg = SendMsg()
         self.ResMsg = ResMsg()
@@ -738,6 +736,7 @@ class Portbms(BmsLayout):
                 # 实时监控
                 if res[:6] == '0103bc' and len(res) == 386:
                     p01 = pars_data(res, order_list['P01'])
+                    # print(p01)
                     if len(p01) == 2:
                         crc_error = True
                     else:
@@ -798,9 +797,19 @@ class Portbms(BmsLayout):
                         protect_txt = '\n'.join(p01['保护位1']) + '\n' + '\n'.join(p01['保护位2'])
                         self.protect_status_txt.setText(protect_txt)
 
+                        # 电池信息
+                        self.soc_pr.setValue(int(p01['SOC']))
+                        self.soh_pr.setValue(int(p01['SOH']))
+                        self.battery_label1_line.setText(p01['Pack电池电压'])
+                        self.battery_label2_line.setText(p01['Pack电池电流'])
+                        self.battery_label3_line.setText(p01['剩余容量'])
+                        self.battery_label4_line.setText(p01['充满容量'])
+                        self.battery_label5_line.setText(p01['循环次数'])
+                        
+                        
                         # 数据显示
                         display_data = [
-                            self.bat_wd, 
+                            # self.bat_wd, 
                             self.cell_temp_8, 
                             self.cell_temp_16, 
                             self.tem_other, 

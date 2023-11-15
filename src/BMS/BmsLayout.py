@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import QHeaderView, QProgressBar, QTableWidget, QLineEdit, 
 from PyQt5.QtCore import Qt
 from .QssStyle import *
 from src.OrderList import *
+from qfluentwidgets import ProgressRing
 
 
 class BmsLayout(QWidget):
@@ -271,7 +272,7 @@ class BmsLayout(QWidget):
         tab1_layout_left = QVBoxLayout()
 
         # 左边-上
-        tab1_layout_left_top = QHBoxLayout()
+        tab1_layout_left_top = QVBoxLayout()
 
         # 左边-上-左：电池信息
         tab1_layout_left_top_left = QVBoxLayout()
@@ -279,31 +280,82 @@ class BmsLayout(QWidget):
 
         # 电池信息：竖布局
         bat_v = QVBoxLayout()
-        battery_form = QFormLayout()
-        self.bat_wd = {
-            battery_label1:QLineEdit(),
-            battery_label2:QLineEdit(),
-            'SOC':QLineEdit(),
-            'SOH':QLineEdit(),
-            battery_label3:QLineEdit(),
-            battery_label4:QLineEdit(),
-            battery_label5:QLineEdit()
-        }
-        for k,v in self.bat_wd.items():
-            self.bat_wd[k].setReadOnly(True)
-            # 指定小部件最小宽度
-            self.bat_wd[k].setMinimumWidth(90)
-            self.bat_wd[k].setAlignment(Qt.AlignCenter)
-            battery_form.addRow(k, v)
-
-        # 左边-上-右：温度信息
+        
+        # SOC,SOH仪表盘界面
+        bat_v_Hlayout = QHBoxLayout()
+        
+        self.soc_pr = ProgressRing()
+        self.soc_pr.setTextVisible(True)
+        self.soc_pr.setFormat('SOC\n%p%')
+        
+        self.soh_pr = ProgressRing()
+        self.soh_pr.setTextVisible(True)
+        self.soh_pr.setFormat('SOH\n%p%')
+        
+        bat_v_Hlayout.addWidget(self.soc_pr)
+        bat_v_Hlayout.addWidget(self.soh_pr)
+        
+        # 剩下的用grid布局, 电池电压、电池电流、剩余容量、充满容量、循环次数
+        bat_v_Hlayout2 = QHBoxLayout()
+        bat_v_Hlayout2_grid = QGridLayout()
+        
+        bat_v.addLayout(bat_v_Hlayout)
+        bat_v.addLayout(bat_v_Hlayout2)
+        
+        bat_v_Hlayout2.addLayout(bat_v_Hlayout2_grid)
+        
+        self.battery_label1_line = QLineEdit()
+        self.battery_label1_line.setAlignment(Qt.AlignCenter)
+        self.battery_label1_line.setStyleSheet(border_LineEdit)
+        self.battery_label1_line.setReadOnly(True)
+        self.battery_label2_line = QLineEdit()
+        self.battery_label2_line.setAlignment(Qt.AlignCenter)
+        self.battery_label2_line.setStyleSheet(border_LineEdit)
+        self.battery_label2_line.setReadOnly(True)
+        self.battery_label3_line = QLineEdit()
+        self.battery_label3_line.setAlignment(Qt.AlignCenter)
+        self.battery_label3_line.setStyleSheet(border_LineEdit)
+        self.battery_label3_line.setReadOnly(True)
+        self.battery_label4_line = QLineEdit()
+        self.battery_label4_line.setAlignment(Qt.AlignCenter)
+        self.battery_label4_line.setStyleSheet(border_LineEdit)
+        self.battery_label4_line.setReadOnly(True)
+        self.battery_label5_line = QLineEdit()
+        self.battery_label5_line.setAlignment(Qt.AlignCenter)
+        self.battery_label5_line.setStyleSheet(border_LineEdit)
+        self.battery_label5_line.setReadOnly(True)
+        
+        bat_v_Hlayout2_grid.addWidget(self.battery_label1_line, 0, 0)
+        bat_v_Hlayout2_grid.addWidget(self.battery_label2_line, 0, 1)
+        bat_v_Hlayout2_grid.addWidget(self.battery_label3_line, 0, 2)
+        bat_v_Hlayout2_grid.addWidget(self.battery_label4_line, 0, 3)
+        bat_v_Hlayout2_grid.addWidget(self.battery_label5_line, 0, 4)
+        
+        bl1 = QLabel(battery_label1)
+        bl1.setAlignment(Qt.AlignCenter)
+        bl2 = QLabel(battery_label2)
+        bl2.setAlignment(Qt.AlignCenter)
+        bl3 = QLabel(battery_label3)
+        bl3.setAlignment(Qt.AlignCenter)
+        bl4 = QLabel(battery_label4)
+        bl4.setAlignment(Qt.AlignCenter)
+        bl5 = QLabel(battery_label5)
+        bl5.setAlignment(Qt.AlignCenter)
+        
+        bat_v_Hlayout2_grid.addWidget(bl1, 1, 0)
+        bat_v_Hlayout2_grid.addWidget(bl2, 1, 1)
+        bat_v_Hlayout2_grid.addWidget(bl3, 1, 2)
+        bat_v_Hlayout2_grid.addWidget(bl4, 1, 3)
+        bat_v_Hlayout2_grid.addWidget(bl5, 1, 4)
+        
+        # 左边：温度信息
         tab1_layout_left_top_right = QVBoxLayout()
         temperature_groupBox = QGroupBox(group_tabel2)
         tem_h = QHBoxLayout()
         tem_form1 = QFormLayout()
         tem_form2 = QFormLayout()
         tem_form3 = QFormLayout()
-
+        
         # 创建 cell温度 1~16 的对象
         self.cell_temp_8 = {}
         self.cell_temp_16 = {}
@@ -336,7 +388,7 @@ class BmsLayout(QWidget):
             self.tem_other[k].setAlignment(Qt.AlignCenter)
             tem_form3.addRow(k, v)
 
-        # 左边-下
+        # 左边-单体电压
         tab1_layout_left_mid = QHBoxLayout()
         voltage_groupBox = QGroupBox(group_tabel3)
         vol_H = QHBoxLayout()
@@ -371,7 +423,7 @@ class BmsLayout(QWidget):
             self.vol_other[k].setAlignment(Qt.AlignCenter)
             vol_form3.addRow(k, v)
 
-        # # 右边
+        # 右边
         tab1_layout_right = QVBoxLayout()
 
         # 右边-上
@@ -468,7 +520,6 @@ class BmsLayout(QWidget):
         openStatus_groupBox.setLayout(openStatus_groupBox_grid)
         
         # 电池信息
-        bat_v.addLayout(battery_form)
         battery_groupBox.setLayout(bat_v)
         tab1_layout_left_top_left.addWidget(battery_groupBox)
         tab1_layout_left_top.addLayout(tab1_layout_left_top_left)
