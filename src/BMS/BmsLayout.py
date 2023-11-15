@@ -306,23 +306,23 @@ class BmsLayout(QWidget):
         
         self.battery_label1_line = QLineEdit()
         self.battery_label1_line.setAlignment(Qt.AlignCenter)
-        self.battery_label1_line.setStyleSheet(border_LineEdit)
+        self.battery_label1_line.setStyleSheet(batl_LineEdit)
         self.battery_label1_line.setReadOnly(True)
         self.battery_label2_line = QLineEdit()
         self.battery_label2_line.setAlignment(Qt.AlignCenter)
-        self.battery_label2_line.setStyleSheet(border_LineEdit)
+        self.battery_label2_line.setStyleSheet(batl_LineEdit)
         self.battery_label2_line.setReadOnly(True)
         self.battery_label3_line = QLineEdit()
         self.battery_label3_line.setAlignment(Qt.AlignCenter)
-        self.battery_label3_line.setStyleSheet(border_LineEdit)
+        self.battery_label3_line.setStyleSheet(batl_LineEdit)
         self.battery_label3_line.setReadOnly(True)
         self.battery_label4_line = QLineEdit()
         self.battery_label4_line.setAlignment(Qt.AlignCenter)
-        self.battery_label4_line.setStyleSheet(border_LineEdit)
+        self.battery_label4_line.setStyleSheet(batl_LineEdit)
         self.battery_label4_line.setReadOnly(True)
         self.battery_label5_line = QLineEdit()
         self.battery_label5_line.setAlignment(Qt.AlignCenter)
-        self.battery_label5_line.setStyleSheet(border_LineEdit)
+        self.battery_label5_line.setStyleSheet(batl_LineEdit)
         self.battery_label5_line.setReadOnly(True)
         
         bat_v_Hlayout2_grid.addWidget(self.battery_label1_line, 0, 0)
@@ -352,8 +352,15 @@ class BmsLayout(QWidget):
         tab1_layout_left_top_right = QVBoxLayout()
         temperature_groupBox = QGroupBox(group_tabel2)
         tem_h = QHBoxLayout()
-        tem_form1 = QFormLayout()
-        tem_form2 = QFormLayout()
+        
+        tem_form1_bg = QWidget()
+        tem_form1_bg.setStyleSheet("background-color: rgb(249, 252, 255)")
+        tem_form1 = QFormLayout(tem_form1_bg)
+        
+        tem_form2_bg = QWidget()
+        tem_form2_bg.setStyleSheet("background-color: rgb(249, 252, 255)")
+        tem_form2 = QFormLayout(tem_form2_bg)
+        
         tem_form3 = QFormLayout()
         
         # 创建 cell温度 1~16 的对象
@@ -363,6 +370,7 @@ class BmsLayout(QWidget):
         for i in range(8):
             self.cell_temp_8[f'cell_{i+1}(℃)'] = QLineEdit()
         for k,v in self.cell_temp_8.items():
+            self.cell_temp_8[k].setStyleSheet(cellTmp_LineEdit)
             self.cell_temp_8[k].setReadOnly(True)
             self.cell_temp_8[k].setAlignment(Qt.AlignCenter)
             tem_form1.addRow(k, v)
@@ -370,6 +378,7 @@ class BmsLayout(QWidget):
         for i in range(8, 16):
             self.cell_temp_16[f'cell_{i+1}(℃)'] = QLineEdit()
         for k,v in self.cell_temp_16.items():
+            self.cell_temp_16[k].setStyleSheet(cellTmp_LineEdit)
             self.cell_temp_16[k].setReadOnly(True)
             self.cell_temp_16[k].setAlignment(Qt.AlignCenter)
             tem_form2.addRow(k, v)
@@ -384,6 +393,7 @@ class BmsLayout(QWidget):
             temp_label25 + '(℃)': QLineEdit()
         }
         for k,v in self.tem_other.items():
+            self.tem_other[k].setStyleSheet(cellTmp2_LineEdit)
             self.tem_other[k].setReadOnly(True)
             self.tem_other[k].setAlignment(Qt.AlignCenter)
             tem_form3.addRow(k, v)
@@ -525,8 +535,8 @@ class BmsLayout(QWidget):
         tab1_layout_left_top.addLayout(tab1_layout_left_top_left)
 
         # 温度信息
-        tem_h.addLayout(tem_form1)
-        tem_h.addLayout(tem_form2)
+        tem_h.addWidget(tem_form1_bg)
+        tem_h.addWidget(tem_form2_bg)
         tem_h.addLayout(tem_form3)
         temperature_groupBox.setLayout(tem_h)
         tab1_layout_left_top_right.addWidget(temperature_groupBox)
