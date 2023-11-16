@@ -788,14 +788,14 @@ class Portbms(BmsLayout):
                         if len(p01['故障位']) > 0:
                             for _ in p01['故障位']:
                                 txt = '\n'.join(p01['故障位'])
-                                self.warn_status_txt.setText(txt)
+                                self.error_body.setText(txt)
                         else:
-                            self.warn_status_txt.setText('')
+                            self.error_body.setText('')
 
                         warn_txt = '\n'.join(p01['警告位1']) + '\n' + '\n'.join(p01['警告位2'])
-                        self.error_status_txt.setText(warn_txt)
+                        self.warn_body.setText(warn_txt)
                         protect_txt = '\n'.join(p01['保护位1']) + '\n' + '\n'.join(p01['保护位2'])
-                        self.protect_status_txt.setText(protect_txt)
+                        self.protect_body.setText(protect_txt)
 
                         # 电池信息
                         self.soc_pr.setValue(int(p01['SOC']))
@@ -814,13 +814,9 @@ class Portbms(BmsLayout):
                         
                         # 数据显示
                         display_data = [
-                            # self.bat_wd, 
-                            # self.cell_temp_8, 
                             self.cell_temp_16, 
                             self.tem_other, 
-                            # self.cell_vol_4, 
                             self.cell_vol_16,
-                            # self.vol_other
                         ]
                         for index in range(len(display_data)):
                             for k,v in display_data[index].items():

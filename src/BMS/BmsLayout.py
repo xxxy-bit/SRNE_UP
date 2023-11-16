@@ -5,11 +5,11 @@ import serial.tools.list_ports, json, os
 from src.i18n.Bms_i18n import *
 from settings.bms_modbus import get_bms_modbus_list
 from settings.bms_RS485 import get_bms_rs485_list
-from PyQt5.QtWidgets import QHeaderView, QProgressBar, QTableWidget, QLineEdit, QTabWidget, QWidget, QDesktopWidget, QHBoxLayout, QVBoxLayout, QGroupBox, QPushButton, QLabel, QGridLayout, QTextBrowser, QComboBox, QFormLayout
+from PyQt5.QtWidgets import QFrame, QTextEdit, QHeaderView, QProgressBar, QTableWidget, QLineEdit, QTabWidget, QWidget, QDesktopWidget, QHBoxLayout, QVBoxLayout, QGroupBox, QPushButton, QLabel, QGridLayout, QTextBrowser, QComboBox, QFormLayout
 from PyQt5.QtCore import Qt
 from .QssStyle import *
 from src.OrderList import *
-from qfluentwidgets import ProgressRing
+from qfluentwidgets import ProgressRing, SwitchButton
 
 
 class BmsLayout(QWidget):
@@ -28,7 +28,7 @@ class BmsLayout(QWidget):
         self.json_rs485 = get_bms_rs485_list()
         
         self.setWindowTitle('Portbms v1.2.4')
-        self.resize(1100, 765)   # 可拉伸
+        self.resize(1150, 765)   # 可拉伸
         # self.setFixedSize(1800, 950)   # 固定界面大小，不可拉伸
         
         # 外层
@@ -510,43 +510,107 @@ class BmsLayout(QWidget):
             sysStatus_groupBox_grid.addWidget(sg, *positions)
         sysStatus_groupBox.setLayout(sysStatus_groupBox_grid)
 
-        warnStatus_groupBox = QGroupBox(group_tabel8)
-        warnStatus_groupBox_hbox = QHBoxLayout()
-        self.warn_status_txt = QTextBrowser()
-        self.warn_status_txt.setStyleSheet('color:red')
-        warnStatus_groupBox_hbox.addWidget(self.warn_status_txt)
-        warnStatus_groupBox.setLayout(warnStatus_groupBox_hbox)
+        # 其他状态（故障、告警、保护）
+        otherStatus_groupBox = QGroupBox('其他状态')
+        otherStatus_groupBox_h = QHBoxLayout()
+        otherStatus_groupBox_h.setSpacing(0)
+        
+        # 故障状态布局
+        error_v = QVBoxLayout()
+        
+        error_v_head_bg = QWidget()
+        error_v_head_bg.setStyleSheet("background-color: #FEEFEB")
+        error_v_head = QVBoxLayout(error_v_head_bg)
+        
+        # 故障状态标题
+        error_title = QLabel(group_tabel8)
+        error_title.setAlignment(Qt.AlignCenter)
+        error_title.setStyleSheet('color: #DB6949')
+        error_v_head.addWidget(error_title)
+        
+        # 故障状态内容
+        error_v_body_bg = QWidget()
+        error_v_body_bg.setStyleSheet("background-color: #FDFBFB")
+        error_v_body = QVBoxLayout(error_v_body_bg)
+        self.error_body = QTextEdit()
+        self.error_body.setFrameShape(QFrame.NoFrame)
+        
+        error_v_body.addWidget(self.error_body)
+        
+        error_v.addWidget(error_v_head_bg)
+        error_v.addWidget(error_v_body_bg)
+        
+        # 告警状态布局
+        warn_v = QVBoxLayout()
+        warn_v_head_bg = QWidget()
+        warn_v_head_bg.setStyleSheet("background-color: #FEF7EB")
+        warn_v_head = QHBoxLayout(warn_v_head_bg)
+        warn_title = QLabel(group_tabel9)
+        warn_title.setAlignment(Qt.AlignCenter)
+        warn_title.setStyleSheet('color: #D9931A')
+        warn_v_head.addWidget(warn_title)
+        
+        warn_v_body_bg = QWidget()
+        warn_v_body_bg.setStyleSheet("background-color: #FDFDFB")
+        warn_v_body = QHBoxLayout(warn_v_body_bg)
+        
+        self.warn_body = QTextEdit()
+        self.warn_body.setFrameShape(QFrame.NoFrame)
+        warn_v_body.addWidget(self.warn_body)
+        
+        warn_v.addWidget(warn_v_head_bg)
+        warn_v.addWidget(warn_v_body_bg)
+        
+        # 保护状态布局
+        protect_v = QVBoxLayout()
+        protect_v_head_bg = QWidget()
+        protect_v_head_bg.setStyleSheet('background-color: #F0FAF4')
+        protect_v_head = QHBoxLayout(protect_v_head_bg)
+        propert_title = QLabel(group_tabel10)
+        propert_title.setStyleSheet('color: #46AC6E')
+        propert_title.setAlignment(Qt.AlignCenter)
+        protect_v_head.addWidget(propert_title)
+        
+        protect_v_body_bg = QWidget()
+        protect_v_body_bg.setStyleSheet('background-color: #FBFDFB')
+        protect_v_body = QHBoxLayout(protect_v_body_bg)
+        self.protect_body = QTextEdit()
+        self.protect_body.setFrameShape(QFrame.NoFrame)
+        protect_v_body.addWidget(self.protect_body)
 
-        protectStatus_groupBox = QGroupBox(group_tabel10)
-        protectStatus_groupBox_hbox = QHBoxLayout()
-        self.protect_status_txt = QTextBrowser()
-        self.protect_status_txt.setStyleSheet('color:red')
-        protectStatus_groupBox_hbox.addWidget(self.protect_status_txt)
-        protectStatus_groupBox.setLayout(protectStatus_groupBox_hbox)
+        protect_v.addWidget(protect_v_head_bg)
+        protect_v.addWidget(protect_v_body_bg)
 
-        errorStatus_groupBox = QGroupBox(group_tabel9)
-        errorStatus_groupBox_hbox = QHBoxLayout()
-        self.error_status_txt = QTextBrowser()
-        self.error_status_txt.setStyleSheet('color:red')
-        errorStatus_groupBox_hbox.addWidget(self.error_status_txt)
-        errorStatus_groupBox.setLayout(errorStatus_groupBox_hbox)
+        otherStatus_groupBox_h.addLayout(error_v)
+        otherStatus_groupBox_h.addLayout(warn_v)
+        otherStatus_groupBox_h.addLayout(protect_v)
+        
+        otherStatus_groupBox.setLayout(otherStatus_groupBox_h)
 
+        # 开关控制
         openStatus_groupBox = QGroupBox(group_tabel6)
         openStatus_groupBox_grid = QGridLayout()
+        
+        # 充电
         charge_lab = QLabel(switch_label1)
         charge_lab.setMaximumWidth(50)
         # charge_lab.setAlignment(Qt.AlignCenter)
         self.charge_btn = QPushButton(switch_label4)
         self.charge_btn.setEnabled(False)
+        
+        # 放电
         discharge_lab = QLabel(switch_label2)
         discharge_lab.setMaximumWidth(50)
         self.disCharge_btn = QPushButton(switch_label4)
         self.disCharge_btn.setEnabled(False)
+        
+        # 强制休眠
         sleep_lab = QLabel(switch_label3)
         sleep_lab.setMaximumWidth(100)
         self.dormancy_btn = QPushButton(switch_label4)
         self.dormancy_btn.setStyleSheet(close_Button)
         self.dormancy_btn.setEnabled(False)
+        
         og = [
             charge_lab, self.charge_btn, discharge_lab, self.disCharge_btn, sleep_lab, self.dormancy_btn
         ]
@@ -603,9 +667,9 @@ class BmsLayout(QWidget):
         tab1_layout_right_top.addWidget(port_groupBox)          # 串口
         tab1_layout_right_top.addWidget(openStatus_groupBox)    # 开关控制
         tab1_layout_right_top.addWidget(sysStatus_groupBox)     # 系统状态
-        tab1_layout_right_top.addWidget(warnStatus_groupBox)    # 故障状态
-        tab1_layout_right_top.addWidget(errorStatus_groupBox)   # 告警状态
-        tab1_layout_right_top.addWidget(protectStatus_groupBox) # 保护状态
+        tab1_layout_right_top.addWidget(otherStatus_groupBox) # 其他状态
+        
+        
         tab1_layout_right.addLayout(tab1_layout_right_top)
 
         tab1_layout.addLayout(tab1_layout_left)
