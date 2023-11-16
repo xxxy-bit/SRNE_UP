@@ -360,28 +360,21 @@ class BmsLayout(QWidget):
         tem_form2_bg = QWidget()
         tem_form2_bg.setStyleSheet("background-color: #F9FCFF")
         tem_form2 = QFormLayout(tem_form2_bg)
-        
         tem_form3 = QFormLayout()
         
         # 创建 cell温度 1~16 的对象
-        self.cell_temp_8 = {}
         self.cell_temp_16 = {}
         
-        for i in range(8):
-            self.cell_temp_8[f'cell_{i+1}(℃)'] = QLineEdit()
-        for k,v in self.cell_temp_8.items():
-            self.cell_temp_8[k].setStyleSheet(cellTmp_LineEdit)
-            self.cell_temp_8[k].setReadOnly(True)
-            self.cell_temp_8[k].setAlignment(Qt.AlignCenter)
-            tem_form1.addRow(k, v)
-
-        for i in range(8, 16):
+        for i in range(16):
             self.cell_temp_16[f'cell_{i+1}(℃)'] = QLineEdit()
         for k,v in self.cell_temp_16.items():
             self.cell_temp_16[k].setStyleSheet(cellTmp_LineEdit)
             self.cell_temp_16[k].setReadOnly(True)
             self.cell_temp_16[k].setAlignment(Qt.AlignCenter)
-            tem_form2.addRow(k, v)
+            if int(k[5:-3]) <= 8:
+                tem_form1.addRow(k, v)
+            else:
+                tem_form2.addRow(k, v)
         
         self.tem_other = {
             temp_label19 + '(℃)': QLineEdit(),
@@ -486,9 +479,9 @@ class BmsLayout(QWidget):
         self.address_line.setEnabled(False)
         self.space_combobox = QComboBox()
         self.open_port_btn = QPushButton(com_label6)
-        self.open_port_btn.setStyleSheet(color_close)
+        self.open_port_btn.setStyleSheet(close_Button)
         self.getP01_data_btn = QPushButton(com_label8)
-        self.getP01_data_btn.setStyleSheet(color_close)
+        self.getP01_data_btn.setStyleSheet(close_Button)
         wd = [
             QLabel(group_tabel5 + ':'), self.port_combobox, QLabel(com_label2 + ':'), self.baud_combobox, self.open_port_btn,
             QLabel('Pack:'), self.pack_combobox, QLabel(com_label3 + ':'), self.pack_num_line, self.getP01_data_btn,
@@ -552,7 +545,7 @@ class BmsLayout(QWidget):
         sleep_lab = QLabel(switch_label3)
         sleep_lab.setMaximumWidth(100)
         self.dormancy_btn = QPushButton(switch_label4)
-        self.dormancy_btn.setStyleSheet(color_close)
+        self.dormancy_btn.setStyleSheet(close_Button)
         self.dormancy_btn.setEnabled(False)
         og = [
             charge_lab, self.charge_btn, discharge_lab, self.disCharge_btn, sleep_lab, self.dormancy_btn
@@ -595,6 +588,7 @@ class BmsLayout(QWidget):
         self.pwd_line = QLineEdit()
         self.pwd_line.setEchoMode(QLineEdit.Password)
         self.pwd_btn = QPushButton(pwd_label2)
+        self.pwd_btn.setStyleSheet(open_Button)
         login_H.addWidget(pwd_label)
         login_H.addWidget(self.pwd_line)
         login_H.addWidget(self.pwd_btn)

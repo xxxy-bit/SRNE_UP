@@ -181,7 +181,7 @@ class Portbms(BmsLayout):
                 self.send_P01_on = False
                 self.P01_status = False
                 self.getP01_data_btn.setText(com_label8)
-                self.getP01_data_btn.setStyleSheet(color_close)
+                self.getP01_data_btn.setStyleSheet(close_Button)
                 return True
             else:
                 return False
@@ -347,7 +347,7 @@ class Portbms(BmsLayout):
         else:
             msg = '01 06 300c 0000'
             self.dormancy_btn.setText(switch_label4)
-            self.dormancy_btn.setStyleSheet(color_close)
+            self.dormancy_btn.setStyleSheet(close_Button)
             self.send_msg(msg + calc_crc(msg))
 
     # 强制休眠计时器，倒数至0则发送休眠指令
@@ -358,7 +358,7 @@ class Portbms(BmsLayout):
         if self.sleep_step == 0:
             msg = '01 06 300c 0001'
             self.dormancy_btn.setText(bms_logic_label6)
-            self.dormancy_btn.setStyleSheet(color_open)
+            self.dormancy_btn.setStyleSheet(open_Button)
             self.sleepTimer.stop()
             self.dormancy_btn.setEnabled(True)
             self.send_msg(msg + calc_crc(msg))
@@ -478,7 +478,7 @@ class Portbms(BmsLayout):
             except serial.SerialException:
                 QMessageBox.information(self, 'Error', bms_logic_label20, QMessageBox.Ok)
             self.open_port_btn.setText(bms_logic_label2)
-            self.open_port_btn.setStyleSheet(color_open)
+            self.open_port_btn.setStyleSheet(open_Button)
             if  self.respond_on == False:
                 self.ResMsg.resume()
             else:
@@ -489,7 +489,7 @@ class Portbms(BmsLayout):
             self.ResMsg.pause()
             self.ser.close()
             self.open_port_btn.setText(com_label6)
-            self.open_port_btn.setStyleSheet(color_close)
+            self.open_port_btn.setStyleSheet(close_Button)
             self.respondStatus = False
             self.respond_on = False
             self.dormancy_btn.setEnabled(False)
@@ -508,7 +508,7 @@ class Portbms(BmsLayout):
                 self.send_P01_on = True
                 self.send_p01()
             self.getP01_data_btn.setText(bms_logic_label4)
-            self.getP01_data_btn.setStyleSheet(color_open)
+            self.getP01_data_btn.setStyleSheet(open_Button)
             self.charge_btn.setEnabled(True)
             self.disCharge_btn.setEnabled(True)
             self.low_vol = False
@@ -521,7 +521,7 @@ class Portbms(BmsLayout):
             except Exception as e:
                 print(e)
             self.getP01_data_btn.setText(com_label8)
-            self.getP01_data_btn.setStyleSheet(color_close)
+            self.getP01_data_btn.setStyleSheet(close_Button)
             self.charge_btn.setEnabled(False)
             self.disCharge_btn.setEnabled(False)
 
@@ -742,48 +742,48 @@ class Portbms(BmsLayout):
                     else:
                         # BMS工作状态1（系统状态）
                         if sys_label1 in p01['BMS工作状态1']:
-                            self.charg_status.setStyleSheet('color:green')
+                            self.charg_status.setStyleSheet('color:#01B481')
                         else:
-                            self.charg_status.setStyleSheet('color:black')
+                            self.charg_status.setStyleSheet('color:#626262')
                             
                         if sys_label2 in p01['BMS工作状态1']:
-                            self.disCharg_status.setStyleSheet('color:green')
+                            self.disCharg_status.setStyleSheet('color:#01B481')
                         else:
-                            self.disCharg_status.setStyleSheet('color:black')
+                            self.disCharg_status.setStyleSheet('color:#626262')
                             
                         if sys_label3 in p01['BMS工作状态1']:
                             self.charge_btn.setText(bms_logic_label6)
-                            self.charge_btn.setStyleSheet(color_open)
+                            self.charge_btn.setStyleSheet(open_Button)
                             self.charge_mos_status = 1
-                            self.chargMos_status.setStyleSheet('color:green')
+                            self.chargMos_status.setStyleSheet('color:#01B481')
                         else:
                             self.charge_btn.setText(switch_label4)
-                            self.charge_btn.setStyleSheet(color_close)
+                            self.charge_btn.setStyleSheet(close_Button)
                             self.charge_mos_status = 0
-                            self.chargMos_status.setStyleSheet('color:black')
+                            self.chargMos_status.setStyleSheet('color:#626262')
                         self.dis_charge_mos_num[-1] = self.charge_mos_status
                         
                         if sys_label4 in p01['BMS工作状态1']:
                             self.disCharge_btn.setText(bms_logic_label6)
-                            self.disCharge_btn.setStyleSheet(color_open)
+                            self.disCharge_btn.setStyleSheet(open_Button)
                             self.discharge_mos_status = 1
-                            self.disChargMos_status.setStyleSheet('color:green')
+                            self.disChargMos_status.setStyleSheet('color:#01B481')
                         else:
                             self.disCharge_btn.setText(switch_label4)
-                            self.disCharge_btn.setStyleSheet(color_close)
+                            self.disCharge_btn.setStyleSheet(close_Button)
                             self.discharge_mos_status = 0
-                            self.disChargMos_status.setStyleSheet('color:black')
+                            self.disChargMos_status.setStyleSheet('color:#626262')
                         self.dis_charge_mos_num[-2] = self.discharge_mos_status
                         
                         if sys_label5 in p01['BMS工作状态1']:
-                            self.batCharg_status.setStyleSheet('color:green')
+                            self.batCharg_status.setStyleSheet('color:#01B481')
                         else:
-                            self.batCharg_status.setStyleSheet('color:black')
+                            self.batCharg_status.setStyleSheet('color:#626262')
                             
                         if sys_label6 in p01['BMS工作状态1']:
-                            self.full_status.setStyleSheet('color:green')
+                            self.full_status.setStyleSheet('color:#01B481')
                         else:
-                            self.full_status.setStyleSheet('color:black')
+                            self.full_status.setStyleSheet('color:#626262')
 
                         if len(p01['故障位']) > 0:
                             for _ in p01['故障位']:
@@ -815,7 +815,7 @@ class Portbms(BmsLayout):
                         # 数据显示
                         display_data = [
                             # self.bat_wd, 
-                            self.cell_temp_8, 
+                            # self.cell_temp_8, 
                             self.cell_temp_16, 
                             self.tem_other, 
                             # self.cell_vol_4, 
@@ -835,7 +835,7 @@ class Portbms(BmsLayout):
                                 self.send_P01_on = False
                                 self.P01_status = False
                                 self.getP01_data_btn.setText(com_label8)
-                                self.getP01_data_btn.setStyleSheet(color_close)
+                                self.getP01_data_btn.setStyleSheet(close_Button)
                                 QMessageBox.information(self, 'tips', bms_logic_label28, QMessageBox.Ok)
                 # 参数设置
                 elif res[:6] == '0103b6' and len(res) == 374:

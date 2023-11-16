@@ -59,3 +59,19 @@ cellVol2_LineEdit = """
         background-color: #FCF2EB
     }
 """
+
+open_Button = """
+    QPushButton{
+        border: 1px solid #F88D20;
+        background-color: #FFFFFF;
+        color: #F88D20
+    }
+"""
+
+close_Button = """
+    QPushButton{
+        border: 1px solid #F88D20;
+        background-color: #F88D20;
+        color: #FFFFFF
+    }
+"""
