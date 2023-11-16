@@ -200,13 +200,13 @@ class Portbms(BmsLayout):
         self.pwd_btn.clicked.connect(self.pwd_btn_func)
         
         # 开关充电
-        self.charge_btn.clicked.connect(self.charge_mos_switch)
+        self.charge_sw.checkedChanged.connect(self.charge_mos_switch)
         
         # 开关放电
-        self.disCharge_btn.clicked.connect(self.discharge_mos_switch)
+        self.disCharge_sw.checkedChanged.connect(self.discharge_mos_switch)
         
         # 开关强制休眠
-        self.dormancy_btn.clicked.connect(self.dormancy_switch)
+        self.dormancy_sw.checkedChanged.connect(self.dormancy_switch)
 
     # 实时数据 槽函数slots
     def data_slotsTrigger(self):
@@ -311,7 +311,8 @@ class Portbms(BmsLayout):
 
     # 开关充电
     def charge_mos_switch(self):
-        if self.charge_btn.text() == switch_label4:
+        
+        if self.charge_sw.isChecked():
             self.charge_mos_status = 1
         else:
             self.charge_mos_status = 0
@@ -323,7 +324,7 @@ class Portbms(BmsLayout):
 
     # 开关放电
     def discharge_mos_switch(self):
-        if self.disCharge_btn.text() == switch_label4:
+        if self.disCharge_sw.isChecked():
             self.discharge_mos_status = 1
         else:
             self.discharge_mos_status = 0
@@ -335,32 +336,12 @@ class Portbms(BmsLayout):
 
     # 开关强制休眠
     def dormancy_switch(self):
-        if self.dormancy_btn.text() == switch_label4:
+        if self.dormancy_sw.isChecked():
             if self.assert_P01_status() == False: return False
-            # 强制休眠定时器
-            self.sleep_step = 6
-            self.sleepTimer = QTimer()
-            self.sleepTimer.timeout.connect(self.sleep_timer_func)
-            self.sleepTimer.start(1000)
-            self.charge_btn.setEnabled(False)
-            self.disCharge_btn.setEnabled(False)
+            msg = '01 06 300c 0001'
+            self.send_msg(msg + calc_crc(msg))
         else:
             msg = '01 06 300c 0000'
-            self.dormancy_btn.setText(switch_label4)
-            self.dormancy_btn.setStyleSheet(close_Button)
-            self.send_msg(msg + calc_crc(msg))
-
-    # 强制休眠计时器，倒数至0则发送休眠指令
-    def sleep_timer_func(self):
-        self.sleep_step -= 1
-        self.dormancy_btn.setEnabled(False)
-        self.dormancy_btn.setText(f'wating {self.sleep_step}')
-        if self.sleep_step == 0:
-            msg = '01 06 300c 0001'
-            self.dormancy_btn.setText(bms_logic_label6)
-            self.dormancy_btn.setStyleSheet(open_Button)
-            self.sleepTimer.stop()
-            self.dormancy_btn.setEnabled(True)
             self.send_msg(msg + calc_crc(msg))
 
     # 获取修改过的'系统设置-电量'参数
@@ -484,7 +465,6 @@ class Portbms(BmsLayout):
             else:
                 self.respond_on = True
                 self.res_msg()
-            self.dormancy_btn.setEnabled(True)
         else:
             self.ResMsg.pause()
             self.ser.close()
@@ -492,7 +472,6 @@ class Portbms(BmsLayout):
             self.open_port_btn.setStyleSheet(close_Button)
             self.respondStatus = False
             self.respond_on = False
-            self.dormancy_btn.setEnabled(False)
 
     # 按钮-开始监控
     def get_p01(self):
@@ -509,8 +488,6 @@ class Portbms(BmsLayout):
                 self.send_p01()
             self.getP01_data_btn.setText(bms_logic_label4)
             self.getP01_data_btn.setStyleSheet(open_Button)
-            self.charge_btn.setEnabled(True)
-            self.disCharge_btn.setEnabled(True)
             self.low_vol = False
         else:
             self.send_P01_on = False
@@ -522,8 +499,6 @@ class Portbms(BmsLayout):
                 print(e)
             self.getP01_data_btn.setText(com_label8)
             self.getP01_data_btn.setStyleSheet(close_Button)
-            self.charge_btn.setEnabled(False)
-            self.disCharge_btn.setEnabled(False)
 
     # 开始监控
     def send_p01(self):
@@ -752,25 +727,21 @@ class Portbms(BmsLayout):
                             self.disCharg_status.setStyleSheet('color:#626262')
                             
                         if sys_label3 in p01['BMS工作状态1']:
-                            self.charge_btn.setText(bms_logic_label6)
-                            self.charge_btn.setStyleSheet(open_Button)
+                            self.charge_sw.setChecked(True)
                             self.charge_mos_status = 1
                             self.chargMos_status.setStyleSheet('color:#01B481')
                         else:
-                            self.charge_btn.setText(switch_label4)
-                            self.charge_btn.setStyleSheet(close_Button)
+                            self.charge_sw.setChecked(False)
                             self.charge_mos_status = 0
                             self.chargMos_status.setStyleSheet('color:#626262')
                         self.dis_charge_mos_num[-1] = self.charge_mos_status
                         
                         if sys_label4 in p01['BMS工作状态1']:
-                            self.disCharge_btn.setText(bms_logic_label6)
-                            self.disCharge_btn.setStyleSheet(open_Button)
+                            self.disCharge_sw.setChecked(True)
                             self.discharge_mos_status = 1
                             self.disChargMos_status.setStyleSheet('color:#01B481')
                         else:
-                            self.disCharge_btn.setText(switch_label4)
-                            self.disCharge_btn.setStyleSheet(close_Button)
+                            self.disCharge_sw.setChecked(False)
                             self.discharge_mos_status = 0
                             self.disChargMos_status.setStyleSheet('color:#626262')
                         self.dis_charge_mos_num[-2] = self.discharge_mos_status

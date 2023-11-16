@@ -488,6 +488,12 @@ class BmsLayout(QWidget):
             QLabel(com_label4 + ':'), self.address_line, QLabel(com_label5 + ':'), self.space_combobox, ''
         ]
         positions = [(i,j) for i in range(3) for j in range(5)]
+        # wd = [
+        #     QLabel(group_tabel5 + ':'), self.port_combobox, QLabel(com_label2 + ':'), self.baud_combobox, self.open_port_btn,
+        #     '', '', QLabel(com_label5 + ':'), self.space_combobox, self.getP01_data_btn,
+        # ]
+        # positions = [(i,j) for i in range(2) for j in range(5)]
+        
         for positions, wd in zip(positions, wd):
             if wd == '':
                 continue
@@ -534,6 +540,7 @@ class BmsLayout(QWidget):
         error_v_body = QVBoxLayout(error_v_body_bg)
         self.error_body = QTextEdit()
         self.error_body.setFrameShape(QFrame.NoFrame)
+        self.error_body.setStyleSheet("color: #DB6949")
         
         error_v_body.addWidget(self.error_body)
         
@@ -556,6 +563,7 @@ class BmsLayout(QWidget):
         
         self.warn_body = QTextEdit()
         self.warn_body.setFrameShape(QFrame.NoFrame)
+        self.warn_body.setStyleSheet("color: #DB6949")
         warn_v_body.addWidget(self.warn_body)
         
         warn_v.addWidget(warn_v_head_bg)
@@ -576,6 +584,7 @@ class BmsLayout(QWidget):
         protect_v_body = QHBoxLayout(protect_v_body_bg)
         self.protect_body = QTextEdit()
         self.protect_body.setFrameShape(QFrame.NoFrame)
+        self.protect_body.setStyleSheet("color: #DB6949")
         protect_v_body.addWidget(self.protect_body)
 
         protect_v.addWidget(protect_v_head_bg)
@@ -594,25 +603,28 @@ class BmsLayout(QWidget):
         # 充电
         charge_lab = QLabel(switch_label1)
         charge_lab.setMaximumWidth(50)
-        # charge_lab.setAlignment(Qt.AlignCenter)
-        self.charge_btn = QPushButton(switch_label4)
-        self.charge_btn.setEnabled(False)
+        self.charge_sw = SwitchButton()
+        self.charge_sw.setText('')
+        self.charge_sw.setOnText('')
+        self.charge_sw.setOffText('')
         
         # 放电
         discharge_lab = QLabel(switch_label2)
         discharge_lab.setMaximumWidth(50)
-        self.disCharge_btn = QPushButton(switch_label4)
-        self.disCharge_btn.setEnabled(False)
+        self.disCharge_sw = SwitchButton()
+        self.disCharge_sw.setText('')
+        self.disCharge_sw.setOnText('')
+        self.disCharge_sw.setOffText('')
         
         # 强制休眠
         sleep_lab = QLabel(switch_label3)
-        sleep_lab.setMaximumWidth(100)
-        self.dormancy_btn = QPushButton(switch_label4)
-        self.dormancy_btn.setStyleSheet(close_Button)
-        self.dormancy_btn.setEnabled(False)
+        self.dormancy_sw = SwitchButton()
+        self.dormancy_sw.setText('')
+        self.dormancy_sw.setOnText('')
+        self.dormancy_sw.setOffText('')
         
         og = [
-            charge_lab, self.charge_btn, discharge_lab, self.disCharge_btn, sleep_lab, self.dormancy_btn
+            charge_lab, self.charge_sw, discharge_lab, self.disCharge_sw, sleep_lab, self.dormancy_sw
         ]
         og_positions = [(i,j) for i in range(1) for j in range(6)]
         for positions, og in zip(og_positions, og):
