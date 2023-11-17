@@ -80,6 +80,7 @@ class BmsLayout(QWidget):
         self.pack_total = QComboBox()
         self.pack_total.addItems([str(i) for i in range(1, 16)])
         self.pal_start = QPushButton(palset_label2)
+        self.pal_start.setStyleSheet(open_Button)
         
         ed4 = [
             QLabel(palset_label1 + '：'), self.pack_total,
@@ -92,75 +93,125 @@ class BmsLayout(QWidget):
         
         pal_sys_groupBox.setLayout(pal_sys_groupBox_grid)
         pal_layout_top.addWidget(pal_sys_groupBox)
+        pal_layout_top.setStretch(0, 1)
         
-        status_groupBox = QGroupBox(pal_label2)
-        status_groupBox_grid = QGridLayout()
-        
-        self.pal_char_status = QLabel('●' + error_label1)
-        self.pal_dischar_status = QLabel('●' + error_label2)
-        self.pal_higvol_status = QLabel('●' + error_label3)
-        self.pal_lowvol_status = QLabel('●' + error_label4)
-        
-        ed3 = [
-            self.pal_char_status,
-            self.pal_dischar_status,
-            self.pal_higvol_status,
-            self.pal_lowvol_status
-        ]
-        positions3 = [(i, j) for i in range(4) for j in range(1)]
-        for positions3, ed3 in zip(positions3, ed3):
-            status_groupBox_grid.addWidget(ed3, *positions3)
-        
-        status_groupBox.setLayout(status_groupBox_grid)
-        pal_layout_top.addWidget(status_groupBox)
-        
+        # 并联数据table
         data_groupBox = QGroupBox(pal_label3)
-        data_groupBox_grid = QGridLayout()
-        self.avg_voltage = QLineEdit()
-        self.avg_soc = QLineEdit()
-        self.total_elc = QLineEdit()
-        self.sur_cap = QLineEdit()
-        self.full_cap = QLineEdit()
-        self.soh = QLineEdit()
-        self.loop_num = QLineEdit()
-        
-        ed = [
-            QLabel(paldata_label1 + '(V)：'), self.avg_voltage ,QLabel(battery_label3 + '(AH)：'), self.sur_cap,
-            QLabel(paldata_label2 + '(%)：'), self.avg_soc ,QLabel(battery_label4 + '(AH)：'), self.full_cap,
-            QLabel(paldata_label3 + '(V)：'), self.total_elc ,QLabel('SOH(AH)：'), self.soh,
-            '','',QLabel(battery_label1 + '：'), self.loop_num
-        ]
-        positions = [(i, j) for i in range(4) for j in range(4)]
-        for positions, ed in zip(positions, ed):
-            if ed != '':
-                data_groupBox_grid.addWidget(ed, *positions)
+        data_groupBox_h = QHBoxLayout()
 
-        data_groupBox.setLayout(data_groupBox_grid)
+        # 平均soc
+        data_groupBox_h_left = QHBoxLayout()
+        self.bin_avg_soc = ProgressRing()
+        self.bin_avg_soc.setTextVisible(True)
+        self.bin_avg_soc.setFormat(paldata_label2 + '\n%p%')
+        
+        data_groupBox_h_left.addWidget(self.bin_avg_soc)
+        
+        data_groupBox_h_rightV = QVBoxLayout()
+        
+        # 总电流
+        self.total_elc = QLineEdit()
+        self.total_elc.setStyleSheet('border: 0px')
+        self.total_elc.setAlignment(Qt.AlignRight)
+        
+        data_groupBox_h_right_elc = QHBoxLayout()
+        data_groupBox_h_right_elc.addWidget(QLabel(paldata_label3 + '(A)：'))
+        data_groupBox_h_right_elc.addWidget(self.total_elc)
+        
+        # 平均电压
+        self.avg_voltage = QLineEdit()
+        self.avg_voltage.setStyleSheet('border: 0px')
+        self.avg_voltage.setAlignment(Qt.AlignRight)
+        
+        data_groupBox_h_right_vol = QHBoxLayout()
+        data_groupBox_h_right_vol.addWidget(QLabel(paldata_label1 + '(V)：'))
+        data_groupBox_h_right_vol.addWidget(self.avg_voltage)
+        
+        data_groupBox_h_rightV.addLayout(data_groupBox_h_right_elc)
+        data_groupBox_h_rightV.addLayout(data_groupBox_h_right_vol)
+        
+        data_groupBox_h.addLayout(data_groupBox_h_left)
+        data_groupBox_h.addLayout(data_groupBox_h_rightV)
+
+        data_groupBox.setLayout(data_groupBox_h)
         pal_layout_top.addWidget(data_groupBox)
+        pal_layout_top.setStretch(1, 1)
         
+        # 电芯数据
         celldata_groupBox = QGroupBox(pal_label4)
-        celldata_groupBox_grid = QGridLayout()
+        celldata_groupBox_v = QVBoxLayout()
+        celldata_groupBox_v_h1 = QHBoxLayout()
+        
+        # 最高电芯电压
         self.cell_max = QLineEdit()
+        self.cell_max.setStyleSheet(bin_cell_LineEdit)
         self.cell_max_posi = QLineEdit()
-        self.cell_min = QLineEdit()
-        self.cell_min_posi = QLineEdit()
+        self.cell_max_posi.setStyleSheet(bin_cell_LineEdit)
         
+        celldata_groupBox_v_h1_h1 = QHBoxLayout()
+        cell_form_bg = QWidget()
+        cell_form_bg.setStyleSheet('background-color:#FFFBF8')
+        cell_form = QFormLayout(cell_form_bg)
+        cell_form.addRow(QLabel(celldata_label1 + '(mV)：'), self.cell_max)
+        cell_form.addRow(QLabel(celldata_label2), self.cell_max_posi)
+        celldata_groupBox_v_h1_h1.addWidget(cell_form_bg)
+        
+        # 最高电芯温度
         self.cell_max_tmp = QLineEdit()
+        self.cell_max_tmp.setStyleSheet(bin_cell_LineEdit)
         self.cell_max_tmp_posi = QLineEdit()
-        self.cell_min_tmp = QLineEdit()
-        self.cell_min_tmp_posi = QLineEdit()
+        self.cell_max_tmp_posi.setStyleSheet(bin_cell_LineEdit)
         
-        ed2 = [
-            QLabel(celldata_label1 + '(mV)：'), self.cell_max ,QLabel(celldata_label5 + '(%)：'), self.cell_max_tmp,
-            QLabel(celldata_label2 + '：'), self.cell_max_posi ,QLabel(celldata_label6 + '：'), self.cell_max_tmp_posi,
-            QLabel(celldata_label3 + '(mV)：'), self.cell_min ,QLabel(celldata_label7 + '(%)：'), self.cell_min_tmp,
-            QLabel(celldata_label4 + '：'), self.cell_min_posi,QLabel(celldata_label8 + '：'), self.cell_min_tmp_posi
-        ]
-        positions2 = [(i, j) for i in range(4) for j in range(4)]
-        for positions2, ed2 in zip(positions2, ed2):
-            celldata_groupBox_grid.addWidget(ed2, *positions2)
-        celldata_groupBox.setLayout(celldata_groupBox_grid)
+        celldata_groupBox_v_h1_h2 = QHBoxLayout()
+        cell_form2_bg = QWidget()
+        cell_form2_bg.setStyleSheet('background-color:#FFFBF8')
+        cell_form2 = QFormLayout(cell_form2_bg)
+        cell_form2.addRow(QLabel(celldata_label5 + '(℃)：'), self.cell_max_tmp)
+        cell_form2.addRow(QLabel(celldata_label6), self.cell_max_tmp_posi)
+        celldata_groupBox_v_h1_h2.addWidget(cell_form2_bg)
+        
+        celldata_groupBox_v_h1.addLayout(celldata_groupBox_v_h1_h1)
+        celldata_groupBox_v_h1.addLayout(celldata_groupBox_v_h1_h2)
+        
+        celldata_groupBox_v_h2 = QHBoxLayout()
+        
+        # 最低电芯电压
+        self.cell_min = QLineEdit()
+        self.cell_min.setStyleSheet(bin_cell2_LineEdit)
+        self.cell_min_posi = QLineEdit()
+        self.cell_min_posi.setStyleSheet(bin_cell2_LineEdit)
+        
+        celldata_groupBox_v_h2_h1 = QHBoxLayout()
+        cell_form3_bg = QWidget()
+        cell_form3_bg.setStyleSheet('background-color:#F9FCFF')
+        cell_form3 = QFormLayout(cell_form3_bg)
+        cell_form3.addRow(QLabel(celldata_label3 + '(mV)：'), self.cell_min)
+        cell_form3.addRow(QLabel(celldata_label4), self.cell_min_posi)
+        celldata_groupBox_v_h2_h1.addWidget(cell_form3_bg)
+        
+        # 最低电芯温度
+        self.cell_min_tmp = QLineEdit()
+        self.cell_min_tmp.setStyleSheet(bin_cell2_LineEdit)
+        self.cell_min_tmp_posi = QLineEdit()
+        self.cell_min_tmp_posi.setStyleSheet(bin_cell2_LineEdit)
+        
+        celldata_groupBox_v_h2_h2 = QHBoxLayout()
+        cell_form4_bg = QWidget()
+        cell_form4_bg.setStyleSheet('background-color:#F9FCFF')
+        cell_form4 = QFormLayout(cell_form4_bg)
+        cell_form4.addRow(QLabel(celldata_label7 + '(℃)：'), self.cell_min_tmp)
+        cell_form4.addRow(QLabel(celldata_label8), self.cell_min_tmp_posi)
+        celldata_groupBox_v_h2_h2.addWidget(cell_form4_bg)
+        
+        celldata_groupBox_v_h2.addLayout(celldata_groupBox_v_h2_h1)
+        celldata_groupBox_v_h2.addLayout(celldata_groupBox_v_h2_h2)
+        
+        celldata_groupBox_v.addLayout(celldata_groupBox_v_h1)
+        celldata_groupBox_v.addLayout(celldata_groupBox_v_h2)
+        
+        celldata_groupBox.setLayout(celldata_groupBox_v)
         pal_layout_top.addWidget(celldata_groupBox)
+        pal_layout_top.setStretch(2, 2)
         
         # 下方
         pal_layout_bottom = QHBoxLayout()

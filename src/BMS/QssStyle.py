@@ -75,3 +75,17 @@ close_Button = """
         color: #FFFFFF
     }
 """
+
+bin_cell_LineEdit = """
+    QLineEdit{
+        border: 0px;
+        background-color: #FCEEE5;
+    }
+"""
+
+bin_cell2_LineEdit = """
+    QLineEdit{
+        border: 0px;
+        background-color: #E5F2FC;
+    }
+"""
