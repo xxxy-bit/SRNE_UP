@@ -237,7 +237,7 @@ class Portbms(BmsLayout):
         sys_edit_obj = [
             self.designCap,
             self.remainCap,
-            self.fullCap
+            self.fullCap_Line
         ]
         for i in range(len(sys_edit_obj)):
             sys_edit_obj[i].textEdited.connect(functools.partial(self.setSysParams, sys_edit_obj[i]))
@@ -838,7 +838,7 @@ class Portbms(BmsLayout):
                 elif res[:6] == '010306' and len(res) == 22:
                     ele_data = pars_data(res, order_list['318'])
                     self.remainCap.setText(ele_data[f'{battery_label3}(AH)'])
-                    self.fullCap.setText(ele_data[f'总容量(AH)'])
+                    self.fullCap_Line.setText(ele_data[f'总容量(AH)'])
                 # 读取系统设置-电量数据2
                 elif res[:6] == '010302' and len(res) == 14 and self.sys_status == True:
                     ele_data = pars_data(res, order_list['4000'])

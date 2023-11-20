@@ -255,29 +255,104 @@ class BmsLayout(QWidget):
         # 左边
         sys_layout_left = QVBoxLayout()
         
+        # 电量
         elect_groupBox = QGroupBox(sysset_label1)
-        elect_groupBox.setMaximumHeight(500)
-        elect_groupBox.setMaximumWidth(500)
-        elect_groupBox_grid = QGridLayout()
-
-        self.designCap = QLineEdit()
-        self.remainCap = QLineEdit()
-        self.fullCap = QLineEdit()
+        elect_groupBox.setMaximumHeight(250)
+        elect_groupBox.setMaximumWidth(250)
+        elect_groupBox_v = QVBoxLayout()
+        
+        elect_groupBox_v_topH = QHBoxLayout()
+        
+        # 总容量
+        elect_groupBox_v_topH_leftV_bg = QWidget()
+        elect_groupBox_v_topH_leftV_bg.setStyleSheet('background-color: #FAFAFA;')
+        
+        elect_groupBox_v_topH_leftV = QVBoxLayout(elect_groupBox_v_topH_leftV_bg)
+        
+        self.fullCap_Line = QLineEdit('123')
+        self.fullCap_Line.setAlignment(Qt.AlignCenter)
+        self.fullCap_Line.setStyleSheet("background-color:#FFFFFF;"
+                                        "font-size: 28pt;"
+                                        "border: 1px solid #dcd8d8;"
+                                        )
+        
+        fullCap =  QLabel(f'{sysset_label4}(AH)')
+        fullCap.setAlignment(Qt.AlignCenter)
+        fullCap.setStyleSheet(sys_label)
+        
+        elect_groupBox_v_topH_leftV.addStretch(1)
+        elect_groupBox_v_topH_leftV.addWidget(self.fullCap_Line)
+        elect_groupBox_v_topH_leftV.addWidget(fullCap)
+        elect_groupBox_v_topH_leftV.addStretch(1)
+        
+        elect_groupBox_v_topH_rightV = QVBoxLayout()
+        
+        elect_groupBox_v_topH_rightV_topV_bg = QWidget()
+        elect_groupBox_v_topH_rightV_topV_bg.setStyleSheet('background-color: #FAFAFA')
+        elect_groupBox_v_topH_rightV_topV = QVBoxLayout(elect_groupBox_v_topH_rightV_topV_bg)
+        
+        # 设计容量
+        dsn = QLabel(f'{sysset_label2}(AH)')
+        dsn.setAlignment(Qt.AlignCenter)
+        dsn.setStyleSheet(sys_label)
+        self.designCap = QLineEdit('456')
+        self.designCap.setAlignment(Qt.AlignCenter)
+        self.designCap.setStyleSheet(sys_Line)
+        
+        elect_groupBox_v_topH_rightV_topV.addWidget(dsn)
+        elect_groupBox_v_topH_rightV_topV.addWidget(self.designCap)
+        
+        elect_groupBox_v_topH_rightV_btmV_bg = QWidget()
+        elect_groupBox_v_topH_rightV_btmV_bg.setStyleSheet('background-color: #FAFAFA')
+        elect_groupBox_v_topH_rightV_btmV = QVBoxLayout(elect_groupBox_v_topH_rightV_btmV_bg)
+        
+        # 剩余容量
+        reCap = QLabel(battery_label3 + '(AH)')
+        reCap.setAlignment(Qt.AlignCenter)
+        reCap.setStyleSheet(sys_label)
+        self.remainCap = QLineEdit('369')
+        self.remainCap.setAlignment(Qt.AlignCenter)
+        self.remainCap.setStyleSheet(sys_Line)
+        
+        elect_groupBox_v_topH_rightV_btmV.addWidget(reCap)
+        elect_groupBox_v_topH_rightV_btmV.addWidget(self.remainCap)
+        
+        elect_groupBox_v_topH_rightV.addWidget(elect_groupBox_v_topH_rightV_topV_bg)
+        elect_groupBox_v_topH_rightV.addWidget(elect_groupBox_v_topH_rightV_btmV_bg)
+        
+        elect_groupBox_v_topH.addWidget(elect_groupBox_v_topH_leftV_bg)
+        elect_groupBox_v_topH.addLayout(elect_groupBox_v_topH_rightV)
+        
+        elect_groupBox_v_btmH = QHBoxLayout()
         self.readCap = QPushButton(sysset_label5)
+        self.readCap.setStyleSheet(open_Button)
         self.writeCap = QPushButton(sysset_label6)
-        self.writeCap.setEnabled(False)
+        self.writeCap.setStyleSheet(open_Button)
         
-        ed = [
-            QLabel(f'{sysset_label2}(AH)：'), self.designCap,
-            QLabel(battery_label3 + '(AH)：'), self.remainCap,
-            QLabel(f'{sysset_label4}(AH)：'), self.fullCap,
-            self.readCap, self.writeCap
-        ]
-        positions = [(i, j) for i in range(4) for j in range(2)]
-        for positions, ed in zip(positions, ed):
-            elect_groupBox_grid.addWidget(ed, *positions)
+        elect_groupBox_v_btmH.addWidget(self.readCap)
+        elect_groupBox_v_btmH.addWidget(self.writeCap)
         
-        elect_groupBox.setLayout(elect_groupBox_grid)
+        elect_groupBox_v.addLayout(elect_groupBox_v_topH)
+        elect_groupBox_v.addLayout(elect_groupBox_v_btmH)
+
+        # self.designCap = QLineEdit()
+        # self.remainCap = QLineEdit()
+        # self.fullCap = QLineEdit()
+        # self.readCap = QPushButton(sysset_label5)
+        # self.writeCap = QPushButton(sysset_label6)
+        # self.writeCap.setEnabled(False)
+        
+        # ed = [
+        #     QLabel(f'{sysset_label2}(AH)：'), self.designCap,
+        #     QLabel(battery_label3 + '(AH)：'), self.remainCap,
+        #     QLabel(f'{sysset_label4}(AH)：'), self.fullCap,
+        #     self.readCap, self.writeCap
+        # ]
+        # positions = [(i, j) for i in range(4) for j in range(2)]
+        # for positions, ed in zip(positions, ed):
+        #     elect_groupBox_grid.addWidget(ed, *positions)
+        
+        elect_groupBox.setLayout(elect_groupBox_v)
         sys_layout_left.addWidget(elect_groupBox)
 
         # 右边
@@ -871,8 +946,10 @@ class BmsLayout(QWidget):
         temp_dic = {}
         for i in args:
             temp_dic[i] = QLineEdit()
+            temp_dic[i].setStyleSheet('border: 1px solid #dcd8d8;')
         for k,v in temp_dic.items():
             temp_dic[k].setAlignment(Qt.AlignCenter)
+            
             formName.addRow(k, v)
         form_dic.update(temp_dic)
         return formName
