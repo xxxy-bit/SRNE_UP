@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import serial.tools.list_ports, json, os
+import serial.tools.list_ports
 from src.i18n.Bms_i18n import *
 from settings.bms_modbus import get_bms_modbus_list
 from settings.bms_RS485 import get_bms_rs485_list
-from PyQt5.QtWidgets import QFrame, QTextEdit, QHeaderView, QProgressBar, QTableWidget, QLineEdit, QTabWidget, QWidget, QDesktopWidget, QHBoxLayout, QVBoxLayout, QGroupBox, QPushButton, QLabel, QGridLayout, QTextBrowser, QComboBox, QFormLayout
+from PyQt5.QtWidgets import QFrame, QTextEdit, QHeaderView, QProgressBar, QLineEdit, QTabWidget, QWidget, QDesktopWidget, QHBoxLayout, QVBoxLayout, QGroupBox, QPushButton, QLabel, QGridLayout, QFormLayout
 from PyQt5.QtCore import Qt
 from .QssStyle import *
 from src.OrderList import *
-from qfluentwidgets import ProgressRing, SwitchButton
+from qfluentwidgets import ProgressRing, SwitchButton, ComboBox, TableWidget
 
 
 class BmsLayout(QWidget):
@@ -77,7 +77,7 @@ class BmsLayout(QWidget):
         pal_sys_groupBox = QGroupBox(pal_label1)
         pal_sys_groupBox_grid = QGridLayout()
         
-        self.pack_total = QComboBox()
+        self.pack_total = ComboBox()
         self.pack_total.addItems([str(i) for i in range(1, 16)])
         self.pal_start = QPushButton(palset_label2)
         self.pal_start.setStyleSheet(open_Button)
@@ -215,7 +215,7 @@ class BmsLayout(QWidget):
         
         # 下方
         pal_layout_bottom = QHBoxLayout()
-        self.palTable = QTableWidget()
+        self.palTable = TableWidget()
         # self.palTable.setColumnCount(4)
         # self.palTable.setHorizontalHeaderLabels(['11','12','13','14'])
         self.col_labels = [
@@ -269,7 +269,7 @@ class BmsLayout(QWidget):
         
         elect_groupBox_v_topH_leftV = QVBoxLayout(elect_groupBox_v_topH_leftV_bg)
         
-        self.fullCap_Line = QLineEdit('123')
+        self.fullCap_Line = QLineEdit()
         self.fullCap_Line.setAlignment(Qt.AlignCenter)
         self.fullCap_Line.setStyleSheet("background-color:#FFFFFF;"
                                         "font-size: 28pt;"
@@ -295,7 +295,7 @@ class BmsLayout(QWidget):
         dsn = QLabel(f'{sysset_label2}(AH)')
         dsn.setAlignment(Qt.AlignCenter)
         dsn.setStyleSheet(sys_label)
-        self.designCap = QLineEdit('456')
+        self.designCap = QLineEdit()
         self.designCap.setAlignment(Qt.AlignCenter)
         self.designCap.setStyleSheet(sys_Line)
         
@@ -310,7 +310,7 @@ class BmsLayout(QWidget):
         reCap = QLabel(battery_label3 + '(AH)')
         reCap.setAlignment(Qt.AlignCenter)
         reCap.setStyleSheet(sys_label)
-        self.remainCap = QLineEdit('369')
+        self.remainCap = QLineEdit()
         self.remainCap.setAlignment(Qt.AlignCenter)
         self.remainCap.setStyleSheet(sys_Line)
         
@@ -335,23 +335,6 @@ class BmsLayout(QWidget):
         elect_groupBox_v.addLayout(elect_groupBox_v_topH)
         elect_groupBox_v.addLayout(elect_groupBox_v_btmH)
 
-        # self.designCap = QLineEdit()
-        # self.remainCap = QLineEdit()
-        # self.fullCap = QLineEdit()
-        # self.readCap = QPushButton(sysset_label5)
-        # self.writeCap = QPushButton(sysset_label6)
-        # self.writeCap.setEnabled(False)
-        
-        # ed = [
-        #     QLabel(f'{sysset_label2}(AH)：'), self.designCap,
-        #     QLabel(battery_label3 + '(AH)：'), self.remainCap,
-        #     QLabel(f'{sysset_label4}(AH)：'), self.fullCap,
-        #     self.readCap, self.writeCap
-        # ]
-        # positions = [(i, j) for i in range(4) for j in range(2)]
-        # for positions, ed in zip(positions, ed):
-        #     elect_groupBox_grid.addWidget(ed, *positions)
-        
         elect_groupBox.setLayout(elect_groupBox_v)
         sys_layout_left.addWidget(elect_groupBox)
 
@@ -595,15 +578,15 @@ class BmsLayout(QWidget):
         port_H = QHBoxLayout()
         port_grid = QGridLayout()
 
-        self.port_combobox = QComboBox()
-        self.baud_combobox = QComboBox()
-        self.pack_combobox = QComboBox()
+        self.port_combobox = ComboBox()
+        self.baud_combobox = ComboBox()
+        self.pack_combobox = ComboBox()
         self.pack_combobox.setEnabled(False)
         self.pack_num_line = QLineEdit()
         self.pack_num_line.setEnabled(False)
         self.address_line = QLineEdit()
         self.address_line.setEnabled(False)
-        self.space_combobox = QComboBox()
+        self.space_combobox = ComboBox()
         self.open_port_btn = QPushButton(com_label6)
         self.open_port_btn.setStyleSheet(close_Button)
         self.getP01_data_btn = QPushButton(com_label8)
@@ -833,14 +816,14 @@ class BmsLayout(QWidget):
 
     # 实时数据
     def tab_dataUI(self):
-        self.tableWidget = 	QTableWidget()
+        self.tableWidget = 	TableWidget()
         tab2_layout = QVBoxLayout()
         tab2_layout_H = QHBoxLayout()
 
         # self.tableWidget.setRowCount(3)
         self.tableWidget.setColumnCount(3)  # 3列
         self.tableWidget.setHorizontalHeaderLabels(['Time', 'Direction','Send/Receive Data(Hex)'])
-        self.tableWidget.setColumnWidth(0,150)
+        self.tableWidget.setColumnWidth(0,200)
         self.tableWidget.setColumnWidth(1,100)
         self.tableWidget.setColumnWidth(2,750)
 
@@ -961,7 +944,7 @@ class BmsLayout(QWidget):
         tab4_layout_table_btn_H = QHBoxLayout()
         self.hisShow = QPushButton(hisdata_label1)
         self.clearShow = QPushButton(hisdata_label2)
-        self.hisTable = QTableWidget()
+        self.hisTable = TableWidget()
         
         cloumn_name = self.json_modbus['0103f0010036a71c']
         self.hisTable.setColumnCount(len(cloumn_name))

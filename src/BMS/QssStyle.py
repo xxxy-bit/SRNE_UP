@@ -60,28 +60,28 @@ cellVol2_LineEdit = """
     }
 """
 
-open_Button = """
+close_Button = """
     QPushButton{
         border: 1px solid #F88D20;
         background-color: #FFFFFF;
         color: #F88D20
     }
+"""
+
+open_Button = """
+    QPushButton{
+        border: 1px solid #F88D20;
+        background-color: #F88D20;
+        color: #FFFFFF
+    }
     
     QPushButton:hover{
-        background: rgba(217, 217, 217, 0.5);
+        background: #fc7e00;
     }
 
     QPushButton:pressed{
         color: #F88D20;
         background: rgba(249, 249, 249, 0.3);
-    }
-"""
-
-close_Button = """
-    QPushButton{
-        border: 1px solid #F88D20;
-        background-color: #F88D20;
-        color: #FFFFFF
     }
 """
 
