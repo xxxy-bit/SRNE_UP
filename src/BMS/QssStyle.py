@@ -126,7 +126,7 @@ white_bg = """
     }
     QGroupBox {
         border: 0px;
-        padding: 10px 0px 0px 0px;
+        padding: 10px 5px 5px 5px;
         border-radius: 5px
     }
     QTableWidget {

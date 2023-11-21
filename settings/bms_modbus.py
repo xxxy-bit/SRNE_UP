@@ -1,9 +1,10 @@
 from src.i18n.Bms_i18n import *
-from src.OrderList import *
+from src.BMS.OrderList import *
 
 def get_bms_modbus_list():
     bms_data_list = {
-        "01030300005ec476":{
+        # bms 实时监控
+        bms_monitor:{
             "当前时间(年月)":[0, 1, 1, ""],
             "当前时间(日时)":[1, 1, 1, ""],
             "当前时间(分秒)":[2, 1, 1, ""],
@@ -163,7 +164,8 @@ def get_bms_modbus_list():
             "Pack总充电时间":[90, 2, 1, "H"],
             "Pack总放电时间":[92, 2, 1, "H"]
         },
-        "01032007005bbe30":{
+        # bms 参数设置
+        bms_setting:{
             parset3_label1 + "(V)":[0, 1, 100, "2007"],
             "pack超压报警延时":[1, 1, 1],
             "pack超压报警恢复电压":[2, 1, 1],
@@ -256,8 +258,8 @@ def get_bms_modbus_list():
             parset6_label9 + "(%)":[89, 1, 1, "2060"],
             "soc报警恢复值":[90, 1, 1]
         },
-        # 获取历史数据
-        "0103f0010036a71c":{
+        # bms 历史数据
+        bms_history:{
             bms_history_label1:[0, 3, 1],
             "SOC(%)":[3, 1, 1],
             "SOH(%)":[4, 1, 1],
@@ -371,15 +373,21 @@ def get_bms_modbus_list():
             temp_label19 + "(℃)":[39, 1, -10],
             bms_history_label15 + "(℃)":[40, 1, -10]
         },
-        # 系统设置页
-        "0103031800038588":{
+        # bms 系统设置页 电量1
+        bms_sys_set1:{
             battery_label3 + "(AH)":[0, 1, 100],
             "总容量(AH)":[1, 1, 100],
             battery_label5:[1, 1, 1, "此处不解析"]
         },
-        # 系统设置页
-        "01034000000191ca":{
+        # bms 系统设置页 电量2
+        bms_sys_set2:{
             "设计容量(AH)":[0, 1, 100]
+        },
+        # bms 系统设置页 设置时间
+        bms_sys_time:{
+            "年月":[0, 1, 1, ''],
+            "日时":[1, 1, 1, ''],
+            "分秒":[2, 1, 1, ''],
         }
     }
     return bms_data_list

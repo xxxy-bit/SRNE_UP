@@ -11,7 +11,7 @@ from PyQt5.QtCore import QTimer, QWaitCondition, Qt, QThread, pyqtSignal, QMutex
 from PyQt5.QtGui import QFont
 from .BmsLayout import BmsLayout
 from .DataPars import pars_data
-from .OrderList import order_list
+from .OrderList import *
 from .QssStyle import *
 from src.OrderList import *
 
@@ -49,7 +49,7 @@ class SendMsg(QThread):
             if self._isPause:
                 self.cond.wait(self.mutex)
             time.sleep(wait_time)
-            self.trigger.emit(str(order_list['P01']))
+            self.trigger.emit(str(bms_monitor + calc_crc(bms_monitor)))
             self.mutex.unlock() # 解锁给接下来的线程使用
 
 
@@ -338,11 +338,9 @@ class Portbms(BmsLayout):
     def dormancy_switch(self):
         if self.dormancy_sw.isChecked():
             if self.assert_P01_status() == False: return False
-            msg = '01 06 300c 0001'
-            self.send_msg(msg + calc_crc(msg))
+            self.send_msg(bms_sleep_on + calc_crc(bms_sleep_on))
         else:
-            msg = '01 06 300c 0000'
-            self.send_msg(msg + calc_crc(msg))
+            self.send_msg(bms_sleep_off + calc_crc(bms_sleep_off))
 
     # 获取修改过的'系统设置-电量'参数
     def setSysParams(self, key):
@@ -383,10 +381,10 @@ class Portbms(BmsLayout):
     # 读取系统设置-电量-计时器
     def readCap_func_timer(self):
         if self.readCap_timer_step == 1:
-            self.send_msg(order_list['4000'])
+            self.send_msg(bms_sys_set2 + calc_crc(bms_sys_set2))
             self.readCap_timer_step += 1
         else:
-            self.send_msg(order_list['318'])
+            self.send_msg(bms_sys_set1 + calc_crc(bms_sys_set1))
             self.readCap_timer.stop()
     
     # 设置系统设置-电量
@@ -610,9 +608,10 @@ class Portbms(BmsLayout):
         if self.assertStatus() == False: return False
         if self.assert_P01_status() == False: return False
         self.tab3_dic.clear()
-        self.send_msg(order_list['P03'])
+        self.send_msg(bms_setting + calc_crc(bms_setting))
         self.writeParam.setEnabled(True)
         self.deriveParam.setEnabled(True)
+        # self.resetTab3.setEnabled(True)
 
     # 保存参数设置为txt
     def deriveTab3Params(self):
@@ -634,14 +633,14 @@ class Portbms(BmsLayout):
     def reset_default(self):
         if self.assertStatus() == False: return False
         if self.assert_P01_status() == False: return False
-        self.send_msg('01 06 400b 0001 2c08')
+        self.send_msg(bms_reset + calc_crc(bms_reset))
     
     # 擦除历史数据
     def clear_his_msg(self):
         if self.ser.isOpen() == False:
             return QMessageBox.information(self, 'Error', bms_logic_label7, QMessageBox.Ok)
         if self.assert_P01_status() == False: return False
-        self.send_msg('0106300b000136c8')
+        self.send_msg(bms_clear_history + calc_crc(bms_clear_history))
         self.clearRow_btn(self.hisTable)
         
     # 获取历史数据
@@ -664,7 +663,7 @@ class Portbms(BmsLayout):
     # 获取最近历史数据计时器
     def his_time_func(self):
         if self.clear_his_status == False:
-            self.send_msg('0103f0000001b70a')
+            self.send_msg(bms_recent_history + calc_crc(bms_recent_history))
         try:
             if self.num_max == 0:
                 QMessageBox.information(self, 'tip', bms_logic_label27, QMessageBox.Ok)
@@ -676,7 +675,7 @@ class Portbms(BmsLayout):
         if self.num_max > 100:
             self.num_max = 100
         if self.hisNum <= self.num_max:
-            num = f'0103f{self.hisNum:03x}0036'
+            num = f'{bms_history[:5]}{self.hisNum:03x}0036'
             self.send_msg(f'{num}{calc_crc(num)}')
             self.hisNum += 1
         else:
@@ -709,8 +708,8 @@ class Portbms(BmsLayout):
             if self.rs485_res_status == False:
                 crc_error = False
                 # 实时监控
-                if res[:6] == '0103bc' and len(res) == 386:
-                    p01 = pars_data(res, order_list['P01'])
+                if res[:6] == f'{bms_monitor[:4]}bc' and len(res) == 386:
+                    p01 = pars_data(res, bms_monitor + calc_crc(bms_monitor))
                     # print(p01)
                     if len(p01) == 2:
                         crc_error = True
@@ -805,8 +804,8 @@ class Portbms(BmsLayout):
                                 self.getP01_data_btn.setStyleSheet(close_Button)
                                 QMessageBox.information(self, 'tips', bms_logic_label28, QMessageBox.Ok)
                 # 参数设置
-                elif res[:6] == '0103b6' and len(res) == 374:
-                    self.p03 = pars_data(res, order_list['P03'])
+                elif res[:6] == f'{bms_setting[:4]}b6' and len(res) == 374:
+                    self.p03 = pars_data(res, bms_setting + calc_crc(bms_setting))
                     if len(self.p03) == 2:
                         crc_error = True
                     else:
@@ -816,8 +815,8 @@ class Portbms(BmsLayout):
                             except KeyError:
                                 continue
                 # 历史数据
-                elif res[:6] == '01036c' and len(res) == 226:
-                    p06 = pars_data(res, order_list['P06'])
+                elif res[:6] == f'{bms_history[:4]}6c' and len(res) == 226:
+                    p06 = pars_data(res, bms_history + calc_crc(bms_history))
                     if len(p06) == 2:
                         crc_error = True
                     else:
@@ -835,17 +834,17 @@ class Portbms(BmsLayout):
                     v4 = int(res[12:14], 16)
                     self.version.setText(f'Version：{v1}.{v2}.{v3}.{v4}')
                 # 读取系统设置-电量数据
-                elif res[:6] == '010306' and len(res) == 22:
-                    ele_data = pars_data(res, order_list['318'])
+                elif res[:6] == f'{bms_sys_set1[:4]}06' and len(res) == 22:
+                    ele_data = pars_data(res, bms_sys_set1 + calc_crc(bms_sys_set1))
                     self.remainCap.setText(ele_data[f'{battery_label3}(AH)'])
                     self.fullCap_Line.setText(ele_data[f'总容量(AH)'])
                 # 读取系统设置-电量数据2
-                elif res[:6] == '010302' and len(res) == 14 and self.sys_status == True:
-                    ele_data = pars_data(res, order_list['4000'])
+                elif res[:6] == f'{bms_sys_set2[:4]}02' and len(res) == 14 and self.sys_status == True:
+                    ele_data = pars_data(res, bms_sys_set2 + calc_crc(bms_sys_set2))
                     self.designCap.setText(ele_data[f'设计容量(AH)'])
                     self.sys_status = False
                 # 历史数据总数 
-                elif res[:6] == '010302' and len(res) == 14:
+                elif res[:6] == f'{bms_history[:4]}02' and len(res) == 14:
                     self.num_max = int(res[6:10], 16)
                     
                 if crc_error == False:

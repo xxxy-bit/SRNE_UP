@@ -4,6 +4,7 @@
 import os, sys, json
 from settings.bms_modbus import get_bms_modbus_list
 from src.i18n.Bms_i18n import *
+from .OrderList import *
 from src.BMS.tools.Common import Common
 from src.BMS.tools.CRC16Util import calc_crc
 
@@ -32,8 +33,8 @@ def pars_data(res, data):
     json_file = get_bms_modbus_list()
     print_dic = {}
     # 实时监控
-    if data == '01030300005ec476':
-        for k,v in json_file[data].items():
+    if data[:-4] == bms_monitor:
+        for k,v in json_file[bms_monitor].items():
             temp = data_cut[v[0]:v[0]+v[1]]
             if k == 'BMS工作状态1' or k == 'BMS工作状态2' or k == '故障位' or k == '警告位1' \
             or k == '警告位2' or k == '保护位1' or k == '保护位2':
@@ -51,8 +52,8 @@ def pars_data(res, data):
                     temp = int(''.join(str(i) for i in temp), 16)
                     print_dic[k] = f'{Common.format_num(temp / v[2])}{v[3]}'
     # 参数设置
-    elif data == '01032007005bbe30':
-        for k,v in json_file[data].items():
+    elif data[:-4] == bms_setting:
+        for k,v in json_file[bms_setting].items():
             temp = data_cut[v[0]:v[0]+v[1]]
             if v[2] < 0:
                 resF = f'{Common.format_num(Common.signBit_func(temp[0]) / abs(v[2]))}'
@@ -60,9 +61,9 @@ def pars_data(res, data):
             else:
                 temp = int(''.join(str(i) for i in temp), 16)
                 print_dic[k] = f'{Common.format_num(temp / v[2])}'
-    # 历史状态
-    elif data[:5] == '0103f':
-        for k,v in json_file['0103f0010036a71c'].items():
+    # 历史记录
+    elif data[:5] == bms_history[:5]:
+        for k,v in json_file[bms_history].items():
             temp = data_cut[v[0]:v[0]+v[1]]
             if k == bms_history_label1:
                 # 年/月
@@ -100,8 +101,13 @@ def pars_data(res, data):
                 else:
                     temp = int(''.join(str(i) for i in temp), 16)
                     print_dic[k] = f'{Common.format_num(temp / v[2])}'
-    elif data == '0103031800038588' or data == '01034000000191ca':
-        for k,v in json_file[data].items():
+    elif data[:-4] == bms_sys_set1:
+        for k,v in json_file[bms_sys_set1].items():
+            temp = data_cut[v[0]:v[0]+v[1]]
+            temp = int(''.join(str(i) for i in temp), 16)
+            print_dic[k] = f'{Common.format_num(temp / v[2])}'
+    elif data[:-4] == bms_sys_set2:
+        for k,v in json_file[bms_sys_set2].items():
             temp = data_cut[v[0]:v[0]+v[1]]
             temp = int(''.join(str(i) for i in temp), 16)
             print_dic[k] = f'{Common.format_num(temp / v[2])}'

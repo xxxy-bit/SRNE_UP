@@ -8,7 +8,7 @@ from settings.bms_RS485 import get_bms_rs485_list
 from PyQt5.QtWidgets import QTableWidget, QFrame, QTextEdit, QHeaderView, QProgressBar, QLineEdit, QTabWidget, QWidget, QDesktopWidget, QHBoxLayout, QVBoxLayout, QGroupBox, QPushButton, QLabel, QGridLayout, QFormLayout
 from PyQt5.QtCore import Qt
 from .QssStyle import *
-from src.OrderList import *
+from src.BMS.OrderList import *
 from qfluentwidgets import ProgressRing, SwitchButton, ComboBox, TableWidget
 
 
@@ -19,12 +19,10 @@ class BmsLayout(QWidget):
         
     def initUI(self):
         
-        # with open(os.path.join(os.getcwd(), 'settings', 'bms_modbus.json'), 'r', encoding='utf-8') as f:
-        #     self.json_modbus = json.load(f)
+        # 读取 modbus 解析列表
         self.json_modbus = get_bms_modbus_list()
-            
-        # with open(os.path.join(os.getcwd(), 'settings', 'RS485.json'), 'r', encoding='utf-8') as f:
-        #     self.json_rs485 = json.load(f)
+        
+        # 读取 rs485 解析列表
         self.json_rs485 = get_bms_rs485_list()
         
         self.setWindowTitle('Portbms v1.2.5')
@@ -531,6 +529,7 @@ class BmsLayout(QWidget):
         vol_V_H1_1 = QHBoxLayout(vol_V_H1_1_bg)
         
         self.cellLine1 = QLineEdit()
+        self.cellLine1.setReadOnly(True)
         self.cellLine1.setStyleSheet(cellVol1_LineEdit)
         vol_V_H1_1.addWidget(QLabel(vol_label17 + '(V)'))
         vol_V_H1_1.addWidget(self.cellLine1)
@@ -541,6 +540,7 @@ class BmsLayout(QWidget):
         vol_V_H1_2 = QHBoxLayout(vol_V_H1_2_bg)
         
         self.cellLine2 = QLineEdit()
+        self.cellLine2.setReadOnly(True)
         self.cellLine2.setStyleSheet(cellVol1_LineEdit)
         vol_V_H1_2.addWidget(QLabel(vol_label18 + '(V)'))
         vol_V_H1_2.addWidget(self.cellLine2)
@@ -551,6 +551,7 @@ class BmsLayout(QWidget):
         vol_V_H1_3 = QHBoxLayout(vol_V_H1_3_bg)
         
         self.cellLine3 = QLineEdit()
+        self.cellLine3.setReadOnly(True)
         self.cellLine3.setStyleSheet(cellVol1_LineEdit)
         vol_V_H1_3.addWidget(QLabel(vol_label19 + '(V)'))
         vol_V_H1_3.addWidget(self.cellLine3)
@@ -992,7 +993,7 @@ class BmsLayout(QWidget):
         self.clearShow = QPushButton(hisdata_label2)
         self.hisTable = TableWidget()
         
-        cloumn_name = self.json_modbus['0103f0010036a71c']
+        cloumn_name = self.json_modbus[bms_history]
         self.hisTable.setColumnCount(len(cloumn_name))
         # self.hisTable.setEditTriggers(QAbstractItemView.NoEditTriggers) # 不可编辑
         # 载入表头字段
