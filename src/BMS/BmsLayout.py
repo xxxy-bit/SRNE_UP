@@ -5,7 +5,7 @@ import serial.tools.list_ports
 from src.i18n.Bms_i18n import *
 from settings.bms_modbus import get_bms_modbus_list
 from settings.bms_RS485 import get_bms_rs485_list
-from PyQt5.QtWidgets import QFrame, QTextEdit, QHeaderView, QProgressBar, QLineEdit, QTabWidget, QWidget, QDesktopWidget, QHBoxLayout, QVBoxLayout, QGroupBox, QPushButton, QLabel, QGridLayout, QFormLayout
+from PyQt5.QtWidgets import QTableWidget, QFrame, QTextEdit, QHeaderView, QProgressBar, QLineEdit, QTabWidget, QWidget, QDesktopWidget, QHBoxLayout, QVBoxLayout, QGroupBox, QPushButton, QLabel, QGridLayout, QFormLayout
 from PyQt5.QtCore import Qt
 from .QssStyle import *
 from src.OrderList import *
@@ -27,7 +27,7 @@ class BmsLayout(QWidget):
         #     self.json_rs485 = json.load(f)
         self.json_rs485 = get_bms_rs485_list()
         
-        self.setWindowTitle('Portbms v1.2.4')
+        self.setWindowTitle('Portbms v1.2.5')
         self.resize(1150, 765)   # 可拉伸
         # self.setFixedSize(1800, 950)   # 固定界面大小，不可拉伸
         
@@ -37,10 +37,19 @@ class BmsLayout(QWidget):
 
         self.tabWidget = QTabWidget()
         self.tab_monitor = QWidget()
+        self.tab_monitor.setStyleSheet(table_bg)
+        
         self.pal_monitor =  QWidget()
+        self.pal_monitor.setStyleSheet(table_bg)
+        
         self.tab_data = QWidget()
+        
         self.tab_setParams = QWidget()
+        self.tab_setParams.setStyleSheet(table_bg)
+        
         self.sys_seting = QWidget()
+        self.sys_seting.setStyleSheet(table_bg)
+        
         self.tab_hisdata = QWidget()
         
         self.tabWidget.addTab(self.tab_monitor,tab_tabel1)
@@ -74,7 +83,9 @@ class BmsLayout(QWidget):
         # 上方
         pal_layout_top = QHBoxLayout()
         
+        # 并联连接
         pal_sys_groupBox = QGroupBox(pal_label1)
+        pal_sys_groupBox.setStyleSheet(white_bg)
         pal_sys_groupBox_grid = QGridLayout()
         
         self.pack_total = ComboBox()
@@ -97,6 +108,7 @@ class BmsLayout(QWidget):
         
         # 并联数据table
         data_groupBox = QGroupBox(pal_label3)
+        data_groupBox.setStyleSheet(white_bg)
         data_groupBox_h = QHBoxLayout()
 
         # 平均soc
@@ -139,6 +151,7 @@ class BmsLayout(QWidget):
         
         # 电芯数据
         celldata_groupBox = QGroupBox(pal_label4)
+        celldata_groupBox.setStyleSheet(white_bg)
         celldata_groupBox_v = QVBoxLayout()
         celldata_groupBox_v_h1 = QHBoxLayout()
         
@@ -214,8 +227,10 @@ class BmsLayout(QWidget):
         pal_layout_top.setStretch(2, 2)
         
         # 下方
+        # pack具体数据
         pal_layout_bottom = QHBoxLayout()
-        self.palTable = TableWidget()
+        self.palTable = QTableWidget()
+        self.palTable.setStyleSheet(white_bg)
         # self.palTable.setColumnCount(4)
         # self.palTable.setHorizontalHeaderLabels(['11','12','13','14'])
         self.col_labels = [
@@ -257,6 +272,7 @@ class BmsLayout(QWidget):
         
         # 电量
         elect_groupBox = QGroupBox(sysset_label1)
+        elect_groupBox.setStyleSheet(white_bg)
         elect_groupBox.setMaximumHeight(250)
         elect_groupBox.setMaximumWidth(250)
         elect_groupBox_v = QVBoxLayout()
@@ -386,6 +402,7 @@ class BmsLayout(QWidget):
         # 左边-上-左：电池信息
         tab1_layout_left_top_left = QVBoxLayout()
         battery_groupBox = QGroupBox(group_tabel1)
+        battery_groupBox.setStyleSheet(white_bg)
 
         # 电池信息：竖布局
         bat_v = QVBoxLayout()
@@ -460,6 +477,7 @@ class BmsLayout(QWidget):
         # 左边：温度信息
         tab1_layout_left_top_right = QVBoxLayout()
         temperature_groupBox = QGroupBox(group_tabel2)
+        temperature_groupBox.setStyleSheet(white_bg)
         tem_h = QHBoxLayout()
         
         tem_form1_bg = QWidget()
@@ -503,6 +521,7 @@ class BmsLayout(QWidget):
         # 左边-单体电压
         tab1_layout_left_mid = QHBoxLayout()
         voltage_groupBox = QGroupBox(group_tabel3)
+        voltage_groupBox.setStyleSheet(white_bg)
         vol_V = QVBoxLayout()
         
         vol_V_H1 = QHBoxLayout()
@@ -574,7 +593,10 @@ class BmsLayout(QWidget):
 
         # 右边-上
         tab1_layout_right_top = QVBoxLayout()
+        
+        # 串口信息
         port_groupBox = QGroupBox(group_tabel55)
+        port_groupBox.setStyleSheet(white_bg)
         port_H = QHBoxLayout()
         port_grid = QGridLayout()
 
@@ -608,7 +630,9 @@ class BmsLayout(QWidget):
                 continue
             port_grid.addWidget(wd, *positions)
 
+        # 系统状态
         sysStatus_groupBox = QGroupBox(group_tabel7)
+        sysStatus_groupBox.setStyleSheet(white_bg)
         sysStatus_groupBox_grid = QGridLayout()
         self.charg_status = QLabel('●' + sys_label1)
         self.disCharg_status = QLabel('●' + sys_label2)
@@ -627,6 +651,7 @@ class BmsLayout(QWidget):
 
         # 其他状态（故障、告警、保护）
         otherStatus_groupBox = QGroupBox('其他状态')
+        otherStatus_groupBox.setStyleSheet(white_bg)
         otherStatus_groupBox_h = QHBoxLayout()
         otherStatus_groupBox_h.setSpacing(0)
         
@@ -707,6 +732,7 @@ class BmsLayout(QWidget):
 
         # 开关控制
         openStatus_groupBox = QGroupBox(group_tabel6)
+        openStatus_groupBox.setStyleSheet(white_bg)
         openStatus_groupBox_grid = QGridLayout()
         
         # 充电
@@ -763,9 +789,10 @@ class BmsLayout(QWidget):
         tab1_layout_left_mid.addWidget(voltage_groupBox)
         tab1_layout_left.addLayout(tab1_layout_left_mid)
         
-        # 登录验证
+        # 管理员登录
         tab1_layout_right_down = QHBoxLayout()
         login_groupBox = QGroupBox(group_tabel4)
+        login_groupBox.setStyleSheet(white_bg)
         login_H = QHBoxLayout()
         
         pwd_label = QLabel(pwd_label1 + '：')
@@ -816,7 +843,7 @@ class BmsLayout(QWidget):
 
     # 实时数据
     def tab_dataUI(self):
-        self.tableWidget = 	TableWidget()
+        self.tableWidget = 	QTableWidget()
         tab2_layout = QVBoxLayout()
         tab2_layout_H = QHBoxLayout()
 
@@ -843,19 +870,27 @@ class BmsLayout(QWidget):
         tab3_layout_H1 = QHBoxLayout()
         self.tab3_form_dic = {}
 
+        # 单体过充设置
         monVolWarn_groupBox = QGroupBox(parset_label1)
+        monVolWarn_groupBox.setStyleSheet(white_bg)
         monVolWarn_form = self.tab3_createForm(self.tab3_form_dic, f'{parset1_label1}(V)', f'{parset1_label2}(V)', f'{parset1_label3}(V)', f'{parset1_label4}(mS)')
         monVolWarn_groupBox.setLayout(monVolWarn_form)
 
+        # 单体过放设置
         monVolProt_groupBox = QGroupBox(parset_label2)
+        monVolProt_groupBox.setStyleSheet(white_bg)
         monVolProt_form = self.tab3_createForm(self.tab3_form_dic, f'{parset2_label1}(V)', f'{parset2_label2}(V)', f'{parset2_label3}(V)', f'{parset2_label4}(mS)')
         monVolProt_groupBox.setLayout(monVolProt_form)
 
+        # 总体过充设置
         allVolWarn_groupBox = QGroupBox(parset_label3)
+        allVolWarn_groupBox.setStyleSheet(white_bg)
         allVolWarn_form = self.tab3_createForm(self.tab3_form_dic, f'{parset3_label1}(V)', f'{parset3_label2}(V)', f'{parset3_label3}(V)', f'{parset3_label4}(mS)')
         allVolWarn_groupBox.setLayout(allVolWarn_form)
 
+        # 总体过放设置
         allVolProt_groupBox = QGroupBox(parset_label4)
+        allVolProt_groupBox.setStyleSheet(white_bg)
         allVolProt_form = self.tab3_createForm(self.tab3_form_dic, f'{parset4_label1}(V)', f'{parset4_label2}(V)', f'{parset4_label3}(V)', f'{parset4_label4}(mS)')
         allVolProt_groupBox.setLayout(allVolProt_form)
 
@@ -865,7 +900,9 @@ class BmsLayout(QWidget):
         tab3_layout_H1.addWidget(allVolProt_groupBox)   # 总体过放设置
         
         tab3_layout_H2 = QHBoxLayout()
+        # 高温设置
         temWarn_groupBox = QGroupBox(parset_label5)
+        temWarn_groupBox.setStyleSheet(white_bg)
         temWarn_form = self.tab3_createForm(self.tab3_form_dic,
             f'{parset5_label1}(℃)', f'{parset5_label2}(℃)', f'{parset5_label3}(℃)', 
             f'{parset5_label4}(℃)', f'{parset5_label5}(℃)', f'{parset5_label6}(℃)',
@@ -873,7 +910,9 @@ class BmsLayout(QWidget):
         )
         temWarn_groupBox.setLayout(temWarn_form)
 
+        # 低温设置
         temProt_groupBox = QGroupBox(parset_label6)
+        temProt_groupBox.setStyleSheet(white_bg)
         temProt_form = self.tab3_createForm(self.tab3_form_dic,
             f'{parset6_label1}(℃)', f'{parset6_label2}(℃)', f'{parset6_label3}(℃)',
             f'{parset6_label4}(℃)', f'{parset6_label5}(℃)', f'{parset6_label6}(℃)',
@@ -881,14 +920,18 @@ class BmsLayout(QWidget):
         )
         temProt_groupBox.setLayout(temProt_form)
 
+        # 放电过流设置
         ecProt_groupBox = QGroupBox(parset_label7)
+        ecProt_groupBox.setStyleSheet(white_bg)
         ecProt_form = self.tab3_createForm(self.tab3_form_dic, 
             f'{parset7_label1}(A)', f'{parset7_label2}(A)', f'{parset7_label3}(mS)', 
             # f'{parset7_label4}(A)', f'{parset7_label5}(mS)', f'{parset7_label6}(uS)')
             f'{parset7_label4}(A)', f'{parset7_label5}(mS)')
         ecProt_groupBox.setLayout(ecProt_form)
 
+        # 充电过流设置
         ecWarn_groupBox = QGroupBox(parset_label8)
+        ecWarn_groupBox.setStyleSheet(white_bg)
         ecWarn_form = self.tab3_createForm(self.tab3_form_dic, 
             f'{parset8_label1}(A)', f'{parset8_label2}(A)', f'{parset8_label3}(mS)', 
             f'{parset8_label4}(A)', f'{parset8_label5}(mS)')
@@ -899,7 +942,10 @@ class BmsLayout(QWidget):
         tab3_layout_H2.addWidget(ecProt_groupBox)   # 放电过流设置
         tab3_layout_H2.addWidget(ecWarn_groupBox)   # 充电过流设置
 
-        tab3_layout_H3 = QHBoxLayout()
+        tab3_layout_H3_bg = QWidget()
+        tab3_layout_H3_bg.setMaximumHeight(50)
+        tab3_layout_H3_bg.setStyleSheet(white_bg)
+        tab3_layout_H3 = QHBoxLayout(tab3_layout_H3_bg)
         self.getTab3Res = QPushButton(parset9_label1)
         self.clsTab3Res = QPushButton(parset9_label2)
         self.writeParam = QPushButton(parset9_label3)
@@ -920,7 +966,7 @@ class BmsLayout(QWidget):
 
         tab3_layout.addLayout(tab3_layout_H1)
         tab3_layout.addLayout(tab3_layout_H2)
-        tab3_layout.addLayout(tab3_layout_H3)
+        tab3_layout.addWidget(tab3_layout_H3_bg)
         self.tab_setParams.setLayout(tab3_layout)
         
     # 创建Form布局

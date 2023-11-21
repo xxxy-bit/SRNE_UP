@@ -113,3 +113,23 @@ sys_Line = """
         border: 1px solid #dcd8d8;
     }
 """
+
+table_bg = """
+    QWidget{
+        background-color: #FBF9F8
+    }
+"""
+
+white_bg = """
+    QWidget{
+        background-color: #ffffff;
+    }
+    QGroupBox {
+        border: 0px;
+        padding: 10px 0px 0px 0px;
+        border-radius: 5px
+    }
+    QTableWidget {
+        border: 0px;
+    }
+"""

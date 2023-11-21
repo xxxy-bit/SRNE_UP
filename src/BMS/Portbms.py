@@ -617,7 +617,7 @@ class Portbms(BmsLayout):
     # 保存参数设置为txt
     def deriveTab3Params(self):
         # print(os.getcwd())
-        file_name =os.path.join(os.getcwd, f'{tab_tabel3}.txt')
+        file_name =os.path.join(os.getcwd(), f'{tab_tabel3}.txt')
         if len(self.p03) != 0:
             with open(file_name, 'w', encoding='utf-8') as f:
                 for k,v in self.p03.items():
