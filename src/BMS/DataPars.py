@@ -101,14 +101,24 @@ def pars_data(res, data):
                 else:
                     temp = int(''.join(str(i) for i in temp), 16)
                     print_dic[k] = f'{Common.format_num(temp / v[2])}'
+    # 系统设置-剩余容量，总容量
     elif data[:-4] == bms_sys_set1:
         for k,v in json_file[bms_sys_set1].items():
             temp = data_cut[v[0]:v[0]+v[1]]
             temp = int(''.join(str(i) for i in temp), 16)
             print_dic[k] = f'{Common.format_num(temp / v[2])}'
+    # 系统设置-设计容量
     elif data[:-4] == bms_sys_set2:
         for k,v in json_file[bms_sys_set2].items():
             temp = data_cut[v[0]:v[0]+v[1]]
             temp = int(''.join(str(i) for i in temp), 16)
             print_dic[k] = f'{Common.format_num(temp / v[2])}'
+    # 系统设置-系统时间
+    elif data[:-4] == bms_sys_time:
+        for k,v in json_file[bms_sys_time].items():
+            temp = data_cut[v[0]:v[0]+v[1]]
+            hight_eight = int(temp[0][:2], 16)
+            low_eight = int(temp[0][2:], 16)
+            print_dic[k] = f'{hight_eight}/{low_eight}'
+            
     return print_dic

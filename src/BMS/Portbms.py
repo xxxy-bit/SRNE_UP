@@ -7,7 +7,7 @@ from src.i18n.Bms_i18n import *
 from src.BMS.tools.CRC16Util import calc_crc
 from src.BMS.tools.Common import Common
 from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox
-from PyQt5.QtCore import QTimer, QWaitCondition, Qt, QThread, pyqtSignal, QMutex, QSettings
+from PyQt5.QtCore import QDate, QTime, QDateTime, QTimer, QWaitCondition, Qt, QThread, pyqtSignal, QMutex, QSettings
 from PyQt5.QtGui import QFont
 from .BmsLayout import BmsLayout
 from .DataPars import pars_data
@@ -233,6 +233,11 @@ class Portbms(BmsLayout):
         self.readCap.clicked.connect(self.readCap_func)
         self.writeCap.clicked.connect(self.writeCap_func)
         
+        self.readTime.clicked.connect(self.readTime_func)
+        self.sys_time = False   # 系统时间标志位
+        
+        self.writeTime.clicked.connect(self.writeTime_func)
+        
         self.sys_edit_dic = {}
         sys_edit_obj = [
             self.designCap,
@@ -386,6 +391,17 @@ class Portbms(BmsLayout):
         else:
             self.send_msg(bms_sys_set1 + calc_crc(bms_sys_set1))
             self.readCap_timer.stop()
+           
+    #  读取系统设置-系统时间
+    def readTime_func(self):
+        if self.assertStatus() == False: return False
+        if self.assert_P01_status() == False: return False
+        self.sys_time = True
+        self.send_msg(bms_sys_time + calc_crc(bms_sys_time))
+        
+    #  写入系统设置-系统时间
+    def writeTime_func(self):
+        ...
     
     # 设置系统设置-电量
     def writeCap_func(self):
@@ -833,6 +849,25 @@ class Portbms(BmsLayout):
                     v3 = int(res[10:12], 16)
                     v4 = int(res[12:14], 16)
                     self.version.setText(f'Version：{v1}.{v2}.{v3}.{v4}')
+                # 读取系统设置-系统时间
+                elif res[:6] == f'{bms_sys_time[:4]}06' and self.sys_time and len(res) == 22:
+                    sysTime_data = pars_data(res, bms_sys_time + calc_crc(bms_sys_time))
+                    year_month = sysTime_data['年月'].split('/')
+                    year = int(f'20{year_month[0]}')
+                    month = int(year_month[1])
+                    
+                    day_hour = sysTime_data['日时'].split('/')
+                    day = int(day_hour[0])
+                    hour = int(day_hour[1])
+                    
+                    minutes_seconds = sysTime_data['分秒'].split('/')
+                    minutes = int(minutes_seconds[0])
+                    seconds = int(minutes_seconds[1])
+                    
+                    thisTime = QDateTime.currentDateTime()
+                    thisTime.setDate(QDate(year, month, day))
+                    thisTime.setTime(QTime(hour, minutes, seconds))
+                    self.now_time.setDateTime(thisTime)
                 # 读取系统设置-电量数据
                 elif res[:6] == f'{bms_sys_set1[:4]}06' and len(res) == 22:
                     ele_data = pars_data(res, bms_sys_set1 + calc_crc(bms_sys_set1))

@@ -383,7 +383,7 @@ def get_bms_modbus_list():
         bms_sys_set2:{
             "设计容量(AH)":[0, 1, 100]
         },
-        # bms 系统设置页 设置时间
+        # bms 系统设置页 系统时间
         bms_sys_time:{
             "年月":[0, 1, 1, ''],
             "日时":[1, 1, 1, ''],

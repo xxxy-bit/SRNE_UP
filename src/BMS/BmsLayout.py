@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import QTableWidget, QFrame, QTextEdit, QHeaderView, QProgr
 from PyQt5.QtCore import Qt
 from .QssStyle import *
 from src.BMS.OrderList import *
-from qfluentwidgets import ProgressRing, SwitchButton, ComboBox, TableWidget
+from qfluentwidgets import DateTimeEdit, ProgressRing, SwitchButton, ComboBox, TableWidget
 
 
 class BmsLayout(QWidget):
@@ -265,8 +265,8 @@ class BmsLayout(QWidget):
         # 最外层
         sys_layout = QHBoxLayout()
 
-        # 左边
-        sys_layout_left = QVBoxLayout()
+        # 上边
+        sys_layout_left = QHBoxLayout()
         
         # 电量
         elect_groupBox = QGroupBox(sysset_label1)
@@ -351,9 +351,38 @@ class BmsLayout(QWidget):
 
         elect_groupBox.setLayout(elect_groupBox_v)
         sys_layout_left.addWidget(elect_groupBox)
+        
+        # 系统时间
+        time_groupBox = QGroupBox('系统时间')
+        time_groupBox.setStyleSheet(white_bg)
+        time_groupBox.setMaximumHeight(250)
+        time_groupBox.setMaximumWidth(250)
+        
+        time_groupBox_v = QVBoxLayout()
+        
+        time_groupBox_v_toph = QHBoxLayout()
+        self.now_time = DateTimeEdit()
+        self.now_time.setDisplayFormat('yyyy/M/d H:mm:ss')
+        
+        time_groupBox_v_toph.addWidget(self.now_time)
+        
+        time_groupBox_v_bomh = QHBoxLayout()
+        self.readTime = QPushButton(sysset_label5)
+        self.readTime.setStyleSheet(open_Button)
+        self.writeTime = QPushButton(sysset_label6)
+        self.writeTime.setStyleSheet(open_Button)
+        
+        time_groupBox_v_bomh.addWidget(self.readTime)
+        time_groupBox_v_bomh.addWidget(self.writeTime)
+        
+        time_groupBox_v.addLayout(time_groupBox_v_toph)
+        time_groupBox_v.addStretch(1)
+        time_groupBox_v.addLayout(time_groupBox_v_bomh)
+        time_groupBox.setLayout(time_groupBox_v)
+        sys_layout_left.addWidget(time_groupBox)
 
-        # 右边
-        sys_layout_right = QVBoxLayout()
+        # 下边
+        sys_layout_right = QHBoxLayout()
 
         sys_layout.addLayout(sys_layout_left)
         sys_layout.addLayout(sys_layout_right)
