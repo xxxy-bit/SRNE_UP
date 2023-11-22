@@ -1020,6 +1020,7 @@ class BmsLayout(QWidget):
         tab4_layout_table_btn_H = QHBoxLayout()
         self.hisShow = QPushButton(hisdata_label1)
         self.clearShow = QPushButton(hisdata_label2)
+        self.clearShow.setEnabled(False)
         self.hisTable = TableWidget()
         
         cloumn_name = self.json_modbus[bms_history]

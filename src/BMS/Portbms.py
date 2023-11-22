@@ -416,17 +416,18 @@ class Portbms(BmsLayout):
             year = hex(self.now_time.dateTime().date().year() - 2000)[2:].rjust(2,'0')
             month = hex(self.now_time.dateTime().date().month())[2:].rjust(2,'0')
             msg = f'01062004{year}{month}'
+            self.send_msg(msg + calc_crc(msg))
         elif self.writeTime_timer_step == 2:
             day = hex(self.now_time.dateTime().date().day())[2:].rjust(2,'0')
             hour = hex(self.now_time.dateTime().time().hour())[2:].rjust(2,'0')
             msg = f'01062005{day}{hour}'
+            self.send_msg(msg + calc_crc(msg))
         elif self.writeTime_timer_step == 3:
             minute = hex(self.now_time.dateTime().time().minute())[2:].rjust(2,'0')
             second = hex(self.now_time.dateTime().time().second())[2:].rjust(2,'0')
             msg = f'01062006{minute}{second}'
-        
-        self.send_msg(msg + calc_crc(msg))
-        if self.writeTime_timer_step == 3:
+            self.send_msg(msg + calc_crc(msg))
+            self.writeTime.setEnabled(True)
             self.writeTime_timer.stop()
             return QMessageBox.information(self, 'tips', '写入完毕，请重新获取数据。', QMessageBox.Ok)
         self.writeTime_timer_step += 1
@@ -686,6 +687,8 @@ class Portbms(BmsLayout):
         if self.assert_P01_status() == False: return False
         self.send_msg(bms_clear_history + calc_crc(bms_clear_history))
         self.clearRow_btn(self.hisTable)
+        self.hisTime.stop()
+        self.hisShow.setEnabled(True)
         
     # 获取历史数据
     def his_show(self):
@@ -703,6 +706,7 @@ class Portbms(BmsLayout):
         self.his_status = True
         self.getP01_data_btn.setText(com_label8)
         self.hisShow.setEnabled(False)
+        self.clearShow.setEnabled(True)
     
     # 获取最近历史数据计时器
     def his_time_func(self):
