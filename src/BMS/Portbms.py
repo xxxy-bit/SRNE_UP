@@ -401,8 +401,36 @@ class Portbms(BmsLayout):
         
     #  写入系统设置-系统时间
     def writeTime_func(self):
-        ...
+        if self.assertStatus() == False: return False
+        if self.assert_P01_status() == False: return False
+        
+        self.writeTime_timer = QTimer()
+        self.writeTime_timer_step = 1
+        self.writeTime_timer.timeout.connect(self.writeTime_func_timer)
+        self.writeTime_timer.start(1000)
+        self.writeTime.setEnabled(False)
     
+    # 写入系统设置-系统时间-计时器
+    def writeTime_func_timer(self):
+        if self.writeTime_timer_step == 1:
+            year = hex(self.now_time.dateTime().date().year() - 2000)[2:].rjust(2,'0')
+            month = hex(self.now_time.dateTime().date().month())[2:].rjust(2,'0')
+            msg = f'01062004{year}{month}'
+        elif self.writeTime_timer_step == 2:
+            day = hex(self.now_time.dateTime().date().day())[2:].rjust(2,'0')
+            hour = hex(self.now_time.dateTime().time().hour())[2:].rjust(2,'0')
+            msg = f'01062005{day}{hour}'
+        elif self.writeTime_timer_step == 3:
+            minute = hex(self.now_time.dateTime().time().minute())[2:].rjust(2,'0')
+            second = hex(self.now_time.dateTime().time().second())[2:].rjust(2,'0')
+            msg = f'01062006{minute}{second}'
+        
+        self.send_msg(msg + calc_crc(msg))
+        if self.writeTime_timer_step == 3:
+            self.writeTime_timer.stop()
+            return QMessageBox.information(self, 'tips', '写入完毕，请重新获取数据。', QMessageBox.Ok)
+        self.writeTime_timer_step += 1
+
     # 设置系统设置-电量
     def writeCap_func(self):
         if self.assertStatus() == False: return False
