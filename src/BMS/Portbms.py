@@ -5,7 +5,7 @@ import time, datetime, serial, logging, os, functools
 import serial.tools.list_ports
 from src.i18n.Bms_i18n import *
 from src.BMS.tools.CRC16Util import calc_crc
-from src.BMS.tools.Common import Common
+from utils.Common import Common
 from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox
 from PyQt5.QtCore import QDate, QTime, QDateTime, QTimer, QWaitCondition, Qt, QThread, pyqtSignal, QMutex, QSettings
 from PyQt5.QtGui import QFont
@@ -191,6 +191,9 @@ class Portbms(BmsLayout):
     def monitor_slotsTrigger(self):
         # 打开串口
         self.open_port_btn.clicked.connect(self.openPort)
+        
+        # 刷新串口
+        self.refresh_port_btn.clicked.connect(self.refresh_port)
         
         # 获取P01数据
         self.getP01_data_btn.clicked.connect(self.get_p01)
@@ -516,13 +519,17 @@ class Portbms(BmsLayout):
             self.respondStatus = False
             self.respond_on = False
 
+    # 刷新串口
+    def refresh_port(self):
+        self.port_combobox.clear()
+        self.port_combobox.addItems(Common.load_serial_list())
+    
     # 按钮-开始监控
     def get_p01(self):
         self.stop_monitor = 0   # 用于监测低压次数，如果达到600则自动停止监控
         if self.getP01_data_btn.text() == com_label8:
             if self.assertStatus() == False: return False
-            self.send_msg('01 03 0014 0002 840f')
-            time.sleep(0.5)
+            self.send_msg(bms_version + calc_crc(bms_version))
             self.P01_status = True
             if self.send_P01_on == False:
                 self.SendMsg.resume()
@@ -702,7 +709,7 @@ class Portbms(BmsLayout):
         self.hisTime = QTimer()
         self.hisTime.timeout.connect(self.his_time_func)
         self.hisTime.start(1000)
-        self.hisNum = 1
+        self.hisNum = 0
         self.his_status = True
         self.getP01_data_btn.setText(com_label8)
         self.hisShow.setEnabled(False)
@@ -710,15 +717,18 @@ class Portbms(BmsLayout):
     
     # 获取最近历史数据计时器
     def his_time_func(self):
-        if self.clear_his_status == False:
-            self.send_msg(bms_recent_history + calc_crc(bms_recent_history))
-        try:
-            if self.num_max == 0:
-                QMessageBox.information(self, 'tip', bms_logic_label27, QMessageBox.Ok)
-                self.hisTime.stop()
-        except Exception:
-            return
-        self.clear_his_status = True
+        if self.hisNum == 0:
+            if self.clear_his_status == False:
+                self.send_msg(bms_recent_history + calc_crc(bms_recent_history))
+            try:
+                if self.num_max == 0:
+                    QMessageBox.information(self, 'tip', bms_logic_label27, QMessageBox.Ok)
+                    self.hisTime.stop()
+            except Exception:
+                pass
+            self.clear_his_status = True
+            self.hisNum += 1
+            return 0
         
         if self.num_max > 100:
             self.num_max = 100
@@ -911,7 +921,7 @@ class Portbms(BmsLayout):
                     self.designCap.setText(ele_data[f'设计容量(AH)'])
                     self.sys_status = False
                 # 历史数据总数 
-                elif res[:6] == f'{bms_history[:4]}02' and len(res) == 14:
+                elif res[:6] == f'{bms_recent_history[:4]}02' and len(res) == 14:
                     self.num_max = int(res[6:10], 16)
                     
                 if crc_error == False:

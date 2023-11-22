@@ -8,6 +8,7 @@ from settings.bms_RS485 import get_bms_rs485_list
 from PyQt5.QtWidgets import QTableWidget, QFrame, QTextEdit, QHeaderView, QProgressBar, QLineEdit, QTabWidget, QWidget, QDesktopWidget, QHBoxLayout, QVBoxLayout, QGroupBox, QPushButton, QLabel, QGridLayout, QFormLayout
 from PyQt5.QtCore import Qt
 from .QssStyle import *
+from utils.Common import Common
 from src.BMS.OrderList import *
 from qfluentwidgets import DateTimeEdit, ProgressRing, SwitchButton, ComboBox, TableWidget
 
@@ -641,12 +642,16 @@ class BmsLayout(QWidget):
         self.space_combobox = ComboBox()
         self.open_port_btn = QPushButton(com_label6)
         self.open_port_btn.setStyleSheet(close_Button)
+        
+        self.refresh_port_btn = QPushButton('刷新串口')
+        self.refresh_port_btn.setStyleSheet(open_Button)
+        
         self.getP01_data_btn = QPushButton(com_label8)
         self.getP01_data_btn.setStyleSheet(close_Button)
         wd = [
             QLabel(group_tabel5 + ':'), self.port_combobox, QLabel(com_label2 + ':'), self.baud_combobox, self.open_port_btn,
-            QLabel('Pack:'), self.pack_combobox, QLabel(com_label3 + ':'), self.pack_num_line, self.getP01_data_btn,
-            QLabel(com_label4 + ':'), self.address_line, QLabel(com_label5 + ':'), self.space_combobox, ''
+            QLabel('Pack:'), self.pack_combobox, QLabel(com_label3 + ':'), self.pack_num_line, self.refresh_port_btn,
+            QLabel(com_label4 + ':'), self.address_line, QLabel(com_label5 + ':'), self.space_combobox, self.getP01_data_btn
         ]
         positions = [(i,j) for i in range(3) for j in range(5)]
         # wd = [
@@ -858,15 +863,12 @@ class BmsLayout(QWidget):
 
     # 下拉框显示的数据
     def choice_init(self):
-        # 显示并选择COM口名称
-        port_list = list(serial.tools.list_ports.comports())
-        port_choice = [num.device for num in port_list]
-
         baud_choice = ['9600', '19200', '57600', '115200']
         pack_choice = ['1', '2', '3', '4']
         space_choice = ['3', '2', '1']
 
-        self.port_combobox.addItems(port_choice)
+        # 显示并选择COM口名称
+        self.port_combobox.addItems(Common.load_serial_list())
         self.baud_combobox.addItems(baud_choice)
         self.pack_combobox.addItems(pack_choice)
         self.space_combobox.addItems(space_choice)
