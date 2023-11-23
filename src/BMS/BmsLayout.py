@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import serial.tools.list_ports
 from src.i18n.Bms_i18n import *
 from settings.bms_modbus import get_bms_modbus_list
 from settings.bms_RS485 import get_bms_rs485_list
@@ -9,7 +8,7 @@ from PyQt5.QtWidgets import QTableWidget, QFrame, QTextEdit, QHeaderView, QProgr
 from PyQt5.QtCore import Qt
 from .QssStyle import *
 from utils.Common import Common
-from src.BMS.OrderList import *
+from src.OrderList import *
 from qfluentwidgets import DateTimeEdit, ProgressRing, SwitchButton, ComboBox, TableWidget
 
 

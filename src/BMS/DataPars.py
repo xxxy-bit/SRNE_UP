@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os, sys, json
+import os, sys
 from settings.bms_modbus import get_bms_modbus_list
 from src.i18n.Bms_i18n import *
-from .OrderList import *
+from src.OrderList import *
 from src.BMS.tools.Common import Common
 from src.BMS.tools.CRC16Util import calc_crc
 

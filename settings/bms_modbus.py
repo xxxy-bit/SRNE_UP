@@ -1,5 +1,5 @@
 from src.i18n.Bms_i18n import *
-from src.BMS.OrderList import *
+from src.OrderList import *
 
 def get_bms_modbus_list():
     bms_data_list = {

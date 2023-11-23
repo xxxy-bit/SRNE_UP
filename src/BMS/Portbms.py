@@ -7,11 +7,10 @@ from src.i18n.Bms_i18n import *
 from src.BMS.tools.CRC16Util import calc_crc
 from utils.Common import Common
 from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox
-from PyQt5.QtCore import QDate, QTime, QDateTime, QTimer, QWaitCondition, Qt, QThread, pyqtSignal, QMutex, QSettings
+from PyQt5.QtCore import QDate, QTime, QDateTime, QTimer, QWaitCondition, Qt, QThread, pyqtSignal, QMutex
 from PyQt5.QtGui import QFont
 from .BmsLayout import BmsLayout
 from .DataPars import pars_data
-from .OrderList import *
 from .QssStyle import *
 from src.OrderList import *
 
