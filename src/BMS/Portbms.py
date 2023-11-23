@@ -667,7 +667,6 @@ class Portbms(BmsLayout):
 
     # 保存参数设置为txt
     def deriveTab3Params(self):
-        # print(os.getcwd())
         file_name =os.path.join(os.getcwd(), f'{tab_tabel3}.txt')
         if len(self.p03) != 0:
             with open(file_name, 'w', encoding='utf-8') as f:
@@ -725,7 +724,7 @@ class Portbms(BmsLayout):
                     QMessageBox.information(self, 'tip', bms_logic_label27, QMessageBox.Ok)
                     self.hisTime.stop()
             except Exception:
-                pass
+                return 0
             self.clear_his_status = True
             self.hisNum += 1
             return 0
@@ -784,21 +783,32 @@ class Portbms(BmsLayout):
                             self.disCharg_status.setStyleSheet('color:#626262')
                             
                         if sys_label3 in p01['BMS工作状态1']:
+                            # 阻止信号发送
+                            self.charge_sw.blockSignals(True)
                             self.charge_sw.setChecked(True)
+                            # 恢复信号发送
+                            self.charge_sw.blockSignals(False)
+                            
                             self.charge_mos_status = 1
                             self.chargMos_status.setStyleSheet('color:#01B481')
                         else:
+                            self.charge_sw.blockSignals(True)
                             self.charge_sw.setChecked(False)
+                            self.charge_sw.blockSignals(False)
                             self.charge_mos_status = 0
                             self.chargMos_status.setStyleSheet('color:#626262')
                         self.dis_charge_mos_num[-1] = self.charge_mos_status
                         
                         if sys_label4 in p01['BMS工作状态1']:
+                            self.disCharge_sw.blockSignals(True)
                             self.disCharge_sw.setChecked(True)
+                            self.disCharge_sw.blockSignals(False)
                             self.discharge_mos_status = 1
                             self.disChargMos_status.setStyleSheet('color:#01B481')
                         else:
+                            self.disCharge_sw.blockSignals(True)
                             self.disCharge_sw.setChecked(False)
+                            self.disCharge_sw.blockSignals(False)
                             self.discharge_mos_status = 0
                             self.disChargMos_status.setStyleSheet('color:#626262')
                         self.dis_charge_mos_num[-2] = self.discharge_mos_status
