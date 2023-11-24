@@ -22,6 +22,8 @@ ac_testmode_on = 'ff06e00222b8'     # 进入测试模式
 # DC-DC充电器
 dc_product_monitor = 'ff03000a005f' # 获取产品信息
 dc_control_monitor = 'ff030100002b' # 获取控制器信息
+dc_setting = 'ff0103e001003a'       # 获取参数设置信息
+
 dc_sw_on = 'ff06df000001'           # 开机
 dc_sw_off = 'ff06df000000'          # 关机
 dc_device_reset = 'ff06df010001'    # 复位
@@ -45,8 +47,9 @@ ivpo_setting2 = 'ff03e2040013'      # 用户设置区2
 
 ivpo_history_days = 'ff03f0310001'  # 总运行天数
 
+
 # BMS指令集
-bms_version = '010300140002'              # BMS 版本号
+bms_version = '010300140002'            # BMS 版本号
 bms_reset = '0106400b0001'              # 恢复默认值(出厂设置)
 bms_clear_history = '0106300b0001'      # 擦除历史数据
 bms_recent_history = '0103f0000001'     # 获取最近历史数据的总数

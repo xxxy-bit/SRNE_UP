@@ -1,4 +1,4 @@
-import os, sys, binascii
+import binascii
 from utils.Common import Common
 from utils.CRC16Util import calc_crc
 from settings.ivpo_modbus import ivpo_data_list

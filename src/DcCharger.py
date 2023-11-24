@@ -3,6 +3,7 @@ from ui.dc_layout import Ui_MainWindow as dc_layout
 from .OrderList import *
 from utils.Common import Common
 from utils.CRC16Util import calc_crc
+from .dataAnalysis.DcCharge_da import dc_data_analysis
 
 from PyQt5 import QtWidgets, QtCore
 
@@ -31,6 +32,9 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         
         # 加载串口列表
         self.dc_port_list.addItems(Common.load_serial_list())
+        
+        # 加载波特率列表
+        self.dc_baud_list.addItems(['9600', '19200', '57600', '115200'])
         
         # 创建监控日志文件
         self.dccharger_now = datetime.datetime.now().strftime('%Y-%m-%d_%H_%M_%S')
@@ -75,16 +79,19 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
             self.dc_port_list.setEnabled(False)
             
             # 开启接收数据的定时器
-        
+            self.dc_timer_recevice = QtCore.QTimer()
+            self.dc_timer_recevice.timeout.connect(self.dc_timer_recevice_func)
+            self.dc_timer_recevice.start(500)
         else:
             try:
                 self.dccharger_ser.close()
+                self.dc_timer_recevice.stop()
             except Exception as e:
                 print(e)
             self.dc_open_port.setText('打开串口')
             self.dc_open_port.setStyleSheet(color_close)
             self.dc_port_list.setEnabled(True)
-        
+    
     # 刷新串口
     def dc_refresh_port_func(self):
         self.dc_port_list.clear()
@@ -92,8 +99,30 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
     
     # 开启监控
     def dc_open_monitor_func(self):
-        ...
-        
+        self.dc_timer_get_monitor = QtCore.QTimer()
+        if self.dc_open_monitor.text() == '开启监控':
+            self.dc_open_monitor.setText('关闭监控')
+            self.dc_open_monitor.setStyleSheet(color_open)
+            
+            self.dc_timer_get_monitor.timeout.connect(self.dc_timer_get_monitor_func)
+            self.dc_timer_get_monitor_step = 1
+            self.dc_timer_get_monitor.start(1500)
+            
+        else:
+            self.dc_open_monitor.setText('开启监控')
+            self.dc_open_monitor.setStyleSheet(color_close)
+            self.dc_timer_get_monitor.stop()
+    
+    # 开启监控-定时器
+    def dc_timer_get_monitor_func(self):
+        if self.dc_timer_get_monitor_step == 1:
+            self.dc_send_msg(dc_product_monitor + calc_crc(dc_product_monitor))
+        elif self.dc_timer_get_monitor_step == 2:
+            self.dc_send_msg(dc_control_monitor + calc_crc(dc_control_monitor))
+            self.dc_timer_get_monitor_step = 1
+            return 0
+        self.dc_timer_get_monitor_step += 1
+     
     # 导出监控数据
     def dc_export_monitor_func(self):
         ...
@@ -174,3 +203,49 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         tableWidget.setItem(rows, 2, QtWidgets.QTableWidgetItem(hexdata))
         # 滚动条滚动到最下方
         tableWidget.verticalScrollBar().setSliderPosition(tableWidget.rowCount())
+
+    # 接收数据的定时器
+    def dc_timer_recevice_func(self):
+        try:
+            res = self.dccharger_ser.readline()
+            res = res.hex()
+        except Exception as e:
+            print(e)
+            return False
+        
+        if res != '':
+            # print(res)
+            # 实时监控
+            if res[:6] == f'{dc_product_monitor[:4]}be' and len(res) == 390:
+                print('111111111')
+                arg = dc_data_analysis(res, dc_product_monitor)
+                result = arg[0]
+            
+                # 异常后打印问题字段，防止程序崩溃
+                try:
+                    temp1 = result['系统电压']
+                    temp2 = result['额定充电电流']
+                    temp3 = result['产品类型']
+                    temp4 = result['产品规格']
+                    temp5 = result['软件版本']
+                    temp6 = result['硬件版本']
+                    temp7 = result['产品序列号']
+                    temp8 = result['设备地址']
+                    temp9 = result['CAN程序版本']
+                    temp10 = result['设备名字']
+                except Exception as e:
+                    self.dc_add_tableItem('receive', res, self.dc_tableWidget, self.log_name)
+                    return QtWidgets.QMessageBox.critical(self, 'Error', str(e), QtWidgets.QMessageBox.Ok)  
+                
+                self.dc_sys_vol.setText(temp1)
+                self.dc_rate_charg_cur.setText(temp2)
+                self.dc_product_type.setText(temp3)
+                self.dc_product_spec.setText(temp4)
+                self.dc_software_ver.setText(temp5)
+                self.dc_hardware_ver.setText(temp6)
+                self.dc_product_sn.setText(temp7)
+                self.dc_dev_addr.setText(temp8)
+                self.dc_can_ver.setText(temp9)
+                self.dc_dev_name.setText(temp10)
+                
+            self.dc_add_tableItem('receive', res, self.dc_tableWidget, self.log_name)
