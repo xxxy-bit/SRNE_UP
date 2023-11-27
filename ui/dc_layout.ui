@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -851,12 +851,6 @@ PillToolButton:disabled:checked {
        <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
          <layout class="QGridLayout" name="gridLayout_5" columnstretch="1,1,2,1,2,1,2,1">
-          <item row="5" column="6">
-           <widget class="QSpinBox" name="spinBox_17"/>
-          </item>
-          <item row="3" column="6">
-           <widget class="QSpinBox" name="spinBox_12"/>
-          </item>
           <item row="5" column="5">
            <widget class="QLabel" name="label_55">
             <property name="text">
@@ -870,9 +864,6 @@ PillToolButton:disabled:checked {
              <string>均衡充电电压</string>
             </property>
            </widget>
-          </item>
-          <item row="4" column="4">
-           <widget class="QSpinBox" name="spinBox_14"/>
           </item>
           <item row="1" column="3">
            <widget class="QLabel" name="label_43">
@@ -888,9 +879,6 @@ PillToolButton:disabled:checked {
             </property>
            </widget>
           </item>
-          <item row="2" column="2">
-           <widget class="QSpinBox" name="spinBox_7"/>
-          </item>
           <item row="2" column="5">
            <widget class="QLabel" name="label_47">
             <property name="text">
@@ -904,9 +892,6 @@ PillToolButton:disabled:checked {
              <string>充电电流设置</string>
             </property>
            </widget>
-          </item>
-          <item row="3" column="2">
-           <widget class="QSpinBox" name="spinBox_10"/>
           </item>
           <item row="0" column="3">
            <widget class="QLabel" name="label_40">
@@ -929,27 +914,12 @@ PillToolButton:disabled:checked {
             </property>
            </widget>
           </item>
-          <item row="6" column="2">
-           <widget class="QSpinBox" name="spinBox_18"/>
-          </item>
-          <item row="5" column="4">
-           <widget class="QSpinBox" name="spinBox_16"/>
-          </item>
-          <item row="2" column="4">
-           <widget class="QSpinBox" name="spinBox_8"/>
-          </item>
-          <item row="0" column="4">
-           <widget class="QSpinBox" name="spinBox_5"/>
-          </item>
           <item row="6" column="3">
            <widget class="QLabel" name="label_57">
             <property name="text">
              <string>电源模式高于此电压充电</string>
             </property>
            </widget>
-          </item>
-          <item row="6" column="4">
-           <widget class="QSpinBox" name="spinBox_19"/>
           </item>
           <item row="4" column="1">
            <widget class="QLabel" name="label_51">
@@ -979,27 +949,12 @@ PillToolButton:disabled:checked {
             </property>
            </widget>
           </item>
-          <item row="0" column="2">
-           <widget class="QSpinBox" name="spinBox_2"/>
-          </item>
-          <item row="1" column="2">
-           <widget class="QSpinBox" name="spinBox"/>
-          </item>
           <item row="3" column="5">
            <widget class="QLabel" name="label_50">
             <property name="text">
              <string>均衡充电时间</string>
             </property>
            </widget>
-          </item>
-          <item row="1" column="4">
-           <widget class="QSpinBox" name="spinBox_3"/>
-          </item>
-          <item row="3" column="4">
-           <widget class="QSpinBox" name="spinBox_11"/>
-          </item>
-          <item row="6" column="6">
-           <widget class="QSpinBox" name="spinBox_20"/>
           </item>
           <item row="6" column="5">
            <widget class="QLabel" name="label_58">
@@ -1008,18 +963,12 @@ PillToolButton:disabled:checked {
             </property>
            </widget>
           </item>
-          <item row="0" column="6">
-           <widget class="QSpinBox" name="spinBox_6"/>
-          </item>
           <item row="0" column="5">
            <widget class="QLabel" name="label_41">
             <property name="text">
              <string>系统电压设置</string>
             </property>
            </widget>
-          </item>
-          <item row="1" column="6">
-           <widget class="QSpinBox" name="spinBox_4"/>
           </item>
           <item row="0" column="0">
            <spacer name="horizontalSpacer">
@@ -1041,9 +990,6 @@ PillToolButton:disabled:checked {
             </property>
            </widget>
           </item>
-          <item row="5" column="2">
-           <widget class="QSpinBox" name="spinBox_15"/>
-          </item>
           <item row="2" column="3">
            <widget class="QLabel" name="label_46">
             <property name="text">
@@ -1057,12 +1003,6 @@ PillToolButton:disabled:checked {
              <string>欠压警告电压</string>
             </property>
            </widget>
-          </item>
-          <item row="4" column="2">
-           <widget class="QSpinBox" name="spinBox_13"/>
-          </item>
-          <item row="2" column="6">
-           <widget class="QSpinBox" name="spinBox_9"/>
           </item>
           <item row="0" column="7">
            <spacer name="horizontalSpacer_2">
@@ -1078,16 +1018,132 @@ PillToolButton:disabled:checked {
            </spacer>
           </item>
           <item row="7" column="2">
-           <widget class="PushButton" name="PushButton">
+           <widget class="PushButton" name="dc_read_set">
             <property name="text">
              <string>读取数据</string>
             </property>
            </widget>
           </item>
           <item row="7" column="4">
-           <widget class="PushButton" name="PushButton_2">
+           <widget class="PushButton" name="dc_write_set">
             <property name="text">
              <string>写入数据</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="DoubleSpinBox" name="dc_charge_elec_set">
+            <property name="maximum">
+             <double>25.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <widget class="SpinBox" name="dc_set_battery_cap"/>
+          </item>
+          <item row="0" column="6">
+           <widget class="SpinBox" name="dc_set_sys_current"/>
+          </item>
+          <item row="1" column="2">
+           <widget class="ComboBox" name="dc_set_battery_type">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="DoubleSpinBox" name="dc_set_battery_overpressure">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="6">
+           <widget class="DoubleSpinBox" name="dc_set_charge_limit">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="DoubleSpinBox" name="dc_set_even_current">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="4">
+           <widget class="DoubleSpinBox" name="dc_set_promote_current">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="6">
+           <widget class="DoubleSpinBox" name="dc_set_float_current">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="DoubleSpinBox" name="dc_set_promote_current_retrun">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="4">
+           <widget class="DoubleSpinBox" name="dc_BatUnderVolt">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="6">
+           <widget class="SpinBox" name="dc_BatConstChgTime"/>
+          </item>
+          <item row="4" column="2">
+           <widget class="SpinBox" name="dc_BatImprovChgTime"/>
+          </item>
+          <item row="4" column="4">
+           <widget class="SpinBox" name="dc_BatConstChgGapTime"/>
+          </item>
+          <item row="5" column="2">
+           <widget class="ComboBox" name="dc_ChgMode"/>
+          </item>
+          <item row="5" column="4">
+           <widget class="DoubleSpinBox" name="dc_ChgModeInMaxWorkVolt">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="6">
+           <widget class="DoubleSpinBox" name="dc_ChgModeInLowWorkVolt">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="2">
+           <widget class="DoubleSpinBox" name="dc_CvModeOutVolt">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="4">
+           <widget class="DoubleSpinBox" name="dc_CvModeInMaxWorkVolt">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="6">
+           <widget class="DoubleSpinBox" name="dc_CVModeInLowWorkVolt">
+            <property name="decimals">
+             <number>1</number>
             </property>
            </widget>
           </item>
@@ -1167,6 +1223,16 @@ PillToolButton:disabled:checked {
   <customwidget>
    <class>PasswordLineEdit</class>
    <extends>LineEdit</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>SpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>DoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>

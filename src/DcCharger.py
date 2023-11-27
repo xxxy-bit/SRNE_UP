@@ -3,7 +3,7 @@ from ui.dc_layout import Ui_MainWindow as dc_layout
 from .OrderList import *
 from utils.Common import Common
 from utils.CRC16Util import calc_crc
-from .dataAnalysis.DcCharge_da import dc_data_analysis
+from .dataAnalysis.DcCharge_DA import dc_data_analysis
 
 from PyQt5 import QtWidgets, QtCore
 
@@ -33,6 +33,12 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         # 加载串口列表
         self.dc_port_list.addItems(Common.load_serial_list())
         
+        # 加载电池类型
+        self.dc_set_battery_type.addItems(['自定义铅酸', '开口(FLD)', '密封(SLD)', '胶体(GEL)', '锂电池(LI)', '自定义锂电池(Li-ion)'])
+        
+        # 加载充电模式
+        self.dc_ChgMode.addItems(['充电模式', '电源模式'])
+        
         # 加载波特率列表
         self.dc_baud_list.addItems(['9600', '19200', '57600', '115200'])
         
@@ -42,6 +48,9 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         # 加载-实时监控信号槽
         self.dc_monitor_slots()
         
+        # 加载-参数设置信号槽
+        self.dc_setting_slots()
+        
         # 隐藏行序号
         self.dc_tableWidget.verticalHeader().setVisible(False)
         
@@ -49,6 +58,11 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         self.dc_tableWidget.setColumnWidth(0,180)
         self.dc_tableWidget.setColumnWidth(1,100)
         self.dc_tableWidget.setColumnWidth(2,760)
+
+    # 参数设置信号槽
+    def dc_setting_slots(self):
+        self.dc_read_set.clicked.connect(self.dc_read_set_func)
+        self.dc_write_set.clicked.connect(self.dc_write_set_func)
 
     # 实时监控信号槽
     def dc_monitor_slots(self):
@@ -62,6 +76,14 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         self.dc_clear_alarm.clicked.connect(self.dc_clear_alarm_func)
         self.dc_clear_statistic.clicked.connect(self.dc_clear_statistic_func)
         self.dc_clear_his.clicked.connect(self.dc_clear_his_func)
+    
+    # 读取数据
+    def dc_read_set_func(self):
+        self.dc_send_msg(dc_setting + calc_crc(dc_setting))
+    
+    # 写入数据
+    def dc_write_set_func(self):
+        ...
     
     # 打开串口
     def dc_open_port_func(self):
@@ -217,7 +239,6 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
             # print(res)
             # 实时监控
             if res[:6] == f'{dc_product_monitor[:4]}be' and len(res) == 390:
-                print('111111111')
                 arg = dc_data_analysis(res, dc_product_monitor)
                 result = arg[0]
             
@@ -247,5 +268,52 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                 self.dc_dev_addr.setText(temp8)
                 self.dc_can_ver.setText(temp9)
                 self.dc_dev_name.setText(temp10)
+            elif res[:6] == f'{dc_control_monitor[:4]}56' and len(res) == 182:
+                arg = dc_data_analysis(res, dc_control_monitor)
+                result = arg[0]
+
+                try:
+                    temp1 = result['蓄电池电压']
+                    temp2 = result['充电电流']
+                    temp3 = result['设备温度']
+                    temp4 = result['蓄电池温度']
+                    temp5 = result['输入电压']
+                    temp6 = result['充电功率']
+                    temp7 = result['输出端开机以来最低电压']
+                    temp8 = result['输出端开机以来最高电压']
+                    temp9 = result['开机以来充电最大电流']
+                    temp10 = result['当天充电安时数']
+                    temp11 = result['当天发电量']
+                    temp12 = result['总运行天数']
+                    temp13 = result['蓄电池总充满次数']
+                    temp14 = result['蓄电池总充电安时数']
+                    temp15 = result['累计发电量']
+                    temp16 = result['充电状态']
+                    temp17 = result['控制器故障/告警信息1']
+                    temp18 = result['Mos管温度']
+                    temp19 = result['散热器']
+                except Exception as e:
+                    self.dc_add_tableItem('receive', res, self.dc_tableWidget, self.log_name)
+                    return QtWidgets.QMessageBox.critical(self, 'Error', str(e), QtWidgets.QMessageBox.Ok)  
                 
+                self.dc_bat_vol.setText(temp1)
+                self.dc_charge_curr.setText(temp2)
+                self.dc_dev_tmp.setText(temp3)
+                self.dc_bat_tmp.setText(temp4)
+                self.dc_input_vol.setText(temp5)
+                self.dc_charge_power.setText(temp6)
+                self.dc_open_min_vol.setText(temp7)
+                self.dc_open_max_vol.setText(temp8)
+                self.dc_open_max_chg_curr.setText(temp9)
+                self.dc_today_chgAH.setText(temp10)
+                self.dc_today_genera.setText(temp11)
+                self.dc_total_work_day.setText(temp12)
+                self.dc_bat_overchg_times.setText(temp13)
+                self.dc_total_bat_chgAH.setText(temp14)
+                self.dc_total_genera.setText(temp15)
+                self.dc_chg_state.setText(temp16)
+                self.dc_fail_info.setText(temp17)
+                self.dc_mos_tmp.setText(temp18)
+                self.dc_radiator.setText(temp19)
+            
             self.dc_add_tableItem('receive', res, self.dc_tableWidget, self.log_name)

@@ -76,6 +76,41 @@ def dc_data_analysis(res, send_data):
                 temp = temp.decode('gb2312')
                 temp = (temp.replace('\x00', '')).strip()
                 print_dic[k] = f'{temp}'
+    elif send_data == dc_control_monitor:
+        for k,v in dc_data_list[send_data].items():
+            temp = data_cut[v[0]:v[0]+v[1]]
+            if k == '设备温度':
+                temp = bin(int(temp[0][:2], 16))[2:].rjust(8, '0')
+                tp = int(temp[1:],2)
+                if temp[0] == '1':
+                    tp = -(tp)
+                print_dic[k] = f'{tp} {v[3]}'
+            elif k == '蓄电池温度':
+                temp = bin(int(temp[0][2:], 16))[2:].rjust(8, '0')
+                tp = int(temp[1:],2)
+                if temp[0] == '1':
+                    tp = -(tp)
+                print_dic[k] = f'{tp} {v[3]}'
+            elif k == '充电状态':
+                temp = temp[0][2:]
+                for a, b in v[4].items():
+                    if temp == a:
+                        print_dic[k] = b
+            elif k == '控制器故障/告警信息1':
+                print(temp)
+                error_info = bin(int(temp[0], 16))[2:].rjust(16, '0')
+                total_list = []
+                for ea, eb in v[4].items():
+                    if error_info[-(int(ea)+1)] == '1':
+                        total_list.append(eb)
+                warn_info = bin(int(temp[1], 16))[2:].rjust(16, '0')
+                for wa, wb in v[5].items():
+                    if warn_info[-(int(wa)+1)] == '1':
+                        total_list.append(wb)
+                print_dic[k] = ', '.join(total_list)
+            else:
+                temp = int(''.join(str(i) for i in temp), 16)
+                print_dic[k] = f'{Common.format_num(temp / v[2])} {v[3]}'
                 
     return print_dic, source_res
     

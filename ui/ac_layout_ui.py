@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'E:\svn\SrneUpperComputer\ui\ac_layout.ui'
+# Form implementation generated from reading ui file 'e:\svn\SrneUpperComputer\ui\ac_layout.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #

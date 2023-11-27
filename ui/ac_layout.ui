@@ -306,9 +306,6 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="pwd"/>
-        </item>
         <item row="1" column="2">
          <widget class="QPushButton" name="port_btn">
           <property name="text">
@@ -360,6 +357,9 @@
            <string>导出监控数据</string>
           </property>
          </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="PasswordLineEdit" name="pwd"/>
         </item>
        </layout>
       </widget>
@@ -1158,6 +1158,18 @@
    </property>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>PasswordLineEdit</class>
+   <extends>LineEdit</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
