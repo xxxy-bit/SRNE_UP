@@ -854,21 +854,21 @@ PillToolButton:disabled:checked {
           <item row="5" column="5">
            <widget class="QLabel" name="label_55">
             <property name="text">
-             <string>充电模式低于此电压停冲</string>
+             <string>充电模式低于此电压停冲(V)</string>
             </property>
            </widget>
           </item>
           <item row="2" column="1">
            <widget class="QLabel" name="label_45">
             <property name="text">
-             <string>均衡充电电压</string>
+             <string>均衡充电电压(V)</string>
             </property>
            </widget>
           </item>
           <item row="1" column="3">
            <widget class="QLabel" name="label_43">
             <property name="text">
-             <string>超压电压</string>
+             <string>超压电压(V)</string>
             </property>
            </widget>
           </item>
@@ -882,91 +882,91 @@ PillToolButton:disabled:checked {
           <item row="2" column="5">
            <widget class="QLabel" name="label_47">
             <property name="text">
-             <string>浮充充电电压</string>
+             <string>浮充充电电压(V)</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
            <widget class="QLabel" name="label_39">
             <property name="text">
-             <string>充电电流设置</string>
+             <string>充电电流设置(A)</string>
             </property>
            </widget>
           </item>
           <item row="0" column="3">
            <widget class="QLabel" name="label_40">
             <property name="text">
-             <string>蓄电池标称容量</string>
+             <string>蓄电池标称容量(AH)</string>
             </property>
            </widget>
           </item>
           <item row="5" column="3">
            <widget class="QLabel" name="label_53">
             <property name="text">
-             <string>充电模式高于此电压充电</string>
+             <string>充电模式高于此电压充电(V)</string>
             </property>
            </widget>
           </item>
           <item row="6" column="1">
            <widget class="QLabel" name="label_56">
             <property name="text">
-             <string>电源模式的输出电压</string>
+             <string>电源模式的输出电压(V)</string>
             </property>
            </widget>
           </item>
           <item row="6" column="3">
            <widget class="QLabel" name="label_57">
             <property name="text">
-             <string>电源模式高于此电压充电</string>
+             <string>电源模式高于此电压充电(V)</string>
             </property>
            </widget>
           </item>
           <item row="4" column="1">
            <widget class="QLabel" name="label_51">
             <property name="text">
-             <string>提升充电时间</string>
+             <string>提升充电时间(Min)</string>
             </property>
            </widget>
           </item>
           <item row="3" column="1">
            <widget class="QLabel" name="label_48">
             <property name="text">
-             <string>提升充电返回电压</string>
+             <string>提升充电返回电压(V)</string>
             </property>
            </widget>
           </item>
           <item row="1" column="5">
            <widget class="QLabel" name="label_44">
             <property name="text">
-             <string>充电限制电压</string>
+             <string>充电限制电压(V)</string>
             </property>
            </widget>
           </item>
           <item row="4" column="3">
            <widget class="QLabel" name="label_52">
             <property name="text">
-             <string>均衡充电间隔</string>
+             <string>均衡充电间隔(day)</string>
             </property>
            </widget>
           </item>
           <item row="3" column="5">
            <widget class="QLabel" name="label_50">
             <property name="text">
-             <string>均衡充电时间</string>
+             <string>均衡充电时间(Min)</string>
             </property>
            </widget>
           </item>
           <item row="6" column="5">
            <widget class="QLabel" name="label_58">
             <property name="text">
-             <string>电源模式低于此电压停冲</string>
+             <string>电源模式低于此电压停冲(V)</string>
             </property>
            </widget>
           </item>
           <item row="0" column="5">
            <widget class="QLabel" name="label_41">
             <property name="text">
-             <string>系统电压设置</string>
+             <string>系统电压设置(V)</string>
             </property>
            </widget>
           </item>
@@ -993,14 +993,14 @@ PillToolButton:disabled:checked {
           <item row="2" column="3">
            <widget class="QLabel" name="label_46">
             <property name="text">
-             <string>提升充电电压</string>
+             <string>提升充电电压(V)</string>
             </property>
            </widget>
           </item>
           <item row="3" column="3">
            <widget class="QLabel" name="label_49">
             <property name="text">
-             <string>欠压警告电压</string>
+             <string>欠压警告电压(V)</string>
             </property>
            </widget>
           </item>
@@ -1033,19 +1033,39 @@ PillToolButton:disabled:checked {
           </item>
           <item row="0" column="2">
            <widget class="DoubleSpinBox" name="dc_charge_elec_set">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;充电电流设置(A)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="maximum">
-             <double>25.000000000000000</double>
+             <double>99.000000000000000</double>
             </property>
            </widget>
           </item>
           <item row="0" column="4">
-           <widget class="SpinBox" name="dc_set_battery_cap"/>
+           <widget class="SpinBox" name="dc_set_battery_cap">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;蓄电池标称容量(AH)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="maximum">
+             <number>9999</number>
+            </property>
+           </widget>
           </item>
           <item row="0" column="6">
-           <widget class="SpinBox" name="dc_set_sys_current"/>
+           <widget class="SpinBox" name="dc_set_sys_current">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;系统电压设置(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="maximum">
+             <number>255</number>
+            </property>
+           </widget>
           </item>
           <item row="1" column="2">
            <widget class="ComboBox" name="dc_set_battery_type">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;蓄电池类型&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -1053,6 +1073,9 @@ PillToolButton:disabled:checked {
           </item>
           <item row="1" column="4">
            <widget class="DoubleSpinBox" name="dc_set_battery_overpressure">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;超压电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1060,6 +1083,9 @@ PillToolButton:disabled:checked {
           </item>
           <item row="1" column="6">
            <widget class="DoubleSpinBox" name="dc_set_charge_limit">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;充电限制电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1067,6 +1093,9 @@ PillToolButton:disabled:checked {
           </item>
           <item row="2" column="2">
            <widget class="DoubleSpinBox" name="dc_set_even_current">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;均衡充电电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1074,6 +1103,9 @@ PillToolButton:disabled:checked {
           </item>
           <item row="2" column="4">
            <widget class="DoubleSpinBox" name="dc_set_promote_current">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;提升充电电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1081,6 +1113,9 @@ PillToolButton:disabled:checked {
           </item>
           <item row="2" column="6">
            <widget class="DoubleSpinBox" name="dc_set_float_current">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;浮充充电电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1088,6 +1123,9 @@ PillToolButton:disabled:checked {
           </item>
           <item row="3" column="2">
            <widget class="DoubleSpinBox" name="dc_set_promote_current_retrun">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;提升充电返回电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1095,25 +1133,56 @@ PillToolButton:disabled:checked {
           </item>
           <item row="3" column="4">
            <widget class="DoubleSpinBox" name="dc_BatUnderVolt">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;欠压警告电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
            </widget>
           </item>
           <item row="3" column="6">
-           <widget class="SpinBox" name="dc_BatConstChgTime"/>
+           <widget class="SpinBox" name="dc_BatConstChgTime">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;均衡充电时间(Min)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="maximum">
+             <number>60</number>
+            </property>
+           </widget>
           </item>
           <item row="4" column="2">
-           <widget class="SpinBox" name="dc_BatImprovChgTime"/>
+           <widget class="SpinBox" name="dc_BatImprovChgTime">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;提升充电时间(Min)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="maximum">
+             <number>60</number>
+            </property>
+           </widget>
           </item>
           <item row="4" column="4">
-           <widget class="SpinBox" name="dc_BatConstChgGapTime"/>
+           <widget class="SpinBox" name="dc_BatConstChgGapTime">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;均衡充电间隔(day)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="maximum">
+             <number>255</number>
+            </property>
+           </widget>
           </item>
           <item row="5" column="2">
-           <widget class="ComboBox" name="dc_ChgMode"/>
+           <widget class="ComboBox" name="dc_ChgMode">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;充电模式&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
           </item>
           <item row="5" column="4">
            <widget class="DoubleSpinBox" name="dc_ChgModeInMaxWorkVolt">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;充电模式高于此电压充电(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1121,6 +1190,9 @@ PillToolButton:disabled:checked {
           </item>
           <item row="5" column="6">
            <widget class="DoubleSpinBox" name="dc_ChgModeInLowWorkVolt">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;充电模式低于此电压停冲(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1128,6 +1200,9 @@ PillToolButton:disabled:checked {
           </item>
           <item row="6" column="2">
            <widget class="DoubleSpinBox" name="dc_CvModeOutVolt">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;电源模式的输出电压(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1135,6 +1210,9 @@ PillToolButton:disabled:checked {
           </item>
           <item row="6" column="4">
            <widget class="DoubleSpinBox" name="dc_CvModeInMaxWorkVolt">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;电源模式高于此电压充电(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>
@@ -1142,6 +1220,9 @@ PillToolButton:disabled:checked {
           </item>
           <item row="6" column="6">
            <widget class="DoubleSpinBox" name="dc_CVModeInLowWorkVolt">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;电源模式低于此电压停冲(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="decimals">
              <number>1</number>
             </property>

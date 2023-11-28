@@ -4,6 +4,7 @@ from .OrderList import *
 from utils.Common import Common
 from utils.CRC16Util import calc_crc
 from .dataAnalysis.DcCharge_DA import dc_data_analysis
+from settings.dc_modbus import dc_data_list
 
 from PyQt5 import QtWidgets, QtCore
 
@@ -48,6 +49,33 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         # 加载-实时监控信号槽
         self.dc_monitor_slots()
         
+        # 参数设置框的对象
+        self.dc_setting_edit = [
+            self.dc_charge_elec_set,
+            self.dc_set_battery_cap,
+            self.dc_set_sys_current,
+            self.dc_set_battery_type,   # 蓄电池类型
+            self.dc_set_battery_overpressure,
+            self.dc_set_charge_limit,
+            self.dc_set_even_current,
+            self.dc_set_promote_current,
+            self.dc_set_float_current,
+            self.dc_set_promote_current_retrun,
+            self.dc_BatUnderVolt,
+            self.dc_BatConstChgTime,
+            self.dc_BatImprovChgTime,
+            self.dc_BatConstChgGapTime,
+            self.dc_ChgMode,            # 充电模式
+            self.dc_ChgModeInMaxWorkVolt,
+            self.dc_ChgModeInLowWorkVolt,
+            self.dc_CvModeOutVolt,
+            self.dc_CvModeInMaxWorkVolt,
+            self.dc_CVModeInLowWorkVolt
+        ]
+        
+        # 存储修改过的参数
+        self.dc_setting_dic = {}
+        
         # 加载-参数设置信号槽
         self.dc_setting_slots()
         
@@ -63,6 +91,12 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
     def dc_setting_slots(self):
         self.dc_read_set.clicked.connect(self.dc_read_set_func)
         self.dc_write_set.clicked.connect(self.dc_write_set_func)
+        
+        for s in self.dc_setting_edit:
+            try:
+                s.currentIndexChanged.connect(functools.partial(self.dc_setting_edit_func, s))
+            except Exception:
+                s.valueChanged.connect(functools.partial(self.dc_setting_edit_func, s))
 
     # 实时监控信号槽
     def dc_monitor_slots(self):
@@ -77,13 +111,56 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         self.dc_clear_statistic.clicked.connect(self.dc_clear_statistic_func)
         self.dc_clear_his.clicked.connect(self.dc_clear_his_func)
     
-    # 读取数据
+    # 参数设置-读取数据
     def dc_read_set_func(self):
+        # 存储修改过的参数
+        self.dc_setting_dic = {}
+        
         self.dc_send_msg(dc_setting + calc_crc(dc_setting))
     
-    # 写入数据
+    # 参数设置-写入数据
     def dc_write_set_func(self):
-        ...
+        if len(self.dc_setting_dic) != 0:
+            self.dc_timer_txt = []
+            for k,v in self.dc_setting_dic.items():
+                self.dc_timer_txt.append(v)
+            self.dc_send_setting_timer = QtCore.QTimer()
+            self.dc_send_setting_timer_step = 0
+            self.dc_send_setting_timer.timeout.connect(self.dc_send_setting_timer_func)
+            self.dc_send_setting_timer.start(1000)
+        else:
+            return QtWidgets.QMessageBox.critical(self, 'Error', '请先修改参数', QtWidgets.QMessageBox.Ok)
+        
+    # 写入参数定时器
+    def dc_send_setting_timer_func(self):
+        if self.dc_send_setting_timer_step < len(self.dc_timer_txt):
+            self.dc_send_msg(self.dc_timer_txt[self.dc_send_setting_timer_step])
+            self.dc_send_setting_timer_step += 1
+            self.dc_write_set.setEnabled(False)
+        else:
+            self.dc_send_setting_timer.stop()
+            self.dc_write_set.setEnabled(True)
+            return QtWidgets.QMessageBox.about(self, 'Tips', '数据已写入，请重新获取数据.')
+            
+        
+    # 参数设置-获取修改过的参数
+    def dc_setting_edit_func(self, set_obj):
+        try:
+            temp = set_obj.value()
+        except AttributeError:
+            curr_text = set_obj.currentText()
+            temp = set_obj.findText(curr_text)
+        
+        if temp != '':
+            name = set_obj.whatsThis()[22:-18]
+            data = int(temp) * int(dc_data_list[dc_setting][name][2])
+            
+            # 获取地址位
+            addr = dc_data_list[dc_setting][name][3]
+            send_setting_txt = f'{dc_setting[:2]}06{addr}{data:04X}'
+            # 组合成发送的地址
+            self.dc_setting_dic[name] = f'{send_setting_txt}{calc_crc(send_setting_txt)}'
+            print(self.dc_setting_dic[name])
     
     # 打开串口
     def dc_open_port_func(self):

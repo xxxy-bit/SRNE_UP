@@ -189,7 +189,6 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             temp = set_text.value()
         except AttributeError:
             current_text = set_text.currentText()
-            
             # 查找文本的下标
             temp = set_text.findText(current_text)
             
@@ -219,12 +218,8 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             self.ivpo_setting_dic[name] = f'{send_setting_txt}{calc_crc(send_setting_txt)}'
             print(self.ivpo_setting_dic[name])
             
-        else:
-            return QtWidgets.QMessageBox.critical(self, 'Error', '请先修改参数', QtWidgets.QMessageBox.Ok)  
-        
     # 参数设置-写入数据
     def ivpo_write_data_func(self):
-        
         if len(self.ivpo_setting_dic) != 0:
             self.ivpo_timer_txt = []
             for k,v in self.ivpo_setting_dic.items():
@@ -232,7 +227,9 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             self.ivpo_send_setting_timer = QtCore.QTimer()
             self.ivpo_send_setting_timer_step = 0
             self.ivpo_send_setting_timer.timeout.connect(self.ivpo_send_setting_timer_func)
-            self.ivpo_send_setting_timer.start(500)
+            self.ivpo_send_setting_timer.start(1000)
+        else:
+            return QtWidgets.QMessageBox.critical(self, 'Error', '请先修改参数', QtWidgets.QMessageBox.Ok)
         print(self.ivpo_setting_dic)
     
     # 写入参数定时器
