@@ -469,6 +469,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                     temp15 = result['交流输出电压2']
                     temp16 = result['当前故障码']
                 except Exception as e:
+                    self.ivpo_add_tableItem('receive', res, self.ivpo_port_tableWidget, self.log_name)
                     return QtWidgets.QMessageBox.critical(self, 'Error', str(e), QtWidgets.QMessageBox.Ok)  
                 
                 self.ivpo_now_time.setText(temp1)
@@ -495,30 +496,53 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                 arg = ivpo_data_analysis(res, ivpo_setting1)
                 result = arg[0]
                 
+                try:
+                    temp1 = float(result['充电电流设置(A)'])
+                    temp2 = int(result['蓄电池类型'])
+                    temp3 = float(result['超压电压(V)'])
+                    temp4 = float(result['充电限制电压(V)'])
+                    temp5 = float(result['均衡充电电压(V)'])
+                    temp6 = float(result['提升充电电压(V)'])
+                    temp7 = float(result['浮充充电电压(V)'])
+                    temp8 = float(result['提升充电返回电压(V)'])
+                    temp9 = float(result['过放返回电压(V)'])
+                    temp10 = float(result['过放电压(V)'])
+                    temp11 = int(result['提升充电时间(Min)'])
+                    temp12 = int(result['均衡充电间隔(day)'])
+                    temp13 = int(result['温度补偿系数(mV/℃/2V)'])
+                    temp14 = int(result['电池充电下限温度(℃)'])
+                    temp15 = int(result['充满截止电流(A)'])
+                    temp16 = int(result['铅酸激活'])
+                    temp17 = int(result['锂电池低温充电(℃)'])
+                    temp18 = int(result['接地继电器'])
+                except Exception:
+                    self.ivpo_add_tableItem('receive', res, self.ivpo_port_tableWidget, self.log_name)
+                    return QtWidgets.QMessageBox.critical(self, 'Error', str(e), QtWidgets.QMessageBox.Ok)  
+                
                 print(result)
                 
                 # 阻止信号发送的对象
                 for obj in self.ivpo_setting_edit:
                     obj.blockSignals(True)
                 
-                self.ivpo_char_cur_set.setValue(float(result['充电电流设置(A)']))
-                self.ivpo_bat_type.setCurrentIndex(int(result['蓄电池类型']))
-                self.ivpo_over_vol.setValue(float(result['超压电压(V)']))
-                self.ivpo_char_limit_vol.setValue(float(result['充电限制电压(V)']))
-                self.ivpo_eq_char_vol.setValue(float(result['均衡充电电压(V)']))
-                self.ivpo_boost_char_vol.setValue(float(result['提升充电电压(V)']))
-                self.ivpo_float_char_vol.setValue(float(result['浮充充电电压(V)']))
-                self.ivpo_inchar_rerturn_vol.setValue(float(result['提升充电返回电压(V)']))
-                self.ivpo_op_returnvol.setValue(float(result['过放返回电压(V)']))
-                self.ivpo_odc_vol.setValue(float(result['过放电压(V)']))
-                self.ivpo_boost_char_time.setValue(int(result['提升充电时间(Min)']))
-                self.ivpo_eq_char_interval.setValue(int(result['均衡充电间隔(day)']))
-                self.ivpo_tmp_comp_coe.setValue(int(result['温度补偿系数(mV/℃/2V)']))
-                self.ivpo_bat_char_low_tmp.setValue(int(result['电池充电下限温度(℃)']))
-                self.ivpo_full_stop_cur.setValue(int(result['充满截止电流(A)']))
-                self.ivpo_lead_active.setCurrentIndex(int(result['铅酸激活']))
-                self.ivpo_libat_low_tmp_char.setCurrentIndex(int(result['锂电池低温充电(℃)']))
-                self.ivpo_relay_out_func.setCurrentIndex(int(result['接地继电器']))
+                self.ivpo_char_cur_set.setValue(temp1)
+                self.ivpo_bat_type.setCurrentIndex(temp2)
+                self.ivpo_over_vol.setValue(temp3)
+                self.ivpo_char_limit_vol.setValue(temp4)
+                self.ivpo_eq_char_vol.setValue(temp5)
+                self.ivpo_boost_char_vol.setValue(temp6)
+                self.ivpo_float_char_vol.setValue(temp7)
+                self.ivpo_inchar_rerturn_vol.setValue(temp8)
+                self.ivpo_op_returnvol.setValue(temp9)
+                self.ivpo_odc_vol.setValue(temp10)
+                self.ivpo_boost_char_time.setValue(temp11)
+                self.ivpo_eq_char_interval.setValue(temp12)
+                self.ivpo_tmp_comp_coe.setValue(temp13)
+                self.ivpo_bat_char_low_tmp.setValue(temp14)
+                self.ivpo_full_stop_cur.setValue(temp15)
+                self.ivpo_lead_active.setCurrentIndex(temp16)
+                self.ivpo_libat_low_tmp_char.setCurrentIndex(temp17)
+                self.ivpo_relay_out_func.setCurrentIndex(temp18)
                 
                 for obj in self.ivpo_setting_edit:
                     obj.blockSignals(False)
@@ -528,22 +552,37 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                 arg = ivpo_data_analysis(res, ivpo_setting2)
                 result = arg[0]
                 
+                try:
+                    temp1 = int(result['输出优先级'])
+                    temp2 = int(result['风扇启动温度(℃)'])
+                    temp3 = int(result['ECO启动功率(W)'])
+                    temp4 = int(result['交流输出电压(V)'])
+                    temp5 = int(result['交流输出频率(Hz)'])
+                    temp6 = int(result['ECO启动时间(S)'])
+                    temp7 = int(result['逆变状态模式'])
+                    temp8 = int(result['蜂鸣器设置'])
+                    temp9 = int(result['输出切换电压(V)'])
+                    temp10 = int(result['AC输入电流设置(A)'])
+                except Exception:
+                    self.ivpo_add_tableItem('receive', res, self.ivpo_port_tableWidget, self.log_name)
+                    return QtWidgets.QMessageBox.critical(self, 'Error', str(e), QtWidgets.QMessageBox.Ok)  
+                
                 print(result)
                 
                 # 阻止信号发送的对象
                 for obj in self.ivpo_setting_edit:
                     obj.blockSignals(True)
                 
-                self.ivpo_out_pri.setCurrentIndex(int(result['输出优先级']))
-                self.ivpo_fan_start_tmp.setValue(int(result['风扇启动温度(℃)']))
-                self.ivpo_eco_start_power.setValue(int(result['ECO启动功率(W)']))
-                self.ivpo_acout_vol.setValue(int(result['交流输出电压(V)']))
-                self.ivpo_acout_fre_2.setValue(int(result['交流输出频率(Hz)']))
-                self.ivpo_eco_start_time.setValue(int(result['ECO启动时间(S)']))
-                self.ivpo_inv_state_mode.setCurrentIndex(int(result['逆变状态模式']))
-                self.ivpo_buzz_set.setCurrentIndex(int(result['蜂鸣器设置']))
-                self.ivpo_out_switch_vol.setValue(int(result['输出切换电压(V)']))
-                self.inpo_acinput_cur_set.setValue(int(result['AC输入电流设置(A)']))
+                self.ivpo_out_pri.setCurrentIndex(temp1)
+                self.ivpo_fan_start_tmp.setValue(temp2)
+                self.ivpo_eco_start_power.setValue(temp3)
+                self.ivpo_acout_vol.setValue(temp4)
+                self.ivpo_acout_fre_2.setValue(temp5)
+                self.ivpo_eco_start_time.setValue(temp6)
+                self.ivpo_inv_state_mode.setCurrentIndex(temp7)
+                self.ivpo_buzz_set.setCurrentIndex(temp8)
+                self.ivpo_out_switch_vol.setValue(temp9)
+                self.inpo_acinput_cur_set.setValue(temp10)
 
                 for obj in self.ivpo_setting_edit:
                     obj.blockSignals(False)

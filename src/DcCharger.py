@@ -53,7 +53,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         self.dc_setting_edit = [
             self.dc_charge_elec_set,
             self.dc_set_battery_cap,
-            self.dc_set_sys_current,
+            # self.dc_set_sys_current,
             self.dc_set_battery_type,   # 蓄电池类型
             self.dc_set_battery_overpressure,
             self.dc_set_charge_limit,
@@ -141,7 +141,6 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
             self.dc_send_setting_timer.stop()
             self.dc_write_set.setEnabled(True)
             return QtWidgets.QMessageBox.about(self, 'Tips', '数据已写入，请重新获取数据.')
-            
         
     # 参数设置-获取修改过的参数
     def dc_setting_edit_func(self, set_obj):
@@ -155,12 +154,17 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
             name = set_obj.whatsThis()[22:-18]
             data = int(temp) * int(dc_data_list[dc_setting][name][2])
             
+            if name == '蓄电池类型':
+                data = self.dc_set_battery_type.currentIndex()
+                if data == self.dc_set_battery_type.count() - 1:
+                    data = 11
+            
             # 获取地址位
             addr = dc_data_list[dc_setting][name][3]
             send_setting_txt = f'{dc_setting[:2]}06{addr}{data:04X}'
             # 组合成发送的地址
             self.dc_setting_dic[name] = f'{send_setting_txt}{calc_crc(send_setting_txt)}'
-            print(self.dc_setting_dic[name])
+            # print(self.dc_setting_dic[name])
     
     # 打开串口
     def dc_open_port_func(self):
@@ -313,8 +317,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
             return False
         
         if res != '':
-            # print(res)
-            # 实时监控
+            # 实时监控-产品信息区域
             if res[:6] == f'{dc_product_monitor[:4]}be' and len(res) == 390:
                 arg = dc_data_analysis(res, dc_product_monitor)
                 result = arg[0]
@@ -345,6 +348,8 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                 self.dc_dev_addr.setText(temp8)
                 self.dc_can_ver.setText(temp9)
                 self.dc_dev_name.setText(temp10)
+                
+            # 实时监控-控制器区域
             elif res[:6] == f'{dc_control_monitor[:4]}56' and len(res) == 182:
                 arg = dc_data_analysis(res, dc_control_monitor)
                 result = arg[0]
@@ -393,4 +398,63 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                 self.dc_mos_tmp.setText(temp18)
                 self.dc_radiator.setText(temp19)
             
+            # 参数设置区域
+            elif res[:6] == f'{dc_setting[:4]}74' and len(res) == 242:
+                arg = dc_data_analysis(res, dc_setting)
+                result = arg[0]
+                
+                try:
+                    temp1 = float(result['充电电流设置(A)'])
+                    temp2 = int(result['蓄电池标称容量(AH)'])
+                    temp3 = int(result['系统电压设置(V)'])
+                    temp4 = int(result['蓄电池类型'])
+                    temp5 = float(result['超压电压(V)'])
+                    temp6 = float(result['充电限制电压(V)'])
+                    temp7 = float(result['均衡充电电压(V)'])
+                    temp8 = float(result['提升充电电压(V)'])
+                    temp9 = float(result['浮充充电电压(V)'])
+                    temp10 = float(result['提升充电返回电压(V)'])
+                    temp11 = float(result['欠压警告电压(V)'])
+                    temp12 = int(result['均衡充电时间(Min)'])
+                    temp13 = int(result['提升充电时间(Min)'])
+                    temp14 = int(result['均衡充电间隔(day)'])
+                    temp15 = int(result['充电模式'])
+                    temp16 = float(result['充电模式高于此电压充电(V)'])
+                    temp17 = float(result['充电模式低于此电压停冲(V)'])
+                    temp18 = float(result['电源模式的输出电压(V)'])
+                    temp19 = float(result['电源模式高于此电压充电(V)'])
+                    temp20 = float(result['电源模式低于此电压停冲(V)'])
+                except Exception as e:
+                    self.dc_add_tableItem('receive', res, self.dc_tableWidget, self.log_name)
+                    return QtWidgets.QMessageBox.critical(self, 'Error', str(e), QtWidgets.QMessageBox.Ok)
+                
+                # 阻止信号发送
+                for obj in self.dc_setting_edit:
+                    obj.blockSignals(True)
+                
+                self.dc_charge_elec_set.setValue(temp1)
+                self.dc_set_battery_cap.setValue(temp2)
+                self.dc_set_sys_current.setValue(temp3)
+                self.dc_set_battery_type.setCurrentIndex(temp4)
+                self.dc_set_battery_overpressure.setValue(temp5)
+                self.dc_set_charge_limit.setValue(temp6)
+                self.dc_set_even_current.setValue(temp7)
+                self.dc_set_promote_current.setValue(temp8)
+                self.dc_set_float_current.setValue(temp9)
+                self.dc_set_promote_current_retrun.setValue(temp10)
+                self.dc_BatUnderVolt.setValue(temp11)
+                self.dc_BatConstChgTime.setValue(temp12)
+                self.dc_BatImprovChgTime.setValue(temp13)
+                self.dc_BatConstChgGapTime.setValue(temp14)
+                self.dc_ChgMode.setCurrentIndex(temp15)
+                self.dc_ChgModeInMaxWorkVolt.setValue(temp16)
+                self.dc_ChgModeInLowWorkVolt.setValue(temp17)
+                self.dc_CvModeOutVolt.setValue(temp18)
+                self.dc_CvModeInMaxWorkVolt.setValue(temp19)
+                self.dc_CVModeInLowWorkVolt.setValue(temp20)
+                
+                # 允许信号发送
+                for obj in self.dc_setting_edit:
+                    obj.blockSignals(False)
+                
             self.dc_add_tableItem('receive', res, self.dc_tableWidget, self.log_name)

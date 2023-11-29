@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -1037,7 +1037,7 @@ PillToolButton:disabled:checked {
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;充电电流设置(A)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="maximum">
-             <double>99.000000000000000</double>
+             <double>9999.000000000000000</double>
             </property>
            </widget>
           </item>
@@ -1053,6 +1053,9 @@ PillToolButton:disabled:checked {
           </item>
           <item row="0" column="6">
            <widget class="SpinBox" name="dc_set_sys_current">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="whatsThis">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;系统电压设置(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
@@ -1078,6 +1081,9 @@ PillToolButton:disabled:checked {
             </property>
             <property name="decimals">
              <number>1</number>
+            </property>
+            <property name="maximum">
+             <double>9999.000000000000000</double>
             </property>
            </widget>
           </item>
@@ -1147,7 +1153,7 @@ PillToolButton:disabled:checked {
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;均衡充电时间(Min)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="maximum">
-             <number>60</number>
+             <number>9999</number>
             </property>
            </widget>
           </item>
@@ -1157,7 +1163,7 @@ PillToolButton:disabled:checked {
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;提升充电时间(Min)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="maximum">
-             <number>60</number>
+             <number>9999</number>
             </property>
            </widget>
           </item>
@@ -1167,7 +1173,7 @@ PillToolButton:disabled:checked {
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;均衡充电间隔(day)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="maximum">
-             <number>255</number>
+             <number>9999</number>
             </property>
            </widget>
           </item>
@@ -1186,6 +1192,9 @@ PillToolButton:disabled:checked {
             <property name="decimals">
              <number>1</number>
             </property>
+            <property name="maximum">
+             <double>9999.000000000000000</double>
+            </property>
            </widget>
           </item>
           <item row="5" column="6">
@@ -1195,6 +1204,9 @@ PillToolButton:disabled:checked {
             </property>
             <property name="decimals">
              <number>1</number>
+            </property>
+            <property name="maximum">
+             <double>9999.000000000000000</double>
             </property>
            </widget>
           </item>
@@ -1206,6 +1218,9 @@ PillToolButton:disabled:checked {
             <property name="decimals">
              <number>1</number>
             </property>
+            <property name="maximum">
+             <double>9999.000000000000000</double>
+            </property>
            </widget>
           </item>
           <item row="6" column="4">
@@ -1216,6 +1231,9 @@ PillToolButton:disabled:checked {
             <property name="decimals">
              <number>1</number>
             </property>
+            <property name="maximum">
+             <double>9999.000000000000000</double>
+            </property>
            </widget>
           </item>
           <item row="6" column="6">
@@ -1225,6 +1243,9 @@ PillToolButton:disabled:checked {
             </property>
             <property name="decimals">
              <number>1</number>
+            </property>
+            <property name="maximum">
+             <double>9999.000000000000000</double>
             </property>
            </widget>
           </item>

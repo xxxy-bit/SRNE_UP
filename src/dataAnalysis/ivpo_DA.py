@@ -141,9 +141,6 @@ def ivpo_data_analysis(res, send_data):
                 if temp != 0:
                     temp = -(temp)
                 print_dic[k] = temp
-            # elif k == '继电器输出功能':
-            #     ...
-                
             else:
                 temp = int(temp[0], 16)
                 print_dic[k] = f'{Common.format_num(temp / v[2])}'
