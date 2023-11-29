@@ -53,7 +53,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -248, 854, 650))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 854, 650))
         self.scrollAreaWidgetContents.setMinimumSize(QtCore.QSize(0, 650))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.ac_bg = QtWidgets.QListView(self.scrollAreaWidgetContents)
@@ -207,7 +207,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "SRNE v0.1"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "SRNE v0.1.2.7"))
         self.label.setText(_translate("MainWindow", "选择连接的设备"))
         self.ac_text.setText(_translate("MainWindow", "AC-DC 充电器"))
         self.bms_text.setText(_translate("MainWindow", "BMS"))
