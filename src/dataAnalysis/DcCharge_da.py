@@ -106,7 +106,7 @@ def dc_data_analysis(res, send_data):
                 for wa, wb in v[5].items():
                     if warn_info[-(int(wa)+1)] == '1':
                         total_list.append(wb)
-                print_dic[k] = ', '.join(total_list)
+                print_dic[k] = '，'.join(total_list)
             else:
                 temp = int(''.join(str(i) for i in temp), 16)
                 print_dic[k] = f'{Common.format_num(temp / v[2])} {v[3]}'

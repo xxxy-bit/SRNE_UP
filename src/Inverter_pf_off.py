@@ -160,7 +160,6 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                 f.write(self.ct_csv)
             with open(log_monitor_inverter_name, 'a') as f:
                 f.write(self.iv_csv)
-                
         except PermissionError:
             return QtWidgets.QMessageBox.critical(self, 'Error', '文件被占用，请关闭Excel文件后重试.', QtWidgets.QMessageBox.Ok)  
         except Exception as e:
@@ -168,7 +167,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         
         # 是否需要主动打开目录
         open_dir =os.path.join(os.getcwd(), log_monitor_dir)
-        if QtWidgets.QMessageBox.question(self, 'Tips', f'导出成功，目录位置为：{open_dir}\n是否需要打开该目录?', \
+        if QtWidgets.QMessageBox.question(self, 'Tips', f'导出成功，目录位置为：{open_dir}\n是否需要打开该目录?', 
                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
             os.startfile(open_dir)
             

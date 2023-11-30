@@ -44,7 +44,9 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         self.dc_baud_list.addItems(['9600', '19200', '57600', '115200'])
         
         # 创建监控日志文件
-        self.dccharger_now = datetime.datetime.now().strftime('%Y-%m-%d_%H_%M_%S')
+        self.dc_now = datetime.datetime.now().strftime('%Y-%m-%d_%H_%M_%S')
+        self.dc_pd_csv = ''
+        self.dc_ct_csv = ''
         
         # 加载-实时监控信号槽
         self.dc_monitor_slots()
@@ -228,8 +230,41 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
      
     # 导出监控数据
     def dc_export_monitor_func(self):
-        ...
-    
+        # 创建监控日志
+        log_monitor_dir = os.path.join('log', f'dc_monitor_{self.dc_now}')
+        log_monitor_product_name = os.path.join(log_monitor_dir, f'product_{self.dc_now}.csv')
+        log_monitor_control_name = os.path.join(log_monitor_dir, f'control_{self.dc_now}.csv')
+        
+        if os.path.exists(log_monitor_dir) == False:
+            os.makedirs(log_monitor_dir)
+            
+        if os.path.exists(log_monitor_product_name) == False:
+            with open(log_monitor_product_name, 'w') as f:
+                pd_txt = '系统电压,额定充电电流,产品类型,产品规格,软件版本,硬件版本,产品序列号,设备地址,CAN程序版本,设备名字,原始数据(Hex)'
+                f.write(pd_txt + '\n')
+        
+        if os.path.exists(log_monitor_control_name) == False:
+            with open(log_monitor_control_name, 'w') as f:
+                ct_txt = '蓄电池电压,充电电流,设备温度,蓄电池温度,输入电压,充电功率,输出端开机以来最低电压,输出端开机以来最高电压,开机以来充电最大电流,当天充电安时数,当天发电量,总运行天数,蓄电池总充满次数,蓄电池总充电安时数,累计发电量,充电状态,控制器/告警信息1,Mos管温度,散热器,原始数据(Hex)'
+                f.write(ct_txt + '\n')
+        
+        # 写入监控日志
+        try:
+            with open(log_monitor_product_name, 'a') as f:
+                f.write(self.dc_pd_csv)
+            with open(log_monitor_control_name, 'a') as f:
+                f.write(self.dc_ct_csv)
+        except PermissionError:
+            return QtWidgets.QMessageBox.critical(self, 'Error', '文件被占用，请关闭Excel文件后重试.', QtWidgets.QMessageBox.Ok)  
+        except Exception as e:
+            return QtWidgets.QMessageBox.critical(self, 'Error', f'{e}\n未知错误，请联系相关开发人员.', QtWidgets.QMessageBox.Ok)  
+        
+        # 是否需要主动打开目录
+        open_dir =os.path.join(os.getcwd(), log_monitor_dir)
+        if QtWidgets.QMessageBox.question(self, 'Tips', f'导出成功，目录位置为：{open_dir}\n是否需要打开该目录?', 
+                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
+            os.startfile(open_dir)
+        
     # 开关机
     def dc_onoff_power_func(self):
         if self.dc_onoff_power.text() == '开机':
@@ -349,6 +384,8 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                 self.dc_can_ver.setText(temp9)
                 self.dc_dev_name.setText(temp10)
                 
+                self.dc_pd_csv += f'{temp1},{temp2},{temp3},{temp4},{temp5},{temp6},{temp7},{temp8},{temp9},{temp10},{arg[1]}\n'
+                
             # 实时监控-控制器区域
             elif res[:6] == f'{dc_control_monitor[:4]}56' and len(res) == 182:
                 arg = dc_data_analysis(res, dc_control_monitor)
@@ -397,6 +434,8 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                 self.dc_fail_info.setText(temp17)
                 self.dc_mos_tmp.setText(temp18)
                 self.dc_radiator.setText(temp19)
+                
+                self.dc_ct_csv += f'{temp1},{temp2},{temp3},{temp4},{temp5},{temp6},{temp7},{temp8},{temp9},{temp10},{temp11},{temp12},{temp13},{temp14},{temp15},{temp16},{temp17},{temp18},{temp19},{arg[1]}\n'
             
             # 参数设置区域
             elif res[:6] == f'{dc_setting[:4]}74' and len(res) == 242:
