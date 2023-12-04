@@ -422,31 +422,11 @@
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_8">
                <item>
-                <layout class="QGridLayout" name="gridLayout_6" rowminimumheight="0,0,0,0">
-                 <item row="2" column="2">
-                  <widget class="QPushButton" name="ivpo_open_moni">
-                   <property name="text">
-                    <string>开启监控</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="1">
-                  <widget class="QComboBox" name="ivpo_port_list"/>
-                 </item>
+                <layout class="QGridLayout" name="gridLayout_6">
                  <item row="1" column="2">
-                  <widget class="QPushButton" name="ivpo_open_port">
+                  <widget class="PushButton" name="ivpo_open_port">
                    <property name="text">
                     <string>打开串口</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="2">
-                  <widget class="QPushButton" name="ivpo_export_monit_data">
-                   <property name="enabled">
-                    <bool>true</bool>
-                   </property>
-                   <property name="text">
-                    <string>导出数据</string>
                    </property>
                   </widget>
                  </item>
@@ -454,13 +434,6 @@
                   <widget class="QLabel" name="label_28">
                    <property name="text">
                     <string>管理员密码</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="0">
-                  <widget class="QLabel" name="label_30">
-                   <property name="text">
-                    <string>波特率</string>
                    </property>
                   </widget>
                  </item>
@@ -495,15 +468,39 @@
                    </property>
                   </widget>
                  </item>
+                 <item row="0" column="1">
+                  <widget class="PasswordLineEdit" name="ivpo_pwd"/>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_30">
+                   <property name="text">
+                    <string>波特率</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QComboBox" name="ivpo_port_list"/>
+                 </item>
                  <item row="0" column="2">
-                  <widget class="QPushButton" name="ivpo_login">
+                  <widget class="PushButton" name="ivpo_login">
                    <property name="text">
                     <string>登录</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="1">
-                  <widget class="PasswordLineEdit" name="ivpo_pwd"/>
+                 <item row="2" column="2">
+                  <widget class="PushButton" name="ivpo_open_moni">
+                   <property name="text">
+                    <string>开启监控</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="2">
+                  <widget class="PushButton" name="ivpo_export_monit_data">
+                   <property name="text">
+                    <string>导出数据</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -531,31 +528,10 @@
                    </property>
                   </spacer>
                  </item>
-                 <item row="0" column="1">
-                  <widget class="QPushButton" name="ivpo_power_on">
-                   <property name="text">
-                    <string>开启</string>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="0" column="0">
                   <widget class="QLabel" name="label_31">
                    <property name="text">
                     <string>开关机</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="1">
-                  <widget class="QPushButton" name="ivpo_factory_reset">
-                   <property name="text">
-                    <string>发送</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="1">
-                  <widget class="QPushButton" name="ivpo_reset">
-                   <property name="text">
-                    <string>发送</string>
                    </property>
                   </widget>
                  </item>
@@ -570,6 +546,27 @@
                   <widget class="QLabel" name="label_62">
                    <property name="text">
                     <string>设备复位</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="PushButton" name="ivpo_power_on">
+                   <property name="text">
+                    <string>开启</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="PushButton" name="ivpo_reset">
+                   <property name="text">
+                    <string>发送</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="PushButton" name="ivpo_factory_reset">
+                   <property name="text">
+                    <string>发送</string>
                    </property>
                   </widget>
                  </item>
@@ -907,23 +904,6 @@
              </size>
             </property>
            </spacer>
-          </item>
-          <item row="10" column="2">
-           <widget class="QPushButton" name="ivpo_read_data">
-            <property name="text">
-             <string>读取数据</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="4">
-           <widget class="QPushButton" name="ivpo_write_data">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>写入数据</string>
-            </property>
-           </widget>
           </item>
           <item row="0" column="4">
            <widget class="QComboBox" name="ivpo_bat_type">
@@ -1266,6 +1246,20 @@
             </property>
            </widget>
           </item>
+          <item row="10" column="2">
+           <widget class="PushButton" name="ivpo_read_data">
+            <property name="text">
+             <string>读取数据</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="4">
+           <widget class="PushButton" name="ivpo_write_data">
+            <property name="text">
+             <string>写入数据</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
        </layout>
@@ -1278,11 +1272,35 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_5">
           <item>
-           <widget class="QPushButton" name="ivpo_clear_port_msg">
+           <widget class="PushButton" name="ivpo_clear_port_msg">
             <property name="text">
              <string>清空内容</string>
             </property>
            </widget>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="gridLayout_5" columnstretch="0,0,0,0">
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="ivpo_send_sum"/>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_63">
+              <property name="text">
+               <string>发送数据总数：</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QLabel" name="label_64">
+              <property name="text">
+               <string>接收数据总数：</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QLineEdit" name="ivpo_receive_sum"/>
+            </item>
+           </layout>
           </item>
           <item>
            <widget class="QTableWidget" name="ivpo_port_tableWidget">
@@ -1324,6 +1342,11 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>PushButton</class>
+   <extends>QPushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
   <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>

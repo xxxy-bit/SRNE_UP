@@ -14,7 +14,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         self.setupUi(self)
         self.Invt_pf_off_layout_init()
         # self.Invt_pf_off_i18n_init()
-        self.setWindowTitle(f'{self.windowTitle()} v0.1.2')
+        self.setWindowTitle(f'{self.windowTitle()} v0.1.3')
         
     # 初始化加载所需
     def Invt_pf_off_layout_init(self):
@@ -75,8 +75,15 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             self.inpo_acinput_cur_set
         ]
         
+        # 写入数据 Enable：False
+        self.ivpo_write_data.setEnabled(False)
+        
         # 加载-参数设置信号槽
         self.ivpo_parameter_slots()
+        
+        # 创建发送与接收数据总数
+        self.ivpo_send_data_count = 0
+        self.ivpo_recv_data_count = 0
         
         # 加载-串口数据信号槽
         self.ivpo_clear_port_msg.clicked.connect(functools.partial(self.ivpo_clearRow_btn, self.ivpo_port_tableWidget))
@@ -352,6 +359,14 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                 space_hexdata.insert(i+1, ' ')
         hexdata = ''.join(space_hexdata)
 
+        # 统计收发数据总数
+        if status == 'send':
+            self.ivpo_send_data_count += 1
+            self.ivpo_send_sum.setText(str(self.ivpo_send_data_count))
+        else:
+            self.ivpo_recv_data_count += 1
+            self.ivpo_receive_sum.setText(str(self.ivpo_recv_data_count))
+        
         # 写入日志文件
         with open(log_name, 'a+', encoding='utf-8') as f:
             f.write(f'{now}\t{status}\t{hexdata}\n')
