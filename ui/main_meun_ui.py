@@ -207,7 +207,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "SRNE v0.1.2.7"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "SRNE v0.1.2.8"))
         self.label.setText(_translate("MainWindow", "选择连接的设备"))
         self.ac_text.setText(_translate("MainWindow", "AC-DC 充电器"))
         self.bms_text.setText(_translate("MainWindow", "BMS"))
@@ -216,4 +216,4 @@ class Ui_MainWindow(object):
         self.menu.setTitle(_translate("MainWindow", "语言"))
         self.lang_zh.setText(_translate("MainWindow", "中文"))
         self.lang_en.setText(_translate("MainWindow", "English"))
-import ui_rc
+from resources.images import ui
