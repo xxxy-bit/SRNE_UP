@@ -123,7 +123,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             # 开启接收数据定时器
             self.ivpo_timer_recevice = QtCore.QTimer()
             self.ivpo_timer_recevice.timeout.connect(self.ivpo_timer_recevice_func)
-            self.ivpo_timer_recevice.start(500)
+            self.ivpo_timer_recevice.start(50)
         else:
             try:
                 self.invt_po_ser.close()
@@ -312,7 +312,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             
             self.ivpo_timer_get_monitor.timeout.connect(self.ivpo_timer_get_monitor_func)
             self.ivpo_timer_get_monitor_step = 1
-            self.ivpo_timer_get_monitor.start(1500)
+            self.ivpo_timer_get_monitor.start(int(self.ivpo_send_time.text()))
             
         else:
             self.ivpo_open_moni.setText('开启监控')
@@ -378,6 +378,14 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
 
     # 清空表格
     def ivpo_clearRow_btn(self, tableWidget):
+        
+        # 收发总数归 0
+        self.ivpo_send_data_count = 0
+        self.ivpo_recv_data_count = 0
+        
+        self.ivpo_send_sum.setText('')
+        self.ivpo_receive_sum.setText('')
+        
         rowPosition = tableWidget.rowCount()
         for rows in range(rowPosition)[::-1]:
             tableWidget.removeRow(rows)
