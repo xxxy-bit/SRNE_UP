@@ -1,4 +1,4 @@
-import serial, functools, gettext, datetime, os
+import serial, functools, datetime, os
 from .OrderList import *
 from utils.Common import Common
 from utils.CRC16Util import calc_crc
@@ -379,10 +379,9 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
     # 清空表格
     def ivpo_clearRow_btn(self, tableWidget):
         
-        # 收发总数归 0
+        # 收发总数归零
         self.ivpo_send_data_count = 0
         self.ivpo_recv_data_count = 0
-        
         self.ivpo_send_sum.setText('')
         self.ivpo_receive_sum.setText('')
         
