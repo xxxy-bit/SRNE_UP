@@ -71,8 +71,8 @@ switch_label3 = _('强制休眠')
 switch_label4 = _('打开')
 
 # 系统状态
-sys_label1 = _('有效充电电流')
-sys_label2 = _('有效放电电流')
+sys_label1 = _('充电状态')
+sys_label2 = _('放电状态')
 sys_label3 = _('充电MOS管开启')
 sys_label4 = _('放电MOS管开启')
 sys_label5 = _('充电器接入')

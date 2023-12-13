@@ -553,21 +553,10 @@ class BmsLayout(QWidget):
         
         vol_V_H1 = QHBoxLayout()
         
-        vol_V_H1_1_bg = QWidget()
-        vol_V_H1_1_bg.setStyleSheet("background-color: #FFFAF5")
-        vol_V_H1_1 = QHBoxLayout(vol_V_H1_1_bg)
-        
-        self.cellLine1 = QLineEdit()
-        self.cellLine1.setReadOnly(True)
-        self.cellLine1.setStyleSheet(cellVol1_LineEdit)
-        vol_V_H1_1.addWidget(QLabel(vol_label17 + '(V)'))
-        vol_V_H1_1.addWidget(self.cellLine1)
-        vol_V_H1.addWidget(vol_V_H1_1_bg)
-        
+        # cell 最大电压
         vol_V_H1_2_bg = QWidget()
         vol_V_H1_2_bg.setStyleSheet("background-color: #FFFAF5")
         vol_V_H1_2 = QHBoxLayout(vol_V_H1_2_bg)
-        
         self.cellLine2 = QLineEdit()
         self.cellLine2.setReadOnly(True)
         self.cellLine2.setStyleSheet(cellVol1_LineEdit)
@@ -575,17 +564,27 @@ class BmsLayout(QWidget):
         vol_V_H1_2.addWidget(self.cellLine2)
         vol_V_H1.addWidget(vol_V_H1_2_bg)
         
+        # cell 最小电压
         vol_V_H1_3_bg = QWidget()
         vol_V_H1_3_bg.setStyleSheet("background-color: #FFFAF5")
         vol_V_H1_3 = QHBoxLayout(vol_V_H1_3_bg)
-        
         self.cellLine3 = QLineEdit()
         self.cellLine3.setReadOnly(True)
         self.cellLine3.setStyleSheet(cellVol1_LineEdit)
         vol_V_H1_3.addWidget(QLabel(vol_label19 + '(V)'))
         vol_V_H1_3.addWidget(self.cellLine3)
-        
         vol_V_H1.addWidget(vol_V_H1_3_bg)
+
+        # cell 最大压差
+        vol_V_H1_1_bg = QWidget()
+        vol_V_H1_1_bg.setStyleSheet("background-color: #FFFAF5")
+        vol_V_H1_1 = QHBoxLayout(vol_V_H1_1_bg)
+        self.cellLine1 = QLineEdit()
+        self.cellLine1.setReadOnly(True)
+        self.cellLine1.setStyleSheet(cellVol1_LineEdit)
+        vol_V_H1_1.addWidget(QLabel(vol_label17 + '(V)'))
+        vol_V_H1_1.addWidget(self.cellLine1)
+        vol_V_H1.addWidget(vol_V_H1_1_bg)
 
         vol_V_H2_bg = QWidget()
         vol_V_H2_bg.setStyleSheet("background-color: #FDFCFB")

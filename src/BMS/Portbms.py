@@ -849,7 +849,7 @@ class Portbms(BmsLayout):
                         self.cellLine3.setText(p01[vol_label19 + '(V)'])
                         
                         
-                        # 数据显示
+                        # 数据显示 TODO
                         display_data = [
                             self.cell_temp_16, 
                             self.tem_other, 
