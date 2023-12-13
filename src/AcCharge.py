@@ -343,6 +343,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
         try:
             # res = self.ser.read_all()
             res = self.ser.readline()
+            # res = self.ser.read_until()
             res = res.hex()
         except Exception as e:
             print(e)
