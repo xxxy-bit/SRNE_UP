@@ -128,6 +128,11 @@ class Portbms(BmsLayout):
         self.connStatus.setFormat(bms_logic_label16)
         self.proTimer.start(100)
         
+        # 实时监控数据包 bc 是否分包
+        self.bms_bc_split = False
+        self.bms_bc_split_msg = ''
+        self.bms_bc_pass = False
+        
         # 是否开启实时监控
         self.send_P01_on = None
         
@@ -194,7 +199,7 @@ class Portbms(BmsLayout):
         # 刷新串口
         self.refresh_port_btn.clicked.connect(self.refresh_port)
         
-        # 获取P01数据
+        # 开始监控
         self.getP01_data_btn.clicked.connect(self.get_p01)
         # self.getP01_data_btn.clicked.connect(lambda: self.send_p01(order_list['P01']))
 
@@ -394,14 +399,14 @@ class Portbms(BmsLayout):
             self.send_msg(bms_sys_set1 + calc_crc(bms_sys_set1))
             self.readCap_timer.stop()
            
-    #  读取系统设置-系统时间
+    # 读取系统设置-系统时间
     def readTime_func(self):
         if self.assertStatus() == False: return False
         if self.assert_P01_status() == False: return False
         self.sys_time = True
         self.send_msg(bms_sys_time + calc_crc(bms_sys_time))
         
-    #  写入系统设置-系统时间
+    # 写入系统设置-系统时间
     def writeTime_func(self):
         if self.assertStatus() == False: return False
         if self.assert_P01_status() == False: return False
@@ -503,8 +508,8 @@ class Portbms(BmsLayout):
                 self.ser.open()
             except serial.SerialException:
                 QMessageBox.information(self, 'Error', bms_logic_label20, QMessageBox.Ok)
-            self.open_port_btn.setText(bms_logic_label2)
             self.open_port_btn.setStyleSheet(open_Button)
+            self.open_port_btn.setText(bms_logic_label2)
             if  self.respond_on == False:
                 self.ResMsg.resume()
             else:
@@ -513,8 +518,8 @@ class Portbms(BmsLayout):
         else:
             self.ResMsg.pause()
             self.ser.close()
-            self.open_port_btn.setText(com_label6)
             self.open_port_btn.setStyleSheet(close_Button)
+            self.open_port_btn.setText(com_label6)
             self.respondStatus = False
             self.respond_on = False
 
@@ -541,6 +546,8 @@ class Portbms(BmsLayout):
         else:
             self.send_P01_on = False
             self.P01_status = False
+            self.bms_bc_split = False
+            self.bms_bc_pass = False
             try:
                 # 休眠
                 self.SendMsg.pause()
@@ -764,8 +771,28 @@ class Portbms(BmsLayout):
             if self.rs485_res_status == False:
                 crc_error = False
                 # 实时监控
-                if res[:6] == f'{bms_monitor[:4]}bc' and len(res) == 386:
-                    p01 = pars_data(res, bms_monitor + calc_crc(bms_monitor))
+                if res[:6] == f'{bms_monitor[:4]}bc':
+                    '''
+                    帧头为bc
+                    1、长度小于386，保存这次的数据，继续接收下一份数据，把这两份拼接，计算长度是否有386
+                    2、如果是386则解析，否则丢弃
+                    '''
+                    self.bms_bc_split_msg = res # 存储本次数据
+                    if len(res) < 386:
+                        self.add_tableItem('↑', res)
+                        self.bms_bc_split = True    # 确定与下个数据合并
+                        return 0
+                    elif len(res) == 386:
+                        self.bms_bc_pass = True
+                elif self.bms_bc_split:
+                    self.bms_bc_split = False
+                    bc_count = self.bms_bc_split_msg + res
+                    if len(bc_count) == 386:
+                        self.bms_bc_split_msg = bc_count
+                        self.bms_bc_pass = True
+                        
+                if self.bms_bc_pass:
+                    p01 = pars_data(self.bms_bc_split_msg, bms_monitor + calc_crc(bms_monitor))
                     # print(p01)
                     if len(p01) == 2:
                         crc_error = True

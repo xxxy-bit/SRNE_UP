@@ -407,7 +407,7 @@ class BmsLayout(QWidget):
         self.connStatus.setAlignment(Qt.AlignCenter)
         self.connStatus.setMaximumWidth(500)
         self.nowTime = QLabel()
-        # self.nowTime.setAlignment(Qt.AlignCenter)
+        self.nowTime.setAlignment(Qt.AlignRight)
 
         self.status_hlayout.addWidget(self.version)
         self.status_hlayout.addWidget(self.bms_sn)
