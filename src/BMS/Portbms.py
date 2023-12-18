@@ -184,6 +184,8 @@ class Portbms(BmsLayout):
                 self.SendMsg.pause()
                 self.send_P01_on = False
                 self.P01_status = False
+                self.bms_bc_split = False
+                self.bms_bc_pass = False
                 self.getP01_data_btn.setText(com_label8)
                 self.getP01_data_btn.setStyleSheet(close_Button)
                 return True
@@ -258,6 +260,8 @@ class Portbms(BmsLayout):
 
     # 发送校准值
     def adds_btn_func(self):
+        if self.assertStatus() == False: return False
+        if self.assert_P01_status() == False: return False
         txt = self.adds_combox.currentText()
         hex_addr = self.datacalibration_adds_list[txt]
         hex_num = format(int(self.adds_txt.text()), '04x')
@@ -271,11 +275,14 @@ class Portbms(BmsLayout):
     # 发送校准值定时器
     def adds_btn_func_timer(self):
         msg = self.datacalibration_msg + str(self.adds_btn_time_setp)
-        print(msg + calc_crc(msg))
-        self.adds_btn_time_setp += 1
+        self.send_msg(msg + calc_crc(msg))
+        
         self.adds_progress.setValue(self.adds_btn_time_setp)
+        
+        self.adds_btn_time_setp += 1
         if self.adds_btn_time_setp == 7:
             self.adds_btn_time.stop()
+            return QMessageBox.information(self, 'tips', '校准完毕。', QMessageBox.Ok)
 
     # 并联监控 槽函数slots
     def pal_monitor_slotsTrigger(self):
@@ -750,16 +757,19 @@ class Portbms(BmsLayout):
     # 获取最近历史数据计时器
     def his_time_func(self):
         if self.hisNum == 0:
+            print('self.clear_his_status: {}'.format(self.clear_his_status))
             if self.clear_his_status == False:
                 self.send_msg(bms_recent_history + calc_crc(bms_recent_history))
             try:
                 if self.num_max == 0:
+                    print('self.num_max: {}'.format(self.num_max))
                     QMessageBox.information(self, 'tip', bms_logic_label27, QMessageBox.Ok)
                     self.hisTime.stop()
             except Exception:
                 return 0
             self.clear_his_status = True
             self.hisNum += 1
+            print('self.hisNum: {}'.format(self.hisNum))
             return 0
         
         if self.num_max > 100:
@@ -986,6 +996,7 @@ class Portbms(BmsLayout):
                 # 历史数据总数 
                 elif res[:6] == f'{bms_recent_history[:4]}02' and len(res) == 14:
                     self.num_max = int(res[6:10], 16)
+                    print('self.num_max: {}'.format(self.num_max))
                     
                 if crc_error == False:
                     self.add_tableItem('↑', res)
