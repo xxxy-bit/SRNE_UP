@@ -9,7 +9,7 @@ from PyQt5.QtCore import Qt
 from .QssStyle import *
 from utils.Common import Common
 from src.OrderList import *
-from qfluentwidgets import SpinBox, DateTimeEdit, ProgressRing, SwitchButton, ComboBox, TableWidget, PushButton
+from qfluentwidgets import DoubleSpinBox, DateTimeEdit, ProgressRing, SwitchButton, ComboBox, TableWidget, PushButton
 
 
 class BmsLayout(QWidget):
@@ -366,29 +366,29 @@ class BmsLayout(QWidget):
         self.datacalibration_adds_list = {
             '电流': '01700105',
             '总压': '01700106',
-            'cell_1电压': '01700107',
-            'cell_2电压': '01700108',
-            'cell_3电压': '01700109',
-            'cell_4电压': '0170010a',
-            'cell_5电压': '0170010b',
-            'cell_6电压': '0170010c',
-            'cell_7电压': '0170010d',
-            'cell_8电压': '0170010e',
-            'cell_9电压': '0170010f',
-            'cell_10电压': '01700110',
-            'cell_11电压': '01700111',
-            'cell_12电压': '01700112',
-            'cell_13电压': '01700113',
-            'cell_14电压': '01700114',
-            'cell_15电压': '01700115',
-            'cell_16电压': '01700116',
+            'cell_1 电压': '01700107',
+            'cell_2 电压': '01700108',
+            'cell_3 电压': '01700109',
+            'cell_4 电压': '0170010a',
+            'cell_5 电压': '0170010b',
+            'cell_6 电压': '0170010c',
+            'cell_7 电压': '0170010d',
+            'cell_8 电压': '0170010e',
+            'cell_9 电压': '0170010f',
+            'cell_10 电压': '01700110',
+            'cell_11 电压': '01700111',
+            'cell_12 电压': '01700112',
+            'cell_13 电压': '01700113',
+            'cell_14 电压': '01700114',
+            'cell_15 电压': '01700115',
+            'cell_16 电压': '01700116',
         }
         
         self.adds_combox.addItems([k for k, v in  self.datacalibration_adds_list.items()])
         datacalibration_groupBox_v_h1.addWidget(self.adds_combox)
         
         datacalibration_groupBox_v_h2 = QHBoxLayout()
-        self.adds_txt = SpinBox()
+        self.adds_txt = DoubleSpinBox()
         self.adds_txt.setMinimum(0)
         self.adds_txt.setMaximum(999)
         self.adds_btn = PushButton('校准')

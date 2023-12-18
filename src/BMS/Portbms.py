@@ -264,7 +264,15 @@ class Portbms(BmsLayout):
         if self.assert_P01_status() == False: return False
         txt = self.adds_combox.currentText()
         hex_addr = self.datacalibration_adds_list[txt]
-        hex_num = format(int(self.adds_txt.text()), '04x')
+        if txt == '电流' or txt == '总压':
+            hex_num = format(int(float(self.adds_txt.text()) * 100), '04x')
+            print(hex_num)
+        else:
+            get_poi = int(self.adds_txt.text().split('.')[1])
+            if get_poi > 0:
+                return QMessageBox.information(self, 'tips', '请输入整数', QMessageBox.Ok)
+        
+            hex_num = format(int(float(self.adds_txt.text())), '04x')
         self.datacalibration_msg = hex_addr + hex_num + '000'
         
         self.adds_btn_time = QTimer()
