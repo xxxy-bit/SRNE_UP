@@ -254,6 +254,29 @@ class Portbms(BmsLayout):
         for i in range(len(sys_edit_obj)):
             sys_edit_obj[i].textEdited.connect(functools.partial(self.setSysParams, sys_edit_obj[i]))
 
+        self.adds_btn.clicked.connect(self.adds_btn_func)
+
+    # 发送校准值
+    def adds_btn_func(self):
+        txt = self.adds_combox.currentText()
+        hex_addr = self.datacalibration_adds_list[txt]
+        hex_num = format(int(self.adds_txt.text()), '04x')
+        self.datacalibration_msg = hex_addr + hex_num + '000'
+        
+        self.adds_btn_time = QTimer()
+        self.adds_btn_time_setp = 1
+        self.adds_btn_time.timeout.connect(self.adds_btn_func_timer)
+        self.adds_btn_time.start(1000)
+    
+    # 发送校准值定时器
+    def adds_btn_func_timer(self):
+        msg = self.datacalibration_msg + str(self.adds_btn_time_setp)
+        print(msg + calc_crc(msg))
+        self.adds_btn_time_setp += 1
+        self.adds_progress.setValue(self.adds_btn_time_setp)
+        if self.adds_btn_time_setp == 7:
+            self.adds_btn_time.stop()
+
     # 并联监控 槽函数slots
     def pal_monitor_slotsTrigger(self):
         # self.pal_check.clicked.connect(self.pal_check_func)
@@ -626,25 +649,29 @@ class Portbms(BmsLayout):
     def setTab3Params(self, key):
         if self.tab3_form_dic[key].text() != '':
             try:
+                # txt = ''
                 if key == '单体过充告警(V)' or key == '单体过充保护(V)' or key == '单体过充保护恢复(V)' \
                 or key == '单体过放告警(V)' or key == '单体过放保护(V)' or key == '单体过放保护恢复(V)':
                     txt = int(float(self.tab3_form_dic[key].text()) * 1000)
+                    print(1)
+                    print(txt)
                     if txt > 4000:
                         self.tab3_form_dic[key].setText('')
                         return QMessageBox.critical(self, 'Error', bms_logic_label21, QMessageBox.Ok)      
                 elif key == '总体过充告警(V)' or key == '总体过充保护(V)' or key == '总体过充保护恢复(V)' \
                 or key == '总体过放告警(V)' or key == '总体过放保护(V)' or key == '总体过放保护恢复(V)':
                     txt = int(float(self.tab3_form_dic[key].text()) * 1000)
+                    print(2)
                     if txt > 60000:
                         self.tab3_form_dic[key].setText('')
                         return QMessageBox.critical(self, 'Error', bms_logic_label22, QMessageBox.Ok)
                 else:
                     txt = int(self.tab3_form_dic[key].text())
-                keyTxt = f"0106{self.json_modbus['01032007005bbe30'][key][3]}{txt:04x}"
+                keyTxt = f"0106{self.json_modbus[bms_setting][key][3]}{txt:04x}"
             except Exception as e:
                 print(e)
                 return QMessageBox.critical(self, 'Error', bms_logic_label11, QMessageBox.Ok)
-            self.tab3_dic[key] = keyTxt+calc_crc(keyTxt)
+            self.tab3_dic[key] = keyTxt + calc_crc(keyTxt)
 
     # 写入参数
     def writeTab3Params(self):

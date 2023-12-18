@@ -9,7 +9,7 @@ from PyQt5.QtCore import Qt
 from .QssStyle import *
 from utils.Common import Common
 from src.OrderList import *
-from qfluentwidgets import DateTimeEdit, ProgressRing, SwitchButton, ComboBox, TableWidget
+from qfluentwidgets import SpinBox, DateTimeEdit, ProgressRing, SwitchButton, ComboBox, TableWidget, PushButton
 
 
 class BmsLayout(QWidget):
@@ -279,7 +279,7 @@ class BmsLayout(QWidget):
         
         # 总容量
         elect_groupBox_v_topH_leftV_bg = QWidget()
-        elect_groupBox_v_topH_leftV_bg.setStyleSheet('background-color: #FAFAFA;')
+        # elect_groupBox_v_topH_leftV_bg.setStyleSheet('background-color: #FAFAFA;')
         
         elect_groupBox_v_topH_leftV = QVBoxLayout(elect_groupBox_v_topH_leftV_bg)
         
@@ -302,7 +302,7 @@ class BmsLayout(QWidget):
         elect_groupBox_v_topH_rightV = QVBoxLayout()
         
         elect_groupBox_v_topH_rightV_topV_bg = QWidget()
-        elect_groupBox_v_topH_rightV_topV_bg.setStyleSheet('background-color: #FAFAFA')
+        # elect_groupBox_v_topH_rightV_topV_bg.setStyleSheet('background-color: #FAFAFA')
         elect_groupBox_v_topH_rightV_topV = QVBoxLayout(elect_groupBox_v_topH_rightV_topV_bg)
         
         # 设计容量
@@ -317,7 +317,7 @@ class BmsLayout(QWidget):
         elect_groupBox_v_topH_rightV_topV.addWidget(self.designCap)
         
         elect_groupBox_v_topH_rightV_btmV_bg = QWidget()
-        elect_groupBox_v_topH_rightV_btmV_bg.setStyleSheet('background-color: #FAFAFA')
+        # elect_groupBox_v_topH_rightV_btmV_bg.setStyleSheet('background-color: #FAFAFA')
         elect_groupBox_v_topH_rightV_btmV = QVBoxLayout(elect_groupBox_v_topH_rightV_btmV_bg)
         
         # 剩余容量
@@ -351,6 +351,64 @@ class BmsLayout(QWidget):
 
         elect_groupBox.setLayout(elect_groupBox_v)
         sys_layout_left.addWidget(elect_groupBox)
+        
+        # 数据校准
+        datacalibration_groupBox = QGroupBox('数据校准')
+        datacalibration_groupBox.setStyleSheet(white_bg)
+        datacalibration_groupBox.setMaximumHeight(250)
+        datacalibration_groupBox.setMaximumWidth(250)
+        
+        datacalibration_groupBox_v = QVBoxLayout()
+        
+        datacalibration_groupBox_v_h1 = QHBoxLayout()
+        self.adds_combox = ComboBox()
+        
+        self.datacalibration_adds_list = {
+            '电流': '01700105',
+            '总压': '01700106',
+            'cell_1电压': '01700107',
+            'cell_2电压': '01700108',
+            'cell_3电压': '01700109',
+            'cell_4电压': '0170010a',
+            'cell_5电压': '0170010b',
+            'cell_6电压': '0170010c',
+            'cell_7电压': '0170010d',
+            'cell_8电压': '0170010e',
+            'cell_9电压': '0170010f',
+            'cell_10电压': '01700110',
+            'cell_11电压': '01700111',
+            'cell_12电压': '01700112',
+            'cell_13电压': '01700113',
+            'cell_14电压': '01700114',
+            'cell_15电压': '01700115',
+            'cell_16电压': '01700116',
+        }
+        
+        self.adds_combox.addItems([k for k, v in  self.datacalibration_adds_list.items()])
+        datacalibration_groupBox_v_h1.addWidget(self.adds_combox)
+        
+        datacalibration_groupBox_v_h2 = QHBoxLayout()
+        self.adds_txt = SpinBox()
+        self.adds_txt.setMinimum(0)
+        self.adds_txt.setMaximum(999)
+        self.adds_btn = PushButton('校准')
+        datacalibration_groupBox_v_h2.addWidget(self.adds_txt)
+        datacalibration_groupBox_v_h2.addWidget(self.adds_btn)
+        datacalibration_groupBox_v_h2.setStretch(0, 1)
+        
+        datacalibration_groupBox_v_h3 = QHBoxLayout()
+        self.adds_progress = QProgressBar()
+        self.adds_progress.setStyleSheet(GREEN_ProgressBar)
+        self.adds_progress.setMaximumWidth(250)
+        self.adds_progress.setMaximum(6)
+        datacalibration_groupBox_v_h3.addWidget(self.adds_progress)
+        
+        datacalibration_groupBox_v.addLayout(datacalibration_groupBox_v_h1)
+        datacalibration_groupBox_v.addLayout(datacalibration_groupBox_v_h2)
+        datacalibration_groupBox_v.addLayout(datacalibration_groupBox_v_h3)
+        datacalibration_groupBox_v.addStretch(1)
+        datacalibration_groupBox.setLayout(datacalibration_groupBox_v)
+        sys_layout_left.addWidget(datacalibration_groupBox)
         
         # 系统时间
         time_groupBox = QGroupBox('系统时间')
