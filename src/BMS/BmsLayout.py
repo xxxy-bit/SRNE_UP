@@ -424,6 +424,11 @@ class BmsLayout(QWidget):
         
         time_groupBox_v_toph.addWidget(self.now_time)
         
+        # 同步电脑时间
+        time_groupBox_v_toph2 = QHBoxLayout()
+        
+        
+        
         time_groupBox_v_bomh = QHBoxLayout()
         self.readTime = QPushButton(sysset_label5)
         self.readTime.setStyleSheet(open_Button)
@@ -434,6 +439,7 @@ class BmsLayout(QWidget):
         time_groupBox_v_bomh.addWidget(self.writeTime)
         
         time_groupBox_v.addLayout(time_groupBox_v_toph)
+        time_groupBox_v.addLayout(time_groupBox_v_toph2)
         time_groupBox_v.addStretch(1)
         time_groupBox_v.addLayout(time_groupBox_v_bomh)
         time_groupBox.setLayout(time_groupBox_v)

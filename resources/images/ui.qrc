@@ -5,7 +5,8 @@
     <file>硕日logo.svg</file>
     <file>背景.png</file>
     <file>选择连接设备框.png</file>
-    <file>AC充电器.png</file>
-    <file>逆变器.png</file>
+    <file>AC-DC充电器.png</file>
+    <file>DC-DC充电器.png</file>
+    <file>工频离网逆变器.png</file>
   </qresource>
 </RCC>

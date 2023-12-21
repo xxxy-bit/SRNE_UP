@@ -22,6 +22,9 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         self.ivpo_open_port.setStyleSheet(color_close)
         self.ivpo_open_moni.setStyleSheet(color_close)
         
+        # 标志位
+        self.ivpo_port_switch = False   # 串口开关
+        
         # 加载日志目录
         self.log_name = Common.creat_log_file('log')
         
@@ -30,6 +33,17 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         
         # 加载串口列表
         self.ivpo_port_list.addItems(Common.load_serial_list())
+        
+        # 加载数据校准列表
+        self.ivpo_calibrate_addr = {
+            '校准逆变电压': 'ff700216',
+            '校准BAT电压': 'ff700101',
+            '校准逆变电流': 'ff700217',
+            '校准市电电压': 'ff700229',
+            '校准市电电流': 'ff70022a',
+            '校准EXITBAT电压': 'ff700201'
+        }
+        self.ivpo_calibrate_list.addItems([k for k, v in  self.ivpo_calibrate_addr.items()])
         
         # 创建监控日志文件
         self.ivpo_now = datetime.datetime.now().strftime('%Y-%m-%d_%H_%M_%S')
@@ -88,6 +102,9 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         # 加载-串口数据信号槽
         self.ivpo_clear_port_msg.clicked.connect(functools.partial(self.ivpo_clearRow_btn, self.ivpo_port_tableWidget))
 
+        # 加载系统设置信号槽
+        self.ivpo_sys_setting_slots()
+        
         # 隐藏行序号
         self.ivpo_port_tableWidget.verticalHeader().setVisible(False)
         
@@ -95,6 +112,49 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         self.ivpo_port_tableWidget.setColumnWidth(0,180)
         self.ivpo_port_tableWidget.setColumnWidth(1,100)
         self.ivpo_port_tableWidget.setColumnWidth(2,760)
+        
+    # 系统设置信号槽
+    def ivpo_sys_setting_slots(self):
+        self.ivpo_calibrate_btn.clicked.connect(self.ivpo_calibrate_btn_func)
+
+    # 系统设置-数据校准
+    def ivpo_calibrate_btn_func(self):
+        if self.ivpo_port_switch == False:
+            return QtWidgets.QMessageBox.information(self, 'tips', '串口未打开', QtWidgets.QMessageBox.Ok)
+        if self.ivpo_timer_get_monitor.isActive():
+            self.ivpo_timer_get_monitor.stop()
+
+        txt = self.ivpo_calibrate_list.currentText()
+        hex_addr = self.ivpo_calibrate_addr[txt]
+        if '电流' in txt:
+            # 电流倍率 0.01
+            hex_num = format(int(float(self.ivpo_calibrate_data.text()) * 100), '04x')
+        else:
+            # 电压倍率 0.1
+            hex_num = format(int(float(self.ivpo_calibrate_data.text()) * 10), '04x')
+        print(hex_num)
+        print(hex_addr, txt)
+        
+        self.ivpo_calibrate_msg = hex_addr + hex_num + '000'
+        print(self.ivpo_calibrate_msg)
+        
+        self.ivpo_calibrate_time = QtCore.QTimer()
+        self.ivpo_calibrate_time_setp = 1
+        self.ivpo_calibrate_time.timeout.connect(self.ivpo_calibrate_btn_timer)
+        self.ivpo_calibrate_time.start(1000)
+        
+    # 系统设置-数据校准-定时器
+    def ivpo_calibrate_btn_timer(self):
+        msg = self.ivpo_calibrate_msg + str(self.ivpo_calibrate_time_setp)
+        self.ivpo_send_msg(msg + calc_crc(msg))
+        
+        self.ivpo_calibrate_pro.setValue(self.ivpo_calibrate_time_setp)
+        
+        self.ivpo_calibrate_time_setp += 1
+        if self.ivpo_calibrate_time_setp == 7:
+            self.ivpo_timer_get_monitor.start(int(self.ivpo_send_time.text()))
+            self.ivpo_calibrate_time.stop()
+            return QtWidgets.QMessageBox.information(self, 'tips', '校准完毕。', QtWidgets.QMessageBox.Ok)
         
     # 实时监控信号槽
     def ivpo_monitor_slots(self):
@@ -119,11 +179,12 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             self.ivpo_open_port.setText('关闭串口')
             self.ivpo_open_port.setStyleSheet(color_open)
             self.ivpo_port_list.setEnabled(False)
+            self.ivpo_port_switch = True
             
             # 开启接收数据定时器
             self.ivpo_timer_recevice = QtCore.QTimer()
             self.ivpo_timer_recevice.timeout.connect(self.ivpo_timer_recevice_func)
-            self.ivpo_timer_recevice.start(50)
+            self.ivpo_timer_recevice.start(500)
         else:
             try:
                 self.invt_po_ser.close()
@@ -132,6 +193,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             self.ivpo_open_port.setText('打开串口')
             self.ivpo_open_port.setStyleSheet(color_close)
             self.ivpo_port_list.setEnabled(True)
+            self.ivpo_port_switch = False
             self.ivpo_timer_recevice.stop()
     
     # 导出数据
@@ -251,6 +313,8 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             
     # 参数设置-读取数据
     def ivpo_read_data_func(self):
+        if self.ivpo_port_switch == False:
+            return QtWidgets.QMessageBox.information(self, 'tips', '串口未打开', QtWidgets.QMessageBox.Ok)
         
         # 记录实时监控是否在运行
         self.monit_status = True
@@ -272,8 +336,8 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                 if self.ivpo_timer_get_monitor.isActive():
                     self.ivpo_timer_get_monitor.stop()
                     self.monit_status = False
-            except Exception:
-                pass
+            except Exception as e:
+                print(e)
         elif self.ivpo_timer_get_setting_step == 2:
             self.ivpo_send_msg(ivpo_setting1 + calc_crc(ivpo_setting1))
         else:

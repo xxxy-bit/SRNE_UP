@@ -175,7 +175,7 @@ font-family: &quot;微软雅黑&quot;;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-image:url(:/AC充电器.png)</string>
+       <string notr="true">background-image:url(:/AC-DC充电器.png)</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
@@ -280,14 +280,14 @@ font-family: &quot;微软雅黑&quot;;</string>
      <widget class="QListView" name="listView_8">
       <property name="geometry">
        <rect>
-        <x>636</x>
-        <y>110</y>
-        <width>124</width>
-        <height>102</height>
+        <x>668</x>
+        <y>92</y>
+        <width>64</width>
+        <height>126</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-image:url(:/逆变器.png)</string>
+       <string notr="true">background-image:url(:/工频离网逆变器.png)</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
@@ -339,14 +339,14 @@ font-family: &quot;微软雅黑&quot;;</string>
      <widget class="QListView" name="listView_9">
       <property name="geometry">
        <rect>
-        <x>410</x>
-        <y>100</y>
-        <width>55</width>
-        <height>113</height>
+        <x>379</x>
+        <y>115</y>
+        <width>120</width>
+        <height>83</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-image:url(:/AC充电器.png)</string>
+       <string notr="true">background-image:url(:/DC-DC充电器.png)</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
@@ -434,22 +434,22 @@ font-family: &quot;微软雅黑&quot;;</string>
        <string/>
       </property>
      </widget>
+     <zorder>inverter_bg</zorder>
+     <zorder>inverter_text</zorder>
      <zorder>ac_bg</zorder>
      <zorder>ac_text</zorder>
      <zorder>listView_6</zorder>
      <zorder>bms_bg</zorder>
-     <zorder>inverter_bg</zorder>
-     <zorder>inverter_text</zorder>
      <zorder>listView_8</zorder>
      <zorder>dc_bg</zorder>
      <zorder>dc_text</zorder>
      <zorder>listView_9</zorder>
      <zorder>bms_text</zorder>
-     <zorder>acchargerBtn</zorder>
-     <zorder>InverterBtn</zorder>
-     <zorder>dcchargerBtn</zorder>
      <zorder>listView_7</zorder>
      <zorder>bmsBtn</zorder>
+     <zorder>acchargerBtn</zorder>
+     <zorder>dcchargerBtn</zorder>
+     <zorder>InverterBtn</zorder>
     </widget>
    </widget>
   </widget>
