@@ -192,7 +192,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
             # 开启接收数据定时器
             self.ivpo_timer_recevice = QtCore.QTimer()
             self.ivpo_timer_recevice.timeout.connect(self.ivpo_timer_recevice_func)
-            self.ivpo_timer_recevice.start(500)
+            self.ivpo_timer_recevice.start(1000)
         else:
             try:
                 self.invt_po_ser.close()
@@ -466,7 +466,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         hex_data = bytes.fromhex(data)
         try:
             self.invt_po_ser.write(hex_data)
-        except serial.serialutil.PortNotOpenError as e:
+        except Exception as e:
             self.invt_po_ser.close()
             print(e)
             return False
@@ -477,7 +477,8 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
     def ivpo_timer_recevice_func(self):
         
         try:
-            res = self.invt_po_ser.readline()
+            # res = self.invt_po_ser.readline()
+            res = self.invt_po_ser.read_all()
             res = res.hex()
         except Exception as e:
             print(e)

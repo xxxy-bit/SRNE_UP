@@ -710,7 +710,7 @@ class Ui_MainWindow(object):
         self.ivpo_baud_list.setItemText(2, _translate("MainWindow", "57600"))
         self.ivpo_baud_list.setItemText(3, _translate("MainWindow", "115200"))
         self.ivpo_open_moni.setText(_translate("MainWindow", "开启监控"))
-        self.ivpo_send_time.setText(_translate("MainWindow", "1500"))
+        self.ivpo_send_time.setText(_translate("MainWindow", "3000"))
         self.groupBox_5.setTitle(_translate("MainWindow", "设备控制"))
         self.label_31.setText(_translate("MainWindow", "开关机"))
         self.label_32.setText(_translate("MainWindow", "恢复出厂"))

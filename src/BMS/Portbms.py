@@ -398,7 +398,8 @@ class Portbms(BmsLayout):
         if text != '':
             try:
                 num = int(float(text)*100)
-            except ValueError:
+            except ValueError as e:
+                print(f"获取修改过的'系统设置-电量'参数1：{e}")
                 key.setText('')
                 return QMessageBox.critical(self, 'Error', bms_logic_label11, QMessageBox.Ok)
             
@@ -412,7 +413,8 @@ class Portbms(BmsLayout):
             
             try:
                 self.sys_edit_dic[key] = f'{send_num}{calc_crc(send_num)}'
-            except ValueError:
+            except ValueError as e:
+                print(f"获取修改过的'系统设置-电量'参数2：{e}")
                 key.setText('')
                 return QMessageBox.critical(self, 'Error', bms_logic_label12, QMessageBox.Ok)
 
@@ -544,7 +546,8 @@ class Portbms(BmsLayout):
             self.ser.baudrate = int(self.baud)
             try:
                 self.ser.open()
-            except serial.SerialException:
+            except serial.SerialException as e:
+                print(f'打开/关闭串口：{e}')
                 QMessageBox.information(self, 'Error', bms_logic_label20, QMessageBox.Ok)
             self.open_port_btn.setStyleSheet(open_Button)
             self.open_port_btn.setText(bms_logic_label2)
@@ -590,7 +593,7 @@ class Portbms(BmsLayout):
                 # 休眠
                 self.SendMsg.pause()
             except Exception as e:
-                print(e)
+                print(f'按钮-开始监控：{e}')
             self.getP01_data_btn.setText(com_label8)
             self.getP01_data_btn.setStyleSheet(close_Button)
 
@@ -615,7 +618,8 @@ class Portbms(BmsLayout):
         wait_time = int(self.space_combobox.currentText())
         try:
             self.send_msg(data)
-        except serial.PortNotOpenError:
+        except serial.PortNotOpenError as e:
+            print(f'实时监控线程：{e}')
             self.SendMsg.pause()
             return 0
 
@@ -684,7 +688,7 @@ class Portbms(BmsLayout):
                     txt = int(self.tab3_form_dic[key].text())
                 keyTxt = f"0106{self.json_modbus[bms_setting][key][3]}{txt:04x}"
             except Exception as e:
-                print(e)
+                print(f"获取修改过的'参数设置'参数：{e}")
                 return QMessageBox.critical(self, 'Error', bms_logic_label11, QMessageBox.Ok)
             self.tab3_dic[key] = keyTxt + calc_crc(keyTxt)
 
@@ -773,7 +777,8 @@ class Portbms(BmsLayout):
                     print('self.num_max: {}'.format(self.num_max))
                     QMessageBox.information(self, 'tip', bms_logic_label27, QMessageBox.Ok)
                     self.hisTime.stop()
-            except Exception:
+            except Exception as e:
+                print(f'获取最近历史数据计时器：{e}')
                 return 0
             self.clear_his_status = True
             self.hisNum += 1
@@ -797,6 +802,7 @@ class Portbms(BmsLayout):
         try:
             self.ser.write(hex_data)
         except serial.serialutil.PortNotOpenError as e:
+            print(f'发送数据：{e}')
             self.ser.close()
             return False
         self.add_tableItem('↓', bytes.hex(hex_data))    # 在表格中输出
@@ -807,7 +813,7 @@ class Portbms(BmsLayout):
             res = self.ser.read_all()
             res = res.hex()
         except Exception as e:
-            logging.error(e)
+            print(f'接收数据：{e}')
             return False
         if res != '':
             self.respondStatusNum = 0
@@ -835,8 +841,10 @@ class Portbms(BmsLayout):
                     if len(bc_count) == 386:
                         self.bms_bc_split_msg = bc_count
                         self.bms_bc_pass = True
-                        
+                
+                # 实时监控
                 if self.bms_bc_pass:
+                    print('实时监控')
                     p01 = pars_data(self.bms_bc_split_msg, bms_monitor + calc_crc(bms_monitor))
                     # print(p01)
                     if len(p01) == 2:
@@ -944,6 +952,7 @@ class Portbms(BmsLayout):
                                 QMessageBox.information(self, 'tips', bms_logic_label28, QMessageBox.Ok)
                 # 参数设置
                 elif res[:6] == f'{bms_setting[:4]}b6' and len(res) == 374:
+                    print('参数设置')
                     self.p03 = pars_data(res, bms_setting + calc_crc(bms_setting))
                     if len(self.p03) == 2:
                         crc_error = True
@@ -951,10 +960,12 @@ class Portbms(BmsLayout):
                         for k,v in self.p03.items():
                             try:
                                 self.tab3_form_dic[k].setText(v)
-                            except KeyError:
+                            except KeyError as e:
+                                print(f'参数设置：{e}')
                                 continue
                 # 历史数据
                 elif res[:6] == f'{bms_history[:4]}6c' and len(res) == 226:
+                    print('历史数据')
                     p06 = pars_data(res, bms_history + calc_crc(bms_history))
                     if len(p06) == 2:
                         crc_error = True
@@ -967,6 +978,7 @@ class Portbms(BmsLayout):
                             count += 1
                 # 读取版本号
                 elif res[:6] == '010304' and len(res) == 18:
+                    print('读取版本号')
                     v1 = int(res[6:8], 16)
                     v2 = int(res[8:10], 16)
                     v3 = int(res[10:12], 16)
@@ -974,6 +986,7 @@ class Portbms(BmsLayout):
                     self.version.setText(f'Version：{v1}.{v2}.{v3}.{v4}')
                 # 读取系统设置-系统时间
                 elif res[:6] == f'{bms_sys_time[:4]}06' and self.sys_time and len(res) == 22:
+                    print('读取系统设置-系统时间')
                     sysTime_data = pars_data(res, bms_sys_time + calc_crc(bms_sys_time))
                     year_month = sysTime_data['年月'].split('/')
                     year = int(f'20{year_month[0]}')
@@ -993,16 +1006,20 @@ class Portbms(BmsLayout):
                     self.now_time.setDateTime(thisTime)
                 # 读取系统设置-电量数据
                 elif res[:6] == f'{bms_sys_set1[:4]}06' and len(res) == 22:
+                    print('读取系统设置-电量数据')
                     ele_data = pars_data(res, bms_sys_set1 + calc_crc(bms_sys_set1))
                     self.remainCap.setText(ele_data[f'{battery_label3}(AH)'])
                     self.fullCap_Line.setText(ele_data[f'总容量(AH)'])
                 # 读取系统设置-电量数据2
                 elif res[:6] == f'{bms_sys_set2[:4]}02' and len(res) == 14 and self.sys_status == True:
+                    print('读取系统设置-电量数据2')
                     ele_data = pars_data(res, bms_sys_set2 + calc_crc(bms_sys_set2))
                     self.designCap.setText(ele_data[f'设计容量(AH)'])
                     self.sys_status = False
                 # 历史数据总数 
                 elif res[:6] == f'{bms_recent_history[:4]}02' and len(res) == 14:
+                    print('历史数据总数')
+                    print(res[6:10])
                     self.num_max = int(res[6:10], 16)
                     print('self.num_max: {}'.format(self.num_max))
                     
