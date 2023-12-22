@@ -24,6 +24,7 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         
         # 标志位
         self.ivpo_port_switch = False   # 串口开关
+        self.ivpo_moni_switch = False   # 监控开关
         
         # 加载日志目录
         self.log_name = Common.creat_log_file('log')
@@ -121,9 +122,16 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
     def ivpo_calibrate_btn_func(self):
         if self.ivpo_port_switch == False:
             return QtWidgets.QMessageBox.information(self, 'tips', '串口未打开', QtWidgets.QMessageBox.Ok)
-        if self.ivpo_timer_get_monitor.isActive():
-            self.ivpo_timer_get_monitor.stop()
-
+        
+        # 检测监控是否已开启，开启则自动关闭，校准完毕重新自动打开        
+        try:
+            if self.ivpo_timer_get_monitor.isActive():
+                self.ivpo_timer_get_monitor.stop()
+                self.ivpo_moni_switch = True
+        except Exception as e:
+            print(e)
+            self.ivpo_moni_switch = False
+        
         txt = self.ivpo_calibrate_list.currentText()
         hex_addr = self.ivpo_calibrate_addr[txt]
         if '电流' in txt:
@@ -152,9 +160,9 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         
         self.ivpo_calibrate_time_setp += 1
         if self.ivpo_calibrate_time_setp == 7:
-            self.ivpo_timer_get_monitor.start(int(self.ivpo_send_time.text()))
+            if self.ivpo_moni_switch:
+                self.ivpo_timer_get_monitor.start(int(self.ivpo_send_time.text()))
             self.ivpo_calibrate_time.stop()
-            return QtWidgets.QMessageBox.information(self, 'tips', '校准完毕。', QtWidgets.QMessageBox.Ok)
         
     # 实时监控信号槽
     def ivpo_monitor_slots(self):
@@ -672,4 +680,10 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
                 for obj in self.ivpo_setting_edit:
                     obj.blockSignals(False)
             
+            # 数据校准
+            elif res[2:4] == '70':
+                if res[10:12] == '01':
+                    QtWidgets.QMessageBox.information(self, 'tips', '校准成功。', QtWidgets.QMessageBox.Ok)
+                else:
+                    QtWidgets.QMessageBox.information(self, 'tips', '校准失败。', QtWidgets.QMessageBox.Ok)
             self.ivpo_add_tableItem('receive', res, self.ivpo_port_tableWidget, self.log_name)
