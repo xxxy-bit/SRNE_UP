@@ -76,7 +76,7 @@ class ResMsg(QThread):
             self.mutex.lock()
             if self._isPause:
                 self.cond.wait(self.mutex)
-            time.sleep(1)
+            time.sleep(0.5)
             self.trigger.emit()
             self.mutex.unlock()
 
@@ -548,7 +548,10 @@ class Portbms(BmsLayout):
                 self.ser.open()
             except serial.SerialException as e:
                 print(f'打开/关闭串口：{e}')
-                QMessageBox.information(self, 'Error', bms_logic_label20, QMessageBox.Ok)
+                return QMessageBox.information(self, 'Error', bms_logic_label20, QMessageBox.Ok)
+            except Exception as e:
+                print(f'串口异常：{e}')
+                return QMessageBox.information(self, 'Error', '串口异常', QMessageBox.Ok)
             self.open_port_btn.setStyleSheet(open_Button)
             self.open_port_btn.setText(bms_logic_label2)
             if  self.respond_on == False:
@@ -816,6 +819,7 @@ class Portbms(BmsLayout):
             print(f'接收数据：{e}')
             return False
         if res != '':
+            print(f'此次接收的数据：{res}')
             self.respondStatusNum = 0
             self.respondStatus = True
             # 接收协议是否为 rs485
