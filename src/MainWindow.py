@@ -13,6 +13,8 @@ class MainWindow(QtWidgets.QMainWindow, main_menu):
         super(MainWindow, self).__init__()
         self.setupUi(self)
         
+        print(f'当前版本：{self.windowTitle()}')
+        
         self.trans = QtCore.QTranslator()  # 实例翻译者
         
         # 设置项的保存路径
