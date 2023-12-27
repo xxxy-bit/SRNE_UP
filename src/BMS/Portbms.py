@@ -102,7 +102,7 @@ class Portbms(BmsLayout):
             QMessageBox.information(self, 'Error', bms_logic_label7, QMessageBox.Ok)
             return False
         elif self.his_status:
-            QMessageBox.information(self, 'Error', bms_logic_label8, QMessageBox.Ok)
+            QMessageBox.information(self, 'Error', '正在获取历史数据，请等待完成或暂停。', QMessageBox.Ok)
             return False
         return True
     
@@ -628,21 +628,36 @@ class Portbms(BmsLayout):
         
     # 获取历史数据
     def his_show(self):
-        if self.ser.isOpen() == False:
-            return QMessageBox.information(self, 'Error', bms_logic_label7, QMessageBox.Ok)
-        self.stop_moni()
-        self.clearRow_btn(self.hisTable)
-        
-        self.clear_his_status = False
-        
-        self.hisTime = QTimer()
-        self.hisTime.timeout.connect(self.his_time_func)
-        self.hisTime.start(1000)
-        self.hisNum = 0
-        self.his_status = True
-        self.getP01_data_btn.setText(com_label8)
-        self.hisShow.setEnabled(False)
-        self.clearShow.setEnabled(True)
+        if self.hisShow.text() == hisdata_label1:   # 获取最近历史数据(1~100)
+            if self.ser.isOpen() == False:
+                return QMessageBox.information(self, 'Error', bms_logic_label7, QMessageBox.Ok)
+            if self.moni_switch:
+                return QMessageBox.information(self, 'tips', '请先停止实时监控。', QMessageBox.Ok)
+            self.clearRow_btn(self.hisTable)
+            
+            self.clear_his_status = False
+            
+            self.hisTime = QTimer()
+            self.hisTime.timeout.connect(self.his_time_func)
+            self.hisTime.start(1000)
+            self.hisNum = 0
+            self.his_status = True
+            self.getP01_data_btn.setText(com_label8)
+            self.clearShow.setEnabled(True)
+            self.hisShow.setText('暂停')
+            
+        elif self.hisShow.text() == '暂停':
+            self.hisTime.stop()
+            self.his_status = False
+            self.hisShow.setText('继续')
+            
+        elif self.hisShow.text() == '继续':
+            if self.moni_switch:
+                return QMessageBox.information(self, 'tips', '请先停止实时监控。', QMessageBox.Ok)
+            if self.continue_status:
+                self.hisTime.start(1000)
+                self.his_status = True
+                self.hisShow.setText('暂停')
     
     # 获取最近历史数据计时器
     def his_time_func(self):
@@ -658,7 +673,9 @@ class Portbms(BmsLayout):
             except Exception as e:
                 print(f'获取最近历史数据计时器：{e}')
                 return 0
+            self.clearShow.setEnabled(False)
             self.clear_his_status = True
+            self.continue_status = True # 继续-暂停 标志位
             self.hisNum += 1
             print('self.hisNum: {}'.format(self.hisNum))
             return 0
@@ -672,8 +689,9 @@ class Portbms(BmsLayout):
         else:
             self.hisTime.stop()
             self.his_status = False
-            self.hisShow.setEnabled(True)
-            self.start_moni()
+            self.hisShow.setText(hisdata_label1)
+            self.clearShow.setEnabled(True)
+            self.continue_status = False
 
     # 发送数据
     def send_msg(self, data):
