@@ -554,7 +554,6 @@ class Portbms(BmsLayout):
                 or key == '单体过放告警(V)' or key == '单体过放保护(V)' or key == '单体过放保护恢复(V)':
                     txt = int(float(self.tab3_form_dic[key].text()) * 1000)
                     print(1)
-                    print(txt)
                     if txt > 4000:
                         self.tab3_form_dic[key].setText('')
                         return QMessageBox.critical(self, 'Error', bms_logic_label21, QMessageBox.Ok)      
@@ -566,7 +565,8 @@ class Portbms(BmsLayout):
                         self.tab3_form_dic[key].setText('')
                         return QMessageBox.critical(self, 'Error', bms_logic_label22, QMessageBox.Ok)
                 else:
-                    txt = int(self.tab3_form_dic[key].text())
+                    print(3)
+                    txt = int(self.tab3_form_dic[key].text()) * self.json_modbus[bms_setting][key][2]
                 keyTxt = f"0106{self.json_modbus[bms_setting][key][3]}{txt:04x}"
             except Exception as e:
                 print(f"获取修改过的'参数设置'参数：{e}")
@@ -861,7 +861,7 @@ class Portbms(BmsLayout):
                             try:
                                 self.tab3_form_dic[k].setText(v)
                             except KeyError as e:
-                                print(f'参数设置：{e}')
+                                # print(f'参数设置：{e}')
                                 continue
                 # 历史数据
                 elif res[:6] == f'{bms_history[:4]}6c' and len(res) == 226:
