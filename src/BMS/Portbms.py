@@ -114,7 +114,7 @@ class Portbms(BmsLayout):
     # 业务完成开始 实时监控
     def start_moni(self):
         if self.moni_switch:
-            self.bms_qtimer_get_monitor.start(3000) # TODO
+            self.bms_qtimer_get_monitor.start(int(self.space_combobox.currentText()) * 1000)
         
     # 实时监控 槽函数slots
     def monitor_slotsTrigger(self):
@@ -485,7 +485,7 @@ class Portbms(BmsLayout):
             self.bms_qtimer_get_monitor = QTimer()
             self.bms_qtimer_get_monitor.timeout.connect(self.bms_qtimer_get_monitor_func)
             self.bms_qtimer_get_monitor_step = 0
-            self.bms_qtimer_get_monitor.start(3000) # TODO
+            self.bms_qtimer_get_monitor.start(int(self.space_combobox.currentText()) * 1000)
             
         else:
             self.moni_switch = False
