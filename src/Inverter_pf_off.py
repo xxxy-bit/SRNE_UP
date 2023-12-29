@@ -137,9 +137,15 @@ class Invt_pf_off_layout(QtWidgets.QMainWindow, invt_off_layout):
         if '电流' in txt:
             # 电流倍率 0.01
             hex_num = format(int(float(self.ivpo_calibrate_data.text()) * 100), '04x')
+            print(hex_num)
         else:
-            # 电压倍率 0.1
-            hex_num = format(int(float(self.ivpo_calibrate_data.text()) * 10), '04x')
+            # 电压倍率 0.1，如果是 BAT 或 EXITBAT 则为0.01
+            if 'BAT' in txt or 'EXITBAT' in txt:
+                hex_num = format(int(float(self.ivpo_calibrate_data.text()) * 100), '04x')
+                print(hex_num)
+            else:
+                hex_num = format(int(float(self.ivpo_calibrate_data.text()) * 10), '04x')
+                print(hex_num)
         print(hex_num)
         print(hex_addr, txt)
         
