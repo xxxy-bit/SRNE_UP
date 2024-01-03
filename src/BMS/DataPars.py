@@ -5,7 +5,8 @@ import os, sys
 from settings.bms_modbus import get_bms_modbus_list
 from src.i18n.Bms_i18n import *
 from src.OrderList import *
-from src.BMS.tools.Common import Common
+# from src.BMS.tools.Common import Common
+from utils.Common import Common
 from src.BMS.tools.CRC16Util import calc_crc
 
 sys.path.append(os.getcwd())
@@ -46,6 +47,7 @@ def pars_data(res, data):
                 print_dic[k] = error_list
             else:
                 if v[2] < 0:
+                    # print(f'{k}:{temp}')
                     resF = f'{Common.format_num(Common.signBit_func(temp[0]) / abs(v[2]))}'
                     print_dic[k] = f'{resF}{v[3]}'
                 else:

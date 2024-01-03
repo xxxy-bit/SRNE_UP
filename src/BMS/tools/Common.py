@@ -50,7 +50,7 @@ class Common():
         """
         resF = int(num, 16)
         if resF > int('7FFF', 16):
-            return -(int('10000', 16) - resF)
+            return -(int('FFFF', 16) - resF)
         else:
             return resF
 
