@@ -44,7 +44,7 @@ class Common():
         """符号位转换正负
         例如num = FF36
         if FF36 > 7FFF:
-            -(10000 - FF36)
+            -(FFFF - FF36)
         else:
             FF36
         """
