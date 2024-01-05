@@ -47,7 +47,7 @@ def pars_data(res, data):
                 print_dic[k] = error_list
             else:
                 if v[2] < 0:
-                    # print(f'{k}:{temp}')
+                    print(f'{k}:{temp}')
                     resF = f'{Common.format_num(Common.signBit_func(temp[0]) / abs(v[2]))}'
                     print_dic[k] = f'{resF}{v[3]}'
                 else:
