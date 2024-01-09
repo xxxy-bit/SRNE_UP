@@ -189,6 +189,8 @@ class Portbms(BmsLayout):
     # 并联监控-开始获取信息按钮
     def pal_start_func(self):
         if self.assertStatus() == False: return False
+        if self.moni_switch:
+            return QMessageBox.information(self, 'tips', '请先停止实时监控。', QMessageBox.Ok)
         self.stop_moni()
         self.rs485_res_status = True
         self.repeat = False
@@ -929,13 +931,20 @@ class Portbms(BmsLayout):
                     self.add_tableItem(bms_logic_label29, res)
             else:
                 # 接收 rs485 报文并处理
-                if res[:2] == '7e' and len(res) == 40:  # 确认 pack 地址
-                    temp = res[6:10]
-                    hex2asc = ''
-                    for i in range(0, len(temp), 2):
-                        # 十六进制转换成ascii字符
-                        hex2asc += chr(int(temp[i:i + 2], 16))
-                    self.palTable.setItem(0, int(hex2asc)-1, QTableWidgetItem('online'))
+                if res[:2] == '7e' and len(res) == 48:  # 确认 pack 地址是否存在
+                    # 如果这个长度拿到的是00，则表示设备不在线或未接入，显示offline并跳过解析
+                    if res[-14:-10] == '3030':
+                        # 显示offline
+                        temp = res[6:10]
+                        hex2asc = ''
+                        for i in range(0, len(temp), 2):
+                            # 十六进制转换成ascii字符
+                            hex2asc += chr(int(temp[i:i + 2], 16))
+                        self.palTable.setItem(0, int(hex2asc)-1, QTableWidgetItem('offline'))
+                        
+                        self.add_tableItem('↑', res)
+                        return 0
+                    
                 elif res[:2] == '7e' and len(res) == 312:  # 获取 PACK 模拟量响应信息
                     msg = res[30:-10]  # 去掉前缀报文和校验码
                     adr = ''
