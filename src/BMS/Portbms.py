@@ -231,6 +231,7 @@ class Portbms(BmsLayout):
                     self.pal_start_time_setp += 1
         else:
             self.pal_start_time.stop()
+            self.pal_start.setText(palset_label2)
             self.rs485_res_status = False
             self.start_moni()
 
