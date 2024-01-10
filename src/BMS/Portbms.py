@@ -195,8 +195,8 @@ class Portbms(BmsLayout):
             
             self.rs485_res_status = True
             self.repeat = False
-            self.status_42 = False  # 42是否有分包
-            self.status_44 = False  # 44是否有分包
+            self.status_42 = 0  # 42是否有分包
+            self.status_44 = 0  # 44是否有分包
             self.palTable.setColumnCount(int(self.pack_total.currentText()))
             self.palTable.clearContents()
             
@@ -211,24 +211,45 @@ class Portbms(BmsLayout):
             
     # 并联监控-开始获取信息按钮-计时器
     def pal_start_func_timer(self):
+        print(f'self.pal_start_time_setp:{self.pal_start_time_setp}')
         num = f'{self.pal_start_time_setp:02d}'
         adr = ''
         for i in num:
             adr += hex(ord(i))[2:]
         if self.pal_start_time_setp <= int(self.pack_total.currentText()):
             if self.repeat == False:
-                txt = f'7E 32 35 {adr} 34 36 34 32 45 30 30 32 {adr}'
-                self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
-                if self.status_42:
-                    self.status_42 = False  # 复原分包标志位
+                if self.status_42 < 5:
+                    self.status_42 += 1
+                    txt = f'7E 32 35 {adr} 34 36 34 32 45 30 30 32 {adr}'
+                    self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
+                else:
+                    self.status_42 = 0
                     self.repeat = True
+                    
             else:
-                txt = f'7E 32 35 {adr} 34 36 34 34 45 30 30 32 {adr}'
-                self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
-                if self.status_44:
-                    self.status_44 = False  # 复原分包标志位
+                if self.status_44 < 5:
+                    self.status_44 += 1
+                    txt = f'7E 32 35 {adr} 34 36 34 34 45 30 30 32 {adr}'
+                    self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
+                else:
+                    self.status_44 = 0
                     self.repeat = False
                     self.pal_start_time_setp += 1
+            
+            # if self.status_42 < 5:
+            #     self.status_42 += 1
+            #     txt = f'7E 32 35 {adr} 34 36 34 32 45 30 30 32 {adr}'
+            #     self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
+            # else:
+            #     if self.status_44 < 5:
+            #         self.status_44 += 1
+            #         txt = f'7E 32 35 {adr} 34 36 34 34 45 30 30 32 {adr}'
+            #         self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
+            #     else:
+            #         self.status_42 = 0
+            #         self.status_44 = 0
+            #         self.pal_start_time_setp += 1
+                    
         else:
             self.pal_start_time.stop()
             self.pal_start.setText(palset_label2)
@@ -944,89 +965,92 @@ class Portbms(BmsLayout):
                     self.add_tableItem(bms_logic_label29, res)
             else:
                 # 接收 rs485 报文并处理
-                if res[:2] == '7e':
-                    if len(res) == 48:  # 确认 pack 地址是否存在
-                        # 如果这个长度拿到的是00，则表示设备不在线或未接入，显示offline并跳过解析
-                        if res[-14:-10] == '3030':
-                            # 显示offline
-                            temp = res[6:10]
-                            hex2asc = ''
-                            for i in range(0, len(temp), 2):
-                                # 十六进制转换成ascii字符，如：30 32 转 02
-                                hex2asc += chr(int(temp[i:i + 2], 16))
-                            self.palTable.setItem(0, int(hex2asc)-1, QTableWidgetItem('offline'))
-                            
-                            self.add_tableItem('↑', res)
-                            return 0
+                if len(res) == 48:  # 确认 pack 地址是否存在
+                    # 如果这个长度拿到的是00，则表示设备不在线或未接入，显示offline并跳过解析
+                    if res[-14:-10] == '3030':
+                        # 显示offline
+                        temp = res[6:10]
+                        hex2asc = ''
+                        for i in range(0, len(temp), 2):
+                            # 十六进制转换成ascii字符，如：30 32 转 02
+                            hex2asc += chr(int(temp[i:i + 2], 16))
+                        self.palTable.setItem(0, int(hex2asc)-1, QTableWidgetItem('OFFLINE'))
                         
-                    elif len(res) == 312:  # 获取 PACK 模拟量响应信息
-                        msg = res[30:-10]  # 去掉前缀报文和校验码
-                        adr = ''
-                        for k,v in self.json_rs485['获取PACK模拟量响应信息'].items():
-                            temp = ''
-                            for i in range(v[0], v[0]+v[1], 2):
-                                temp += chr(int(msg[i:i + 2], 16))
-                            if k == 'Command':
-                                adr = int(temp, 16)
-                            elif palnum_label2 in k or bms_history_label3 in k: # 温度、电流
-                                data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))} {v[3]}'
-                            else:
-                                # data = f'{int(temp, 16)} {v[3]}'
-                                data = f'{Common.format_num(int(temp, 16) / abs(v[2]))} {v[3]}'
-                            if k in self.col_labels:
-                                self.palTable.setItem(self.col_labels.index(k), int(adr)-1, QTableWidgetItem(str(data)))
-                        self.status_42 = True   # 获取PACK模拟量响应信息报文结构完整的标志位
+                        # 并联发送定时器相关参数
+                        self.repeat = False             # 重置循环发送的状态
+                        self.pal_start_time_setp += 1   # 跳过获取告警量的指令
                         
-                    elif len(res) == 200:  # 获取 PACK 告警量
-                        msg = res[30:-10]
-                        adr = ''
-                        for k,v in self.json_rs485['获取PACK告警量'].items():
-                            pack_warn = False
-                            temp = ''
-                            for i in range(v[0], v[0]+v[1], 2):
-                                temp += chr(int(msg[i:i + 2], 16))
-                            data = int(temp, 16)
-                            if k == 'Command':
-                                adr = int(temp, 16)
-                            elif 'Cell' in k or palnum_label11 in k:    # 'PACK总电压'
-                                if data == 0:
-                                    data = bms_pal_logic_label1
-                                elif data == 1:
-                                    data = bms_pal_logic_label2
-                                    pack_warn = True
-                                elif data == 2:
-                                    data = bms_parse_label1
-                                    pack_warn = True
-                            elif palnum_label10 in k or palnum_label12 in k:  # 'PACK充电'、'PACK放电'
-                                if data == 0:
-                                    data = bms_pal_logic_label1
-                                elif data == 2:
-                                    data = bms_pal_logic_label3
-                                    pack_warn = True
-                            elif palnum_label2 in k:    # '温度'
-                                if data == 0:
-                                    data = bms_pal_logic_label1
-                                if data == 1:
-                                    data = bms_pal_logic_label4
-                                    pack_warn = True
-                                elif data == 2:
-                                    data = bms_pal_logic_label5
-                                    pack_warn = True
-                            
-                            # 保护状态_1、保护状态_2、指示状态、控制状态、故障状态、告警状态_1、告警状态_2
-                            elif k == f'{group_tabel10}_1' or k == f'{group_tabel10}_2' or k == palnum_label14 or k == palnum_label15 \
-                            or k == group_tabel8 or k == f'{group_tabel9}_1' or k == f'{group_tabel9}_2':
-                                data = bin(int(temp, 16))[2:].zfill(8)
-                                warn_list = []
-                                for a,b in v[4].items():
-                                    if data[-(int(a)+1)] == '1':
-                                        warn_list.append(b)
-                                data = '，'.join(warn_list)
-                            if k in self.col_labels:
-                                self.palTable.setItem(self.col_labels.index(k), int(adr)-1, QTableWidgetItem(str(data)))
-                                if pack_warn:
-                                    self.palTable.item(self.col_labels.index(k), int(adr)-1).setForeground(Qt.red)
-                        self.status_44 = True   # 获取PACK告警量响应信息报文结构完整的标志位
+                        self.add_tableItem('↑', res)
+                        return 0
+                    
+                elif len(res) == 312:  # 获取 PACK 模拟量响应信息
+                    msg = res[30:-10]  # 去掉前缀报文和校验码
+                    adr = ''
+                    self.status_42 = 5   # 获取PACK模拟量响应信息报文结构完整的标志位
+                    for k,v in self.json_rs485['获取PACK模拟量响应信息'].items():
+                        temp = ''
+                        for i in range(v[0], v[0]+v[1], 2):
+                            temp += chr(int(msg[i:i + 2], 16))
+                        if k == 'Command':
+                            adr = int(temp, 16)
+                        elif palnum_label2 in k or bms_history_label3 in k: # 温度、电流
+                            data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))} {v[3]}'
+                        else:
+                            # data = f'{int(temp, 16)} {v[3]}'
+                            data = f'{Common.format_num(int(temp, 16) / abs(v[2]))} {v[3]}'
+                        if k in self.col_labels:
+                            self.palTable.setItem(self.col_labels.index(k), int(adr)-1, QTableWidgetItem(str(data)))
+                    
+                elif len(res) == 200:  # 获取 PACK 告警量
+                    msg = res[30:-10]
+                    adr = ''
+                    self.status_44 = 5   # 获取PACK告警量响应信息报文结构完整的标志位
+                    for k,v in self.json_rs485['获取PACK告警量'].items():
+                        pack_warn = False
+                        temp = ''
+                        for i in range(v[0], v[0]+v[1], 2):
+                            temp += chr(int(msg[i:i + 2], 16))
+                        data = int(temp, 16)
+                        if k == 'Command':
+                            adr = int(temp, 16)
+                        elif 'Cell' in k or palnum_label11 in k:    # 'PACK总电压'
+                            if data == 0:
+                                data = bms_pal_logic_label1
+                            elif data == 1:
+                                data = bms_pal_logic_label2
+                                pack_warn = True
+                            elif data == 2:
+                                data = bms_parse_label1
+                                pack_warn = True
+                        elif palnum_label10 in k or palnum_label12 in k:  # 'PACK充电'、'PACK放电'
+                            if data == 0:
+                                data = bms_pal_logic_label1
+                            elif data == 2:
+                                data = bms_pal_logic_label3
+                                pack_warn = True
+                        elif palnum_label2 in k:    # '温度'
+                            if data == 0:
+                                data = bms_pal_logic_label1
+                            if data == 1:
+                                data = bms_pal_logic_label4
+                                pack_warn = True
+                            elif data == 2:
+                                data = bms_pal_logic_label5
+                                pack_warn = True
+                        
+                        # 保护状态_1、保护状态_2、指示状态、控制状态、故障状态、告警状态_1、告警状态_2
+                        elif k == f'{group_tabel10}_1' or k == f'{group_tabel10}_2' or k == palnum_label14 or k == palnum_label15 \
+                        or k == group_tabel8 or k == f'{group_tabel9}_1' or k == f'{group_tabel9}_2':
+                            data = bin(int(temp, 16))[2:].zfill(8)
+                            warn_list = []
+                            for a,b in v[4].items():
+                                if data[-(int(a)+1)] == '1':
+                                    warn_list.append(b)
+                            data = '，'.join(warn_list)
+                        if k in self.col_labels:
+                            self.palTable.setItem(self.col_labels.index(k), int(adr)-1, QTableWidgetItem(str(data)))
+                            if pack_warn:
+                                self.palTable.item(self.col_labels.index(k), int(adr)-1).setForeground(Qt.red)
                         
                 self.add_tableItem('↑', res)
         else:
