@@ -668,8 +668,7 @@ class Portbms(BmsLayout):
         if self.hisShow.text() == hisdata_label1:   # 获取最近历史数据(1~100)
             if self.ser.isOpen() == False:
                 return QMessageBox.information(self, 'Error', bms_logic_label7, QMessageBox.Ok)
-            if self.moni_switch:
-                return QMessageBox.information(self, 'tips', '请先停止实时监控。', QMessageBox.Ok)
+            self.stop_moni()
             self.clearRow_btn(self.hisTable)
             
             self.clear_his_status = False
@@ -685,11 +684,11 @@ class Portbms(BmsLayout):
         elif self.hisShow.text() == '暂停':
             self.hisTime.stop()
             self.his_status = False
+            self.start_moni()
             self.hisShow.setText('继续')
             
         elif self.hisShow.text() == '继续':
-            if self.moni_switch:
-                return QMessageBox.information(self, 'tips', '请先停止实时监控。', QMessageBox.Ok)
+            self.stop_moni()
             if self.continue_status:
                 self.hisTime.start(1000)
                 self.his_status = True
@@ -724,6 +723,7 @@ class Portbms(BmsLayout):
         else:
             self.hisTime.stop()
             self.his_status = False
+            self.start_moni()
             self.hisShow.setText(hisdata_label1)
             self.continue_status = False
 
