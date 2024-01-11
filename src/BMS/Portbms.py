@@ -463,6 +463,7 @@ class Portbms(BmsLayout):
             self.tabWidget.addTab(self.tab_data,tab_tabel6)
             self.pwd_line.setText('')
             self.pwd_btn.setEnabled(False)
+            self.clearShow.setEnabled(True)
             # self.writeParam.setEnabled(True)
             self.resetTab3.setEnabled(True)
             QMessageBox.information(self, 'tips', bms_logic_label18, QMessageBox.Ok)
@@ -679,7 +680,6 @@ class Portbms(BmsLayout):
             self.hisNum = 0
             self.his_status = True
             self.getP01_data_btn.setText(com_label8)
-            self.clearShow.setEnabled(True)
             self.hisShow.setText('暂停')
             
         elif self.hisShow.text() == '暂停':
@@ -709,7 +709,6 @@ class Portbms(BmsLayout):
             except Exception as e:
                 print(f'获取最近历史数据计时器：{e}')
                 return 0
-            self.clearShow.setEnabled(False)
             self.clear_his_status = True
             self.continue_status = True # 继续-暂停 标志位
             self.hisNum += 1
@@ -726,7 +725,6 @@ class Portbms(BmsLayout):
             self.hisTime.stop()
             self.his_status = False
             self.hisShow.setText(hisdata_label1)
-            self.clearShow.setEnabled(True)
             self.continue_status = False
 
     # 发送数据
