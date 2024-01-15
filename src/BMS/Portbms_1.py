@@ -1,65 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import time, datetime, serial, logging, os, functools, threading
+import time, datetime, serial, logging, os, functools
 import serial.tools.list_ports
 from src.i18n.Bms_i18n import *
 from src.BMS.tools.CRC16Util import calc_crc
 from utils.Common import Common
 from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox
-from PyQt5.QtCore import QDate, QObject, QTime, QDateTime, QTimer, Qt, QThread, pyqtSignal
+from PyQt5.QtCore import QDate, QTime, QDateTime, QTimer, Qt
 from PyQt5.QtGui import QFont
 from .BmsLayout import BmsLayout
 from .DataPars import pars_data
 from .QssStyle import *
 from src.OrderList import *
-
-class ResThread(QThread):
-    finished = pyqtSignal(str)
-    
-    def __init__(self, ser: serial):
-        super(ResThread, self).__init__()
-        self.is_running = True  # 线程停止标志位
-        
-        # 进度条收发状态，当num > 100，
-        self.respondStatusNum = 0
-        self.respondStatus = False
-        
-        self.ser = ser
-        self.res = ''
-    
-    def run(self):
-        while self.is_running:
-            # 读取串口
-            try:
-                self.res = self.ser.read(1024).hex()
-            except Exception as e:
-                print(e)
-            
-            if self.res:
-                # 传输信号
-                self.respondStatusNum = 0
-                self.respondStatus = True
-                self.finished.emit(self.res)
-            else:
-                # 进度条状态
-                self.respondStatusNum += 1
-                if self.respondStatusNum > 100:
-                    self.respondStatus = False
-                
-    
-    def go(self):
-        self.is_running = True
-    
-    def stop(self):
-        self.is_running = False
-    
-    def get_running(self):
-        return self.is_running
-    
-    def close(self):
-        self.stop()
-        self.ser.close()
 
 
 class Portbms(BmsLayout):
@@ -142,10 +95,6 @@ class Portbms(BmsLayout):
         
         # 启用rs485协议解析
         self.rs485_res_status = False
-        
-        self.res_thread = ResThread(self.ser)
-        self.res_thread.finished.connect(self.bms_qtimer_res_func)
-        
 
     # 用得比较多的错误提示
     def assertStatus(self):
@@ -492,8 +441,7 @@ class Portbms(BmsLayout):
 
     # 显示进度条
     def pro_timer_func(self):
-        # if self.respondStatus:
-        if self.res_thread.respondStatus:
+        if self.respondStatus:
             self.connStatus.setFormat(bms_logic_label15)
             self.connStatus.setStyleSheet(GREEN_ProgressBar)
         else:
@@ -516,7 +464,7 @@ class Portbms(BmsLayout):
             self.pwd_line.setText('')
             self.pwd_btn.setEnabled(False)
             self.clearShow.setEnabled(True)
-            self.writeParam.setEnabled(True)
+            # self.writeParam.setEnabled(True)
             self.resetTab3.setEnabled(True)
             QMessageBox.information(self, 'tips', bms_logic_label18, QMessageBox.Ok)
         else:
@@ -542,36 +490,16 @@ class Portbms(BmsLayout):
             self.open_port_btn.setText(bms_logic_label2)
             
             # 开启接收数据定时器
-            # self.bms_qtimer_res = QTimer()
-            # self.bms_qtimer_res.timeout.connect(self.bms_qtimer_res_func)
-            # self.bms_qtimer_res.start(1500)
-            
-            # thread = threading.Thread(target=self.thread_test)
-            # thread.setDaemon = True
-            # thread.start()
-            
-            # self.res_thread = ResThread(self.ser)
-            # self.res_thread.finished.connect(self.bms_qtimer_res_func)
-            self.res_thread.start()
-            
+            self.bms_qtimer_res = QTimer()
+            self.bms_qtimer_res.timeout.connect(self.bms_qtimer_res_func)
+            self.bms_qtimer_res.start(500)
         else:
-            self.res_thread.close()
+            self.ser.close()
             self.open_port_btn.setStyleSheet(close_Button)
             self.open_port_btn.setText(com_label6)
             self.respondStatus = False
             self.res_qtimer_switch = False
-            # self.bms_qtimer_res.stop()
-
-    def res_thread_func(self, res):
-        print(res)
-        # while True:
-        #     try:
-        #         self.thread_res = self.ser.read_all().hex()
-        #         if self.thread_res != '':
-        #             self.bms_qtimer_res_func(self.thread_res)
-        #     except Exception as e:
-        #         print(f'接收数据：{e}')
-        #         return False
+            self.bms_qtimer_res.stop()
 
     # 刷新串口
     def refresh_port(self):
@@ -702,7 +630,7 @@ class Portbms(BmsLayout):
         if self.assertStatus() == False: return False
         self.tab3_dic.clear()
         self.send_msg(bms_setting + calc_crc(bms_setting))
-        # self.writeParam.setEnabled(True)
+        self.writeParam.setEnabled(True)
         self.deriveParam.setEnabled(True)
         # self.resetTab3.setEnabled(True)
 
@@ -750,6 +678,7 @@ class Portbms(BmsLayout):
             self.hisTime.start(1000)
             self.hisNum = 0
             self.his_status = True
+            self.getP01_data_btn.setText(com_label8)
             self.hisShow.setText('暂停')
             
         elif self.hisShow.text() == '暂停':
@@ -810,318 +739,323 @@ class Portbms(BmsLayout):
         self.add_tableItem('↓', bytes.hex(hex_data))    # 在表格中输出
 
     # 接收数据(打开串口就会启用该线程进行数据接收并解析)
-    def bms_qtimer_res_func(self, res):
+    def bms_qtimer_res_func(self):
         
-        # try:
-        #     res = self.ser.read_all()
-        #     res = res.hex()
-        # except Exception as e:
-        #     print(f'接收数据：{e}')
-        #     return False
-        
-        print(f'此次接收的数据：{res}')
-        self.respondStatusNum = 0
-        self.respondStatus = True
-        # 接收协议是否为 rs485
-        if self.rs485_res_status == False:
-            crc_error = False
-            
-            # 实时监控是否需要组包
-            if res[:6] == f'{bms_monitor[:4]}bc':
-                '''
-                帧头为bc
-                1、长度小于386，保存这次的数据，继续接收下一份数据，把这两份拼接，计算长度是否有386
-                2、如果是386则解析，否则丢弃
-                '''
-                print(len(res))
-                self.bms_bc_split_msg = res # 存储本次数据
-                if len(res) < 386:
-                    self.add_tableItem('↑', res)
-                    self.bms_bc_split = True    # 确定与下个数据合并
-                    return 0
-                elif len(res) == 386:
-                    self.bms_bc_pass = True
-            elif self.bms_bc_split:
-                self.bms_bc_split = False
-                bc_count = self.bms_bc_split_msg + res
-                if len(bc_count) == 386:
-                    self.bms_bc_split_msg = bc_count
-                    self.bms_bc_pass = True
-            
-            # 实时监控
-            if self.bms_bc_pass:
-                print('实时监控')
-                self.bms_bc_pass = False
-                p01 = pars_data(self.bms_bc_split_msg, bms_monitor + calc_crc(bms_monitor))
-                # print(f'P01: {p01}')
-                if len(p01) == 2:
-                    crc_error = True
-                else:
-                    # BMS工作状态1（系统状态）
-                    if sys_label1 in p01['BMS工作状态1']:
-                        self.charg_status.setStyleSheet('color:#01B481')
+        try:
+            # res = self.ser.read_all()
+            # res = res.hex()
+            res = self.ser.read(1024).hex()
+        except Exception as e:
+            print(f'接收数据：{e}')
+            return False
+        if res != '':
+            print(f'此次接收的数据：{res}')
+            self.respondStatusNum = 0
+            self.respondStatus = True
+            # 接收协议是否为 rs485
+            if self.rs485_res_status == False:
+                crc_error = False
+                
+                # 实时监控是否需要组包
+                if res[:6] == f'{bms_monitor[:4]}bc':
+                    '''
+                    帧头为bc
+                    1、长度小于386，保存这次的数据，继续接收下一份数据，把这两份拼接，计算长度是否有386
+                    2、如果是386则解析，否则丢弃
+                    '''
+                    print(len(res))
+                    self.bms_bc_split_msg = res # 存储本次数据
+                    if len(res) < 386:
+                        self.add_tableItem('↑', res)
+                        self.bms_bc_split = True    # 确定与下个数据合并
+                        return 0
+                    elif len(res) == 386:
+                        self.bms_bc_pass = True
+                elif self.bms_bc_split:
+                    self.bms_bc_split = False
+                    bc_count = self.bms_bc_split_msg + res
+                    if len(bc_count) == 386:
+                        self.bms_bc_split_msg = bc_count
+                        self.bms_bc_pass = True
+                
+                # 实时监控
+                if self.bms_bc_pass:
+                    print('实时监控')
+                    self.bms_bc_pass = False
+                    p01 = pars_data(self.bms_bc_split_msg, bms_monitor + calc_crc(bms_monitor))
+                    # print(f'P01: {p01}')
+                    if len(p01) == 2:
+                        crc_error = True
                     else:
-                        self.charg_status.setStyleSheet('color:#626262')
-                        
-                    if sys_label2 in p01['BMS工作状态1']:
-                        self.disCharg_status.setStyleSheet('color:#01B481')
-                    else:
-                        self.disCharg_status.setStyleSheet('color:#626262')
-                        
-                    if sys_label3 in p01['BMS工作状态1']:
-                        # 阻止信号发送
-                        self.charge_sw.blockSignals(True)
-                        self.charge_sw.setChecked(True)
-                        # 恢复信号发送
-                        self.charge_sw.blockSignals(False)
-                        
-                        self.charge_mos_status = 1
-                        self.chargMos_status.setStyleSheet('color:#01B481')
-                    else:
-                        self.charge_sw.blockSignals(True)
-                        self.charge_sw.setChecked(False)
-                        self.charge_sw.blockSignals(False)
-                        self.charge_mos_status = 0
-                        self.chargMos_status.setStyleSheet('color:#626262')
-                    self.dis_charge_mos_num[-1] = self.charge_mos_status
-                    
-                    if sys_label4 in p01['BMS工作状态1']:
-                        self.disCharge_sw.blockSignals(True)
-                        self.disCharge_sw.setChecked(True)
-                        self.disCharge_sw.blockSignals(False)
-                        self.discharge_mos_status = 1
-                        self.disChargMos_status.setStyleSheet('color:#01B481')
-                    else:
-                        self.disCharge_sw.blockSignals(True)
-                        self.disCharge_sw.setChecked(False)
-                        self.disCharge_sw.blockSignals(False)
-                        self.discharge_mos_status = 0
-                        self.disChargMos_status.setStyleSheet('color:#626262')
-                    self.dis_charge_mos_num[-2] = self.discharge_mos_status
-                    
-                    if sys_label5 in p01['BMS工作状态1']:
-                        self.batCharg_status.setStyleSheet('color:#01B481')
-                    else:
-                        self.batCharg_status.setStyleSheet('color:#626262')
-                        
-                    if sys_label6 in p01['BMS工作状态1']:
-                        self.full_status.setStyleSheet('color:#01B481')
-                    else:
-                        self.full_status.setStyleSheet('color:#626262')
-
-                    if len(p01['故障位']) > 0:
-                        for _ in p01['故障位']:
-                            txt = '\n'.join(p01['故障位'])
-                            self.error_body.setText(txt)
-                    else:
-                        self.error_body.setText('')
-
-                    warn_txt = '\n'.join(p01['警告位1']) + '\n' + '\n'.join(p01['警告位2'])
-                    self.warn_body.setText(warn_txt)
-                    protect_txt = '\n'.join(p01['保护位1']) + '\n' + '\n'.join(p01['保护位2'])
-                    self.protect_body.setText(protect_txt)
-
-                    # 电池信息
-                    self.soc_pr.setValue(int(p01['SOC']))
-                    self.soh_pr.setValue(int(p01['SOH']))
-                    self.battery_label1_line.setText(p01[battery_label1])
-                    self.battery_label2_line.setText(p01[battery_label2])
-                    self.battery_label3_line.setText(p01[battery_label3])
-                    self.battery_label4_line.setText(p01[battery_label4])
-                    self.battery_label5_line.setText(p01[battery_label5])
-                    
-                    # 单体电压
-                    self.cellLine1.setText(p01[vol_label17 + '(V)'])
-                    self.cellLine2.setText(p01[vol_label18 + '(V)'])
-                    self.cellLine3.setText(p01[vol_label19 + '(V)'])
-                    
-                    # 数据显示
-                    display_data = [
-                        self.cell_temp_16, 
-                        self.tem_other, 
-                        self.cell_vol_16,
-                    ]
-                    for index in range(len(display_data)):
-                        for k,v in display_data[index].items():
-                            display_data[index][k].setText(p01[k])
+                        # BMS工作状态1（系统状态）
+                        if sys_label1 in p01['BMS工作状态1']:
+                            self.charg_status.setStyleSheet('color:#01B481')
+                        else:
+                            self.charg_status.setStyleSheet('color:#626262')
                             
-                    if (f'cell{bms_parse_label2}' in protect_txt or f'pack{bms_parse_label2}' in protect_txt) and self.low_vol == False:
-                        self.stop_monitor += 1
-                        # print(self.stop_monitor)
-                        if self.stop_monitor >= 600:
-                            self.low_vol = True
-                            self.bms_qtimer_get_monitor.stop()
-                            self.moni_switch = False
-                            self.getP01_data_btn.setText(com_label8)
-                            self.getP01_data_btn.setStyleSheet(close_Button)
-                            QMessageBox.information(self, 'tips', bms_logic_label28, QMessageBox.Ok)
-            # 参数设置
-            elif res[:6] == f'{bms_setting[:4]}b6' and len(res) == 374:
-                print('参数设置')
-                self.p03 = pars_data(res, bms_setting + calc_crc(bms_setting))
-                if len(self.p03) == 2:
-                    crc_error = True
-                else:
-                    for k,v in self.p03.items():
-                        try:
-                            self.tab3_form_dic[k].setText(v)
-                        except KeyError as e:
-                            # print(f'参数设置：{e}')
-                            continue
-            # 历史数据
-            elif res[:6] == f'{bms_history[:4]}6c' and len(res) == 226:
-                print('历史数据')
-                p06 = pars_data(res, bms_history + calc_crc(bms_history))
-                if len(p06) == 2:
-                    crc_error = True
-                else:
-                    rows = self.hisTable.rowCount()
-                    self.hisTable.setRowCount(rows + 1)
-                    count = 0
-                    for k,v in p06.items():
-                        self.hisTable.setItem(rows, count, QTableWidgetItem(p06[k]))
-                        count += 1
-            # 读取版本号
-            elif res[:6] == '010304' and len(res) == 18:
-                print('读取版本号')
-                v1 = int(res[6:8], 16)
-                v2 = int(res[8:10], 16)
-                v3 = int(res[10:12], 16)
-                v4 = int(res[12:14], 16)
-                self.version.setText(f'Version：{v1}.{v2}.{v3}.{v4}')
-            # 读取系统设置-系统时间
-            elif res[:6] == f'{bms_sys_time[:4]}06' and self.sys_time and len(res) == 22:
-                print('读取系统设置-系统时间')
-                sysTime_data = pars_data(res, bms_sys_time + calc_crc(bms_sys_time))
-                year_month = sysTime_data['年月'].split('/')
-                year = int(f'20{year_month[0]}')
-                month = int(year_month[1])
-                
-                day_hour = sysTime_data['日时'].split('/')
-                day = int(day_hour[0])
-                hour = int(day_hour[1])
-                
-                minutes_seconds = sysTime_data['分秒'].split('/')
-                minutes = int(minutes_seconds[0])
-                seconds = int(minutes_seconds[1])
-                
-                thisTime = QDateTime.currentDateTime()
-                thisTime.setDate(QDate(year, month, day))
-                thisTime.setTime(QTime(hour, minutes, seconds))
-                self.now_time.setDateTime(thisTime)
-            # 读取系统设置-电量数据
-            elif res[:6] == f'{bms_sys_set1[:4]}06' and len(res) == 22:
-                print('读取系统设置-电量数据')
-                ele_data = pars_data(res, bms_sys_set1 + calc_crc(bms_sys_set1))
-                self.remainCap.setText(ele_data[f'{battery_label3}(AH)'])
-                self.fullCap_Line.setText(ele_data[f'总容量(AH)'])
-            # 读取系统设置-电量数据2
-            elif res[:6] == f'{bms_sys_set2[:4]}02' and len(res) == 14 and self.sys_status == True:
-                print('读取系统设置-电量数据2')
-                ele_data = pars_data(res, bms_sys_set2 + calc_crc(bms_sys_set2))
-                self.designCap.setText(ele_data[f'设计容量(AH)'])
-                self.sys_status = False
-            # 历史数据总数 
-            elif res[:6] == f'{bms_recent_history[:4]}02' and len(res) == 14:
-                print('历史数据总数')
-                print(res[6:10])
-                self.num_max = int(res[6:10], 16)
-                print('self.num_max: {}'.format(self.num_max))
-                
-            if crc_error == False:
-                self.add_tableItem('↑', res)
-            else:
-                self.add_tableItem(bms_logic_label29, res)
-        else:
-            # 接收 rs485 报文并处理
-            if len(res) == 48:  # 确认 pack 地址是否存在
-                # 如果这个长度拿到的是00，则表示设备不在线或未接入，显示offline并跳过解析
-                if res[-14:-10] == '3030':
-                    # 显示offline
-                    temp = res[6:10]
-                    hex2asc = ''
-                    for i in range(0, len(temp), 2):
-                        # 十六进制转换成ascii字符，如：30 32 转 02
-                        hex2asc += chr(int(temp[i:i + 2], 16))
-                    self.palTable.setItem(0, int(hex2asc)-1, QTableWidgetItem('OFFLINE'))
-                    
-                    # 并联发送定时器相关参数
-                    self.repeat = False             # 重置循环发送的状态
-                    self.pal_start_time_setp += 1   # 跳过获取告警量的指令
-                    
-                    self.add_tableItem('↑', res)
-                    return 0
-                
-            elif len(res) == 312:  # 获取 PACK 模拟量响应信息
-                msg = res[30:-10]  # 去掉前缀报文和校验码
-                adr = ''
-                self.status_42 = 5   # 获取PACK模拟量响应信息报文结构完整的标志位
-                for k,v in self.json_rs485['获取PACK模拟量响应信息'].items():
-                    temp = ''
-                    for i in range(v[0], v[0]+v[1], 2):
-                        temp += chr(int(msg[i:i + 2], 16))
-                    if k == 'Command':
-                        adr = int(temp, 16)
-                    elif palnum_label2 in k or bms_history_label3 in k: # 温度、电流
-                        data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))} {v[3]}'
+                        if sys_label2 in p01['BMS工作状态1']:
+                            self.disCharg_status.setStyleSheet('color:#01B481')
+                        else:
+                            self.disCharg_status.setStyleSheet('color:#626262')
+                            
+                        if sys_label3 in p01['BMS工作状态1']:
+                            # 阻止信号发送
+                            self.charge_sw.blockSignals(True)
+                            self.charge_sw.setChecked(True)
+                            # 恢复信号发送
+                            self.charge_sw.blockSignals(False)
+                            
+                            self.charge_mos_status = 1
+                            self.chargMos_status.setStyleSheet('color:#01B481')
+                        else:
+                            self.charge_sw.blockSignals(True)
+                            self.charge_sw.setChecked(False)
+                            self.charge_sw.blockSignals(False)
+                            self.charge_mos_status = 0
+                            self.chargMos_status.setStyleSheet('color:#626262')
+                        self.dis_charge_mos_num[-1] = self.charge_mos_status
+                        
+                        if sys_label4 in p01['BMS工作状态1']:
+                            self.disCharge_sw.blockSignals(True)
+                            self.disCharge_sw.setChecked(True)
+                            self.disCharge_sw.blockSignals(False)
+                            self.discharge_mos_status = 1
+                            self.disChargMos_status.setStyleSheet('color:#01B481')
+                        else:
+                            self.disCharge_sw.blockSignals(True)
+                            self.disCharge_sw.setChecked(False)
+                            self.disCharge_sw.blockSignals(False)
+                            self.discharge_mos_status = 0
+                            self.disChargMos_status.setStyleSheet('color:#626262')
+                        self.dis_charge_mos_num[-2] = self.discharge_mos_status
+                        
+                        if sys_label5 in p01['BMS工作状态1']:
+                            self.batCharg_status.setStyleSheet('color:#01B481')
+                        else:
+                            self.batCharg_status.setStyleSheet('color:#626262')
+                            
+                        if sys_label6 in p01['BMS工作状态1']:
+                            self.full_status.setStyleSheet('color:#01B481')
+                        else:
+                            self.full_status.setStyleSheet('color:#626262')
+
+                        if len(p01['故障位']) > 0:
+                            for _ in p01['故障位']:
+                                txt = '\n'.join(p01['故障位'])
+                                self.error_body.setText(txt)
+                        else:
+                            self.error_body.setText('')
+
+                        warn_txt = '\n'.join(p01['警告位1']) + '\n' + '\n'.join(p01['警告位2'])
+                        self.warn_body.setText(warn_txt)
+                        protect_txt = '\n'.join(p01['保护位1']) + '\n' + '\n'.join(p01['保护位2'])
+                        self.protect_body.setText(protect_txt)
+
+                        # 电池信息
+                        self.soc_pr.setValue(int(p01['SOC']))
+                        self.soh_pr.setValue(int(p01['SOH']))
+                        self.battery_label1_line.setText(p01[battery_label1])
+                        self.battery_label2_line.setText(p01[battery_label2])
+                        self.battery_label3_line.setText(p01[battery_label3])
+                        self.battery_label4_line.setText(p01[battery_label4])
+                        self.battery_label5_line.setText(p01[battery_label5])
+                        
+                        # 单体电压
+                        self.cellLine1.setText(p01[vol_label17 + '(V)'])
+                        self.cellLine2.setText(p01[vol_label18 + '(V)'])
+                        self.cellLine3.setText(p01[vol_label19 + '(V)'])
+                        
+                        # 数据显示
+                        display_data = [
+                            self.cell_temp_16, 
+                            self.tem_other, 
+                            self.cell_vol_16,
+                        ]
+                        for index in range(len(display_data)):
+                            for k,v in display_data[index].items():
+                                display_data[index][k].setText(p01[k])
+                                
+                        if (f'cell{bms_parse_label2}' in protect_txt or f'pack{bms_parse_label2}' in protect_txt) and self.low_vol == False:
+                            self.stop_monitor += 1
+                            # print(self.stop_monitor)
+                            if self.stop_monitor >= 600:
+                                self.low_vol = True
+                                self.bms_qtimer_get_monitor.stop()
+                                self.moni_switch = False
+                                self.getP01_data_btn.setText(com_label8)
+                                self.getP01_data_btn.setStyleSheet(close_Button)
+                                QMessageBox.information(self, 'tips', bms_logic_label28, QMessageBox.Ok)
+                # 参数设置
+                elif res[:6] == f'{bms_setting[:4]}b6' and len(res) == 374:
+                    print('参数设置')
+                    self.p03 = pars_data(res, bms_setting + calc_crc(bms_setting))
+                    if len(self.p03) == 2:
+                        crc_error = True
                     else:
-                        # data = f'{int(temp, 16)} {v[3]}'
-                        data = f'{Common.format_num(int(temp, 16) / abs(v[2]))} {v[3]}'
-                    if k in self.col_labels:
-                        self.palTable.setItem(self.col_labels.index(k), int(adr)-1, QTableWidgetItem(str(data)))
-                
-            elif len(res) == 200:  # 获取 PACK 告警量
-                msg = res[30:-10]
-                adr = ''
-                self.status_44 = 5   # 获取PACK告警量响应信息报文结构完整的标志位
-                for k,v in self.json_rs485['获取PACK告警量'].items():
-                    pack_warn = False
-                    temp = ''
-                    for i in range(v[0], v[0]+v[1], 2):
-                        temp += chr(int(msg[i:i + 2], 16))
-                    data = int(temp, 16)
-                    if k == 'Command':
-                        adr = int(temp, 16)
-                    elif 'Cell' in k or palnum_label11 in k:    # 'PACK总电压'
-                        if data == 0:
-                            data = bms_pal_logic_label1
-                        elif data == 1:
-                            data = bms_pal_logic_label2
-                            pack_warn = True
-                        elif data == 2:
-                            data = bms_parse_label1
-                            pack_warn = True
-                    elif palnum_label10 in k or palnum_label12 in k:  # 'PACK充电'、'PACK放电'
-                        if data == 0:
-                            data = bms_pal_logic_label1
-                        elif data == 2:
-                            data = bms_pal_logic_label3
-                            pack_warn = True
-                    elif palnum_label2 in k:    # '温度'
-                        if data == 0:
-                            data = bms_pal_logic_label1
-                        if data == 1:
-                            data = bms_pal_logic_label4
-                            pack_warn = True
-                        elif data == 2:
-                            data = bms_pal_logic_label5
-                            pack_warn = True
+                        for k,v in self.p03.items():
+                            try:
+                                self.tab3_form_dic[k].setText(v)
+                            except KeyError as e:
+                                # print(f'参数设置：{e}')
+                                continue
+                # 历史数据
+                elif res[:6] == f'{bms_history[:4]}6c' and len(res) == 226:
+                    print('历史数据')
+                    p06 = pars_data(res, bms_history + calc_crc(bms_history))
+                    if len(p06) == 2:
+                        crc_error = True
+                    else:
+                        rows = self.hisTable.rowCount()
+                        self.hisTable.setRowCount(rows + 1)
+                        count = 0
+                        for k,v in p06.items():
+                            self.hisTable.setItem(rows, count, QTableWidgetItem(p06[k]))
+                            count += 1
+                # 读取版本号
+                elif res[:6] == '010304' and len(res) == 18:
+                    print('读取版本号')
+                    v1 = int(res[6:8], 16)
+                    v2 = int(res[8:10], 16)
+                    v3 = int(res[10:12], 16)
+                    v4 = int(res[12:14], 16)
+                    self.version.setText(f'Version：{v1}.{v2}.{v3}.{v4}')
+                # 读取系统设置-系统时间
+                elif res[:6] == f'{bms_sys_time[:4]}06' and self.sys_time and len(res) == 22:
+                    print('读取系统设置-系统时间')
+                    sysTime_data = pars_data(res, bms_sys_time + calc_crc(bms_sys_time))
+                    year_month = sysTime_data['年月'].split('/')
+                    year = int(f'20{year_month[0]}')
+                    month = int(year_month[1])
                     
-                    # 保护状态_1、保护状态_2、指示状态、控制状态、故障状态、告警状态_1、告警状态_2
-                    elif k == f'{group_tabel10}_1' or k == f'{group_tabel10}_2' or k == palnum_label14 or k == palnum_label15 \
-                    or k == group_tabel8 or k == f'{group_tabel9}_1' or k == f'{group_tabel9}_2':
-                        data = bin(int(temp, 16))[2:].zfill(8)
-                        warn_list = []
-                        for a,b in v[4].items():
-                            if data[-(int(a)+1)] == '1':
-                                warn_list.append(b)
-                        data = '，'.join(warn_list)
-                    if k in self.col_labels:
-                        self.palTable.setItem(self.col_labels.index(k), int(adr)-1, QTableWidgetItem(str(data)))
-                        if pack_warn:
-                            self.palTable.item(self.col_labels.index(k), int(adr)-1).setForeground(Qt.red)
+                    day_hour = sysTime_data['日时'].split('/')
+                    day = int(day_hour[0])
+                    hour = int(day_hour[1])
                     
-            self.add_tableItem('↑', res)
+                    minutes_seconds = sysTime_data['分秒'].split('/')
+                    minutes = int(minutes_seconds[0])
+                    seconds = int(minutes_seconds[1])
+                    
+                    thisTime = QDateTime.currentDateTime()
+                    thisTime.setDate(QDate(year, month, day))
+                    thisTime.setTime(QTime(hour, minutes, seconds))
+                    self.now_time.setDateTime(thisTime)
+                # 读取系统设置-电量数据
+                elif res[:6] == f'{bms_sys_set1[:4]}06' and len(res) == 22:
+                    print('读取系统设置-电量数据')
+                    ele_data = pars_data(res, bms_sys_set1 + calc_crc(bms_sys_set1))
+                    self.remainCap.setText(ele_data[f'{battery_label3}(AH)'])
+                    self.fullCap_Line.setText(ele_data[f'总容量(AH)'])
+                # 读取系统设置-电量数据2
+                elif res[:6] == f'{bms_sys_set2[:4]}02' and len(res) == 14 and self.sys_status == True:
+                    print('读取系统设置-电量数据2')
+                    ele_data = pars_data(res, bms_sys_set2 + calc_crc(bms_sys_set2))
+                    self.designCap.setText(ele_data[f'设计容量(AH)'])
+                    self.sys_status = False
+                # 历史数据总数 
+                elif res[:6] == f'{bms_recent_history[:4]}02' and len(res) == 14:
+                    print('历史数据总数')
+                    print(res[6:10])
+                    self.num_max = int(res[6:10], 16)
+                    print('self.num_max: {}'.format(self.num_max))
+                    
+                if crc_error == False:
+                    self.add_tableItem('↑', res)
+                else:
+                    self.add_tableItem(bms_logic_label29, res)
+            else:
+                # 接收 rs485 报文并处理
+                if len(res) == 48:  # 确认 pack 地址是否存在
+                    # 如果这个长度拿到的是00，则表示设备不在线或未接入，显示offline并跳过解析
+                    if res[-14:-10] == '3030':
+                        # 显示offline
+                        temp = res[6:10]
+                        hex2asc = ''
+                        for i in range(0, len(temp), 2):
+                            # 十六进制转换成ascii字符，如：30 32 转 02
+                            hex2asc += chr(int(temp[i:i + 2], 16))
+                        self.palTable.setItem(0, int(hex2asc)-1, QTableWidgetItem('OFFLINE'))
+                        
+                        # 并联发送定时器相关参数
+                        self.repeat = False             # 重置循环发送的状态
+                        self.pal_start_time_setp += 1   # 跳过获取告警量的指令
+                        
+                        self.add_tableItem('↑', res)
+                        return 0
+                    
+                elif len(res) == 312:  # 获取 PACK 模拟量响应信息
+                    msg = res[30:-10]  # 去掉前缀报文和校验码
+                    adr = ''
+                    self.status_42 = 5   # 获取PACK模拟量响应信息报文结构完整的标志位
+                    for k,v in self.json_rs485['获取PACK模拟量响应信息'].items():
+                        temp = ''
+                        for i in range(v[0], v[0]+v[1], 2):
+                            temp += chr(int(msg[i:i + 2], 16))
+                        if k == 'Command':
+                            adr = int(temp, 16)
+                        elif palnum_label2 in k or bms_history_label3 in k: # 温度、电流
+                            data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))} {v[3]}'
+                        else:
+                            # data = f'{int(temp, 16)} {v[3]}'
+                            data = f'{Common.format_num(int(temp, 16) / abs(v[2]))} {v[3]}'
+                        if k in self.col_labels:
+                            self.palTable.setItem(self.col_labels.index(k), int(adr)-1, QTableWidgetItem(str(data)))
+                    
+                elif len(res) == 200:  # 获取 PACK 告警量
+                    msg = res[30:-10]
+                    adr = ''
+                    self.status_44 = 5   # 获取PACK告警量响应信息报文结构完整的标志位
+                    for k,v in self.json_rs485['获取PACK告警量'].items():
+                        pack_warn = False
+                        temp = ''
+                        for i in range(v[0], v[0]+v[1], 2):
+                            temp += chr(int(msg[i:i + 2], 16))
+                        data = int(temp, 16)
+                        if k == 'Command':
+                            adr = int(temp, 16)
+                        elif 'Cell' in k or palnum_label11 in k:    # 'PACK总电压'
+                            if data == 0:
+                                data = bms_pal_logic_label1
+                            elif data == 1:
+                                data = bms_pal_logic_label2
+                                pack_warn = True
+                            elif data == 2:
+                                data = bms_parse_label1
+                                pack_warn = True
+                        elif palnum_label10 in k or palnum_label12 in k:  # 'PACK充电'、'PACK放电'
+                            if data == 0:
+                                data = bms_pal_logic_label1
+                            elif data == 2:
+                                data = bms_pal_logic_label3
+                                pack_warn = True
+                        elif palnum_label2 in k:    # '温度'
+                            if data == 0:
+                                data = bms_pal_logic_label1
+                            if data == 1:
+                                data = bms_pal_logic_label4
+                                pack_warn = True
+                            elif data == 2:
+                                data = bms_pal_logic_label5
+                                pack_warn = True
+                        
+                        # 保护状态_1、保护状态_2、指示状态、控制状态、故障状态、告警状态_1、告警状态_2
+                        elif k == f'{group_tabel10}_1' or k == f'{group_tabel10}_2' or k == palnum_label14 or k == palnum_label15 \
+                        or k == group_tabel8 or k == f'{group_tabel9}_1' or k == f'{group_tabel9}_2':
+                            data = bin(int(temp, 16))[2:].zfill(8)
+                            warn_list = []
+                            for a,b in v[4].items():
+                                if data[-(int(a)+1)] == '1':
+                                    warn_list.append(b)
+                            data = '，'.join(warn_list)
+                        if k in self.col_labels:
+                            self.palTable.setItem(self.col_labels.index(k), int(adr)-1, QTableWidgetItem(str(data)))
+                            if pack_warn:
+                                self.palTable.item(self.col_labels.index(k), int(adr)-1).setForeground(Qt.red)
+                        
+                self.add_tableItem('↑', res)
+        else:
+            self.respondStatusNum += 1
+            if self.respondStatusNum > 5:
+                self.respondStatus = False
 
     
     

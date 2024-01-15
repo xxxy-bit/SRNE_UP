@@ -25,7 +25,7 @@ class BmsLayout(QWidget):
         # 读取 rs485 解析列表
         self.json_rs485 = get_bms_rs485_list()
 
-        self.setWindowTitle('Portbms v1.2.6')
+        self.setWindowTitle('Portbms')
         self.resize(1150, 765)   # 可拉伸
         # self.setFixedSize(1800, 950)   # 固定界面大小，不可拉伸
 
@@ -302,7 +302,7 @@ class BmsLayout(QWidget):
         self.fullCap_Line = QLineEdit()
         self.fullCap_Line.setAlignment(Qt.AlignCenter)
         self.fullCap_Line.setStyleSheet("background-color:#FFFFFF;"
-                                        "font-size: 28pt;"
+                                        "font-size: 20pt;"
                                         "border: 1px solid #dcd8d8;"
                                         )
 
