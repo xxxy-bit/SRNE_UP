@@ -91,10 +91,6 @@ class Portbms(BmsLayout):
         with open(self.log_name, 'w', encoding='utf-8'): pass
         
         logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(threadName)s %(lineno)d %(message)s')
-
-        # 进度条状态
-        self.respondStatusNum = 0
-        self.respondStatus = False
         
         # 显示当前系统时间定时器
         self.timer = QTimer()
@@ -107,11 +103,6 @@ class Portbms(BmsLayout):
         self.proTimer.timeout.connect(self.pro_timer_func)
         self.connStatus.setFormat(bms_logic_label16)
         self.proTimer.start(100)
-        
-        # 实时监控数据包 bc 是否分包
-        self.bms_bc_split = False
-        self.bms_bc_split_msg = ''
-        self.bms_bc_pass = False
         
         # 实时监控的开启状态
         self.moni_switch = False
@@ -246,8 +237,6 @@ class Portbms(BmsLayout):
             
             self.rs485_res_status = True
             self.repeat = False
-            self.status_42 = 0  # 42是否有分包
-            self.status_44 = 0  # 44是否有分包
             self.palTable.setColumnCount(int(self.pack_total.currentText()))
             self.palTable.clearContents()
             
@@ -269,38 +258,14 @@ class Portbms(BmsLayout):
             adr += hex(ord(i))[2:]
         if self.pal_start_time_setp <= int(self.pack_total.currentText()):
             if self.repeat == False:
-                if self.status_42 < 5:
-                    self.status_42 += 1
-                    txt = f'7E 32 35 {adr} 34 36 34 32 45 30 30 32 {adr}'
-                    self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
-                else:
-                    self.status_42 = 0
-                    self.repeat = True
-                    
+                self.repeat = True
+                txt = f'7E 32 35 {adr} 34 36 34 32 45 30 30 32 {adr}'
             else:
-                if self.status_44 < 5:
-                    self.status_44 += 1
-                    txt = f'7E 32 35 {adr} 34 36 34 34 45 30 30 32 {adr}'
-                    self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
-                else:
-                    self.status_44 = 0
-                    self.repeat = False
-                    self.pal_start_time_setp += 1
-            
-            # if self.status_42 < 5:
-            #     self.status_42 += 1
-            #     txt = f'7E 32 35 {adr} 34 36 34 32 45 30 30 32 {adr}'
-            #     self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
-            # else:
-            #     if self.status_44 < 5:
-            #         self.status_44 += 1
-            #         txt = f'7E 32 35 {adr} 34 36 34 34 45 30 30 32 {adr}'
-            #         self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
-            #     else:
-            #         self.status_42 = 0
-            #         self.status_44 = 0
-            #         self.pal_start_time_setp += 1
-                    
+                self.repeat = False
+                txt = f'7E 32 35 {adr} 34 36 34 34 45 30 30 32 {adr}'
+                self.pal_start_time_setp += 1
+            self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
+
         else:
             self.pal_start_time.stop()
             self.pal_start.setText(palset_label2)
@@ -492,7 +457,6 @@ class Portbms(BmsLayout):
 
     # 显示进度条
     def pro_timer_func(self):
-        # if self.respondStatus:
         if self.res_thread.respondStatus:
             self.connStatus.setFormat(bms_logic_label15)
             self.connStatus.setStyleSheet(GREEN_ProgressBar)
@@ -558,7 +522,6 @@ class Portbms(BmsLayout):
             self.res_thread.close()
             self.open_port_btn.setStyleSheet(close_Button)
             self.open_port_btn.setText(com_label6)
-            self.respondStatus = False
             self.res_qtimer_switch = False
             # self.bms_qtimer_res.stop()
 
@@ -598,8 +561,6 @@ class Portbms(BmsLayout):
             
         else:
             self.moni_switch = False
-            self.bms_bc_split = False
-            self.bms_bc_pass = False
             self.bms_qtimer_get_monitor.stop()  # 暂停定时器
             
             self.getP01_data_btn.setText(com_label8)
@@ -812,47 +773,16 @@ class Portbms(BmsLayout):
     # 接收数据(打开串口就会启用该线程进行数据接收并解析)
     def bms_qtimer_res_func(self, res):
         
-        # try:
-        #     res = self.ser.read_all()
-        #     res = res.hex()
-        # except Exception as e:
-        #     print(f'接收数据：{e}')
-        #     return False
-        
         print(f'此次接收的数据：{res}')
-        self.respondStatusNum = 0
-        self.respondStatus = True
         # 接收协议是否为 rs485
         if self.rs485_res_status == False:
             crc_error = False
             
-            # 实时监控是否需要组包
-            if res[:6] == f'{bms_monitor[:4]}bc':
-                '''
-                帧头为bc
-                1、长度小于386，保存这次的数据，继续接收下一份数据，把这两份拼接，计算长度是否有386
-                2、如果是386则解析，否则丢弃
-                '''
-                print(len(res))
-                self.bms_bc_split_msg = res # 存储本次数据
-                if len(res) < 386:
-                    self.add_tableItem('↑', res)
-                    self.bms_bc_split = True    # 确定与下个数据合并
-                    return 0
-                elif len(res) == 386:
-                    self.bms_bc_pass = True
-            elif self.bms_bc_split:
-                self.bms_bc_split = False
-                bc_count = self.bms_bc_split_msg + res
-                if len(bc_count) == 386:
-                    self.bms_bc_split_msg = bc_count
-                    self.bms_bc_pass = True
-            
             # 实时监控
-            if self.bms_bc_pass:
+            if res[:6] == f'{bms_monitor[:4]}bc' and len(res) == 386:
                 print('实时监控')
                 self.bms_bc_pass = False
-                p01 = pars_data(self.bms_bc_split_msg, bms_monitor + calc_crc(bms_monitor))
+                p01 = pars_data(res, bms_monitor + calc_crc(bms_monitor))
                 # print(f'P01: {p01}')
                 if len(p01) == 2:
                     crc_error = True
@@ -1055,7 +985,6 @@ class Portbms(BmsLayout):
             elif len(res) == 312:  # 获取 PACK 模拟量响应信息
                 msg = res[30:-10]  # 去掉前缀报文和校验码
                 adr = ''
-                self.status_42 = 5   # 获取PACK模拟量响应信息报文结构完整的标志位
                 for k,v in self.json_rs485['获取PACK模拟量响应信息'].items():
                     temp = ''
                     for i in range(v[0], v[0]+v[1], 2):
@@ -1073,7 +1002,6 @@ class Portbms(BmsLayout):
             elif len(res) == 200:  # 获取 PACK 告警量
                 msg = res[30:-10]
                 adr = ''
-                self.status_44 = 5   # 获取PACK告警量响应信息报文结构完整的标志位
                 for k,v in self.json_rs485['获取PACK告警量'].items():
                     pack_warn = False
                     temp = ''
