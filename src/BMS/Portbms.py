@@ -528,17 +528,7 @@ class Portbms(BmsLayout):
             self.open_port_btn.setStyleSheet(open_Button)
             self.open_port_btn.setText(bms_logic_label2)
             
-            # 开启接收数据定时器
-            # self.bms_qtimer_res = QTimer()
-            # self.bms_qtimer_res.timeout.connect(self.bms_qtimer_res_func)
-            # self.bms_qtimer_res.start(1500)
-            
-            # thread = threading.Thread(target=self.thread_test)
-            # thread.setDaemon = True
-            # thread.start()
-            
-            # self.res_thread = ResThread(self.ser)
-            # self.res_thread.finished.connect(self.bms_qtimer_res_func)
+            # 开启数据接收线程
             self.res_thread.start()
             
         else:
@@ -546,18 +536,6 @@ class Portbms(BmsLayout):
             self.open_port_btn.setStyleSheet(close_Button)
             self.open_port_btn.setText(com_label6)
             self.res_qtimer_switch = False
-            # self.bms_qtimer_res.stop()
-
-    def res_thread_func(self, res):
-        print(res)
-        # while True:
-        #     try:
-        #         self.thread_res = self.ser.read_all().hex()
-        #         if self.thread_res != '':
-        #             self.bms_qtimer_res_func(self.thread_res)
-        #     except Exception as e:
-        #         print(f'接收数据：{e}')
-        #         return False
 
     # 刷新串口
     def refresh_port(self):
@@ -646,19 +624,16 @@ class Portbms(BmsLayout):
                 if key == '单体过充告警(V)' or key == '单体过充保护(V)' or key == '单体过充保护恢复(V)' \
                 or key == '单体过放告警(V)' or key == '单体过放保护(V)' or key == '单体过放保护恢复(V)':
                     txt = int(float(self.tab3_form_dic[key].text()) * 1000)
-                    print(1)
                     if txt > 4000:
                         self.tab3_form_dic[key].setText('')
                         return QMessageBox.critical(self, 'Error', bms_logic_label21, QMessageBox.Ok)      
                 elif key == '总体过充告警(V)' or key == '总体过充保护(V)' or key == '总体过充保护恢复(V)' \
                 or key == '总体过放告警(V)' or key == '总体过放保护(V)' or key == '总体过放保护恢复(V)':
                     txt = int(float(self.tab3_form_dic[key].text()) * 1000)
-                    print(2)
                     if txt > 60000:
                         self.tab3_form_dic[key].setText('')
                         return QMessageBox.critical(self, 'Error', bms_logic_label22, QMessageBox.Ok)
                 else:
-                    print(3)
                     txt = int(self.tab3_form_dic[key].text()) * self.json_modbus[bms_setting][key][2]
                 keyTxt = f"0106{self.json_modbus[bms_setting][key][3]}{txt:04x}"
             except Exception as e:
@@ -996,7 +971,6 @@ class Portbms(BmsLayout):
                     elif palnum_label2 in k or bms_history_label3 in k: # 温度、电流
                         data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))} {v[3]}'
                     else:
-                        # data = f'{int(temp, 16)} {v[3]}'
                         data = f'{Common.format_num(int(temp, 16) / abs(v[2]))} {v[3]}'
                     if k in self.col_labels:
                         self.palTable.setItem(self.col_labels.index(k), int(adr)-1, QTableWidgetItem(str(data)))
