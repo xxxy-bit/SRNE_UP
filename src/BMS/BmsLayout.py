@@ -855,30 +855,26 @@ class BmsLayout(QWidget):
         openStatus_groupBox_grid = QGridLayout()
 
         # 充电
-        charge_lab = QLabel(switch_label1)
-        charge_lab.setMaximumWidth(50)
         self.charge_sw = SwitchButton()
-        self.charge_sw.setText('')
-        self.charge_sw.setOnText('')
-        self.charge_sw.setOffText('')
+        self.charge_sw.setEnabled(False)
+        self.charge_sw.setOnText(switch_label1)
+        self.charge_sw.setOffText(switch_label1)
 
         # 放电
-        discharge_lab = QLabel(switch_label2)
-        discharge_lab.setMaximumWidth(50)
         self.disCharge_sw = SwitchButton()
-        self.disCharge_sw.setText('')
-        self.disCharge_sw.setOnText('')
-        self.disCharge_sw.setOffText('')
+        self.disCharge_sw.setEnabled(False)
+        self.disCharge_sw.setOnText(switch_label2)
+        self.disCharge_sw.setOffText(switch_label2)
 
         # 强制休眠
-        sleep_lab = QLabel(switch_label3)
-        self.dormancy_sw = SwitchButton()
-        self.dormancy_sw.setText('')
-        self.dormancy_sw.setOnText('')
-        self.dormancy_sw.setOffText('')
+        self.dormancy_sw = PushButton(switch_label3)
+        
+        # 测试模式
+        self.testmode_btn = PushButton('进入测试模式')
+        self.testmode_btn.setEnabled(False)
 
         og = [
-            charge_lab, self.charge_sw, discharge_lab, self.disCharge_sw, sleep_lab, self.dormancy_sw
+            self.charge_sw, self.disCharge_sw, self.testmode_btn, self.dormancy_sw
         ]
         og_positions = [(i, j) for i in range(1) for j in range(6)]
         for positions, og in zip(og_positions, og):

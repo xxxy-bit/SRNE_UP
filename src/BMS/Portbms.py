@@ -107,12 +107,6 @@ class Portbms(BmsLayout):
         # 实时监控的开启状态
         self.moni_switch = False
         
-        # 开关充电按钮状态
-        self.charge_mos_status = 0
-        
-        # 开关放电按钮状态
-        self.discharge_mos_status = 0
-        
         # 充放电状态二进制
         self.dis_charge_mos_num = [0, 0, 0, 0]
         
@@ -180,7 +174,10 @@ class Portbms(BmsLayout):
         self.disCharge_sw.checkedChanged.connect(self.discharge_mos_switch)
         
         # 开关强制休眠
-        self.dormancy_sw.checkedChanged.connect(self.dormancy_switch)
+        self.dormancy_sw.clicked.connect(self.dormancy_switch)
+        
+        # 测试模式
+        self.testmode_btn.clicked.connect(self.testmode_btn_func)
 
     # 实时数据 槽函数slots
     def data_slotsTrigger(self):
@@ -276,11 +273,12 @@ class Portbms(BmsLayout):
     def charge_mos_switch(self):
         
         if self.charge_sw.isChecked():
-            self.charge_mos_status = 1
+            self.dis_charge_mos_num[-1] = 1
+            self.dis_charge_mos_num[-2] = 0
         else:
-            self.charge_mos_status = 0
+            self.dis_charge_mos_num[-1] = 0
+            self.dis_charge_mos_num[-2] = 1
             
-        self.dis_charge_mos_num[-1] = self.charge_mos_status
         num = hex(int(''.join(str(i) for i in self.dis_charge_mos_num), 2))[2:].rjust(4, '0')
         msg = f'01 06 3000 {num}'
         self.send_msg(msg + calc_crc(msg))
@@ -288,21 +286,45 @@ class Portbms(BmsLayout):
     # 开关放电
     def discharge_mos_switch(self):
         if self.disCharge_sw.isChecked():
-            self.discharge_mos_status = 1
+            self.dis_charge_mos_num[-3] = 1
+            self.dis_charge_mos_num[-4] = 0
         else:
-            self.discharge_mos_status = 0
+            self.dis_charge_mos_num[-3] = 0
+            self.dis_charge_mos_num[-4] = 1
 
-        self.dis_charge_mos_num[-2] = self.discharge_mos_status
         num = hex(int(''.join(str(i) for i in self.dis_charge_mos_num), 2))[2:].rjust(4, '0')
         msg = f'01 06 3000 {num}'
         self.send_msg(msg + calc_crc(msg))
 
     # 开关强制休眠
     def dormancy_switch(self):
-        if self.dormancy_sw.isChecked():
-            self.send_msg(bms_sleep_on + calc_crc(bms_sleep_on))
+        self.send_msg(bms_sleep_on + calc_crc(bms_sleep_on))
+
+    def testmode_btn_func(self):
+        if self.testmode_btn.text() == '进入测试模式':
+            self.testmode_btn.setText('退出测试模式')
+            self.charge_sw.setEnabled(True)
+            self.disCharge_sw.setEnabled(True)
+            
         else:
-            self.send_msg(bms_sleep_off + calc_crc(bms_sleep_off))
+            self.testmode_btn.setText('进入测试模式')
+            self.charge_sw.setEnabled(False)
+            self.disCharge_sw.setEnabled(False)
+            
+            # 阻止信号发送
+            self.charge_sw.blockSignals(True)
+            self.charge_sw.setChecked(False)
+            self.charge_sw.blockSignals(False)
+            
+            self.disCharge_sw.blockSignals(True)
+            self.disCharge_sw.setChecked(False)
+            self.disCharge_sw.blockSignals(False)
+            
+            self.dis_charge_mos_num = [0, 0, 0, 0]
+            
+            msg = f'01 06 3000 0000'
+            self.send_msg(msg + calc_crc(msg))
+            
 
     # 获取修改过的'系统设置-电量'参数
     def setSysParams(self, key):
@@ -482,6 +504,7 @@ class Portbms(BmsLayout):
             self.clearShow.setEnabled(True)
             self.writeParam.setEnabled(True)
             self.resetTab3.setEnabled(True)
+            self.testmode_btn.setEnabled(True)
             QMessageBox.information(self, 'tips', bms_logic_label18, QMessageBox.Ok)
         else:
             QMessageBox.information(self, 'Error', bms_logic_label19, QMessageBox.Ok)
@@ -799,35 +822,14 @@ class Portbms(BmsLayout):
                         self.disCharg_status.setStyleSheet('color:#626262')
                         
                     if sys_label3 in p01['BMS工作状态1']:
-                        # 阻止信号发送
-                        self.charge_sw.blockSignals(True)
-                        self.charge_sw.setChecked(True)
-                        # 恢复信号发送
-                        self.charge_sw.blockSignals(False)
-                        
-                        self.charge_mos_status = 1
                         self.chargMos_status.setStyleSheet('color:#01B481')
                     else:
-                        self.charge_sw.blockSignals(True)
-                        self.charge_sw.setChecked(False)
-                        self.charge_sw.blockSignals(False)
-                        self.charge_mos_status = 0
                         self.chargMos_status.setStyleSheet('color:#626262')
-                    self.dis_charge_mos_num[-1] = self.charge_mos_status
                     
                     if sys_label4 in p01['BMS工作状态1']:
-                        self.disCharge_sw.blockSignals(True)
-                        self.disCharge_sw.setChecked(True)
-                        self.disCharge_sw.blockSignals(False)
-                        self.discharge_mos_status = 1
                         self.disChargMos_status.setStyleSheet('color:#01B481')
                     else:
-                        self.disCharge_sw.blockSignals(True)
-                        self.disCharge_sw.setChecked(False)
-                        self.disCharge_sw.blockSignals(False)
-                        self.discharge_mos_status = 0
                         self.disChargMos_status.setStyleSheet('color:#626262')
-                    self.dis_charge_mos_num[-2] = self.discharge_mos_status
                     
                     if sys_label5 in p01['BMS工作状态1']:
                         self.batCharg_status.setStyleSheet('color:#01B481')
@@ -918,7 +920,7 @@ class Portbms(BmsLayout):
                 v2 = int(res[8:10], 16)
                 v3 = int(res[10:12], 16)
                 v4 = int(res[12:14], 16)
-                self.version.setText(f'Version：{v1}.{v2}.{v3}.{v4}')
+                self.version.setText(f'{ver_label1}：{v1}.{v2}.{v3}.{v4}')
             # 读取系统设置-系统时间
             elif res[:6] == f'{bms_sys_time[:4]}06' and self.sys_time and len(res) == 22:
                 print('读取系统设置-系统时间')
