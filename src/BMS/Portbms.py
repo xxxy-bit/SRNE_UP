@@ -46,19 +46,10 @@ class ResThread(QThread):
                 self.respondStatusNum += 1
                 if self.respondStatusNum > 100:
                     self.respondStatus = False
-                
-    
-    def go(self):
-        self.is_running = True
-    
-    def stop(self):
-        self.is_running = False
-    
-    def get_running(self):
-        return self.is_running
     
     def close(self):
-        self.stop()
+        self.is_running = False
+        self.respondStatus = False
         self.ser.close()
 
 
@@ -128,9 +119,9 @@ class Portbms(BmsLayout):
         # 启用rs485协议解析
         self.rs485_res_status = False
         
+        # 接收响应值线程
         self.res_thread = ResThread(self.ser)
         self.res_thread.finished.connect(self.bms_qtimer_res_func)
-        
 
     # 用得比较多的错误提示
     def assertStatus(self):
@@ -529,6 +520,7 @@ class Portbms(BmsLayout):
             self.open_port_btn.setText(bms_logic_label2)
             
             # 开启数据接收线程
+            self.res_thread.is_running = True
             self.res_thread.start()
             
         else:
@@ -692,7 +684,9 @@ class Portbms(BmsLayout):
         self.send_msg(bms_clear_history + calc_crc(bms_clear_history))
         self.clearRow_btn(self.hisTable)
         self.hisTime.stop()
-        self.hisShow.setEnabled(True)
+        self.his_status = False
+        self.hisShow.setText(hisdata_label1)
+        self.start_moni()
         
     # 获取历史数据
     def his_show(self):
@@ -735,6 +729,9 @@ class Portbms(BmsLayout):
                     print('self.num_max: {}'.format(self.num_max))
                     QMessageBox.information(self, 'tip', bms_logic_label27, QMessageBox.Ok)
                     self.hisTime.stop()
+                    self.his_status = False
+                    self.hisShow.setText(hisdata_label1)
+                    self.start_moni()
             except Exception as e:
                 print(f'获取最近历史数据计时器：{e}')
                 return 0
