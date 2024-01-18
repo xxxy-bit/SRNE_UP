@@ -865,6 +865,11 @@ class BmsLayout(QWidget):
         self.disCharge_sw.setEnabled(False)
         self.disCharge_sw.setOnText(switch_label2)
         self.disCharge_sw.setOffText(switch_label2)
+        
+        # 蜂鸣器开关
+        self.buzzer_sw = SwitchButton()
+        self.buzzer_sw.setOnText('蜂鸣器')
+        self.buzzer_sw.setOffText('蜂鸣器')
 
         # 强制休眠
         self.dormancy_sw = PushButton(switch_label3)
@@ -874,7 +879,7 @@ class BmsLayout(QWidget):
         self.testmode_btn.setEnabled(False)
 
         og = [
-            self.charge_sw, self.disCharge_sw, self.testmode_btn, self.dormancy_sw
+            self.buzzer_sw, self.charge_sw, self.disCharge_sw, self.testmode_btn, self.dormancy_sw
         ]
         og_positions = [(i, j) for i in range(1) for j in range(6)]
         for positions, og in zip(og_positions, og):

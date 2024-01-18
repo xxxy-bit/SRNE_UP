@@ -158,6 +158,9 @@ class Portbms(BmsLayout):
         # 登录
         self.pwd_btn.clicked.connect(self.pwd_btn_func)
         
+        # 开关蜂鸣器
+        self.buzzer_sw.checkedChanged.connect(self.buzzer_switch)
+        
         # 开关充电
         self.charge_sw.checkedChanged.connect(self.charge_mos_switch)
         
@@ -259,6 +262,13 @@ class Portbms(BmsLayout):
             self.pal_start.setText(palset_label2)
             self.rs485_res_status = False
             self.start_moni()
+
+    # 开关蜂鸣器
+    def buzzer_switch(self):
+        if self.buzzer_sw.isChecked():
+            self.send_msg(bms_buzzer_on + calc_crc(bms_buzzer_on))
+        else:
+            self.send_msg(bms_buzzer_off + calc_crc(bms_buzzer_off))
 
     # 开关充电
     def charge_mos_switch(self):
