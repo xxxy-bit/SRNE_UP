@@ -377,6 +377,7 @@ class Portbms(BmsLayout):
             self.readCap_timer.stop()
             self.start_moni()
            
+    # 系统设置-同步时间
     def sync_btn_func(self):
         sync_time = self.nowTime.text()
         year = sync_time[0:4]
@@ -421,47 +422,27 @@ class Portbms(BmsLayout):
         if self.writeCap_timer_step < len(self.sys_edit_dic):
             self.send_msg(self.ls_trv[self.writeCap_timer_step][1])
             self.writeCap_timer_step += 1
-            self.writeCap.setText('Writing...')
         else:
             self.writeCap_timer.stop()
             self.writeCap.setEnabled(True)
-            self.writeCap.setText(sysset_label6)
+            self.writeCap.setText('写入')
             self.start_moni()
+            QMessageBox.information(self, 'tips', '写入完毕，请重新读取数据。', QMessageBox.Ok)
     
     # 写入系统设置-系统时间
     def writeTime_func(self):
         if self.assertStatus() == False: return False
-        self.stop_moni()
         
-        self.writeTime_timer = QTimer()
-        self.writeTime_timer_step = 1
-        self.writeTime_timer.timeout.connect(self.writeTime_func_timer)
-        self.writeTime_timer.start(1000)
-        self.writeTime.setEnabled(False)
-    
-    # 写入系统设置-系统时间-计时器
-    def writeTime_func_timer(self):
-        if self.writeTime_timer_step == 1:
-            year = hex(self.now_time.dateTime().date().year() - 2000)[2:].rjust(2,'0')
-            month = hex(self.now_time.dateTime().date().month())[2:].rjust(2,'0')
-            msg = f'01062004{year}{month}'
-            self.send_msg(msg + calc_crc(msg))
-        elif self.writeTime_timer_step == 2:
-            day = hex(self.now_time.dateTime().date().day())[2:].rjust(2,'0')
-            hour = hex(self.now_time.dateTime().time().hour())[2:].rjust(2,'0')
-            msg = f'01062005{day}{hour}'
-            self.send_msg(msg + calc_crc(msg))
-        elif self.writeTime_timer_step == 3:
-            minute = hex(self.now_time.dateTime().time().minute())[2:].rjust(2,'0')
-            second = hex(self.now_time.dateTime().time().second())[2:].rjust(2,'0')
-            msg = f'01062006{minute}{second}'
-            self.send_msg(msg + calc_crc(msg))
-            self.writeTime.setEnabled(True)
-            self.writeTime_timer.stop()
-            self.start_moni()
-            return QMessageBox.information(self, 'tips', '写入完毕，请重新获取数据。', QMessageBox.Ok)
-        self.writeTime_timer_step += 1
-
+        year = hex(self.now_time.dateTime().date().year() - 2000)[2:].rjust(2,'0')
+        month = hex(self.now_time.dateTime().date().month())[2:].rjust(2,'0')
+        day = hex(self.now_time.dateTime().date().day())[2:].rjust(2,'0')
+        hour = hex(self.now_time.dateTime().time().hour())[2:].rjust(2,'0')
+        minute = hex(self.now_time.dateTime().time().minute())[2:].rjust(2,'0')
+        second = hex(self.now_time.dateTime().time().second())[2:].rjust(2,'0')
+        msg = f'01102004000306{year}{month}{day}{hour}{minute}{second}'
+        self.send_msg(msg + calc_crc(msg))
+        QMessageBox.information(self, 'tips', '写入完毕，请重新读取数据。', QMessageBox.Ok)
+        
     # 发送校准值
     def adds_btn_func(self):
         if self.assertStatus() == False: return False
