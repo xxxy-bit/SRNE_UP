@@ -195,11 +195,14 @@ class Portbms(BmsLayout):
 
     # 系统设置 槽函数slots
     def sysset_slotsTrigger(self):
+        
+        
         self.readCap.clicked.connect(self.readCap_func)
         self.writeCap.clicked.connect(self.writeCap_func)
         
         self.readTime.clicked.connect(self.readTime_func)
         self.sys_time = False   # 系统时间标志位
+        self.sync_btn.clicked.connect(self.sync_btn_func)   # 同步时间
         
         self.writeTime.clicked.connect(self.writeTime_func)
         
@@ -325,7 +328,6 @@ class Portbms(BmsLayout):
             
             msg = f'01 06 3000 0000'
             self.send_msg(msg + calc_crc(msg))
-            
 
     # 获取修改过的'系统设置-电量'参数
     def setSysParams(self, key):
@@ -374,6 +376,23 @@ class Portbms(BmsLayout):
             self.send_msg(bms_sys_set1 + calc_crc(bms_sys_set1))
             self.readCap_timer.stop()
             self.start_moni()
+           
+    def sync_btn_func(self):
+        sync_time = self.nowTime.text()
+        year = sync_time[0:4]
+        month = sync_time[5:7]
+        day = sync_time[8:10]
+        hour = sync_time[11:13]
+        minute = sync_time[14:16]
+        second = sync_time[17:]
+        
+        thisTime = QDateTime.currentDateTime()
+        thisTime.setDate(QDate(int(year), int(month), int(day)))
+        thisTime.setTime(QTime(int(hour), int(minute), int(second)))
+        self.now_time.setDateTime(thisTime)
+        
+        # print(sync_time)
+        # print(self.now_time.text())
            
     # 读取系统设置-系统时间
     def readTime_func(self):
@@ -693,7 +712,10 @@ class Portbms(BmsLayout):
             return QMessageBox.information(self, 'Error', bms_logic_label7, QMessageBox.Ok)
         self.send_msg(bms_clear_history + calc_crc(bms_clear_history))
         self.clearRow_btn(self.hisTable)
-        self.hisTime.stop()
+        try:
+            self.hisTime.stop()
+        except Exception as e:
+            print(e)
         self.his_status = False
         self.hisShow.setText(hisdata_label1)
         self.start_moni()

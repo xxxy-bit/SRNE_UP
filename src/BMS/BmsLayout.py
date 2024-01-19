@@ -360,7 +360,7 @@ class BmsLayout(QWidget):
         elect_groupBox_v_btmH = QHBoxLayout()
         self.readCap = QPushButton(sysset_label5)
         self.readCap.setStyleSheet(open_Button)
-        self.writeCap = QPushButton(sysset_label6)
+        self.writeCap = QPushButton('写入')
         self.writeCap.setStyleSheet(open_Button)
 
         elect_groupBox_v_btmH.addWidget(self.readCap)
@@ -439,26 +439,29 @@ class BmsLayout(QWidget):
 
         time_groupBox_v = QVBoxLayout()
 
-        time_groupBox_v_toph = QHBoxLayout()
+        time_groupBox_v_toph = QVBoxLayout()
         self.now_time = DateTimeEdit()
         self.now_time.setDisplayFormat('yyyy/M/d H:mm:ss')
+        
+        self.sync_btn = PushButton('同步时间')
 
         time_groupBox_v_toph.addWidget(self.now_time)
+        time_groupBox_v_toph.addWidget(self.sync_btn)
 
         # 同步电脑时间
-        time_groupBox_v_toph2 = QHBoxLayout()
+        # time_groupBox_v_toph2 = QHBoxLayout()
 
         time_groupBox_v_bomh = QHBoxLayout()
         self.readTime = QPushButton(sysset_label5)
         self.readTime.setStyleSheet(open_Button)
-        self.writeTime = QPushButton(sysset_label6)
+        self.writeTime = QPushButton('写入')
         self.writeTime.setStyleSheet(open_Button)
 
         time_groupBox_v_bomh.addWidget(self.readTime)
         time_groupBox_v_bomh.addWidget(self.writeTime)
 
         time_groupBox_v.addLayout(time_groupBox_v_toph)
-        time_groupBox_v.addLayout(time_groupBox_v_toph2)
+        # time_groupBox_v.addLayout(time_groupBox_v_toph2)
         time_groupBox_v.addStretch(1)
         time_groupBox_v.addLayout(time_groupBox_v_bomh)
         time_groupBox.setLayout(time_groupBox_v)
