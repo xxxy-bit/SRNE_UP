@@ -245,7 +245,7 @@ class Portbms(BmsLayout):
             
     # 并联监控-开始获取信息按钮-计时器
     def pal_start_func_timer(self):
-        print(f'self.pal_start_time_setp:{self.pal_start_time_setp}')
+        # print(f'self.pal_start_time_setp:{self.pal_start_time_setp}')
         num = f'{self.pal_start_time_setp:02d}'
         adr = ''
         for i in num:
@@ -392,9 +392,6 @@ class Portbms(BmsLayout):
         thisTime.setTime(QTime(int(hour), int(minute), int(second)))
         self.now_time.setDateTime(thisTime)
         
-        # print(sync_time)
-        # print(self.now_time.text())
-           
     # 读取系统设置-系统时间
     def readTime_func(self):
         if self.assertStatus() == False: return False
@@ -451,7 +448,7 @@ class Portbms(BmsLayout):
         hex_addr = self.datacalibration_adds_list[txt]
         if txt == '电流' or txt == '总压':
             hex_num = format(int(float(self.adds_txt.text()) * 100), '04x')
-            print(hex_num)
+            # print(hex_num)
         else:
             get_poi = int(self.adds_txt.text().split('.')[1])
             if get_poi > 0:
@@ -734,12 +731,12 @@ class Portbms(BmsLayout):
     # 获取最近历史数据计时器
     def his_time_func(self):
         if self.hisNum == 0:
-            print('self.clear_his_status: {}'.format(self.clear_his_status))
+            # print('self.clear_his_status: {}'.format(self.clear_his_status))
             if self.clear_his_status == False:
                 self.send_msg(bms_recent_history + calc_crc(bms_recent_history))
             try:
                 if self.num_max == 0:
-                    print('self.num_max: {}'.format(self.num_max))
+                    # print('self.num_max: {}'.format(self.num_max))
                     QMessageBox.information(self, 'tip', bms_logic_label27, QMessageBox.Ok)
                     self.hisTime.stop()
                     self.his_status = False
@@ -751,7 +748,7 @@ class Portbms(BmsLayout):
             self.clear_his_status = True
             self.continue_status = True # 继续-暂停 标志位
             self.hisNum += 1
-            print('self.hisNum: {}'.format(self.hisNum))
+            # print('self.hisNum: {}'.format(self.hisNum))
             return 0
         
         if self.num_max > 100:
@@ -781,7 +778,7 @@ class Portbms(BmsLayout):
     # 接收数据(打开串口就会启用该线程进行数据接收并解析)
     def bms_qtimer_res_func(self, res):
         
-        print(f'此次接收的数据：{res}')
+        # print(f'此次接收的数据：{res}')
         # 接收协议是否为 rs485
         if self.rs485_res_status == False:
             crc_error = False
@@ -848,19 +845,22 @@ class Portbms(BmsLayout):
                     self.battery_label5_line.setText(p01[battery_label5])
                     
                     # 单体电压
-                    self.cellLine1.setText(p01[vol_label17 + '(V)'])
-                    self.cellLine2.setText(p01[vol_label18 + '(V)'])
-                    self.cellLine3.setText(p01[vol_label19 + '(V)'])
+                    self.cellLine1.setText(f"{float(p01[vol_label17 + '(V)']):.3f}")
+                    self.cellLine2.setText(f"{float(p01[vol_label18 + '(V)']):.3f}")
+                    self.cellLine3.setText(f"{float(p01[vol_label19 + '(V)']):.3f}")
                     
                     # 数据显示
                     display_data = [
-                        self.cell_temp_16, 
-                        self.tem_other, 
+                        self.cell_temp_16,
+                        self.tem_other,
                         self.cell_vol_16,
                     ]
                     for index in range(len(display_data)):
                         for k,v in display_data[index].items():
-                            display_data[index][k].setText(p01[k])
+                            if '℃' in k:
+                                display_data[index][k].setText(f'{float(p01[k]):.1f}')
+                            else:
+                                display_data[index][k].setText(f'{float(p01[k]):.3f}')
                             
                     if (f'cell{bms_parse_label2}' in protect_txt or f'pack{bms_parse_label2}' in protect_txt) and self.low_vol == False:
                         self.stop_monitor += 1
@@ -941,9 +941,9 @@ class Portbms(BmsLayout):
             # 历史数据总数 
             elif res[:6] == f'{bms_recent_history[:4]}02' and len(res) == 14:
                 print('历史数据总数')
-                print(res[6:10])
+                # print(res[6:10])
                 self.num_max = int(res[6:10], 16)
-                print('self.num_max: {}'.format(self.num_max))
+                # print('self.num_max: {}'.format(self.num_max))
                 
             if crc_error == False:
                 self.add_tableItem('↑', res)
