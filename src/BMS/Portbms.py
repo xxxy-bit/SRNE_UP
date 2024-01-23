@@ -640,7 +640,7 @@ class Portbms(BmsLayout):
                 return QMessageBox.critical(self, 'Error', bms_logic_label11, QMessageBox.Ok)
             self.tab3_dic[key] = keyTxt + calc_crc(keyTxt)
 
-    # 写入参数
+    # 参数设置-写入参数
     def writeTab3Params(self):
         if self.assertStatus() == False:
             return False
@@ -679,7 +679,7 @@ class Portbms(BmsLayout):
             self.tab3_form_dic[k].setText('')
         self.tab3_dic.clear()
     
-    # 恢复默认值(出厂设置)
+    # 参数设置-恢复默认值(出厂设置)
     def reset_default(self):
         if self.assertStatus() == False: return False
         self.send_msg(bms_reset + calc_crc(bms_reset))

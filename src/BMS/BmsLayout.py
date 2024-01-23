@@ -994,28 +994,36 @@ class BmsLayout(QWidget):
         monVolWarn_groupBox = QGroupBox(parset_label1)
         monVolWarn_groupBox.setStyleSheet(white_bg)
         monVolWarn_form = self.tab3_createForm(
-            self.tab3_form_dic, f'{parset1_label1}(V)', f'{parset1_label2}(V)', f'{parset1_label3}(V)', f'{parset1_label4}(mS)')
+            self.tab3_form_dic, f'{parset1_label1}(V)', f'{parset1_label2}(V)', 
+                                f'{parset1_label3}(V)', f'{parset1_label4}(mS)',
+                                '单体过充告警延时(mS)', '单体过充告警恢复值(V)')
         monVolWarn_groupBox.setLayout(monVolWarn_form)
 
         # 单体过放设置
         monVolProt_groupBox = QGroupBox(parset_label2)
         monVolProt_groupBox.setStyleSheet(white_bg)
         monVolProt_form = self.tab3_createForm(
-            self.tab3_form_dic, f'{parset2_label1}(V)', f'{parset2_label2}(V)', f'{parset2_label3}(V)', f'{parset2_label4}(mS)')
+            self.tab3_form_dic, f'{parset2_label1}(V)', f'{parset2_label2}(V)', 
+                                f'{parset2_label3}(V)', f'{parset2_label4}(mS)',
+                                '单体过放告警延时(mS)', '单体过放告警恢复值(V)')
         monVolProt_groupBox.setLayout(monVolProt_form)
 
         # 总体过充设置
         allVolWarn_groupBox = QGroupBox(parset_label3)
         allVolWarn_groupBox.setStyleSheet(white_bg)
         allVolWarn_form = self.tab3_createForm(
-            self.tab3_form_dic, f'{parset3_label1}(V)', f'{parset3_label2}(V)', f'{parset3_label3}(V)', f'{parset3_label4}(mS)')
+            self.tab3_form_dic, f'{parset3_label1}(V)', f'{parset3_label2}(V)', 
+                                f'{parset3_label3}(V)', f'{parset3_label4}(mS)',
+                                '总体过充告警延时(mS)', '总体过充告警恢复值(V)')
         allVolWarn_groupBox.setLayout(allVolWarn_form)
 
         # 总体过放设置
         allVolProt_groupBox = QGroupBox(parset_label4)
         allVolProt_groupBox.setStyleSheet(white_bg)
         allVolProt_form = self.tab3_createForm(
-            self.tab3_form_dic, f'{parset4_label1}(V)', f'{parset4_label2}(V)', f'{parset4_label3}(V)', f'{parset4_label4}(mS)')
+            self.tab3_form_dic, f'{parset4_label1}(V)', f'{parset4_label2}(V)', 
+                                f'{parset4_label3}(V)', f'{parset4_label4}(mS)',
+                                '总体过放告警延时(mS)', '总体过放告警恢复值(V)')
         allVolProt_groupBox.setLayout(allVolProt_form)
 
         tab3_layout_H1.addWidget(monVolWarn_groupBox)   # 单体过充设置
@@ -1030,7 +1038,8 @@ class BmsLayout(QWidget):
         temWarn_form = self.tab3_createForm(self.tab3_form_dic,
                                             f'{parset5_label1}(℃)', f'{parset5_label2}(℃)', f'{parset5_label3}(℃)',
                                             f'{parset5_label4}(℃)', f'{parset5_label5}(℃)', f'{parset5_label6}(℃)',
-                                            f'{parset5_label7}(V)', f'{parset5_label8}(mV)', f'{parset5_label9}(V)', f'{parset5_label10}(min)'
+                                            f'{parset5_label7}(V)', f'{parset5_label8}(mV)', f'{parset5_label9}(V)', 
+                                            f'{parset5_label10}(min)'
                                             )
         temWarn_groupBox.setLayout(temWarn_form)
 
@@ -1048,17 +1057,20 @@ class BmsLayout(QWidget):
         ecProt_groupBox = QGroupBox(parset_label7)
         ecProt_groupBox.setStyleSheet(white_bg)
         ecProt_form = self.tab3_createForm(self.tab3_form_dic,
-                                           f'{parset7_label1}(A)', f'{parset7_label2}(A)', f'{parset7_label3}(mS)',
-                                           # f'{parset7_label4}(A)', f'{parset7_label5}(mS)', f'{parset7_label6}(uS)')
-                                           f'{parset7_label4}(A)', f'{parset7_label5}(mS)')
+                                           f'{parset7_label1}(A)', f'{parset7_label2}(A)', 
+                                           f'{parset7_label3}(mS)', f'{parset7_label4}(A)', 
+                                           f'{parset7_label5}(mS)', '放电过流告警延时(mS)',
+                                           '放电过流告警恢复值(V)')
         ecProt_groupBox.setLayout(ecProt_form)
 
         # 充电过流设置
         ecWarn_groupBox = QGroupBox(parset_label8)
         ecWarn_groupBox.setStyleSheet(white_bg)
         ecWarn_form = self.tab3_createForm(self.tab3_form_dic,
-                                           f'{parset8_label1}(A)', f'{parset8_label2}(A)', f'{parset8_label3}(mS)',
-                                           f'{parset8_label4}(A)', f'{parset8_label5}(mS)')
+                                           f'{parset8_label1}(A)', f'{parset8_label2}(A)', 
+                                           f'{parset8_label3}(mS)', f'{parset8_label4}(A)', 
+                                           f'{parset8_label5}(mS)', '充电过流告警延时(mS)',
+                                           '充电过流告警恢复值(V)')
         ecWarn_groupBox.setLayout(ecWarn_form)
 
         tab3_layout_H2.addWidget(temWarn_groupBox)   # 高温设置
