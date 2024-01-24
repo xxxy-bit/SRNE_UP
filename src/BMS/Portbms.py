@@ -110,6 +110,9 @@ class Portbms(BmsLayout):
         # 是否在获取历史数据
         self.his_status = False
         
+        # 获取蜂鸣器状态标志位
+        self.beep_tag = False
+        
         # 擦除历史数据标志位
         self.clear_his_status = False
         
@@ -570,9 +573,12 @@ class Portbms(BmsLayout):
     def bms_qtimer_get_monitor_func(self):
         if self.bms_qtimer_get_monitor_step == 0:
             self.send_msg(bms_version + calc_crc(bms_version))
-            self.bms_qtimer_get_monitor_step += 1
+        elif self.bms_qtimer_get_monitor_step == 1:
+            self.beep_tag = True
+            self.send_msg(bms_beep + calc_crc(bms_beep))
         else:
             self.send_msg(bms_monitor + calc_crc(bms_monitor))
+        self.bms_qtimer_get_monitor_step += 1
         
     # 清空表格
     def clearRow_btn(self, tableWidget):
@@ -882,6 +888,21 @@ class Portbms(BmsLayout):
                             self.getP01_data_btn.setText(com_label8)
                             self.getP01_data_btn.setStyleSheet(close_Button)
                             QMessageBox.information(self, 'tips', bms_logic_label28, QMessageBox.Ok)
+            # 蜂鸣器状态
+            elif res[:6] == f'{bms_beep[:4]}02' and len(res) == 14 and self.beep_tag:
+                print('蜂鸣器状态')
+                self.beep_tag = False
+                
+                num = int(res[6:10], 16)
+                self.buzzer_sw.blockSignals(True)
+                
+                if num == 0:
+                    self.buzzer_sw.setChecked(False)
+                elif num == 1:
+                    self.buzzer_sw.setChecked(True)
+                    
+                self.buzzer_sw.blockSignals(False)
+            
             # 参数设置
             elif res[:6] == f'{bms_setting[:4]}b6' and len(res) == 374:
                 print('参数设置')
@@ -909,7 +930,7 @@ class Portbms(BmsLayout):
                         self.hisTable.setItem(rows, count, QTableWidgetItem(p06[k]))
                         count += 1
             # 读取版本号
-            elif res[:6] == '010304' and len(res) == 18:
+            elif res[:6] == f'{bms_version[:4]}04' and len(res) == 18:
                 print('读取版本号')
                 v1 = int(res[6:8], 16)
                 v2 = int(res[8:10], 16)

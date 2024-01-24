@@ -49,16 +49,17 @@ ivpo_history_days = 'ff03f0310001'  # 总运行天数
 
 
 # BMS指令集
-bms_version = '010300140002'            # BMS 版本号
 bms_reset = '010630090001'              # 恢复默认值(出厂设置)
 bms_clear_history = '0106300b0001'      # 擦除历史数据
-bms_recent_history = '0103f0000001'     # 获取最近历史数据的总数
 bms_sleep_on = '0106300c0001'           # 开启强制休眠
-# bms_sleep_off = '0106300c0000'          # 关闭强制休眠
+# bms_sleep_off = '0106300c0000'        # 关闭强制休眠
 bms_buzzer_on = '010630010001'          # 蜂鸣器开
-bms_buzzer_off = '010630010000'          # 蜂鸣器关
+bms_buzzer_off = '010630010000'         # 蜂鸣器关
+bms_recent_history = '0103f0000001'     # 获取最近历史数据的总数
 
 
+bms_version = '010300140002'    # 查询 BMS 版本号
+bms_beep = '010330010002'       # 查询蜂鸣器开关状态
 bms_monitor = '01030300005e'    # 实时监控
 bms_setting = '01032007005b'    # 参数设置 地址：2007-2061
 bms_history = '0103f0010036'    # 历史记录
