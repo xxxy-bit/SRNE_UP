@@ -762,11 +762,14 @@ class BmsLayout(QWidget):
         self.disChargMos_status = QLabel('●' + sys_label4)
         self.batCharg_status = QLabel('●' + sys_label5)
         self.full_status = QLabel('●' + sys_label6)
+        self.hot_status = QLabel('●' + '加热')
+        self.twoProtTrig_status = QLabel('●' + '二次保护触发')
         sg = [
             self.charg_status, self.chargMos_status, self.batCharg_status,
-            self.disCharg_status, self.disChargMos_status, self.full_status
+            self.disCharg_status, self.disChargMos_status, self.full_status,
+            self.hot_status, self.twoProtTrig_status
         ]
-        sys_positions = [(i, j) for i in range(2) for j in range(3)]
+        sys_positions = [(i, j) for i in range(3) for j in range(3)]
         for positions, sg in zip(sys_positions, sg):
             sysStatus_groupBox_grid.addWidget(sg, *positions)
         sysStatus_groupBox.setLayout(sysStatus_groupBox_grid)

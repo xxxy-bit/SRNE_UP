@@ -822,6 +822,16 @@ class Portbms(BmsLayout):
                         self.full_status.setStyleSheet('color:#01B481')
                     else:
                         self.full_status.setStyleSheet('color:#626262')
+                        
+                    if '加热' in p01['BMS工作状态2']:
+                        self.hot_status.setStyleSheet('color:#01B481')
+                    else:
+                        self.hot_status.setStyleSheet('color:#626262')
+                    
+                    if '二次保护触发' in p01['BMS工作状态2']:
+                        self.twoProtTrig_status.setStyleSheet('color:#01B481')
+                    else:
+                        self.twoProtTrig_status.setStyleSheet('color:#626262')
 
                     if len(p01['故障位']) > 0:
                         for _ in p01['故障位']:
