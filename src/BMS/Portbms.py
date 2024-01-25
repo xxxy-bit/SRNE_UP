@@ -98,6 +98,9 @@ class Portbms(BmsLayout):
         # 实时监控的开启状态
         self.moni_switch = False
         
+        # 登录状态
+        self.login = False
+        
         # 充放电状态二进制
         self.dis_charge_mos_num = [0, 0, 0, 0]
         
@@ -507,6 +510,9 @@ class Portbms(BmsLayout):
             self.resetTab3.setEnabled(True)
             self.testmode_btn.setEnabled(True)
             QMessageBox.information(self, 'tips', bms_logic_label18, QMessageBox.Ok)
+            
+            self.login = True
+            
         else:
             QMessageBox.information(self, 'Error', bms_logic_label19, QMessageBox.Ok)
 
@@ -849,6 +855,17 @@ class Portbms(BmsLayout):
                     warn_txt = '\n'.join(p01['警告位1']) + '\n' + '\n'.join(p01['警告位2'])
                     self.warn_body.setText(warn_txt)
                     protect_txt = '\n'.join(p01['保护位1']) + '\n' + '\n'.join(p01['保护位2'])
+                    if self.login:
+                        if '207' in protect_txt:
+                            if self.testmode_btn.text() == '进入测试模式':
+                                self.testmode_btn.setEnabled(False)
+                            elif self.testmode_btn.text() == '退出测试模式':
+                                self.testmode_btn_func()
+                                self.testmode_btn.setEnabled(False)
+                        else:
+                            if self.testmode_btn.text() == '进入测试模式':
+                                self.testmode_btn.setEnabled(True)
+                        
                     self.protect_body.setText(protect_txt)
 
                     # 电池信息
