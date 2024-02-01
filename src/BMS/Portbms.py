@@ -796,7 +796,7 @@ class Portbms(BmsLayout):
             crc_error = False
             
             # 实时监控
-            if res[:6] == f'{bms_monitor[:4]}bc' and len(res) == 386:
+            if res[:6] == f'{bms_monitor[:4]}c0' and len(res) == 394:
                 print('实时监控')
                 self.bms_bc_pass = False
                 p01 = pars_data(res, bms_monitor + calc_crc(bms_monitor))

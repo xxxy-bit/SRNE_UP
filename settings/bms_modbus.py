@@ -99,7 +99,7 @@ def get_bms_modbus_list():
             "cell过压保护":[21, 1, 1, ""],
             "cell欠压告警":[22, 1, 1, ""],
             "cell欠压保护":[23, 1, 1, ""],
-            battery_label3:[24, 1, 100, "AH"],
+            # battery_label3:[24, 1, 100, "AH"],
             battery_label4:[25, 1, 100, "AH"],
             battery_label5:[26, 1, 1, ""],
             "Pack地址":[27, 1, 1, ""],
@@ -162,7 +162,9 @@ def get_bms_modbus_list():
             "Pack总充电Kwh":[86, 2, 1, "Kwh"],
             "Pack总放电Kwh":[88, 2, 1, "Kwh"],
             "Pack总充电时间":[90, 2, 1, "H"],
-            "Pack总放电时间":[92, 2, 1, "H"]
+            "Pack总放电时间":[92, 2, 1, "H"],
+            "校准剩余容量":[94, 1, 100, "AH"],
+            battery_label3:[95, 1, 100, "AH"],
         },
         # bms 参数设置
         bms_setting:{
