@@ -179,24 +179,17 @@
                  <item row="1" column="3">
                   <widget class="QLineEdit" name="dc_input_vol"/>
                  </item>
-                 <item row="5" column="4">
-                  <widget class="QLabel" name="label_28">
-                   <property name="text">
-                    <string>散热器</string>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="2" column="2">
                   <widget class="QLabel" name="label_18">
                    <property name="text">
-                    <string>开机以来最高电压</string>
+                    <string>蓄电池当天最高电压</string>
                    </property>
                   </widget>
                  </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="label_17">
                    <property name="text">
-                    <string>开机以来最低电压</string>
+                    <string>蓄电池当天最低电压</string>
                    </property>
                   </widget>
                  </item>
@@ -223,18 +216,12 @@
                  <item row="2" column="5">
                   <widget class="QLineEdit" name="dc_open_max_chg_curr"/>
                  </item>
-                 <item row="5" column="3">
-                  <widget class="QLineEdit" name="dc_mos_tmp"/>
-                 </item>
                  <item row="3" column="0">
                   <widget class="QLabel" name="label_20">
                    <property name="text">
-                    <string>当天充电安时数</string>
+                    <string>当天充电/放电安时</string>
                    </property>
                   </widget>
-                 </item>
-                 <item row="5" column="5">
-                  <widget class="QLineEdit" name="dc_radiator"/>
                  </item>
                  <item row="3" column="3">
                   <widget class="QLineEdit" name="dc_today_genera"/>
@@ -284,13 +271,6 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="5" column="2">
-                  <widget class="QLabel" name="label_27">
-                   <property name="text">
-                    <string>Mos管温度</string>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="0" column="0">
                   <widget class="QLabel" name="label_11">
                    <property name="text">
@@ -321,14 +301,14 @@
                  <item row="2" column="4">
                   <widget class="QLabel" name="label_19">
                    <property name="text">
-                    <string>开机以来充电最大电流</string>
+                    <string>当天最大电流</string>
                    </property>
                   </widget>
                  </item>
                  <item row="3" column="2">
                   <widget class="QLabel" name="label_21">
                    <property name="text">
-                    <string>当天发电量</string>
+                    <string>当天充电/放电量</string>
                    </property>
                   </widget>
                  </item>
@@ -1054,7 +1034,7 @@ PillToolButton:disabled:checked {
           <item row="0" column="6">
            <widget class="SpinBox" name="dc_set_sys_current">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="whatsThis">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;系统电压设置(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>

@@ -17,7 +17,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         self.setupUi(self)
         self.dc_layout_init()
         # self.dc_i18n_init()
-        self.setWindowTitle(f'{self.windowTitle()} v0.0.1')
+        self.setWindowTitle(f'{self.windowTitle()} v0.0.2')
     
     # 初始化
     def dc_layout_init(self):
@@ -28,6 +28,9 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         # 加载日志目录
         self.log_name = Common.creat_log_file('log')
         
+        # 获取系统电压
+        self.sys_vol_power = 2
+        
         # 加载串口对象
         self.dccharger_ser = serial.Serial()
         
@@ -35,7 +38,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         self.dc_port_list.addItems(Common.load_serial_list())
         
         # 加载电池类型
-        self.dc_set_battery_type.addItems(['自定义铅酸', '开口(FLD)', '密封(SLD)', '胶体(GEL)', '锂电池(LI)', '自定义锂电池(Li-ion)'])
+        self.dc_set_battery_type.addItems(['自定义', '开口(FLD)', '密封(SLD)', '胶体(GEL)', '锂电池(LI)'])
         
         # 加载充电模式
         self.dc_ChgMode.addItems(['充电模式', '电源模式'])
@@ -125,6 +128,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         if len(self.dc_setting_dic) != 0:
             self.dc_timer_txt = []
             for k,v in self.dc_setting_dic.items():
+                print(k, v)
                 self.dc_timer_txt.append(v)
             self.dc_send_setting_timer = QtCore.QTimer()
             self.dc_send_setting_timer_step = 0
@@ -155,12 +159,14 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         if temp != '':
             name = set_obj.whatsThis()[22:-18]
             data = int(temp) * int(dc_data_list[dc_setting][name][2])
+            print(data)
             
-            if name == '蓄电池类型':
-                data = self.dc_set_battery_type.currentIndex()
-                if data == self.dc_set_battery_type.count() - 1:
-                    data = 11
-            
+            if name == '超压电压(V)' or name == '充电限制电压(V)' or name == '均衡充电电压(V)' \
+                or name == '提升充电电压(V)' or name == '浮充充电电压(V)' or name == '提升充电返回电压(V)' \
+                    or name == '欠压警告电压(V)':
+                data = int((data / self.sys_vol_power) * 10)
+                print(data)
+
             # 获取地址位
             addr = dc_data_list[dc_setting][name][3]
             send_setting_txt = f'{dc_setting[:2]}06{addr}{data:04X}'
@@ -245,7 +251,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         
         if os.path.exists(log_monitor_control_name) == False:
             with open(log_monitor_control_name, 'w') as f:
-                ct_txt = '蓄电池电压,充电电流,设备温度,蓄电池温度,输入电压,充电功率,输出端开机以来最低电压,输出端开机以来最高电压,开机以来充电最大电流,当天充电安时数,当天发电量,总运行天数,蓄电池总充满次数,蓄电池总充电安时数,累计发电量,充电状态,控制器/告警信息1,Mos管温度,散热器,原始数据(Hex)'
+                ct_txt = '蓄电池电压,充电电流,设备温度,蓄电池温度,输入电压,充电功率,输出端开机以来最低电压,输出端开机以来最高电压,开机以来充电最大电流,当天充电安时数,当天发电量,总运行天数,蓄电池总充满次数,蓄电池总充电安时数,累计发电量,充电状态,控制器/告警信息1,原始数据(Hex)'
                 f.write(ct_txt + '\n')
         
         # 写入监控日志
@@ -360,6 +366,8 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                 # 异常后打印问题字段，防止程序崩溃
                 try:
                     temp1 = result['系统电压']
+                    self.sys_vol_power = int(int(temp1) / 12)   # 12=1,24=2,48=4
+                    
                     temp2 = result['额定充电电流']
                     temp3 = result['产品类型']
                     temp4 = result['产品规格']
@@ -409,8 +417,8 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                     temp15 = result['累计发电量']
                     temp16 = result['充电状态']
                     temp17 = result['控制器故障/告警信息1']
-                    temp18 = result['Mos管温度']
-                    temp19 = result['散热器']
+                    # temp18 = result['Mos管温度']
+                    # temp19 = result['散热器']
                 except Exception as e:
                     self.dc_add_tableItem('receive', res, self.dc_tableWidget, self.log_name)
                     return QtWidgets.QMessageBox.critical(self, 'Error', str(e), QtWidgets.QMessageBox.Ok)  
@@ -432,10 +440,10 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                 self.dc_total_genera.setText(temp15)
                 self.dc_chg_state.setText(temp16)
                 self.dc_fail_info.setText(temp17)
-                self.dc_mos_tmp.setText(temp18)
-                self.dc_radiator.setText(temp19)
+                # self.dc_mos_tmp.setText(temp18)
+                # self.dc_radiator.setText(temp19)
                 
-                self.dc_ct_csv += f'{temp1},{temp2},{temp3},{temp4},{temp5},{temp6},{temp7},{temp8},{temp9},{temp10},{temp11},{temp12},{temp13},{temp14},{temp15},{temp16},{temp17},{temp18},{temp19},{arg[1]}\n'
+                self.dc_ct_csv += f'{temp1},{temp2},{temp3},{temp4},{temp5},{temp6},{temp7},{temp8},{temp9},{temp10},{temp11},{temp12},{temp13},{temp14},{temp15},{temp16},{temp17},{arg[1]}\n'
             
             # 参数设置区域
             elif res[:6] == f'{dc_setting[:4]}74' and len(res) == 242:
@@ -447,13 +455,13 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                     temp2 = int(result['蓄电池标称容量(AH)'])
                     temp3 = int(result['系统电压设置(V)'])
                     temp4 = int(result['蓄电池类型'])
-                    temp5 = float(result['超压电压(V)'])
-                    temp6 = float(result['充电限制电压(V)'])
-                    temp7 = float(result['均衡充电电压(V)'])
-                    temp8 = float(result['提升充电电压(V)'])
-                    temp9 = float(result['浮充充电电压(V)'])
-                    temp10 = float(result['提升充电返回电压(V)'])
-                    temp11 = float(result['欠压警告电压(V)'])
+                    temp5 = float(result['超压电压(V)']) * self.sys_vol_power
+                    temp6 = float(result['充电限制电压(V)']) * self.sys_vol_power
+                    temp7 = float(result['均衡充电电压(V)']) * self.sys_vol_power
+                    temp8 = float(result['提升充电电压(V)']) * self.sys_vol_power
+                    temp9 = float(result['浮充充电电压(V)']) * self.sys_vol_power
+                    temp10 = float(result['提升充电返回电压(V)']) * self.sys_vol_power
+                    temp11 = float(result['欠压警告电压(V)']) * self.sys_vol_power
                     temp12 = int(result['均衡充电时间(Min)'])
                     temp13 = int(result['提升充电时间(Min)'])
                     temp14 = int(result['均衡充电间隔(day)'])

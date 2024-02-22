@@ -64,11 +64,11 @@ def dc_data_analysis(res, send_data):
                 temp = int(temp[0], 16)
                 print_dic[k] = f'{Common.format_num(temp / v[2])} {v[3]}'
             elif k == 'CAN程序版本':
-                temp1 = int(temp[0][:2], 16)
+                # temp1 = int(temp[0][:2], 16)
                 temp2 = int(temp[0][2:], 16)
                 temp3 = int(temp[1][:2], 16)
                 temp4 = int(temp[1][2:], 16)
-                print_dic[k] = f'V{temp1}.{temp2}.{temp3}.{temp4}'
+                print_dic[k] = f'V{temp2}.{temp3}.{temp4}'
             elif k == '设备名字':
                 temp = ''.join(str(i) for i in temp)
                 temp = binascii.a2b_hex(temp)
@@ -115,7 +115,7 @@ def dc_data_analysis(res, send_data):
         for k,v in dc_data_list[send_data].items():
             temp = data_cut[v[0]:v[0]+v[1]]
             
-            if k == '系统电压设置':
+            if k == '系统电压设置(V)':
                 temp = int(temp[0][2:], 16)
                 print_dic[k] = f'{Common.format_num(temp / v[2])}'
             elif k == '蓄电池类型':
