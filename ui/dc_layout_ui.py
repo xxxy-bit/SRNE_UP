@@ -927,7 +927,7 @@ class Ui_MainWindow(object):
         self.label_43.setText(_translate("MainWindow", "超压电压(V)"))
         self.dc_set_even_current.setWhatsThis(_translate("MainWindow", "<html><head/><body><p>均衡充电电压(V)</p></body></html>"))
         self.label_45.setText(_translate("MainWindow", "均衡充电电压(V)"))
-        self.label_27.setText(_translate("MainWindow", "充满截止延时(min)"))
+        self.label_27.setText(_translate("MainWindow", "充满截止延时(S)"))
         self.label_28.setText(_translate("MainWindow", "充满截止电流(A)"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "参数设置"))
         self.dc_clear_table.setText(_translate("MainWindow", "清空内容"))

@@ -471,6 +471,8 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                     temp18 = float(result['电源模式的输出电压(V)'])
                     temp19 = float(result['电源模式高于此电压充电(V)'])
                     temp20 = float(result['电源模式低于此电压停冲(V)'])
+                    temp21 = int(result['充满截止电流(A)'])
+                    temp22 = int(result['充满截止延时(s)'])
                 except Exception as e:
                     self.dc_add_tableItem('receive', res, self.dc_tableWidget, self.log_name)
                     return QtWidgets.QMessageBox.critical(self, 'Error', str(e), QtWidgets.QMessageBox.Ok)
@@ -518,7 +520,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                         self.dc_StopChgDelayTim.setEnabled(True)            # 充满截止延时
                         self.dc_StopChgCurrSet.setEnabled(True)             # 充满截止电流
                         
-                    else:
+                    else:   # 其他类型
                         self.dc_charge_elec_set.setEnabled(True)            # 最大充电电流
                         self.dc_set_battery_overpressure.setEnabled(False)   # 超压电压
                         self.dc_set_charge_limit.setEnabled(False)           # 充电限制电压
@@ -581,6 +583,8 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                 self.dc_CvModeOutVolt.setValue(temp18)
                 self.dc_CvModeInMaxWorkVolt.setValue(temp19)
                 self.dc_CVModeInLowWorkVolt.setValue(temp20)
+                self.dc_StopChgCurrSet.setValue(temp21)
+                self.dc_StopChgDelayTim.setValue(temp22)
                 
                 # 允许信号发送
                 for obj in self.dc_setting_edit:

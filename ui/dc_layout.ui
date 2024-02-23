@@ -1242,7 +1242,7 @@ PillToolButton:disabled:checked {
           <item row="5" column="1">
            <widget class="QLabel" name="label_27">
             <property name="text">
-             <string>充满截止延时(min)</string>
+             <string>充满截止延时(S)</string>
             </property>
            </widget>
           </item>
