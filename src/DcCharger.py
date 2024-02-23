@@ -84,6 +84,9 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         # 加载-参数设置信号槽
         self.dc_setting_slots()
         
+        # 加载-串口数据信号槽
+        self.dc_port_slots()
+        
         # 隐藏行序号
         self.dc_tableWidget.verticalHeader().setVisible(False)
         
@@ -115,6 +118,16 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         self.dc_clear_alarm.clicked.connect(self.dc_clear_alarm_func)
         self.dc_clear_statistic.clicked.connect(self.dc_clear_statistic_func)
         self.dc_clear_his.clicked.connect(self.dc_clear_his_func)
+    
+    # 串口数据信号槽
+    def dc_port_slots(self):
+        self.dc_clear_table.clicked.connect(functools.partial(self.dc_clearRow_btn, self.dc_tableWidget))
+    
+    # 清空表格
+    def dc_clearRow_btn(self, tableWidget):
+        rowPosition = tableWidget.rowCount()
+        for rows in range(rowPosition)[::-1]:
+            tableWidget.removeRow(rows)
     
     # 参数设置-读取数据
     def dc_read_set_func(self):
