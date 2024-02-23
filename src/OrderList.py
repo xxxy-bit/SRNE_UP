@@ -24,8 +24,11 @@ dc_product_monitor = 'ff03000a005f' # 获取产品信息
 dc_control_monitor = 'ff030100002b' # 获取控制器信息
 dc_setting = 'ff03e001003a'       # 获取参数设置信息
 
-dc_sw_on = 'ff06df000001'           # 开机
-dc_sw_off = 'ff06df000000'          # 关机
+dc_sw_on = 'ff06df000001'           # 充电模式开机
+dc_sw_off = 'ff06df000000'          # 充电模式关机
+dc_cv_on = 'ff06e0370001'           # 电源模式开机
+dc_cv_off = 'ff06e0370000'          # 电源模式关机
+
 dc_device_reset = 'ff06df010001'    # 复位
 dc_fact_reset = 'ff06df020001'      # 恢复出厂
 dc_cl_alarm = 'ff06df030001'        # 清除当前告警

@@ -99,6 +99,8 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
     def dc_setting_slots(self):
         self.dc_read_set.clicked.connect(self.dc_read_set_func)
         self.dc_write_set.clicked.connect(self.dc_write_set_func)
+        self.dc_CvModeEn.checkedChanged.connect(self.dc_CvModeEn_func)
+        self.dc_ChgModeEn.checkedChanged.connect(self.dc_ChgModeEn_func)
         
         for s in self.dc_setting_edit:
             try:
@@ -106,13 +108,26 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
             except Exception:
                 s.valueChanged.connect(functools.partial(self.dc_setting_edit_func, s))
 
+    # 电源模式开关机
+    def dc_CvModeEn_func(self):
+        if self.dc_CvModeEn.isChecked():
+            self.dc_send_msg(dc_cv_on + calc_crc(dc_cv_on))
+        else:
+            self.dc_send_msg(dc_cv_off + calc_crc(dc_cv_off))
+
+    # 充电模式开关机
+    def dc_ChgModeEn_func(self):
+        if self.dc_ChgModeEn.isChecked():
+            self.dc_send_msg(dc_sw_on + calc_crc(dc_sw_on))
+        else:
+            self.dc_send_msg(dc_sw_off + calc_crc(dc_sw_off))
+        
     # 实时监控信号槽
     def dc_monitor_slots(self):
         self.dc_open_port.clicked.connect(self.dc_open_port_func)
         self.dc_refresh_port.clicked.connect(self.dc_refresh_port_func)
         self.dc_open_monitor.clicked.connect(self.dc_open_monitor_func)
         self.dc_export_monitor.clicked.connect(self.dc_export_monitor_func)
-        self.dc_onoff_power.clicked.connect(self.dc_onoff_power_func)
         self.dc_reset.clicked.connect(self.dc_reset_func)
         self.dc_factory_setting.clicked.connect(self.dc_factory_setting_func)
         self.dc_clear_alarm.clicked.connect(self.dc_clear_alarm_func)
@@ -283,17 +298,6 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         if QtWidgets.QMessageBox.question(self, 'Tips', f'导出成功，目录位置为：{open_dir}\n是否需要打开该目录?', 
                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
             os.startfile(open_dir)
-        
-    # 开关机
-    def dc_onoff_power_func(self):
-        if self.dc_onoff_power.text() == '开机':
-            self.dc_send_msg(dc_sw_on + calc_crc(dc_sw_on))
-            self.dc_onoff_power.setText('关机')
-            self.dc_onoff_power.setStyleSheet(color_open)
-        else:
-            self.dc_send_msg(dc_sw_off + calc_crc(dc_sw_off))
-            self.dc_onoff_power.setText('开机')
-            self.dc_onoff_power.setStyleSheet(color_close)
         
     # 复位
     def dc_reset_func(self):
@@ -486,6 +490,8 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                     temp20 = float(result['电源模式低于此电压停冲(V)'])
                     temp21 = int(result['充满截止电流(A)'])
                     temp22 = int(result['充满截止延时(s)'])
+                    temp23 = int(result['电源模式输出使能'])
+                    
                 except Exception as e:
                     self.dc_add_tableItem('receive', res, self.dc_tableWidget, self.log_name)
                     return QtWidgets.QMessageBox.critical(self, 'Error', str(e), QtWidgets.QMessageBox.Ok)
@@ -496,12 +502,14 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                     self.dc_set_battery_type.setEnabled(True)       # 蓄电池类型
                     self.dc_set_battery_cap.setEnabled(True)        # 标称容量
                     self.dc_set_sys_current.setEnabled(True)        # 系统电压
+                    self.dc_ChgModeEn.setEnabled(True)              # 充电模式开关机
                     self.dc_ChgModeInMaxWorkVolt.setEnabled(True)   # 充电模式启动电压
                     self.dc_ChgModeInLowWorkVolt.setEnabled(True)   # 充电模式停止电压
                     
                     self.dc_CvModeInMaxWorkVolt.setEnabled(False)   # 电源模式启动电压
                     self.dc_CVModeInLowWorkVolt.setEnabled(False)   # 电源模式停止电压
                     self.dc_CvModeOutVolt.setEnabled(False)         # 电源模式输出电压
+                    self.dc_CvModeEn.setEnabled(False)              # 电源模式开关
                     
                     if temp4 == 0:  # 自定义
                         self.dc_charge_elec_set.setEnabled(True)            # 最大充电电流
@@ -551,6 +559,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                 elif temp15 == 1:   # 电源模式
                     self.dc_charge_elec_set.setEnabled(True)
                     self.dc_CvModeOutVolt.setEnabled(True)
+                    self.dc_CvModeEn.setEnabled(True)
                     self.dc_CvModeInMaxWorkVolt.setEnabled(True)
                     self.dc_CVModeInLowWorkVolt.setEnabled(True)
                     
@@ -571,6 +580,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                     self.dc_ChgModeInLowWorkVolt.setEnabled(False)
                     self.dc_StopChgDelayTim.setEnabled(False)
                     self.dc_StopChgCurrSet.setEnabled(False)
+                    self.dc_ChgModeEn.setEnabled(False)
                 
                 # 阻止信号发送
                 for obj in self.dc_setting_edit:
@@ -598,6 +608,10 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                 self.dc_CVModeInLowWorkVolt.setValue(temp20)
                 self.dc_StopChgCurrSet.setValue(temp21)
                 self.dc_StopChgDelayTim.setValue(temp22)
+                if temp23 == 0:
+                    self.dc_CvModeEn.setChecked(False)
+                else:
+                    self.dc_CvModeEn.setChecked(True)
                 
                 # 允许信号发送
                 for obj in self.dc_setting_edit:

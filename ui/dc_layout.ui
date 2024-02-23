@@ -729,24 +729,10 @@ PillToolButton:disabled:checked {
               <layout class="QHBoxLayout" name="horizontalLayout_7">
                <item>
                 <layout class="QGridLayout" name="gridLayout_4">
-                 <item row="0" column="3">
-                  <widget class="PushButton" name="dc_reset">
-                   <property name="text">
-                    <string>发送</string>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="1" column="0">
                   <widget class="QLabel" name="label_35">
                    <property name="text">
                     <string>恢复出厂</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="PushButton" name="dc_onoff_power">
-                   <property name="text">
-                    <string>开机</string>
                    </property>
                   </widget>
                  </item>
@@ -761,13 +747,6 @@ PillToolButton:disabled:checked {
                   <widget class="QLabel" name="label_36">
                    <property name="text">
                     <string>清除统计量</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="2">
-                  <widget class="QLabel" name="label_34">
-                   <property name="text">
-                    <string>复位</string>
                    </property>
                   </widget>
                  </item>
@@ -801,6 +780,20 @@ PillToolButton:disabled:checked {
                  </item>
                  <item row="2" column="1">
                   <widget class="PushButton" name="dc_clear_statistic">
+                   <property name="text">
+                    <string>发送</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_34">
+                   <property name="text">
+                    <string>复位</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="PushButton" name="dc_reset">
                    <property name="text">
                     <string>发送</string>
                    </property>
@@ -1032,12 +1025,12 @@ PillToolButton:disabled:checked {
           <item row="0" column="3">
            <widget class="QLabel" name="label_33">
             <property name="text">
-             <string>输出开关</string>
+             <string>电源模式输出开关</string>
             </property>
            </widget>
           </item>
           <item row="0" column="4">
-           <widget class="SwitchButton" name="SwitchButton">
+           <widget class="SwitchButton" name="dc_CvModeEn">
             <property name="onText">
              <string>开</string>
             </property>
@@ -1264,6 +1257,23 @@ PillToolButton:disabled:checked {
            <widget class="SpinBox" name="dc_StopChgCurrSet">
             <property name="maximum">
              <number>10</number>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="5">
+           <widget class="QLabel" name="label_59">
+            <property name="text">
+             <string>充电模式输出开关</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="6">
+           <widget class="SwitchButton" name="dc_ChgModeEn">
+            <property name="onText">
+             <string>开</string>
+            </property>
+            <property name="offText">
+             <string>关</string>
             </property>
            </widget>
           </item>
