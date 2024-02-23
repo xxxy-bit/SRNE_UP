@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'e:\svn\SrneUpperComputer\ui\main_meun.ui'
+# Form implementation generated from reading ui file 'E:\svn\SrneUpperComputer\ui\main_meun.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -207,7 +207,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "SRNE v0.1.3.7"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "SRNE v0.1.3.8"))
         self.label.setText(_translate("MainWindow", "选择连接的设备"))
         self.ac_text.setText(_translate("MainWindow", "AC-DC 充电器"))
         self.bms_text.setText(_translate("MainWindow", "BMS"))
