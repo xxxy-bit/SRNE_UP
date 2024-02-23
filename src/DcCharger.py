@@ -475,6 +475,88 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                     self.dc_add_tableItem('receive', res, self.dc_tableWidget, self.log_name)
                     return QtWidgets.QMessageBox.critical(self, 'Error', str(e), QtWidgets.QMessageBox.Ok)
                 
+                if temp15 == 0: # 充电模式
+                    
+                    # 默认开启
+                    self.dc_set_battery_type.setEnabled(True)       # 蓄电池类型
+                    self.dc_set_battery_cap.setEnabled(True)        # 标称容量
+                    self.dc_set_sys_current.setEnabled(True)        # 系统电压
+                    self.dc_ChgModeInMaxWorkVolt.setEnabled(True)   # 充电模式启动电压
+                    self.dc_ChgModeInLowWorkVolt.setEnabled(True)   # 充电模式停止电压
+                    
+                    self.dc_CvModeInMaxWorkVolt.setEnabled(False)   # 电源模式启动电压
+                    self.dc_CVModeInLowWorkVolt.setEnabled(False)   # 电源模式停止电压
+                    self.dc_CvModeOutVolt.setEnabled(False)         # 电源模式输出电压
+                    
+                    if temp4 == 0:  # 自定义
+                        self.dc_charge_elec_set.setEnabled(True)            # 最大充电电流
+                        self.dc_set_battery_overpressure.setEnabled(True)   # 超压电压
+                        self.dc_set_charge_limit.setEnabled(True)           # 充电限制电压
+                        self.dc_set_even_current.setEnabled(True)           # 均衡充电电压
+                        self.dc_set_promote_current.setEnabled(True)        # 提升充电电压
+                        self.dc_set_float_current.setEnabled(True)          #浮充充电电压
+                        self.dc_set_promote_current_retrun.setEnabled(True) # 提升充电返回电压
+                        self.dc_BatConstChgTime.setEnabled(True)            # 均衡充电时间
+                        self.dc_BatImprovChgTime.setEnabled(True)           # 提升充电时间
+                        self.dc_BatConstChgGapTime.setEnabled(True)         # 均衡充电间隔
+                        self.dc_BatUnderVolt.setEnabled(True)               # 欠压警告电压
+                        self.dc_StopChgDelayTim.setEnabled(True)            # 充满截止延时
+                        self.dc_StopChgCurrSet.setEnabled(True)             # 充满截止电流
+                        
+                    elif temp4 == 4:    # 锂电池
+                        self.dc_charge_elec_set.setEnabled(True)            # 最大充电电流
+                        self.dc_set_battery_overpressure.setEnabled(False)   # 超压电压
+                        self.dc_set_charge_limit.setEnabled(False)           # 充电限制电压
+                        self.dc_set_even_current.setEnabled(False)           # 均衡充电电压
+                        self.dc_set_promote_current.setEnabled(True)        # 提升充电电压
+                        self.dc_set_float_current.setEnabled(False)          #浮充充电电压
+                        self.dc_set_promote_current_retrun.setEnabled(True) # 提升充电返回电压
+                        self.dc_BatConstChgTime.setEnabled(False)            # 均衡充电时间
+                        self.dc_BatImprovChgTime.setEnabled(False)           # 提升充电时间
+                        self.dc_BatConstChgGapTime.setEnabled(False)         # 均衡充电间隔
+                        self.dc_BatUnderVolt.setEnabled(True)               # 欠压警告电压
+                        self.dc_StopChgDelayTim.setEnabled(True)            # 充满截止延时
+                        self.dc_StopChgCurrSet.setEnabled(True)             # 充满截止电流
+                        
+                    else:
+                        self.dc_charge_elec_set.setEnabled(True)            # 最大充电电流
+                        self.dc_set_battery_overpressure.setEnabled(False)   # 超压电压
+                        self.dc_set_charge_limit.setEnabled(False)           # 充电限制电压
+                        self.dc_set_even_current.setEnabled(False)           # 均衡充电电压
+                        self.dc_set_promote_current.setEnabled(False)        # 提升充电电压
+                        self.dc_set_float_current.setEnabled(False)          #浮充充电电压
+                        self.dc_set_promote_current_retrun.setEnabled(False) # 提升充电返回电压
+                        self.dc_BatConstChgTime.setEnabled(False)            # 均衡充电时间
+                        self.dc_BatImprovChgTime.setEnabled(False)           # 提升充电时间
+                        self.dc_BatConstChgGapTime.setEnabled(False)         # 均衡充电间隔
+                        self.dc_BatUnderVolt.setEnabled(False)               # 欠压警告电压
+                        self.dc_StopChgDelayTim.setEnabled(True)            # 充满截止延时
+                        self.dc_StopChgCurrSet.setEnabled(True)             # 充满截止电流
+                    
+                elif temp15 == 1:   # 电源模式
+                    self.dc_charge_elec_set.setEnabled(True)
+                    self.dc_CvModeOutVolt.setEnabled(True)
+                    self.dc_CvModeInMaxWorkVolt.setEnabled(True)
+                    self.dc_CVModeInLowWorkVolt.setEnabled(True)
+                    
+                    self.dc_set_battery_cap.setEnabled(False)
+                    self.dc_set_sys_current.setEnabled(False)
+                    self.dc_set_battery_type.setEnabled(False)
+                    self.dc_set_battery_overpressure.setEnabled(False)
+                    self.dc_set_charge_limit.setEnabled(False)
+                    self.dc_set_even_current.setEnabled(False)
+                    self.dc_set_promote_current.setEnabled(False)
+                    self.dc_set_float_current.setEnabled(False)
+                    self.dc_set_promote_current_retrun.setEnabled(False)
+                    self.dc_BatUnderVolt.setEnabled(False)
+                    self.dc_BatConstChgTime.setEnabled(False)
+                    self.dc_BatImprovChgTime.setEnabled(False)
+                    self.dc_BatConstChgGapTime.setEnabled(False)
+                    self.dc_ChgModeInMaxWorkVolt.setEnabled(False)
+                    self.dc_ChgModeInLowWorkVolt.setEnabled(False)
+                    self.dc_StopChgDelayTim.setEnabled(False)
+                    self.dc_StopChgCurrSet.setEnabled(False)
+                
                 # 阻止信号发送
                 for obj in self.dc_setting_edit:
                     obj.blockSignals(True)
