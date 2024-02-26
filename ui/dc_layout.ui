@@ -856,6 +856,9 @@ PillToolButton:disabled:checked {
           </item>
           <item row="8" column="4">
            <widget class="PushButton" name="dc_write_set">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
              <string>写入数据</string>
             </property>

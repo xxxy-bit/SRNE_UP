@@ -148,6 +148,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
     def dc_read_set_func(self):
         # 存储修改过的参数
         self.dc_setting_dic = {}
+        self.dc_write_set.setEnabled(True)
         
         self.dc_send_msg(dc_setting + calc_crc(dc_setting))
     

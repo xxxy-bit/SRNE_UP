@@ -616,6 +616,7 @@ class Ui_MainWindow(object):
         self.dc_BatConstChgGapTime.setObjectName("dc_BatConstChgGapTime")
         self.gridLayout_5.addWidget(self.dc_BatConstChgGapTime, 7, 4, 1, 1)
         self.dc_write_set = PushButton(self.tab_2)
+        self.dc_write_set.setEnabled(False)
         self.dc_write_set.setObjectName("dc_write_set")
         self.gridLayout_5.addWidget(self.dc_write_set, 8, 4, 1, 1)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
