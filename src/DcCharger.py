@@ -17,7 +17,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         self.setupUi(self)
         self.dc_layout_init()
         # self.dc_i18n_init()
-        self.setWindowTitle(f'{self.windowTitle()} v0.0.2')
+        self.setWindowTitle(f'{self.windowTitle()} v0.0.3')
     
     # 初始化
     def dc_layout_init(self):
@@ -172,9 +172,11 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
             self.dc_send_msg(self.dc_timer_txt[self.dc_send_setting_timer_step])
             self.dc_send_setting_timer_step += 1
             self.dc_write_set.setEnabled(False)
+            self.dc_read_set.setEnabled(False)
         else:
             self.dc_send_setting_timer.stop()
             self.dc_write_set.setEnabled(True)
+            self.dc_read_set.setEnabled(True)
             return QtWidgets.QMessageBox.about(self, 'Tips', '数据已写入，请重新获取数据.')
         
     # 参数设置-获取修改过的参数
@@ -187,13 +189,19 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         
         if temp != '':
             name = set_obj.whatsThis()[22:-18]
-            data = int(temp) * int(dc_data_list[dc_setting][name][2])
+            
+            if isinstance(temp, float):
+                data = temp * int(dc_data_list[dc_setting][name][2])
+                if data % 2 != 0:
+                    data += 1
+            else:
+                data = temp * int(dc_data_list[dc_setting][name][2])
             print(data)
             
             if name == '超压电压(V)' or name == '充电限制电压(V)' or name == '均衡充电电压(V)' \
                 or name == '提升充电电压(V)' or name == '浮充充电电压(V)' or name == '提升充电返回电压(V)' \
-                    or name == '欠压警告电压(V)':
-                data = int((data / self.sys_vol_power) * 10)
+                    or name == '欠压警告电压(V)' or name == '电源模式的输出电压(V)':
+                data = int(data / self.sys_vol_power)
                 print(data)
 
             # 获取地址位
