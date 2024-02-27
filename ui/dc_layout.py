@@ -150,6 +150,7 @@ class Ui_MainWindow(object):
         self.dc_total_bat_chgAH.setObjectName("dc_total_bat_chgAH")
         self.gridLayout_2.addWidget(self.dc_total_bat_chgAH, 4, 3, 1, 1)
         self.dc_bat_tmp = QtWidgets.QLineEdit(self.groupBox_2)
+        self.dc_bat_tmp.setEnabled(False)
         self.dc_bat_tmp.setObjectName("dc_bat_tmp")
         self.gridLayout_2.addWidget(self.dc_bat_tmp, 1, 1, 1, 1)
         self.dc_open_max_vol = QtWidgets.QLineEdit(self.groupBox_2)

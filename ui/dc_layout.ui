@@ -236,7 +236,11 @@
                   <widget class="QLineEdit" name="dc_total_bat_chgAH"/>
                  </item>
                  <item row="1" column="1">
-                  <widget class="QLineEdit" name="dc_bat_tmp"/>
+                  <widget class="QLineEdit" name="dc_bat_tmp">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
                  </item>
                  <item row="2" column="3">
                   <widget class="QLineEdit" name="dc_open_max_vol"/>
