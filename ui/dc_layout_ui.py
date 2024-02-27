@@ -688,7 +688,7 @@ class Ui_MainWindow(object):
         self.dc_CvModeEn.setObjectName("dc_CvModeEn")
         self.gridLayout_5.addWidget(self.dc_CvModeEn, 0, 4, 1, 1)
         self.dc_set_sys_current = SpinBox(self.tab_2)
-        self.dc_set_sys_current.setEnabled(True)
+        self.dc_set_sys_current.setEnabled(False)
         self.dc_set_sys_current.setMaximum(255)
         self.dc_set_sys_current.setObjectName("dc_set_sys_current")
         self.gridLayout_5.addWidget(self.dc_set_sys_current, 3, 6, 1, 1)

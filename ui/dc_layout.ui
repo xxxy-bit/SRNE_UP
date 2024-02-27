@@ -1045,7 +1045,7 @@ PillToolButton:disabled:checked {
           <item row="3" column="6">
            <widget class="SpinBox" name="dc_set_sys_current">
             <property name="enabled">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="whatsThis">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;系统电压设置(V)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>

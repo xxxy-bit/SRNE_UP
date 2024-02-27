@@ -486,7 +486,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                     temp15 = int(result['充电模式'])
                     temp16 = float(result['充电模式高于此电压充电(V)'])
                     temp17 = float(result['充电模式低于此电压停冲(V)'])
-                    temp18 = float(result['电源模式的输出电压(V)'])
+                    temp18 = float(result['电源模式的输出电压(V)']) * self.sys_vol_power
                     temp19 = float(result['电源模式高于此电压充电(V)'])
                     temp20 = float(result['电源模式低于此电压停冲(V)'])
                     temp21 = int(result['充满截止电流(A)'])
@@ -502,7 +502,6 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                     # 默认开启
                     self.dc_set_battery_type.setEnabled(True)       # 蓄电池类型
                     self.dc_set_battery_cap.setEnabled(True)        # 标称容量
-                    self.dc_set_sys_current.setEnabled(True)        # 系统电压
                     self.dc_ChgModeEn.setEnabled(True)              # 充电模式开关机
                     self.dc_ChgModeInMaxWorkVolt.setEnabled(True)   # 充电模式启动电压
                     self.dc_ChgModeInLowWorkVolt.setEnabled(True)   # 充电模式停止电压
@@ -565,7 +564,6 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                     self.dc_CVModeInLowWorkVolt.setEnabled(True)
                     
                     self.dc_set_battery_cap.setEnabled(False)
-                    self.dc_set_sys_current.setEnabled(False)
                     self.dc_set_battery_type.setEnabled(False)
                     self.dc_set_battery_overpressure.setEnabled(False)
                     self.dc_set_charge_limit.setEnabled(False)
