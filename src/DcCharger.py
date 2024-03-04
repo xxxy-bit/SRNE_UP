@@ -76,7 +76,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
             self.dc_CvModeOutVolt,
             self.dc_CvModeInMaxWorkVolt,
             self.dc_CVModeInLowWorkVolt,
-            self.dc_StopChgDelayTim,
+            # self.dc_StopChgDelayTim,
             self.dc_StopChgCurrSet
         ]
         
@@ -534,7 +534,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                         self.dc_BatImprovChgTime.setEnabled(True)           # 提升充电时间
                         self.dc_BatConstChgGapTime.setEnabled(True)         # 均衡充电间隔
                         self.dc_BatUnderVolt.setEnabled(True)               # 欠压警告电压
-                        self.dc_StopChgDelayTim.setEnabled(True)            # 充满截止延时
+                        # self.dc_StopChgDelayTim.setEnabled(True)            # 充满截止延时
                         self.dc_StopChgCurrSet.setEnabled(True)             # 充满截止电流
                         
                     elif temp4 == 4:    # 锂电池
@@ -549,7 +549,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                         self.dc_BatImprovChgTime.setEnabled(False)           # 提升充电时间
                         self.dc_BatConstChgGapTime.setEnabled(False)         # 均衡充电间隔
                         self.dc_BatUnderVolt.setEnabled(True)               # 欠压警告电压
-                        self.dc_StopChgDelayTim.setEnabled(True)            # 充满截止延时
+                        # self.dc_StopChgDelayTim.setEnabled(True)            # 充满截止延时
                         self.dc_StopChgCurrSet.setEnabled(True)             # 充满截止电流
                         
                     else:   # 其他类型
@@ -564,7 +564,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                         self.dc_BatImprovChgTime.setEnabled(False)           # 提升充电时间
                         self.dc_BatConstChgGapTime.setEnabled(False)         # 均衡充电间隔
                         self.dc_BatUnderVolt.setEnabled(False)               # 欠压警告电压
-                        self.dc_StopChgDelayTim.setEnabled(True)            # 充满截止延时
+                        # self.dc_StopChgDelayTim.setEnabled(True)            # 充满截止延时
                         self.dc_StopChgCurrSet.setEnabled(True)             # 充满截止电流
                     
                 elif temp15 == 1:   # 电源模式
@@ -588,7 +588,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                     self.dc_BatConstChgGapTime.setEnabled(False)
                     self.dc_ChgModeInMaxWorkVolt.setEnabled(False)
                     self.dc_ChgModeInLowWorkVolt.setEnabled(False)
-                    self.dc_StopChgDelayTim.setEnabled(False)
+                    # self.dc_StopChgDelayTim.setEnabled(False)
                     self.dc_StopChgCurrSet.setEnabled(False)
                     self.dc_ChgModeEn.setEnabled(False)
                 
@@ -617,7 +617,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                 self.dc_CvModeInMaxWorkVolt.setValue(temp19)
                 self.dc_CVModeInLowWorkVolt.setValue(temp20)
                 self.dc_StopChgCurrSet.setValue(temp21)
-                self.dc_StopChgDelayTim.setValue(temp22)
+                # self.dc_StopChgDelayTim.setValue(temp22)
                 if temp23 == 0:
                     self.dc_CvModeEn.setChecked(False)
                 else:

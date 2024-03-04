@@ -1239,27 +1239,10 @@ PillToolButton:disabled:checked {
             </property>
            </widget>
           </item>
-          <item row="5" column="1">
-           <widget class="QLabel" name="label_27">
-            <property name="text">
-             <string>充满截止延时(S)</string>
-            </property>
-           </widget>
-          </item>
           <item row="5" column="3">
            <widget class="QLabel" name="label_28">
             <property name="text">
              <string>充满截止电流(A)</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="2">
-           <widget class="SpinBox" name="dc_StopChgDelayTim">
-            <property name="whatsThis">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;充满截止延时(s)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="maximum">
-             <number>600</number>
             </property>
            </widget>
           </item>
