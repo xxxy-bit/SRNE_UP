@@ -75,7 +75,9 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
             self.dc_ChgModeInLowWorkVolt,
             self.dc_CvModeOutVolt,
             self.dc_CvModeInMaxWorkVolt,
-            self.dc_CVModeInLowWorkVolt
+            self.dc_CVModeInLowWorkVolt,
+            self.dc_StopChgDelayTim,
+            self.dc_StopChgCurrSet
         ]
         
         # 存储修改过的参数
@@ -194,15 +196,16 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                 data = temp * int(dc_data_list[dc_setting][name][2])
                 if data % 2 != 0:
                     data += 1
+                data = int(data)
             else:
                 data = temp * int(dc_data_list[dc_setting][name][2])
-            print(data)
+            print(f'data1: {data}')
             
             if name == '超压电压(V)' or name == '充电限制电压(V)' or name == '均衡充电电压(V)' \
                 or name == '提升充电电压(V)' or name == '浮充充电电压(V)' or name == '提升充电返回电压(V)' \
                     or name == '欠压警告电压(V)' or name == '电源模式的输出电压(V)':
                 data = int(data / self.sys_vol_power)
-                print(data)
+                print(f'data2: {data}')
 
             # 获取地址位
             addr = dc_data_list[dc_setting][name][3]

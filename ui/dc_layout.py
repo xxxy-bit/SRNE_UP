@@ -933,6 +933,8 @@ class Ui_MainWindow(object):
         self.label_45.setText(_translate("MainWindow", "均衡充电电压(V)"))
         self.label_27.setText(_translate("MainWindow", "充满截止延时(S)"))
         self.label_28.setText(_translate("MainWindow", "充满截止电流(A)"))
+        self.dc_StopChgDelayTim.setWhatsThis(_translate("MainWindow", "<html><head/><body><p>充满截止延时(s)</p></body></html>"))
+        self.dc_StopChgCurrSet.setWhatsThis(_translate("MainWindow", "<html><head/><body><p>充满截止电流(A)</p></body></html>"))
         self.label_59.setText(_translate("MainWindow", "充电模式输出开关"))
         self.dc_ChgModeEn.setOnText(_translate("MainWindow", "开"))
         self.dc_ChgModeEn.setOffText(_translate("MainWindow", "关"))

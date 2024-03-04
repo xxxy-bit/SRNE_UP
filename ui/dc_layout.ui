@@ -1255,6 +1255,9 @@ PillToolButton:disabled:checked {
           </item>
           <item row="5" column="2">
            <widget class="SpinBox" name="dc_StopChgDelayTim">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;充满截止延时(s)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="maximum">
              <number>600</number>
             </property>
@@ -1262,6 +1265,9 @@ PillToolButton:disabled:checked {
           </item>
           <item row="5" column="4">
            <widget class="SpinBox" name="dc_StopChgCurrSet">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;充满截止电流(A)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="maximum">
              <number>10</number>
             </property>
