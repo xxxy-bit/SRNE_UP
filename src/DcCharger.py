@@ -46,6 +46,9 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         # 加载波特率列表
         self.dc_baud_list.addItems(['9600', '19200', '57600', '115200'])
         
+        # 加载发电机类型
+        self.dc_generator_type.addItems(['传统发电机', '智能发电机', '自定义发电机'])
+        
         # 创建监控日志文件
         self.dc_now = datetime.datetime.now().strftime('%Y-%m-%d_%H_%M_%S')
         self.dc_pd_csv = ''
@@ -77,7 +80,8 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
             self.dc_CvModeInMaxWorkVolt,
             self.dc_CVModeInLowWorkVolt,
             # self.dc_StopChgDelayTim,
-            self.dc_StopChgCurrSet
+            self.dc_StopChgCurrSet,  # 充满截止电流
+            self.dc_generator_type,  # 发电机类型
         ]
         
         # 存储修改过的参数
@@ -475,7 +479,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                 self.dc_ct_csv += f'{temp1},{temp2},{temp3},{temp4},{temp5},{temp6},{temp7},{temp8},{temp9},{temp10},{temp11},{temp12},{temp13},{temp14},{temp15},{temp16},{temp17},{arg[1]}\n'
             
             # 参数设置区域
-            elif res[:6] == f'{dc_setting[:4]}74' and len(res) == 242:
+            elif res[:6] == f'{dc_setting[:4]}7a' and len(res) == 254:
                 arg = dc_data_analysis(res, dc_setting)
                 result = arg[0]
                 
@@ -501,8 +505,9 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                     temp19 = float(result['电源模式高于此电压充电(V)'])
                     temp20 = float(result['电源模式低于此电压停冲(V)'])
                     temp21 = int(result['充满截止电流(A)'])
-                    temp22 = int(result['充满截止延时(s)'])
+                    # temp22 = int(result['充满截止延时(s)'])
                     temp23 = int(result['电源模式输出使能'])
+                    temp24 = int(result['发电机类型'])
                     
                 except Exception as e:
                     self.dc_add_tableItem('receive', res, self.dc_tableWidget, self.log_name)
@@ -514,15 +519,21 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                     self.dc_set_battery_type.setEnabled(True)       # 蓄电池类型
                     self.dc_set_battery_cap.setEnabled(True)        # 标称容量
                     self.dc_ChgModeEn.setEnabled(True)              # 充电模式开关机
-                    self.dc_ChgModeInMaxWorkVolt.setEnabled(True)   # 充电模式启动电压
-                    self.dc_ChgModeInLowWorkVolt.setEnabled(True)   # 充电模式停止电压
+                    self.dc_generator_type.setEnabled(True)         # 发电机类型
                     
                     self.dc_CvModeInMaxWorkVolt.setEnabled(False)   # 电源模式启动电压
                     self.dc_CVModeInLowWorkVolt.setEnabled(False)   # 电源模式停止电压
                     self.dc_CvModeOutVolt.setEnabled(False)         # 电源模式输出电压
                     self.dc_CvModeEn.setEnabled(False)              # 电源模式开关
                     
-                    if temp4 == 0:  # 自定义
+                    if temp24 == 0 or temp24 == 1:
+                        self.dc_ChgModeInMaxWorkVolt.setEnabled(False)   # 充电模式启动电压
+                        self.dc_ChgModeInLowWorkVolt.setEnabled(False)   # 充电模式停止电压
+                    else:
+                        self.dc_ChgModeInMaxWorkVolt.setEnabled(True)   # 充电模式启动电压
+                        self.dc_ChgModeInLowWorkVolt.setEnabled(True)   # 充电模式停止电压
+                        
+                    if temp4 == 0:  # 电池自定义
                         self.dc_charge_elec_set.setEnabled(True)            # 最大充电电流
                         self.dc_set_battery_overpressure.setEnabled(True)   # 超压电压
                         self.dc_set_charge_limit.setEnabled(True)           # 充电限制电压
@@ -591,6 +602,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                     # self.dc_StopChgDelayTim.setEnabled(False)
                     self.dc_StopChgCurrSet.setEnabled(False)
                     self.dc_ChgModeEn.setEnabled(False)
+                    self.dc_generator_type.setEnabled(False)         # 发电机类型
                 
                 # 阻止信号发送
                 for obj in self.dc_setting_edit:
@@ -622,6 +634,8 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                     self.dc_CvModeEn.setChecked(False)
                 else:
                     self.dc_CvModeEn.setChecked(True)
+                
+                self.dc_generator_type.setCurrentIndex(temp24)
                 
                 # 允许信号发送
                 for obj in self.dc_setting_edit:
