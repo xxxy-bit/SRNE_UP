@@ -17,7 +17,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         self.setupUi(self)
         self.dc_layout_init()
         # self.dc_i18n_init()
-        self.setWindowTitle(f'{self.windowTitle()} v0.0.3')
+        self.setWindowTitle(f'{self.windowTitle()} v0.0.4')
     
     # 初始化
     def dc_layout_init(self):
@@ -82,6 +82,8 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
             # self.dc_StopChgDelayTim,
             self.dc_StopChgCurrSet,  # 充满截止电流
             self.dc_generator_type,  # 发电机类型
+            self.dc_CvModeEn,       # 电源模式输出开关
+            self.dc_ChgModeEn,      # 充电模式输出开关
         ]
         
         # 存储修改过的参数
@@ -111,6 +113,9 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         for s in self.dc_setting_edit:
             try:
                 s.currentIndexChanged.connect(functools.partial(self.dc_setting_edit_func, s))
+            except AttributeError:
+                # 输出电源模式开关 and 充电模式输出开关 发生的异常不处理 pass
+                pass
             except Exception:
                 s.valueChanged.connect(functools.partial(self.dc_setting_edit_func, s))
 
@@ -152,12 +157,29 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
     
     # 参数设置-读取数据
     def dc_read_set_func(self):
-        # 存储修改过的参数
+        # 清空存储修改过的参数
         self.dc_setting_dic = {}
-        self.dc_write_set.setEnabled(True)
         
-        self.dc_send_msg(dc_setting + calc_crc(dc_setting))
+        self.dc_write_set.setEnabled(False)
+        self.dc_read_set.setEnabled(False)
+        
+        self.dc_get_setting_timer = QtCore.QTimer()
+        self.dc_get_setting_timer_step = 0
+        self.dc_get_setting_timer.timeout.connect(self.dc_get_setting_timer_func)
+        self.dc_get_setting_timer.start(1000)
     
+    # 参数设置-读取数据-计时器
+    def dc_get_setting_timer_func(self):
+        if self.dc_get_setting_timer_step == 0:
+            self.dc_send_msg(dc_setting + calc_crc(dc_setting))
+        else:
+            self.dc_send_msg(dc_setting_get_chg + calc_crc(dc_setting_get_chg))
+            self.dc_get_setting_timer.stop()
+            self.dc_write_set.setEnabled(True)
+            self.dc_read_set.setEnabled(True)
+            return QtWidgets.QMessageBox.information(self, 'tips', '读取完成', QtWidgets.QMessageBox.Ok)
+        self.dc_get_setting_timer_step += 1
+        
     # 参数设置-写入数据
     def dc_write_set_func(self):
         if len(self.dc_setting_dic) != 0:
@@ -183,7 +205,8 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
             self.dc_send_setting_timer.stop()
             self.dc_write_set.setEnabled(True)
             self.dc_read_set.setEnabled(True)
-            return QtWidgets.QMessageBox.about(self, 'Tips', '数据已写入，请重新获取数据.')
+            self.dc_read_set_func()
+            # return QtWidgets.QMessageBox.about(self, 'Tips', '数据已写入，请重新获取数据.')
         
     # 参数设置-获取修改过的参数
     def dc_setting_edit_func(self, set_obj):
@@ -640,5 +663,17 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                 # 允许信号发送
                 for obj in self.dc_setting_edit:
                     obj.blockSignals(False)
+            elif res[:6] == f'{dc_setting_get_chg[:4]}02' and len(res) == 14:
+                
+                num = int(res[6:10], 16)
+                self.dc_ChgModeEn.blockSignals(True)
+                
+                if num == 0:
+                    self.dc_ChgModeEn.setChecked(False)
+                elif num == 1:
+                    self.dc_ChgModeEn.setChecked(True)
+                    
+                self.dc_ChgModeEn.blockSignals(False)
+            
                 
             self.dc_add_tableItem('receive', res, self.dc_tableWidget, self.log_name)

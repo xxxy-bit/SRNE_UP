@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'E:\svn\SrneUpperComputer\ui\main_meun.ui'
+# Form implementation generated from reading ui file 'e:\svn\SrneUpperComputer\ui\main_meun.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -191,7 +191,7 @@ class Ui_MainWindow(object):
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 22))
         self.menubar.setObjectName("menubar")
         self.menu = QtWidgets.QMenu(self.menubar)
-        self.menu.setGeometry(QtCore.QRect(-1603, 303, 109, 82))
+        self.menu.setGeometry(QtCore.QRect(-1603, 303, 117, 82))
         self.menu.setObjectName("menu")
         MainWindow.setMenuBar(self.menubar)
         self.lang_zh = QtWidgets.QAction(MainWindow)
@@ -207,7 +207,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "SRNE v0.1.3.8"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "SRNE v0.1.3.9"))
         self.label.setText(_translate("MainWindow", "选择连接的设备"))
         self.ac_text.setText(_translate("MainWindow", "AC-DC 充电器"))
         self.bms_text.setText(_translate("MainWindow", "BMS"))
