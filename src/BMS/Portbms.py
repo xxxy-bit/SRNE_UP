@@ -113,6 +113,11 @@ class Portbms(BmsLayout):
         # 是否在获取历史数据
         self.his_status = False
         
+        # 导出历史数据的目录名称
+        self.export_history_dir = 'export_history'
+        if os.path.exists(self.export_history_dir) == False:
+                os.mkdir(self.export_history_dir)
+        
         # 获取蜂鸣器状态标志位
         self.beep_tag = False
         
@@ -186,6 +191,7 @@ class Portbms(BmsLayout):
     # 历史数据 槽函数slots
     def hisdata_slotsTrigger(self):
         self.hisShow.clicked.connect(self.his_show)
+        self.export_history.clicked.connect(self.export_history_func)
         self.clearShow.clicked.connect(self.clear_his_msg)
 
     # 参数设置 槽函数slots
@@ -201,15 +207,12 @@ class Portbms(BmsLayout):
 
     # 系统设置 槽函数slots
     def sysset_slotsTrigger(self):
-        
-        
         self.readCap.clicked.connect(self.readCap_func)
         self.writeCap.clicked.connect(self.writeCap_func)
         
         self.readTime.clicked.connect(self.readTime_func)
         self.sys_time = False   # 系统时间标志位
         self.sync_btn.clicked.connect(self.sync_btn_func)   # 同步时间
-        
         self.writeTime.clicked.connect(self.writeTime_func)
         
         self.sys_edit_dic = {}
@@ -227,6 +230,24 @@ class Portbms(BmsLayout):
     def pal_monitor_slotsTrigger(self):
         # self.pal_check.clicked.connect(self.pal_check_func)
         self.pal_start.clicked.connect(self.pal_start_func)
+
+    # 历史数据-导出历史记录按钮
+    def export_history_func(self):
+        try:
+            with open(self.export_history_name, 'w', encoding='utf-8') as f: 
+                for k, v in self.cloumn_name.items():
+                    f.write(k + ',')
+                f.write('\n' + self.export_history_csv)
+        except PermissionError as e:
+            return QMessageBox.critical(self, 'Error', '文件被占用，请关闭Excel文件后重试.', QMessageBox.Ok) 
+        except Exception as e:
+            return QMessageBox.critical(self, 'Error', f'{e}\n未知错误，请联系相关开发人员.', QMessageBox.Ok) 
+
+        # 是否需要主动打开目录
+        open_file =os.path.join(os.getcwd(), self.export_history_dir, f'{self.export_history_now}.csv')
+        if QMessageBox.question(self, 'Tips', f'导出成功，文件位置为：{open_file}\n是否需要打开该文件?', 
+                QMessageBox.Yes | QMessageBox.No) == QMessageBox.Yes:
+            os.startfile(open_file)
 
     # 并联监控-开始获取信息按钮
     def pal_start_func(self):
@@ -709,6 +730,7 @@ class Portbms(BmsLayout):
         self.his_status = False
         self.hisShow.setText(hisdata_label1)
         self.start_moni()
+        self.export_history.setEnabled(False)
         
     # 获取历史数据
     def his_show(self):
@@ -719,6 +741,14 @@ class Portbms(BmsLayout):
             self.clearRow_btn(self.hisTable)
             
             self.clear_his_status = False
+            
+            # 创建历史记录 .csv:
+            self.export_history_now = datetime.datetime.now().strftime('%Y-%m-%d_%H_%M_%S')
+            self.export_history_name = os.path.join(self.export_history_dir, f'{self.export_history_now}.csv')
+            
+                
+            # 存储历史数据
+            self.export_history_csv = ''
             
             self.hisTime = QTimer()
             self.hisTime.timeout.connect(self.his_time_func)
@@ -733,8 +763,12 @@ class Portbms(BmsLayout):
             self.start_moni()
             self.hisShow.setText('继续')
             
+            # 允许导出历史记录
+            self.export_history.setEnabled(True)
+            
         elif self.hisShow.text() == '继续':
             self.stop_moni()
+            self.export_history.setEnabled(False)
             if self.continue_status:
                 self.hisTime.start(1000)
                 self.his_status = True
@@ -775,6 +809,7 @@ class Portbms(BmsLayout):
             self.start_moni()
             self.hisShow.setText(hisdata_label1)
             self.continue_status = False
+            self.export_history.setEnabled(True)    # 允许导出历史数据
 
     # 发送数据
     def send_msg(self, data):
@@ -943,9 +978,15 @@ class Portbms(BmsLayout):
                     rows = self.hisTable.rowCount()
                     self.hisTable.setRowCount(rows + 1)
                     count = 0
+                    
                     for k,v in p06.items():
                         self.hisTable.setItem(rows, count, QTableWidgetItem(p06[k]))
+                        # 记录历史数据
+                        if ',' in p06[k]:
+                            p06[k] = p06[k].replace(',', '/')
+                        self.export_history_csv += p06[k] + ','
                         count += 1
+                    self.export_history_csv += '\n'
             # 读取版本号
             elif res[:6] == f'{bms_version[:4]}04' and len(res) == 18:
                 print('读取版本号')

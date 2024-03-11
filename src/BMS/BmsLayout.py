@@ -1128,18 +1128,20 @@ class BmsLayout(QWidget):
         tab4_layout_table = QVBoxLayout()
         tab4_layout_table_btn_H = QHBoxLayout()
         self.hisShow = QPushButton(hisdata_label1)
+        self.export_history = QPushButton('导出历史记录')
+        self.export_history.setEnabled(False)
         self.clearShow = QPushButton(hisdata_label2)
         self.clearShow.setEnabled(False)
         self.hisTable = TableWidget()
 
-        cloumn_name = self.json_modbus[bms_history]
-        self.hisTable.setColumnCount(len(cloumn_name))
+        self.cloumn_name = self.json_modbus[bms_history]
+        self.hisTable.setColumnCount(len(self.cloumn_name))
         # self.hisTable.setEditTriggers(QAbstractItemView.NoEditTriggers) # 不可编辑
         # 载入表头字段
         self.hisTable.setHorizontalHeaderLabels(
-            [k for k, v in cloumn_name.items()])
+            [k for k, v in self.cloumn_name.items()])
         # 根据字段长度自动适配表头宽度
-        for i in range(len(cloumn_name.items())):
+        for i in range(len(self.cloumn_name.items())):
             self.hisTable.resizeColumnToContents(i)
         self.hisTable.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
 
@@ -1147,6 +1149,7 @@ class BmsLayout(QWidget):
         # self.hisTable.setColumnWidth(41,150)    # PACK+/-温度(最高)(℃)
 
         tab4_layout_table_btn_H.addWidget(self.hisShow)
+        tab4_layout_table_btn_H.addWidget(self.export_history)
         tab4_layout_table_btn_H.addWidget(self.clearShow)
 
         tab4_layout_table.addLayout(tab4_layout_table_btn_H)
