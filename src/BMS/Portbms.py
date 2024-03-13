@@ -116,7 +116,7 @@ class Portbms(BmsLayout):
         # 导出历史数据的目录名称
         self.export_history_dir = 'export_history'
         if os.path.exists(self.export_history_dir) == False:
-                os.mkdir(self.export_history_dir)
+            os.mkdir(self.export_history_dir)
         
         # 获取蜂鸣器状态标志位
         self.beep_tag = False
@@ -234,9 +234,9 @@ class Portbms(BmsLayout):
     # 历史数据-导出历史记录按钮
     def export_history_func(self):
         try:
-            with open(self.export_history_name, 'w', encoding='utf-8') as f: 
+            with open(self.export_history_name, 'w', encoding='utf-8-sig') as f:
                 for k, v in self.cloumn_name.items():
-                    f.write(k + ',')
+                    f.write(k + ' ,')
                 f.write('\n' + self.export_history_csv)
         except PermissionError as e:
             return QMessageBox.critical(self, 'Error', '文件被占用，请关闭Excel文件后重试.', QMessageBox.Ok) 
