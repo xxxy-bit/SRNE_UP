@@ -449,7 +449,7 @@ class Portbms(BmsLayout):
         else:
             self.writeCap_timer.stop()
             self.writeCap.setEnabled(True)
-            self.writeCap.setText('写入')
+            self.writeCap.setText(systime_label3)
             self.start_moni()
             QMessageBox.information(self, 'tips', '写入完毕，请重新读取数据。', QMessageBox.Ok)
     
@@ -473,7 +473,7 @@ class Portbms(BmsLayout):
         self.stop_moni()
         txt = self.adds_combox.currentText()
         hex_addr = self.datacalibration_adds_list[txt]
-        if txt == '电流' or txt == '总压':
+        if txt == bms_history_label3 or txt == bms_history_label2:
             hex_num = format(int(float(self.adds_txt.text()) * 100), '04x')
             # print(hex_num)
         else:
@@ -500,7 +500,7 @@ class Portbms(BmsLayout):
         if self.adds_btn_time_setp == 7:
             self.adds_btn_time.stop()
             self.start_moni()
-            return QMessageBox.information(self, 'tips', '校准完毕。', QMessageBox.Ok)
+            return QMessageBox.information(self, 'tips', datacal_label3, QMessageBox.Ok)
 
     # 显示进度条
     def pro_timer_func(self):
@@ -745,7 +745,6 @@ class Portbms(BmsLayout):
             # 创建历史记录 .csv:
             self.export_history_now = datetime.datetime.now().strftime('%Y-%m-%d_%H_%M_%S')
             self.export_history_name = os.path.join(self.export_history_dir, f'{self.export_history_now}.csv')
-            
                 
             # 存储历史数据
             self.export_history_csv = ''
@@ -755,24 +754,24 @@ class Portbms(BmsLayout):
             self.hisTime.start(1000)
             self.hisNum = 0
             self.his_status = True
-            self.hisShow.setText('暂停')
+            self.hisShow.setText(hisdata_label5)
             
-        elif self.hisShow.text() == '暂停':
+        elif self.hisShow.text() == hisdata_label5:
             self.hisTime.stop()
             self.his_status = False
             self.start_moni()
-            self.hisShow.setText('继续')
+            self.hisShow.setText(hisdata_label4)
             
             # 允许导出历史记录
             self.export_history.setEnabled(True)
             
-        elif self.hisShow.text() == '继续':
+        elif self.hisShow.text() == hisdata_label4:
             self.stop_moni()
             self.export_history.setEnabled(False)
             if self.continue_status:
                 self.hisTime.start(1000)
                 self.his_status = True
-                self.hisShow.setText('暂停')
+                self.hisShow.setText(hisdata_label5)
     
     # 获取最近历史数据计时器
     def his_time_func(self):

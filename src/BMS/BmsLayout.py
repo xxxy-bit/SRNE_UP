@@ -244,8 +244,8 @@ class BmsLayout(QWidget):
             '_3', palnum_label2 + '_4', palnum_label2 + '_5',
             palnum_label2 + '_6', palnum_label2 +
             '_7', palnum_label2 + '_8', palnum_label2 + '_9',
-            palnum_label3, 'PACK' + paldata_label4, 'PACK' +
-            battery_label3, 'PACK' + battery_label4,
+            palnum_label3, 'PACK ' + paldata_label4, 'PACK ' +
+            battery_label3, 'PACK ' + battery_label4,
             palnum_label7, palnum_label8, 'PACK SOC',
             'Cell' + palnum_label9 + '_1', 'Cell' + palnum_label9 +
             '_2', 'Cell' + palnum_label9 + '_3', 'Cell' + palnum_label9 + '_4',
@@ -360,7 +360,7 @@ class BmsLayout(QWidget):
         elect_groupBox_v_btmH = QHBoxLayout()
         self.readCap = QPushButton(sysset_label5)
         self.readCap.setStyleSheet(open_Button)
-        self.writeCap = QPushButton('写入')
+        self.writeCap = QPushButton(systime_label3)
         self.writeCap.setStyleSheet(open_Button)
 
         elect_groupBox_v_btmH.addWidget(self.readCap)
@@ -373,7 +373,7 @@ class BmsLayout(QWidget):
         sys_layout_left.addWidget(elect_groupBox)
 
         # 数据校准
-        datacalibration_groupBox = QGroupBox('数据校准')
+        datacalibration_groupBox = QGroupBox(datacal_label1)
         datacalibration_groupBox.setStyleSheet(white_bg)
         datacalibration_groupBox.setMaximumHeight(250)
         datacalibration_groupBox.setMaximumWidth(250)
@@ -384,24 +384,24 @@ class BmsLayout(QWidget):
         self.adds_combox = ComboBox()
 
         self.datacalibration_adds_list = {
-            '电流': '01700105',
-            '总压': '01700106',
-            'cell_1 电压': '01700107',
-            'cell_2 电压': '01700108',
-            'cell_3 电压': '01700109',
-            'cell_4 电压': '0170010a',
-            'cell_5 电压': '0170010b',
-            'cell_6 电压': '0170010c',
-            'cell_7 电压': '0170010d',
-            'cell_8 电压': '0170010e',
-            'cell_9 电压': '0170010f',
-            'cell_10 电压': '01700110',
-            'cell_11 电压': '01700111',
-            'cell_12 电压': '01700112',
-            'cell_13 电压': '01700113',
-            'cell_14 电压': '01700114',
-            'cell_15 电压': '01700115',
-            'cell_16 电压': '01700116',
+            bms_history_label3: '01700105',
+            bms_history_label2: '01700106',
+            f'cell_1 {palnum_label1}': '01700107',
+            f'cell_2 {palnum_label1}': '01700108',
+            f'cell_3 {palnum_label1}': '01700109',
+            f'cell_4 {palnum_label1}': '0170010a',
+            f'cell_5 {palnum_label1}': '0170010b',
+            f'cell_6 {palnum_label1}': '0170010c',
+            f'cell_7 {palnum_label1}': '0170010d',
+            f'cell_8 {palnum_label1}': '0170010e',
+            f'cell_9 {palnum_label1}': '0170010f',
+            f'cell_10 {palnum_label1}': '01700110',
+            f'cell_11 {palnum_label1}': '01700111',
+            f'cell_12 {palnum_label1}': '01700112',
+            f'cell_13 {palnum_label1}': '01700113',
+            f'cell_14 {palnum_label1}': '01700114',
+            f'cell_15 {palnum_label1}': '01700115',
+            f'cell_16 {palnum_label1}': '01700116',
         }
 
         self.adds_combox.addItems(
@@ -412,7 +412,7 @@ class BmsLayout(QWidget):
         self.adds_txt = DoubleSpinBox()
         self.adds_txt.setMinimum(0)
         self.adds_txt.setMaximum(999)
-        self.adds_btn = PushButton('校准')
+        self.adds_btn = PushButton(datacal_label2)
         datacalibration_groupBox_v_h2.addWidget(self.adds_txt)
         datacalibration_groupBox_v_h2.addWidget(self.adds_btn)
         datacalibration_groupBox_v_h2.setStretch(0, 1)
@@ -432,7 +432,7 @@ class BmsLayout(QWidget):
         sys_layout_left.addWidget(datacalibration_groupBox)
 
         # 系统时间
-        time_groupBox = QGroupBox('系统时间')
+        time_groupBox = QGroupBox(systime_label1)
         time_groupBox.setStyleSheet(white_bg)
         time_groupBox.setMaximumHeight(250)
         time_groupBox.setMaximumWidth(250)
@@ -443,7 +443,7 @@ class BmsLayout(QWidget):
         self.now_time = DateTimeEdit()
         self.now_time.setDisplayFormat('yyyy/M/d H:mm:ss')
         
-        self.sync_btn = PushButton('同步时间')
+        self.sync_btn = PushButton(systime_label2)
 
         time_groupBox_v_toph.addWidget(self.now_time)
         time_groupBox_v_toph.addWidget(self.sync_btn)
@@ -454,7 +454,7 @@ class BmsLayout(QWidget):
         time_groupBox_v_bomh = QHBoxLayout()
         self.readTime = QPushButton(sysset_label5)
         self.readTime.setStyleSheet(open_Button)
-        self.writeTime = QPushButton('写入')
+        self.writeTime = QPushButton(systime_label3)
         self.writeTime.setStyleSheet(open_Button)
 
         time_groupBox_v_bomh.addWidget(self.readTime)
@@ -775,7 +775,7 @@ class BmsLayout(QWidget):
         sysStatus_groupBox.setLayout(sysStatus_groupBox_grid)
 
         # 其他状态（故障、告警、保护）
-        otherStatus_groupBox = QGroupBox('其他状态')
+        otherStatus_groupBox = QGroupBox(group_tabel11)
         otherStatus_groupBox.setStyleSheet(white_bg)
         otherStatus_groupBox_h = QHBoxLayout()
         otherStatus_groupBox_h.setSpacing(0)
@@ -1128,7 +1128,7 @@ class BmsLayout(QWidget):
         tab4_layout_table = QVBoxLayout()
         tab4_layout_table_btn_H = QHBoxLayout()
         self.hisShow = QPushButton(hisdata_label1)
-        self.export_history = QPushButton('导出历史记录')
+        self.export_history = QPushButton(hisdata_label3)
         self.export_history.setEnabled(False)
         self.clearShow = QPushButton(hisdata_label2)
         self.clearShow.setEnabled(False)

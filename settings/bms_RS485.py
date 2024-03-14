@@ -33,10 +33,10 @@ def get_bms_rs485_list():
             f"{palnum_label2}_8":[196, 8, -10, "℃"],
             f"{palnum_label2}_9":[204, 8, -10, "℃"],
             palnum_label3:[212, 8, -100, "A"],              # PACK电流
-            f"PACK{paldata_label4}":[220, 8, -100, "V"],    # 总电压
-            f"PACK{battery_label3}":[228, 8, 100, "AH"],    # 剩余容量
+            f"PACK {paldata_label4}":[220, 8, -100, "V"],    # 总电压
+            f"PACK {battery_label3}":[228, 8, 100, "AH"],    # 剩余容量
             "用户自定义个数":[236, 4, 1, ""],
-            f"PACK{battery_label4}":[240, 8, 100, "AH"],    # 充满容量
+            f"PACK {battery_label4}":[240, 8, 100, "AH"],    # 充满容量
             palnum_label7:[248, 8, 1, ""],                  # 充放电循环次数
             palnum_label8:[256, 8, 100, "AH"],              # PACK设计容量
             "PACK SOC":[264, 8, 1, "%"]

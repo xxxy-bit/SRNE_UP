@@ -101,7 +101,7 @@ bin_cell2_LineEdit = """
 
 sys_label = """
     QLabel{
-        font-size: 12pt;
+        font-size: 10pt;
         color: #626262;
     }
 """

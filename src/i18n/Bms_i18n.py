@@ -29,6 +29,7 @@ group_tabel7 = _('系统状态')
 group_tabel8 = _('故障状态')
 group_tabel9 = _('告警状态')
 group_tabel10 = _('保护状态')
+group_tabel11 = _('其他状态')
 
 # 电池信息
 battery_label1 = _('Pack电池电压')
@@ -120,7 +121,7 @@ celldata_label8 = _('最低电芯温度位置')
 # 并机数据
 palnum_label1 = _('电压')
 palnum_label2 = _('温度')
-palnum_label3 = _('PACK电流')
+palnum_label3 = _('PACK 电流')
 palnum_label7 = _('充放电循环次数')
 palnum_label8 = _('PACK设计容量')
 palnum_label9 = _('告警')
@@ -230,9 +231,22 @@ sysset_label4 = _('总容量')
 sysset_label5 = _('读取')
 sysset_label6 = _('设置')
 
+# 数据校准
+datacal_label1 = _('数据校准')
+datacal_label2 = _('校准')
+datacal_label3 = _('校准完毕')
+
+# 系统时间
+systime_label1 = _('系统时间')
+systime_label2 = _('同步时间')
+systime_label3 = _('写入')
+
 # 历史数据页
 hisdata_label1 = _('获取最近历史数据(1~100)')
 hisdata_label2 = _('擦除历史数据')
+hisdata_label3 = _('导出历史记录')
+hisdata_label4 = _('继续')
+hisdata_label5 = _('暂停')
 
 # 实时数据页
 realdata_label1 = _('清空内容')
@@ -332,6 +346,10 @@ bms_history_label26 = _('干接点1(故障信号)开启')
 bms_history_label27 = _('干接点2(电池过放)开启')
 bms_history_label28 = _('干接点3(灭火装置)开启')
 bms_history_label29 = _('干接点4(二次保护触发)开启')
+
+bms_history_label30 = _('BMS 开机动作')
+bms_history_label31 = _('BMS 关机动作')
+bms_history_label32 = _('时间校准动作')
 
 # 并联数据逻辑
 bms_pal_logic_label1 = _('正常')

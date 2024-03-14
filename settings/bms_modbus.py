@@ -290,9 +290,9 @@ def get_bms_modbus_list():
                 "3":bms_history_label27,
                 "4":bms_history_label28,
                 "5":bms_history_label29,
-                "6":'BMS 开机动作',
-                "7":'BMS 关机动作',
-                "8":'时间校准动作'
+                "6":bms_history_label30,
+                "7":bms_history_label31,
+                "8":bms_history_label32
             }],
             bms_history_label5 + "1":[9, 1, 1, "", {
                 "0":"cell" + bms_parse_label1,
