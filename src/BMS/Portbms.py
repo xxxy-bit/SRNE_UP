@@ -140,7 +140,7 @@ class Portbms(BmsLayout):
             QMessageBox.information(self, 'Error', bms_logic_label7, QMessageBox.Ok)
             return False
         elif self.his_status:
-            QMessageBox.information(self, 'Error', '正在获取历史数据，请等待完成或暂停。', QMessageBox.Ok)
+            QMessageBox.information(self, 'Error', bms_logic_label30, QMessageBox.Ok)
             return False
         return True
     
@@ -239,13 +239,13 @@ class Portbms(BmsLayout):
                     f.write(k + ' ,')
                 f.write('\n' + self.export_history_csv)
         except PermissionError as e:
-            return QMessageBox.critical(self, 'Error', '文件被占用，请关闭Excel文件后重试.', QMessageBox.Ok) 
+            return QMessageBox.critical(self, 'Error', bms_logic_label31, QMessageBox.Ok) 
         except Exception as e:
-            return QMessageBox.critical(self, 'Error', f'{e}\n未知错误，请联系相关开发人员.', QMessageBox.Ok) 
+            return QMessageBox.critical(self, 'Error', f'{e}\n{bms_logic_label32}', QMessageBox.Ok) 
 
         # 是否需要主动打开目录
         open_file =os.path.join(os.getcwd(), self.export_history_dir, f'{self.export_history_now}.csv')
-        if QMessageBox.question(self, 'Tips', f'导出成功，文件位置为：{open_file}\n是否需要打开该文件?', 
+        if QMessageBox.question(self, 'Tips', f'{bms_logic_label33}{open_file}\n{bms_logic_label34}', 
                 QMessageBox.Yes | QMessageBox.No) == QMessageBox.Yes:
             os.startfile(open_file)
 
@@ -451,7 +451,7 @@ class Portbms(BmsLayout):
             self.writeCap.setEnabled(True)
             self.writeCap.setText(systime_label3)
             self.start_moni()
-            QMessageBox.information(self, 'tips', '写入完毕，请重新读取数据。', QMessageBox.Ok)
+            QMessageBox.information(self, 'tips', bms_logic_label35, QMessageBox.Ok)
     
     # 写入系统设置-系统时间
     def writeTime_func(self):
@@ -465,7 +465,7 @@ class Portbms(BmsLayout):
         second = hex(self.now_time.dateTime().time().second())[2:].rjust(2,'0')
         msg = f'01102004000306{year}{month}{day}{hour}{minute}{second}'
         self.send_msg(msg + calc_crc(msg))
-        QMessageBox.information(self, 'tips', '写入完毕，请重新读取数据。', QMessageBox.Ok)
+        QMessageBox.information(self, 'tips', bms_logic_label35, QMessageBox.Ok)
         
     # 发送校准值
     def adds_btn_func(self):
@@ -479,7 +479,7 @@ class Portbms(BmsLayout):
         else:
             get_poi = int(self.adds_txt.text().split('.')[1])
             if get_poi > 0:
-                return QMessageBox.information(self, 'tips', '请输入整数', QMessageBox.Ok)
+                return QMessageBox.information(self, 'tips', bms_logic_label36, QMessageBox.Ok)
         
             hex_num = format(int(float(self.adds_txt.text())), '04x')
         self.datacalibration_msg = hex_addr + hex_num + '000'
@@ -552,7 +552,7 @@ class Portbms(BmsLayout):
                 return QMessageBox.information(self, 'Error', bms_logic_label20, QMessageBox.Ok)
             except Exception as e:
                 print(f'串口异常：{e}')
-                return QMessageBox.information(self, 'Error', '串口异常', QMessageBox.Ok)
+                return QMessageBox.information(self, 'Error', bms_logic_label37, QMessageBox.Ok)
             self.open_port_btn.setStyleSheet(open_Button)
             self.open_port_btn.setText(bms_logic_label2)
             
