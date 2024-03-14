@@ -62,12 +62,16 @@ com_label4 = _('地址')
 com_label5 = _('间隔（秒）')
 com_label6 = _('打开串口')
 com_label8 = _('开始监控')
+com_label9 = _('刷新串口')
 
 # 开关控制
 switch_label1 = _('充电')
 switch_label2 = _('放电')
 switch_label3 = _('强制休眠')
 switch_label4 = _('打开')
+switch_label5 = _('蜂鸣器')
+switch_label6 = _('进入测试模式')
+switch_label7 = _('退出测试模式')
 
 # 系统状态
 sys_label1 = _('充电状态')
@@ -76,6 +80,8 @@ sys_label3 = _('充电MOS管开启')
 sys_label4 = _('放电MOS管开启')
 sys_label5 = _('充电器接入')
 sys_label6 = _('满充')
+sys_label7 = _('加热')
+sys_label8 = _('二次保护触发')
 
 # 并机监控页
 # 组名称
@@ -87,6 +93,7 @@ pal_label4 = _('电芯数据')
 # 并联设置
 palset_label1 = _('Pack 数量')
 palset_label2 = _('获取数据')
+palset_label3 = _('取消')
 
 # 报警状态
 error_label1 = _('充电状态')
@@ -140,24 +147,32 @@ parset1_label1 = _('单体过充告警')
 parset1_label2 = _('单体过充保护')
 parset1_label3 = _('单体过充保护恢复')
 parset1_label4 = _('单体过充保护延时')
+parset1_label5 = _('单体过充告警延时')
+parset1_label6 = _('单体过充告警恢复值')
 
 # 单体过放设置
 parset2_label1 = _('单体过放告警')
 parset2_label2 = _('单体过放保护')
 parset2_label3 = _('单体过放保护恢复')
 parset2_label4 = _('单体过放保护延时')
+parset2_label5 = _('单体过放告警延时')
+parset2_label6 = _('单体过放告警恢复值')
 
 # 总体过充设置
 parset3_label1 = _('总体过充告警')
 parset3_label2 = _('总体过充保护')
 parset3_label3 = _('总体过充保护恢复')
 parset3_label4 = _('总体过充保护延时')
+parset3_label5 = _('总体过充告警延时')
+parset3_label6 = _('总体过充告警恢复值')
 
 # 总体过放设置
 parset4_label1 = _('总体过放告警')
 parset4_label2 = _('总体过放保护')
 parset4_label3 = _('总体过放保护恢复')
 parset4_label4 = _('总体过放保护延时')
+parset4_label5 = _('总体过放告警延时')
+parset4_label6 = _('总体过放告警恢复值')
 
 # 高温设置
 parset5_label1 = _('充电高温告警')
@@ -189,6 +204,8 @@ parset7_label3 = _('放电过流保护延时1')
 parset7_label4 = _('放电过流保护2')
 parset7_label5 = _('放电过流保护延时2')
 parset7_label6 = _('短路保护延时')
+parset7_label7 = _('放电过流告警延时')
+parset7_label8 = _('放电过流告警恢复值')
 
 # 充电过流设置
 parset8_label1 = _('充电过流告警')
@@ -196,6 +213,8 @@ parset8_label2 = _('充电过流保护1')
 parset8_label3 = _('充电过流保护延时1')
 parset8_label4 = _('充电过流保护2')
 parset8_label5 = _('充电过流保护延时2')
+parset8_label6 = _('充电过流告警延时')
+parset8_label7 = _('充电过流告警恢复值')
 
 # 按钮
 parset9_label1 = _('读取参数')

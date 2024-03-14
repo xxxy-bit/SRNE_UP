@@ -727,7 +727,7 @@ class BmsLayout(QWidget):
         self.open_port_btn = QPushButton(com_label6)
         self.open_port_btn.setStyleSheet(close_Button)
 
-        self.refresh_port_btn = QPushButton('刷新串口')
+        self.refresh_port_btn = QPushButton(com_label9)
         self.refresh_port_btn.setStyleSheet(open_Button)
 
         self.getP01_data_btn = QPushButton(com_label8)
@@ -762,8 +762,8 @@ class BmsLayout(QWidget):
         self.disChargMos_status = QLabel('●' + sys_label4)
         self.batCharg_status = QLabel('●' + sys_label5)
         self.full_status = QLabel('●' + sys_label6)
-        self.hot_status = QLabel('●' + '加热')
-        self.twoProtTrig_status = QLabel('●' + '二次保护触发')
+        self.hot_status = QLabel('●' + sys_label7)
+        self.twoProtTrig_status = QLabel('●' + sys_label8)
         sg = [
             self.charg_status, self.chargMos_status, self.batCharg_status,
             self.disCharg_status, self.disChargMos_status, self.full_status,
@@ -874,14 +874,14 @@ class BmsLayout(QWidget):
         
         # 蜂鸣器开关
         self.buzzer_sw = SwitchButton()
-        self.buzzer_sw.setOnText('蜂鸣器')
-        self.buzzer_sw.setOffText('蜂鸣器')
+        self.buzzer_sw.setOnText(switch_label5)
+        self.buzzer_sw.setOffText(switch_label5)
 
         # 强制休眠
         self.dormancy_sw = PushButton(switch_label3)
         
         # 测试模式
-        self.testmode_btn = PushButton('进入测试模式')
+        self.testmode_btn = PushButton(switch_label6)
         self.testmode_btn.setEnabled(False)
 
         og = [
@@ -999,7 +999,7 @@ class BmsLayout(QWidget):
         monVolWarn_form = self.tab3_createForm(
             self.tab3_form_dic, f'{parset1_label1}(V)', f'{parset1_label2}(V)', 
                                 f'{parset1_label3}(V)', f'{parset1_label4}(mS)',
-                                '单体过充告警延时(mS)', '单体过充告警恢复值(V)')
+                                f'{parset1_label5}(mS)', f'{parset1_label6}(V)')
         monVolWarn_groupBox.setLayout(monVolWarn_form)
 
         # 单体过放设置
@@ -1008,7 +1008,7 @@ class BmsLayout(QWidget):
         monVolProt_form = self.tab3_createForm(
             self.tab3_form_dic, f'{parset2_label1}(V)', f'{parset2_label2}(V)', 
                                 f'{parset2_label3}(V)', f'{parset2_label4}(mS)',
-                                '单体过放告警延时(mS)', '单体过放告警恢复值(V)')
+                                f'{parset2_label5}(mS)', f'{parset2_label6}(V)')
         monVolProt_groupBox.setLayout(monVolProt_form)
 
         # 总体过充设置
@@ -1017,7 +1017,7 @@ class BmsLayout(QWidget):
         allVolWarn_form = self.tab3_createForm(
             self.tab3_form_dic, f'{parset3_label1}(V)', f'{parset3_label2}(V)', 
                                 f'{parset3_label3}(V)', f'{parset3_label4}(mS)',
-                                '总体过充告警延时(mS)', '总体过充告警恢复值(V)')
+                                f'{parset3_label5}(mS)', f'{parset3_label6}(V)')
         allVolWarn_groupBox.setLayout(allVolWarn_form)
 
         # 总体过放设置
@@ -1026,7 +1026,7 @@ class BmsLayout(QWidget):
         allVolProt_form = self.tab3_createForm(
             self.tab3_form_dic, f'{parset4_label1}(V)', f'{parset4_label2}(V)', 
                                 f'{parset4_label3}(V)', f'{parset4_label4}(mS)',
-                                '总体过放告警延时(mS)', '总体过放告警恢复值(V)')
+                                f'{parset4_label5}(mS)', f'{parset4_label6}(V)')
         allVolProt_groupBox.setLayout(allVolProt_form)
 
         tab3_layout_H1.addWidget(monVolWarn_groupBox)   # 单体过充设置
@@ -1062,8 +1062,8 @@ class BmsLayout(QWidget):
         ecProt_form = self.tab3_createForm(self.tab3_form_dic,
                                            f'{parset7_label1}(A)', f'{parset7_label2}(A)', 
                                            f'{parset7_label3}(mS)', f'{parset7_label4}(A)', 
-                                           f'{parset7_label5}(mS)', '放电过流告警延时(mS)',
-                                           '放电过流告警恢复值(V)')
+                                           f'{parset7_label5}(mS)', f'{parset7_label7}(mS)',
+                                           f'{parset7_label8}(V)')
         ecProt_groupBox.setLayout(ecProt_form)
 
         # 充电过流设置
@@ -1072,8 +1072,8 @@ class BmsLayout(QWidget):
         ecWarn_form = self.tab3_createForm(self.tab3_form_dic,
                                            f'{parset8_label1}(A)', f'{parset8_label2}(A)', 
                                            f'{parset8_label3}(mS)', f'{parset8_label4}(A)', 
-                                           f'{parset8_label5}(mS)', '充电过流告警延时(mS)',
-                                           '充电过流告警恢复值(V)')
+                                           f'{parset8_label5}(mS)', f'{parset8_label6}(mS)',
+                                           f'{parset8_label7}(V)')
         ecWarn_groupBox.setLayout(ecWarn_form)
 
         tab3_layout_H2.addWidget(temWarn_groupBox)   # 高温设置

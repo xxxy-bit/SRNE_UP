@@ -254,7 +254,7 @@ class Portbms(BmsLayout):
         if self.pal_start.text() == palset_label2:
             if self.assertStatus() == False: return False
             self.stop_moni()
-            self.pal_start.setText('取消')
+            self.pal_start.setText(palset_label3)
             
             self.rs485_res_status = True
             self.repeat = False
@@ -332,13 +332,13 @@ class Portbms(BmsLayout):
         self.send_msg(bms_sleep_on + calc_crc(bms_sleep_on))
 
     def testmode_btn_func(self):
-        if self.testmode_btn.text() == '进入测试模式':
-            self.testmode_btn.setText('退出测试模式')
+        if self.testmode_btn.text() == switch_label6:
+            self.testmode_btn.setText(switch_label7)
             self.charge_sw.setEnabled(True)
             self.disCharge_sw.setEnabled(True)
             
         else:
-            self.testmode_btn.setText('进入测试模式')
+            self.testmode_btn.setText(switch_label6)
             self.charge_sw.setEnabled(False)
             self.disCharge_sw.setEnabled(False)
             
@@ -870,12 +870,12 @@ class Portbms(BmsLayout):
                     else:
                         self.full_status.setStyleSheet('color:#626262')
                         
-                    if '加热' in p01['BMS工作状态2']:
+                    if sys_label7 in p01['BMS工作状态2']:
                         self.hot_status.setStyleSheet('color:#01B481')
                     else:
                         self.hot_status.setStyleSheet('color:#626262')
                     
-                    if '二次保护触发' in p01['BMS工作状态2']:
+                    if sys_label8 in p01['BMS工作状态2']:
                         self.twoProtTrig_status.setStyleSheet('color:#01B481')
                     else:
                         self.twoProtTrig_status.setStyleSheet('color:#626262')
@@ -892,13 +892,13 @@ class Portbms(BmsLayout):
                     protect_txt = '\n'.join(p01['保护位1']) + '\n' + '\n'.join(p01['保护位2'])
                     if self.login:
                         if '207' in protect_txt:
-                            if self.testmode_btn.text() == '进入测试模式':
+                            if self.testmode_btn.text() == switch_label6:
                                 self.testmode_btn.setEnabled(False)
-                            elif self.testmode_btn.text() == '退出测试模式':
+                            elif self.testmode_btn.text() == switch_label7:
                                 self.testmode_btn_func()
                                 self.testmode_btn.setEnabled(False)
                         else:
-                            if self.testmode_btn.text() == '进入测试模式':
+                            if self.testmode_btn.text() == switch_label6:
                                 self.testmode_btn.setEnabled(True)
                         
                     self.protect_body.setText(protect_txt)
