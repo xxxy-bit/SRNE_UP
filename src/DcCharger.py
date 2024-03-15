@@ -111,11 +111,11 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         self.dc_ChgModeEn.checkedChanged.connect(self.dc_ChgModeEn_func)
         
         for s in self.dc_setting_edit:
+            if s == self.dc_CvModeEn or s == self.dc_ChgModeEn:
+                continue
+            
             try:
                 s.currentIndexChanged.connect(functools.partial(self.dc_setting_edit_func, s))
-            except AttributeError:
-                # 输出电源模式开关 and 充电模式输出开关 发生的异常不处理 pass
-                pass
             except Exception:
                 s.valueChanged.connect(functools.partial(self.dc_setting_edit_func, s))
 
@@ -210,6 +210,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         
     # 参数设置-获取修改过的参数
     def dc_setting_edit_func(self, set_obj):
+        print("参数设置-获取修改过的参数")
         try:
             temp = set_obj.value()
         except AttributeError:
