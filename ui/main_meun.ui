@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>SRNE v0.1.4.0</string>
+   <string>SRNE v0.1.4.1</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/images/ui.qrc">
@@ -149,9 +149,9 @@ border-bottom-right-radius:10px;</string>
      <widget class="QLabel" name="ac_text">
       <property name="geometry">
        <rect>
-        <x>108</x>
+        <x>98</x>
         <y>240</y>
-        <width>141</width>
+        <width>161</width>
         <height>31</height>
        </rect>
       </property>
@@ -261,11 +261,14 @@ border-bottom-right-radius:10px;</string>
      <widget class="QLabel" name="inverter_text">
       <property name="geometry">
        <rect>
-        <x>629</x>
+        <x>624</x>
         <y>244</y>
-        <width>151</width>
+        <width>171</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">color:#8A4600;
@@ -322,7 +325,7 @@ border-bottom-right-radius:10px;</string>
        <rect>
         <x>370</x>
         <y>240</y>
-        <width>141</width>
+        <width>161</width>
         <height>31</height>
        </rect>
       </property>
@@ -447,9 +450,9 @@ font-family: &quot;微软雅黑&quot;;</string>
      <zorder>bms_text</zorder>
      <zorder>listView_7</zorder>
      <zorder>bmsBtn</zorder>
+     <zorder>InverterBtn</zorder>
      <zorder>acchargerBtn</zorder>
      <zorder>dcchargerBtn</zorder>
-     <zorder>InverterBtn</zorder>
     </widget>
    </widget>
   </widget>

@@ -17,11 +17,11 @@ msgstr ""
 
 #: E:\xy\xy\project\AC_charger\src\AcCharge.py:33
 msgid "打开串口"
-msgstr "OpenPort"
+msgstr "Open Port"
 
 #: E:\xy\xy\project\AC_charger\src\AcCharge.py:34
 msgid "关闭串口"
-msgstr "ClosePort"
+msgstr "Close Port"
 
 #: E:\xy\xy\project\AC_charger\src\AcCharge.py:35
 msgid "打开串口失败"

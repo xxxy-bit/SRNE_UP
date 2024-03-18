@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import serial, functools, datetime, os, gettext
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtCore import QSettings
 from .OrderList import *
+from src.i18n.AcCharge_i18n import *
 from utils.Common import Common
 from settings.ac_modbus import get_ac_data_list
 from utils.CRC16Util import calc_crc
 from .dataAnalysis.AcCharge_DA import pars_data
 from ui.ac_layout import Ui_MainWindow as ac_layout
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QSettings
 
 
 class AcLayout(QtWidgets.QMainWindow, ac_layout):
@@ -17,44 +18,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
         super(AcLayout, self).__init__()
         self.setupUi(self)
         self.ac_layout_init()
-        self.i18n_init()
         self.setWindowTitle(f'{self.windowTitle()} v0.0.5')
-    
-    # 加载国际化i18n
-    def i18n_init(self):
-        # 加载设置项，根据设置参数切换语言
-        set_dir = os.path.join(os.getcwd(), 'settings', 'settings.ini')
-        setting = QSettings(set_dir, QSettings.IniFormat)
-        
-        lang_zh = gettext.translation('AcCharge', localedir=os.path.join(os.getcwd(), 'locales'), languages=[setting.value('language')])
-        lang_zh.install('AcCharge')
-        _ = lang_zh.gettext
-        # 串口相关
-        self.open_port_i18n = _('打开串口')
-        self.close_port_i18n = _('关闭串口')
-        self.erro_port_i18n = _('打开串口失败')
-        # 开/关监控相关
-        self.open_monitor_i18n = _('开启数据监控')
-        self.close_monitor_i18n = _('关闭数据监控')
-        # 写入监控日志相关
-        self.write_monitor1_i18n = _('产品类型,产品规格,产品序列号,设备名称,设备地址,硬件版本,软件版本,系统电压,额定充电电流,额定放电电流,原始数据(Hex)')
-        self.write_monitor2_i18n = _('充电电流,设备温度,蓄电池电压,蓄电池温度,充电状态,故障/告警信息,原始数据(Hex)')
-        # 错误提示相关
-        self.file_occupy_error = _('文件被占用，请关闭Excel文件后重试.')
-        self.file_unknow_error = _('未知错误，请截图并联系相关开发人员.')
-        # 打开目录相关
-        self.open_dir_txt1 = _('导出成功，目录位置为')
-        self.open_dir_txt2 = _('是否需要打开该目录?')
-        # 其他的一些提示
-        self.stop_monitor_tips = _('为保准数据准确性，请在实时监控中停止数据监控，需要暂停吗?')
-        self.write_data_tips = _('请输入参数')
-        self.mdf_data_tips = _('请修改参数.')
-        self.writing_data_tips = _('写入中...')
-        self.write_param_tips = _('写入数据')
-        self.sure_param_tips = _('是否要写入以下参数:')
-        self.write_data_ok_tips = _('数据已写入，请重新获取数据.')
-        self.port_nostart_tips = _('请先打开串口.')
-        self.setting_tips = _('请输入正确的数值.')
     
     # 加载界面所需参数
     def ac_layout_init(self):
@@ -165,11 +129,11 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
             os.makedirs(log_monitor_dir)
         if os.path.exists(log_monitor_m1_name) == False:
             with open(log_monitor_m1_name, 'w') as f:
-                f.write(self.write_monitor1_i18n + '\n')
+                f.write(write_monitor1_i18n + '\n')
                 # f.write('产品类型,产品规格,产品序列号,设备名称,设备地址,硬件版本,软件版本,系统电压,额定充电电流,额定放电电流,原始数据Hex\n')
         if os.path.exists(log_monitor_m2_name) == False:
             with open(log_monitor_m2_name, 'w') as f:
-                f.write(self.write_monitor2_i18n + '\n')
+                f.write(write_monitor2_i18n + '\n')
                 # f.write('充电电流,设备温度,蓄电池电压,蓄电池温度,充电状态,故障/告警信息,原始数据Hex\n')
         
         # 写入监控日志
@@ -179,13 +143,13 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
             with open(log_monitor_m2_name, 'a') as f:
                 f.write(self.m2_csv)
         except PermissionError:
-            return QtWidgets.QMessageBox.critical(self, 'Error', self.file_occupy_error, QtWidgets.QMessageBox.Ok)  
+            return QtWidgets.QMessageBox.critical(self, 'Error', file_occupy_error, QtWidgets.QMessageBox.Ok)  
         except Exception as e:
-            return QtWidgets.QMessageBox.critical(self, 'Error', f'{e}\n{self.file_unknow_error}', QtWidgets.QMessageBox.Ok)  
+            return QtWidgets.QMessageBox.critical(self, 'Error', f'{e}\n{file_unknow_error}', QtWidgets.QMessageBox.Ok)  
         
         # 是否需要主动打开目录
         open_dir =os.path.join(os.getcwd(), log_monitor_dir)
-        if QtWidgets.QMessageBox.question(self, 'Tips', f'{self.open_dir_txt1}：{open_dir}\n{self.open_dir_txt2}', \
+        if QtWidgets.QMessageBox.question(self, 'Tips', f'{open_dir_txt1}：{open_dir}\n{open_dir_txt2}', \
                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
             os.startfile(open_dir)
     
@@ -244,12 +208,12 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
     # 关闭实时监控定时器
     def ac_close_monitor(self):
         if self.ac_monitor_on:
-            if QtWidgets.QMessageBox.information(self, 'Tips', self.stop_monitor_tips,
+            if QtWidgets.QMessageBox.information(self, 'Tips', stop_monitor_tips,
                 # '为保证数据准确性，需要先停止实时监控中的数据监控，是否停止？', \
                     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
                 self.timer_get_monitor.stop()
                 self.ac_monitor_on = False
-                self.startMonitor_btn.setText(self.open_monitor_i18n)
+                self.startMonitor_btn.setText(open_monitor_i18n)
                 self.startMonitor_btn.setStyleSheet(color_close)
                 return True
             return False
@@ -258,17 +222,17 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
     # 按钮-打开/关闭串口
     def ac_openPort(self):
         # if self.port_btn.text() == '打开串口':
-        if self.port_btn.text() == self.open_port_i18n:
+        if self.port_btn.text() == open_port_i18n:
             self.ser.port = self.port_cmb.currentText()
             self.ser.timeout = 0.07
             self.ser.baudrate = int(self.baud_cmb.currentText())
             try:
                 self.ser.open()
             except serial.SerialException:
-                QtWidgets.QMessageBox.information(self, 'Error', self.erro_port_i18n, QtWidgets.QMessageBox.Ok)
+                QtWidgets.QMessageBox.information(self, 'Error', erro_port_i18n, QtWidgets.QMessageBox.Ok)
                 return self.ser.close()
             # self.port_btn.setText('关闭串口')
-            self.port_btn.setText(self.close_port_i18n)
+            self.port_btn.setText(close_port_i18n)
             self.port_btn.setStyleSheet(color_open)
             self.port_cmb.setEnabled(False)
 
@@ -285,7 +249,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
                 print(e)
             
             # self.port_btn.setText('打开串口')
-            self.port_btn.setText(self.open_port_i18n)
+            self.port_btn.setText(open_port_i18n)
             self.port_btn.setStyleSheet(color_close)
             self.port_cmb.setEnabled(True)
     
@@ -297,15 +261,15 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
     # 提示语-串口未打开
     def ac_port_nostart_tips(self):
         if self.ser.isOpen() == False:
-            QtWidgets.QMessageBox.critical(self, 'Error', self.port_nostart_tips, QtWidgets.QMessageBox.Ok)  
+            QtWidgets.QMessageBox.critical(self, 'Error', port_nostart_tips, QtWidgets.QMessageBox.Ok)  
             return False
     
     # 按钮-开启/关闭数据监控
     def ac_get_monitor(self):
         self.timer_get_monitor = QtCore.QTimer()
-        if self.startMonitor_btn.text() == self.open_monitor_i18n:
+        if self.startMonitor_btn.text() == open_monitor_i18n:
             if self.ac_port_nostart_tips() == False: return 0
-            self.startMonitor_btn.setText(self.close_monitor_i18n)
+            self.startMonitor_btn.setText(close_monitor_i18n)
             self.startMonitor_btn.setStyleSheet(color_open)
             self.ac_monitor_on = True
             self.ac_sys_vol_on = False    # 系统电压是否已获取
@@ -315,7 +279,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
             self.timer_get_monitor_step = 1
             self.timer_get_monitor.start(1500)
         else:
-            self.startMonitor_btn.setText(self.open_monitor_i18n)
+            self.startMonitor_btn.setText(open_monitor_i18n)
             self.startMonitor_btn.setStyleSheet(color_close)
             self.ac_monitor_on = False
             self.timer_get_monitor.stop()
@@ -341,9 +305,8 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
     # 接收数据定时器
     def timer_recevice_func(self):
         try:
-            # res = self.ser.read_all()
-            res = self.ser.readline()
-            # res = self.ser.read_until()
+            res = self.ser.read_all()
+            # res = self.ser.readline()
             res = res.hex()
         except Exception as e:
             print(e)
@@ -621,7 +584,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
                 try:
                     name_data = int(temp) * int(ac_data_list[ac_get_setting][name][2])
                 except ValueError:
-                    return QtWidgets.QMessageBox.critical(self, 'Error', self.setting_tips, QtWidgets.QMessageBox.Ok)  
+                    return QtWidgets.QMessageBox.critical(self, 'Error', setting_tips, QtWidgets.QMessageBox.Ok)  
             
             # self.setting_show[name] = temp  # 存储修改过的参数名称和值，点击写入后用于展示(暂时停用)
             addr = ac_data_list[ac_get_setting][name][3]
@@ -629,7 +592,7 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
             self.setting_dic[name] = f'{send_setting_txt}{calc_crc(send_setting_txt)}'
             print(self.setting_dic[name])
         else:
-            return QtWidgets.QMessageBox.critical(self, 'Error', self.write_data_tips, QtWidgets.QMessageBox.Ok)  
+            return QtWidgets.QMessageBox.critical(self, 'Error', write_data_tips, QtWidgets.QMessageBox.Ok)  
     
     # 按钮-参数设置-写入数据
     def ac_write_data(self):
@@ -648,11 +611,11 @@ class AcLayout(QtWidgets.QMainWindow, ac_layout):
         if self.ac_send_setting_timer_step < len(self.setting_dic):
             self.send_msg(self.timer_txt[self.ac_send_setting_timer_step])
             self.ac_send_setting_timer_step += 1
-            self.write_set_data.setText(self.writing_data_tips)
+            self.write_set_data.setText(writing_data_tips)
             self.write_set_data.setEnabled(False)
         else:
             self.ac_send_setting_timer.stop()
-            self.write_set_data.setText(self.write_param_tips)
+            self.write_set_data.setText(write_param_tips)
             self.write_set_data.setEnabled(True)
-            return QtWidgets.QMessageBox.about(self, 'Tips', self.write_data_ok_tips)
+            return QtWidgets.QMessageBox.about(self, 'Tips', write_data_ok_tips)
     

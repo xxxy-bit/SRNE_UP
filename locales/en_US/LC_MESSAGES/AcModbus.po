@@ -51,6 +51,9 @@ msgstr "Battery charge"
 msgid "储存充电"
 msgstr "Storage charge"
 
+msgid "电源模式输出"
+msgstr "Power mode output"
+
 #: E:\xy\xy\project\AC_charger\settings\ac_modbus.py:50
 msgid "未接蓄电池"
 msgstr "Disconnected battery"

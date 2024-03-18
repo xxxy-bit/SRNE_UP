@@ -68,7 +68,7 @@ class Ui_MainWindow(object):
         self.ac_bg.setViewMode(QtWidgets.QListView.ListMode)
         self.ac_bg.setObjectName("ac_bg")
         self.ac_text = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.ac_text.setGeometry(QtCore.QRect(108, 240, 141, 31))
+        self.ac_text.setGeometry(QtCore.QRect(98, 240, 161, 31))
         self.ac_text.setStyleSheet("color:#8A4600;\n"
 "font-size:16pt;\n"
 "text-align: center;\n"
@@ -112,7 +112,8 @@ class Ui_MainWindow(object):
         self.inverter_bg.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.inverter_bg.setObjectName("inverter_bg")
         self.inverter_text = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.inverter_text.setGeometry(QtCore.QRect(629, 244, 151, 21))
+        self.inverter_text.setGeometry(QtCore.QRect(624, 244, 171, 21))
+        self.inverter_text.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.inverter_text.setStyleSheet("color:#8A4600;\n"
 "font-size:16pt;\n"
 "text-align: center;\n"
@@ -135,7 +136,7 @@ class Ui_MainWindow(object):
         self.dc_bg.setViewMode(QtWidgets.QListView.ListMode)
         self.dc_bg.setObjectName("dc_bg")
         self.dc_text = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.dc_text.setGeometry(QtCore.QRect(370, 240, 141, 31))
+        self.dc_text.setGeometry(QtCore.QRect(370, 240, 161, 31))
         self.dc_text.setStyleSheet("color:#8A4600;\n"
 "font-size:16pt;\n"
 "text-align: center;\n"
@@ -182,9 +183,9 @@ class Ui_MainWindow(object):
         self.bms_text.raise_()
         self.listView_7.raise_()
         self.bmsBtn.raise_()
+        self.InverterBtn.raise_()
         self.acchargerBtn.raise_()
         self.dcchargerBtn.raise_()
-        self.InverterBtn.raise_()
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -207,7 +208,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "SRNE v0.1.4.0"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "SRNE v0.1.4.1"))
         self.label.setText(_translate("MainWindow", "选择连接的设备"))
         self.ac_text.setText(_translate("MainWindow", "AC-DC 充电器"))
         self.bms_text.setText(_translate("MainWindow", "BMS"))

@@ -191,7 +191,7 @@
     <message>
         <location filename="pf_off_inverter_layout.py" line="721"/>
         <source>实时监控</source>
-        <translation type="unfinished">RealTimeMonitoring</translation>
+        <translation type="unfinished">RealTime Monitoring</translation>
     </message>
     <message>
         <location filename="ac_layout.py" line="567"/>
@@ -386,7 +386,7 @@
     <message>
         <location filename="pf_off_inverter_layout.py" line="777"/>
         <source>参数设置</source>
-        <translation type="unfinished">ParameterSettings</translation>
+        <translation type="unfinished">Parameter Settings</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="781"/>
@@ -561,12 +561,12 @@
     <message>
         <location filename="pf_off_inverter_layout.py" line="699"/>
         <source>当前故障码</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CurrFcode</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="706"/>
         <source>导出数据</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ExportDataMonitor</translation>
     </message>
     <message>
         <location filename="dc_layout.py" line="880"/>
@@ -591,7 +591,7 @@
     <message>
         <location filename="pf_off_inverter_layout.py" line="696"/>
         <source>交流输出频率</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">AcOutputFreq</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="758"/>
@@ -606,7 +606,7 @@
     <message>
         <location filename="ac_layout.py" line="477"/>
         <source>AC-DC 充电器</source>
-        <translation type="unfinished">AC-DC charger</translation>
+        <translation type="unfinished">AC-DC Charger</translation>
     </message>
     <message>
         <location filename="ac_layout.py" line="582"/>
@@ -621,12 +621,12 @@
     <message>
         <location filename="pf_off_inverter_layout.py" line="668"/>
         <source>工频离网逆变器</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Off-Grid Inverter</translation>
     </message>
     <message>
         <location filename="dc_layout.py" line="837"/>
         <source>DC-DC 充电器</source>
-        <translation type="unfinished">DC-DC charger</translation>
+        <translation type="unfinished">DC-DC Charger</translation>
     </message>
     <message>
         <location filename="dc_layout.py" line="918"/>
@@ -861,77 +861,77 @@
     <message>
         <location filename="pf_off_inverter_layout.py" line="683"/>
         <source>逆变器信息</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inverter information</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="684"/>
         <source>交流输入有功功率</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">AcInputActivePower</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="685"/>
         <source>交流输入电压A</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">AcInputVoltA</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="686"/>
         <source>温度B</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">TemperB</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="687"/>
         <source>当前时间</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">SysDateTime</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="688"/>
         <source>温度C</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">TemperC</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="689"/>
         <source>交流输入电流A</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">AcInputCurrA</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="690"/>
         <source>温度A</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">TemperA</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="691"/>
         <source>交流输入频率</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">AcInputFreq</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="692"/>
         <source>温度D</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">TemperD</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="693"/>
         <source>交流输出电压1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">AcOutputVolt1</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="694"/>
         <source>交流输出电流</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">AcOutputCurr</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="695"/>
         <source>交流输出有功功率</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">AcOutputActivePower</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="697"/>
         <source>外部温度</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ExternalTemper</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="698"/>
         <source>交流输出电压2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">AcOutputVolt2</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="700"/>
@@ -941,7 +941,7 @@
     <message>
         <location filename="pf_off_inverter_layout.py" line="701"/>
         <source>发送间隔(ms)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Send interval(ms)</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="713"/>
@@ -1001,7 +1001,7 @@
     <message>
         <location filename="pf_off_inverter_layout.py" line="742"/>
         <source>交流输出频率(Hz)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">OutputFreqSet</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="746"/>
@@ -1131,7 +1131,7 @@
     <message>
         <location filename="pf_off_inverter_layout.py" line="780"/>
         <source>系统设置</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">System Setting</translation>
     </message>
     <message>
         <location filename="pf_off_inverter_layout.py" line="782"/>
