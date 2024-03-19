@@ -1,6 +1,7 @@
 import serial, functools, gettext, datetime, os
 from ui.dc_layout import Ui_MainWindow as dc_layout
 from .OrderList import *
+from src.i18n.DcCharge_i18n import *
 from utils.Common import Common
 from utils.CRC16Util import calc_crc
 from .dataAnalysis.DcCharge_DA import dc_data_analysis
@@ -38,16 +39,16 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         self.dc_port_list.addItems(Common.load_serial_list())
         
         # 加载电池类型
-        self.dc_set_battery_type.addItems(['自定义', '开口(FLD)', '密封(SLD)', '胶体(GEL)', '锂电池(LI)'])
+        self.dc_set_battery_type.addItems([BatTypeSet_1, BatTypeSet_2, BatTypeSet_3, BatTypeSet_4, BatTypeSet_5])
         
         # 加载充电模式
-        self.dc_ChgMode.addItems(['充电模式', '电源模式'])
+        self.dc_ChgMode.addItems([ChgMode_1, ChgMode_2])
         
         # 加载波特率列表
         self.dc_baud_list.addItems(['9600', '19200', '57600', '115200'])
         
         # 加载发电机类型
-        self.dc_generator_type.addItems(['传统发电机', '智能发电机', '自定义发电机'])
+        self.dc_generator_type.addItems([GeneratorType_1, GeneratorType_2, GeneratorType_3])
         
         # 创建监控日志文件
         self.dc_now = datetime.datetime.now().strftime('%Y-%m-%d_%H_%M_%S')
@@ -177,7 +178,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
             self.dc_get_setting_timer.stop()
             self.dc_write_set.setEnabled(True)
             self.dc_read_set.setEnabled(True)
-            return QtWidgets.QMessageBox.information(self, 'tips', '读取完成', QtWidgets.QMessageBox.Ok)
+            return QtWidgets.QMessageBox.information(self, 'tips', tips_1, QtWidgets.QMessageBox.Ok)
         self.dc_get_setting_timer_step += 1
         
     # 参数设置-写入数据
@@ -192,7 +193,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
             self.dc_send_setting_timer.timeout.connect(self.dc_send_setting_timer_func)
             self.dc_send_setting_timer.start(1000)
         else:
-            return QtWidgets.QMessageBox.critical(self, 'Error', '请先修改参数', QtWidgets.QMessageBox.Ok)
+            return QtWidgets.QMessageBox.critical(self, 'Error', tips_2, QtWidgets.QMessageBox.Ok)
         
     # 写入参数定时器
     def dc_send_setting_timer_func(self):
@@ -244,16 +245,16 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
     
     # 打开串口
     def dc_open_port_func(self):
-        if self.dc_open_port.text() == '打开串口':
+        if self.dc_open_port.text() == Button_1:
             self.dccharger_ser.port = self.dc_port_list.currentText()
             self.dccharger_ser.baudrate = int(self.dc_baud_list.currentText())
             self.dccharger_ser.timeout = 0.07
             try:
                 self.dccharger_ser.open()
             except serial.SerialException:
-                QtWidgets.QMessageBox.information(self, 'Error', ' 串口打开失败', QtWidgets.QMessageBox.Ok)
+                QtWidgets.QMessageBox.information(self, 'Error', tips_3, QtWidgets.QMessageBox.Ok)
                 return self.dccharger_ser.close()
-            self.dc_open_port.setText('关闭串口')
+            self.dc_open_port.setText(Button_2)
             self.dc_open_port.setStyleSheet(color_open)
             self.dc_port_list.setEnabled(False)
             
@@ -267,7 +268,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
                 self.dc_timer_recevice.stop()
             except Exception as e:
                 print(e)
-            self.dc_open_port.setText('打开串口')
+            self.dc_open_port.setText(Button_1)
             self.dc_open_port.setStyleSheet(color_close)
             self.dc_port_list.setEnabled(True)
     
@@ -279,8 +280,8 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
     # 开启监控
     def dc_open_monitor_func(self):
         self.dc_timer_get_monitor = QtCore.QTimer()
-        if self.dc_open_monitor.text() == '开启监控':
-            self.dc_open_monitor.setText('关闭监控')
+        if self.dc_open_monitor.text() == Button_3:
+            self.dc_open_monitor.setText(Button_4)
             self.dc_open_monitor.setStyleSheet(color_open)
             
             self.dc_timer_get_monitor.timeout.connect(self.dc_timer_get_monitor_func)
@@ -288,7 +289,7 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
             self.dc_timer_get_monitor.start(1500)
             
         else:
-            self.dc_open_monitor.setText('开启监控')
+            self.dc_open_monitor.setText(Button_3)
             self.dc_open_monitor.setStyleSheet(color_close)
             self.dc_timer_get_monitor.stop()
     
@@ -312,14 +313,15 @@ class DCLayout(QtWidgets.QMainWindow, dc_layout):
         if os.path.exists(log_monitor_dir) == False:
             os.makedirs(log_monitor_dir)
             
+        # TODO
         if os.path.exists(log_monitor_product_name) == False:
             with open(log_monitor_product_name, 'w') as f:
-                pd_txt = '系统电压,额定充电电流,产品类型,产品规格,软件版本,硬件版本,产品序列号,设备地址,CAN程序版本,设备名字,原始数据(Hex)'
+                pd_txt = csv_1
                 f.write(pd_txt + '\n')
         
         if os.path.exists(log_monitor_control_name) == False:
             with open(log_monitor_control_name, 'w') as f:
-                ct_txt = '蓄电池电压,充电电流,设备温度,蓄电池温度,输入电压,充电功率,输出端开机以来最低电压,输出端开机以来最高电压,开机以来充电最大电流,当天充电安时数,当天发电量,总运行天数,蓄电池总充满次数,蓄电池总充电安时数,累计发电量,充电状态,控制器/告警信息1,原始数据(Hex)'
+                ct_txt = csv_2
                 f.write(ct_txt + '\n')
         
         # 写入监控日志

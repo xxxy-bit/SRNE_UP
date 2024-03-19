@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2024-03-18 16:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: E:\svn\SrneUpperComputer\src\i18n\DcCharge_i18n.py:12
+msgid "自定义"
+msgstr "Custom"
+
+#: E:\svn\SrneUpperComputer\src\i18n\DcCharge_i18n.py:13
+msgid "开口(FLD)"
+msgstr "FLD"
+
+#: E:\svn\SrneUpperComputer\src\i18n\DcCharge_i18n.py:14
+msgid "密封(SLD)"
+msgstr "SLD"
+
+#: E:\svn\SrneUpperComputer\src\i18n\DcCharge_i18n.py:15
+msgid "胶体(GEL)"
+msgstr "GEL"
+
+#: E:\svn\SrneUpperComputer\src\i18n\DcCharge_i18n.py:16
+msgid "锂电池(LI)"
+msgstr "LI"
+
+msgid "充电模式"
+msgstr "ChgMode"
+
+msgid "电源模式"
+msgstr "CvMode"
+
+msgid "传统发电机"
+msgstr "Conventional generator"
+
+msgid "智能发电机"
+msgstr "Intelligent generator"
+
+msgid "自定义发电机"
+msgstr "Custom generator"
+
+msgid "打开串口"
+msgstr "Open Port"
+
+msgid "关闭串口"
+msgstr "Close Port"
+
+msgid "开启监控"
+msgstr "OpenDataMonitor"
+
+msgid "关闭监控"
+msgstr "CloseDataMonitor"
+
+msgid "读取完成"
+msgstr "Read complete"
+
+msgid "请先修改参数"
+msgstr "Modify the parameters first"
+
+msgid "串口打开失败"
+msgstr "Failed to open the serial port"
+
+msgid "系统电压,额定充电电流,产品类型,产品规格,软件版本,硬件版本,产品序列号,设备地址,CAN程序版本,设备名字,原始数据(Hex)"
+msgstr "System voltage,Rated charging current,Product type,Product specification,Software version,hardware version,Product serial number,equipment address,CAN version,device name,raw data(Hex)"
+
+msgid "蓄电池电压,充电电流,设备温度,蓄电池温度,输入电压,充电功率,输出端开机以来最低电压,输出端开机以来最高电压,开机以来充电最大电流,当天充电安时数,当天发电量,总运行天数,蓄电池总充满次数,蓄电池总充电安时数,累计发电量,充电状态,控制器/告警信息1,原始数据(Hex)"
+msgstr "Battery voltage,Charging current,Equipment temperature,Battery temperature,Input voltage,Charging power,Lowest historical voltage,Historical maximum voltage,Historical maximum current,Charging ampere-hours of the day,Daily power generation,Total operating days,Total battery charge times,Total ampere-hours of battery charging,Cumulative power generation,Charging state,Alarm information,Raw data(Hex)"
