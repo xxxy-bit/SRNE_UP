@@ -971,9 +971,10 @@ class Portbms(BmsLayout):
 
                     for k,v in self.p03.items():
                         try:
-                            self.tab3_form_dic[k].setValue(v)
+                            print(k, v)
+                            self.tab3_form_dic[k].setValue(float(v))
                         except KeyError as e:
-                            # print(f'参数设置：{e}')
+                            print(f'参数设置 KeyError：{e}')
                             continue
                         except Exception:
                             self.tab3_form_dic[k].setValue(int(v))
