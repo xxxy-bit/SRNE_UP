@@ -998,12 +998,12 @@ class BmsLayout(QWidget):
         monVolWarn_groupBox.setStyleSheet(white_bg)
         monVolWarn_form = self.tab3_createForm(
             self.tab3_form_dic, 
-            (f'{parset1_label1}(V)', DoubleSpinBox(), 0, 4),
-            (f'{parset1_label2}(V)', DoubleSpinBox(), 0, 4),
-            (f'{parset1_label3}(V)', DoubleSpinBox(), 0, 4),
+            (f'{parset1_label1}(V)', DoubleSpinBox(), 2, 5),
+            (f'{parset1_label2}(V)', DoubleSpinBox(), 2, 5),
+            (f'{parset1_label3}(V)', DoubleSpinBox(), 2, 5),
             (f'{parset1_label4}(mS)', SpinBox(), 0, 65500),
             (f'{parset1_label5}(mS)', SpinBox(), 0, 65500),
-            (f'{parset1_label6}(V)', DoubleSpinBox(),0, 32))
+            (f'{parset1_label6}(V)', DoubleSpinBox(),2, 5))
         # monVolWarn_form = self.tab3_createForm(
         #     self.tab3_form_dic, f'{parset1_label1}(V)', f'{parset1_label2}(V)', 
         #                         f'{parset1_label3}(V)', f'{parset1_label4}(mS)',
@@ -1015,12 +1015,12 @@ class BmsLayout(QWidget):
         monVolProt_groupBox.setStyleSheet(white_bg)
         monVolProt_form = self.tab3_createForm(
             self.tab3_form_dic, 
-            (f'{parset2_label1}(V)', DoubleSpinBox(), 0, 4),
-            (f'{parset2_label2}(V)', DoubleSpinBox(), 0, 4),
-            (f'{parset2_label3}(V)', DoubleSpinBox(), 0, 4),
+            (f'{parset2_label1}(V)', DoubleSpinBox(), 2, 5),
+            (f'{parset2_label2}(V)', DoubleSpinBox(), 2, 5),
+            (f'{parset2_label3}(V)', DoubleSpinBox(), 2, 5),
             (f'{parset2_label4}(mS)', SpinBox(), 0, 65500),
             (f'{parset2_label5}(mS)', SpinBox(), 0, 65500),
-            (f'{parset2_label6}(V)', DoubleSpinBox(), 0, 32))
+            (f'{parset2_label6}(V)', DoubleSpinBox(), 2, 5))
         
         monVolProt_groupBox.setLayout(monVolProt_form)
 
