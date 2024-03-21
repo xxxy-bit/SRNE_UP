@@ -62,7 +62,8 @@ def pars_data(res, data):
                 print_dic[k] = f'{resF}'
             else:
                 temp = int(''.join(str(i) for i in temp), 16)
-                print_dic[k] = f'{Common.format_num(temp / v[2])}'
+                print_dic[k] = temp / v[2] 
+                # print_dic[k] = f'{Common.format_num(temp / v[2])}'
     # 历史记录
     elif data[:5] == bms_history[:5]:
         for k,v in json_file[bms_history].items():

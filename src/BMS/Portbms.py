@@ -203,7 +203,7 @@ class Portbms(BmsLayout):
         self.deriveParam.clicked.connect(self.deriveTab3Params)
         
         for k,v in self.tab3_form_dic.items():
-            self.tab3_form_dic[k].textEdited.connect(functools.partial(self.setTab3Params, k))
+            self.tab3_form_dic[k].valueChanged.connect(functools.partial(self.setTab3Params, k))
 
     # 系统设置 槽函数slots
     def sysset_slotsTrigger(self):
@@ -368,11 +368,11 @@ class Portbms(BmsLayout):
                 return QMessageBox.critical(self, 'Error', bms_logic_label11, QMessageBox.Ok)
             
             if key == self.designCap:
-                send_num = '01064000'
+                send_num = '01064000'   # 设计容量
             elif key == self.remainCap:
-                send_num = '01060318'
+                send_num = '01064005'   # 剩余容量
             else:
-                send_num = '01060319'
+                send_num = '01064004'   # 总容量
             send_num = f'{send_num}{num:04x}'
             
             try:
@@ -419,19 +419,20 @@ class Portbms(BmsLayout):
         thisTime.setTime(QTime(int(hour), int(minute), int(second)))
         self.now_time.setDateTime(thisTime)
         
-    # 读取系统设置-系统时间
+    # 系统设置-读取系统时间
     def readTime_func(self):
         if self.assertStatus() == False: return False
         self.sys_time = True
         self.send_msg(bms_sys_time + calc_crc(bms_sys_time))
     
-    # 设置系统设置-电量
+    # 系统设置-写入电量
     def writeCap_func(self):
         if self.assertStatus() == False: return False
         self.stop_moni()
         if len(self.sys_edit_dic) != 0:
             ls = [v for k,v in self.sys_edit_dic.items()]
             self.ls_trv = list(zip(range(len(self.sys_edit_dic)), ls))
+            print(self.ls_trv)
             
             self.writeCap_timer = QTimer()
             self.writeCap_timer_step = 0
@@ -441,7 +442,7 @@ class Portbms(BmsLayout):
         else:
             return QMessageBox.critical(self, 'Error', bms_logic_label13, QMessageBox.Ok)
         
-    # 设置系统设置-电量-计时器
+    # 系统设置-写入电量-计时器
     def writeCap_func_timer(self):
         if self.writeCap_timer_step < len(self.sys_edit_dic):
             self.send_msg(self.ls_trv[self.writeCap_timer_step][1])
@@ -453,7 +454,7 @@ class Portbms(BmsLayout):
             self.start_moni()
             QMessageBox.information(self, 'tips', bms_logic_label35, QMessageBox.Ok)
     
-    # 写入系统设置-系统时间
+    # 系统设置-写入系统时间
     def writeTime_func(self):
         if self.assertStatus() == False: return False
         
@@ -652,22 +653,23 @@ class Portbms(BmsLayout):
     def setTab3Params(self, key):
         if self.tab3_form_dic[key].text() != '':
             try:
-                # txt = ''
+                print(self.tab3_form_dic[key].text())
                 if key == '单体过充告警(V)' or key == '单体过充保护(V)' or key == '单体过充保护恢复(V)' \
                 or key == '单体过放告警(V)' or key == '单体过放保护(V)' or key == '单体过放保护恢复(V)':
-                    txt = int(float(self.tab3_form_dic[key].text()) * 1000)
-                    if txt > 4000:
-                        self.tab3_form_dic[key].setText('')
-                        return QMessageBox.critical(self, 'Error', bms_logic_label21, QMessageBox.Ok)      
+                    txt = int(float(self.tab3_form_dic[key].value()) * 1000)
+                    print(txt)
                 elif key == '总体过充告警(V)' or key == '总体过充保护(V)' or key == '总体过充保护恢复(V)' \
                 or key == '总体过放告警(V)' or key == '总体过放保护(V)' or key == '总体过放保护恢复(V)':
-                    txt = int(float(self.tab3_form_dic[key].text()) * 1000)
-                    if txt > 60000:
-                        self.tab3_form_dic[key].setText('')
-                        return QMessageBox.critical(self, 'Error', bms_logic_label22, QMessageBox.Ok)
+                    txt = int(float(self.tab3_form_dic[key].value()) * 1000)
                 else:
-                    txt = int(self.tab3_form_dic[key].text()) * self.json_modbus[bms_setting][key][2]
+                    txt = int(float(self.tab3_form_dic[key].value()) * abs(self.json_modbus[bms_setting][key][2]))
+                    # TODO
+                    if txt < 0:
+                        txt = txt + 65536
+                        
+                print(txt)
                 keyTxt = f"0106{self.json_modbus[bms_setting][key][3]}{txt:04x}"
+                print(keyTxt)
             except Exception as e:
                 print(f"获取修改过的'参数设置'参数：{e}")
                 return QMessageBox.critical(self, 'Error', bms_logic_label11, QMessageBox.Ok)
@@ -687,15 +689,15 @@ class Portbms(BmsLayout):
             for k,v in self.tab3_dic.items():
                 self.send_msg(v)
                 time.sleep(0.5)
+            self.getTab3Res_func()
 
     # 读取 参数设置 数据
     def getTab3Res_func(self):
         if self.assertStatus() == False: return False
         self.tab3_dic.clear()
         self.send_msg(bms_setting + calc_crc(bms_setting))
-        # self.writeParam.setEnabled(True)
         self.deriveParam.setEnabled(True)
-        # self.resetTab3.setEnabled(True)
+        # QMessageBox.information(self, 'tips', '读取完成', QMessageBox.Ok)
 
     # 保存参数设置为txt
     def deriveTab3Params(self):
@@ -709,7 +711,10 @@ class Portbms(BmsLayout):
     # 参数设置清屏
     def clearTab3(self):
         for k,v in self.tab3_form_dic.items():
-            self.tab3_form_dic[k].setText('')
+            self.tab3_form_dic[k].blockSignals(True)
+            self.tab3_form_dic[k].setValue(0)
+            self.tab3_form_dic[k].blockSignals(False)
+            
         self.tab3_dic.clear()
     
     # 参数设置-恢复默认值(出厂设置)
@@ -961,12 +966,21 @@ class Portbms(BmsLayout):
                 if len(self.p03) == 2:
                     crc_error = True
                 else:
+                    for k,v in self.tab3_form_dic.items():
+                        self.tab3_form_dic[k].blockSignals(True)
+
                     for k,v in self.p03.items():
                         try:
-                            self.tab3_form_dic[k].setText(v)
+                            self.tab3_form_dic[k].setValue(v)
                         except KeyError as e:
                             # print(f'参数设置：{e}')
                             continue
+                        except Exception:
+                            self.tab3_form_dic[k].setValue(int(v))
+                    
+                    for k,v in self.tab3_form_dic.items():
+                        self.tab3_form_dic[k].blockSignals(False)
+                        
             # 历史数据
             elif res[:6] == f'{bms_history[:4]}6c' and len(res) == 226:
                 print('历史数据')

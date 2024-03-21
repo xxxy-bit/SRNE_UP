@@ -9,7 +9,7 @@ from PyQt5.QtCore import Qt
 from .QssStyle import *
 from utils.Common import Common
 from src.OrderList import *
-from qfluentwidgets import DoubleSpinBox, DateTimeEdit, ProgressRing, SwitchButton, ComboBox, TableWidget, PushButton
+from qfluentwidgets import SpinBox, DoubleSpinBox, DateTimeEdit, ProgressRing, SwitchButton, ComboBox, TableWidget, PushButton
 
 
 class BmsLayout(QWidget):
@@ -997,36 +997,65 @@ class BmsLayout(QWidget):
         monVolWarn_groupBox = QGroupBox(parset_label1)
         monVolWarn_groupBox.setStyleSheet(white_bg)
         monVolWarn_form = self.tab3_createForm(
-            self.tab3_form_dic, f'{parset1_label1}(V)', f'{parset1_label2}(V)', 
-                                f'{parset1_label3}(V)', f'{parset1_label4}(mS)',
-                                f'{parset1_label5}(mS)', f'{parset1_label6}(V)')
+            self.tab3_form_dic, 
+            (f'{parset1_label1}(V)', DoubleSpinBox(), 0, 4),
+            (f'{parset1_label2}(V)', DoubleSpinBox(), 0, 4),
+            (f'{parset1_label3}(V)', DoubleSpinBox(), 0, 4),
+            (f'{parset1_label4}(mS)', SpinBox(), 0, 65500),
+            (f'{parset1_label5}(mS)', SpinBox(), 0, 65500),
+            (f'{parset1_label6}(V)', DoubleSpinBox(),0, 32))
+        # monVolWarn_form = self.tab3_createForm(
+        #     self.tab3_form_dic, f'{parset1_label1}(V)', f'{parset1_label2}(V)', 
+        #                         f'{parset1_label3}(V)', f'{parset1_label4}(mS)',
+        #                         f'{parset1_label5}(mS)', f'{parset1_label6}(V)')
         monVolWarn_groupBox.setLayout(monVolWarn_form)
 
         # 单体过放设置
         monVolProt_groupBox = QGroupBox(parset_label2)
         monVolProt_groupBox.setStyleSheet(white_bg)
         monVolProt_form = self.tab3_createForm(
-            self.tab3_form_dic, f'{parset2_label1}(V)', f'{parset2_label2}(V)', 
-                                f'{parset2_label3}(V)', f'{parset2_label4}(mS)',
-                                f'{parset2_label5}(mS)', f'{parset2_label6}(V)')
+            self.tab3_form_dic, 
+            (f'{parset2_label1}(V)', DoubleSpinBox(), 0, 4),
+            (f'{parset2_label2}(V)', DoubleSpinBox(), 0, 4),
+            (f'{parset2_label3}(V)', DoubleSpinBox(), 0, 4),
+            (f'{parset2_label4}(mS)', SpinBox(), 0, 65500),
+            (f'{parset2_label5}(mS)', SpinBox(), 0, 65500),
+            (f'{parset2_label6}(V)', DoubleSpinBox(), 0, 32))
+        
         monVolProt_groupBox.setLayout(monVolProt_form)
 
         # 总体过充设置
         allVolWarn_groupBox = QGroupBox(parset_label3)
         allVolWarn_groupBox.setStyleSheet(white_bg)
         allVolWarn_form = self.tab3_createForm(
-            self.tab3_form_dic, f'{parset3_label1}(V)', f'{parset3_label2}(V)', 
-                                f'{parset3_label3}(V)', f'{parset3_label4}(mS)',
-                                f'{parset3_label5}(mS)', f'{parset3_label6}(V)')
+            self.tab3_form_dic, 
+            (f'{parset3_label1}(V)', DoubleSpinBox(), 0, 60),
+            (f'{parset3_label2}(V)', DoubleSpinBox(), 0, 60),
+            (f'{parset3_label3}(V)', DoubleSpinBox(), 0, 60),
+            (f'{parset3_label4}(mS)', SpinBox(), 0, 65500),
+            (f'{parset3_label5}(mS)', SpinBox(), 0, 65500),
+            (f'{parset3_label6}(V)', DoubleSpinBox(), 0, 32))
+        # allVolWarn_form = self.tab3_createForm(
+        #     self.tab3_form_dic, f'{parset3_label1}(V)', f'{parset3_label2}(V)', 
+        #                         f'{parset3_label3}(V)', f'{parset3_label4}(mS)',
+        #                         f'{parset3_label5}(mS)', f'{parset3_label6}(V)')
         allVolWarn_groupBox.setLayout(allVolWarn_form)
 
         # 总体过放设置
         allVolProt_groupBox = QGroupBox(parset_label4)
         allVolProt_groupBox.setStyleSheet(white_bg)
         allVolProt_form = self.tab3_createForm(
-            self.tab3_form_dic, f'{parset4_label1}(V)', f'{parset4_label2}(V)', 
-                                f'{parset4_label3}(V)', f'{parset4_label4}(mS)',
-                                f'{parset4_label5}(mS)', f'{parset4_label6}(V)')
+            self.tab3_form_dic, 
+            (f'{parset4_label1}(V)', DoubleSpinBox(), 0, 60),
+            (f'{parset4_label2}(V)', DoubleSpinBox(), 0, 60),
+            (f'{parset4_label3}(V)', DoubleSpinBox(), 0, 60),
+            (f'{parset4_label4}(mS)', SpinBox(), 0, 65500),
+            (f'{parset4_label5}(mS)', SpinBox(), 0, 65500),
+            (f'{parset4_label6}(V)', DoubleSpinBox(), 0, 32))
+        # allVolProt_form = self.tab3_createForm(
+        #     self.tab3_form_dic, f'{parset4_label1}(V)', f'{parset4_label2}(V)', 
+        #                         f'{parset4_label3}(V)', f'{parset4_label4}(mS)',
+        #                         f'{parset4_label5}(mS)', f'{parset4_label6}(V)')
         allVolProt_groupBox.setLayout(allVolProt_form)
 
         tab3_layout_H1.addWidget(monVolWarn_groupBox)   # 单体过充设置
@@ -1038,42 +1067,83 @@ class BmsLayout(QWidget):
         # 高温设置
         temWarn_groupBox = QGroupBox(parset_label5)
         temWarn_groupBox.setStyleSheet(white_bg)
-        temWarn_form = self.tab3_createForm(self.tab3_form_dic,
-                                            f'{parset5_label1}(℃)', f'{parset5_label2}(℃)', f'{parset5_label3}(℃)',
-                                            f'{parset5_label4}(℃)', f'{parset5_label5}(℃)', f'{parset5_label6}(℃)',
-                                            f'{parset5_label7}(V)', f'{parset5_label8}(mV)', f'{parset5_label9}(V)', 
-                                            f'{parset5_label10}(min)'
-                                            )
+        temWarn_form = self.tab3_createForm(
+            self.tab3_form_dic,
+            (f'{parset5_label1}(℃)', DoubleSpinBox(), -40, 120, 1),
+            (f'{parset5_label2}(℃)', DoubleSpinBox(), -40, 120, 1),
+            (f'{parset5_label3}(℃)', DoubleSpinBox(), -40, 120, 1),
+            (f'{parset5_label4}(℃)', DoubleSpinBox(), -40, 120, 1),
+            (f'{parset5_label5}(℃)', DoubleSpinBox(), -40, 120, 1),
+            (f'{parset5_label6}(℃)', DoubleSpinBox(), -40, 120, 1),
+            (f'{parset5_label7}(V)', DoubleSpinBox(), 0, 65),
+            (f'{parset5_label8}(mV)', SpinBox(), 0, 65500),
+            (f'{parset5_label9}(V)', DoubleSpinBox(),0 , 65),
+            (f'{parset5_label10}(min)', SpinBox(), 0, 300))
+        # temWarn_form = self.tab3_createForm(self.tab3_form_dic,
+        #                                     f'{parset5_label1}(℃)', f'{parset5_label2}(℃)', f'{parset5_label3}(℃)',
+        #                                     f'{parset5_label4}(℃)', f'{parset5_label5}(℃)', f'{parset5_label6}(℃)',
+        #                                     f'{parset5_label7}(V)', f'{parset5_label8}(mV)', f'{parset5_label9}(V)', 
+        #                                     f'{parset5_label10}(min)'
+        #                                     )
         temWarn_groupBox.setLayout(temWarn_form)
 
         # 低温设置
         temProt_groupBox = QGroupBox(parset_label6)
         temProt_groupBox.setStyleSheet(white_bg)
-        temProt_form = self.tab3_createForm(self.tab3_form_dic,
-                                            f'{parset6_label1}(℃)', f'{parset6_label2}(℃)', f'{parset6_label3}(℃)',
-                                            f'{parset6_label4}(℃)', f'{parset6_label5}(℃)', f'{parset6_label6}(℃)',
-                                            f'{parset6_label7}(V)', f'{parset6_label8}(A)', f'{parset6_label9}(%)'
-                                            )
+        temProt_form = self.tab3_createForm(
+            self.tab3_form_dic,
+            (f'{parset6_label1}(℃)', DoubleSpinBox(), -40, 120, 1),
+            (f'{parset6_label2}(℃)', DoubleSpinBox(), -40, 120, 1),
+            (f'{parset6_label3}(℃)', DoubleSpinBox(), -40, 120, 1),
+            (f'{parset6_label4}(℃)', DoubleSpinBox(), -40, 120, 1),
+            (f'{parset6_label5}(℃)', DoubleSpinBox(), -40, 120, 1),
+            (f'{parset6_label6}(℃)', DoubleSpinBox(), -40, 120, 1),
+            (f'{parset6_label7}(V)', DoubleSpinBox(), 0, 65),
+            (f'{parset6_label8}(A)', SpinBox(), 0, 650),
+            (f'{parset6_label9}(%)', SpinBox(), 0, 100))
+        # temProt_form = self.tab3_createForm(self.tab3_form_dic,
+        #                                     f'{parset6_label1}(℃)', f'{parset6_label2}(℃)', f'{parset6_label3}(℃)',
+        #                                     f'{parset6_label4}(℃)', f'{parset6_label5}(℃)', f'{parset6_label6}(℃)',
+        #                                     f'{parset6_label7}(V)', f'{parset6_label8}(A)', f'{parset6_label9}(%)'
+        #                                     )
         temProt_groupBox.setLayout(temProt_form)
 
         # 放电过流设置
         ecProt_groupBox = QGroupBox(parset_label7)
         ecProt_groupBox.setStyleSheet(white_bg)
-        ecProt_form = self.tab3_createForm(self.tab3_form_dic,
-                                           f'{parset7_label1}(A)', f'{parset7_label2}(A)', 
-                                           f'{parset7_label3}(mS)', f'{parset7_label4}(A)', 
-                                           f'{parset7_label5}(mS)', f'{parset7_label7}(mS)',
-                                           f'{parset7_label8}(V)')
+        ecProt_form = self.tab3_createForm(
+            self.tab3_form_dic,
+            (f'{parset7_label1}(A)', SpinBox(), 0, 655),
+            (f'{parset7_label2}(A)', SpinBox(), 0, 655),
+            (f'{parset7_label3}(mS)', SpinBox(), 0, 32767),
+            (f'{parset7_label4}(A)', SpinBox(), 0, 655),
+            (f'{parset7_label5}(mS)', SpinBox(), 0, 32767),
+            (f'{parset7_label7}(mS)', SpinBox(), 0, 32767),
+            (f'{parset7_label8}(V)', SpinBox(), 0, 655))
+        # ecProt_form = self.tab3_createForm(self.tab3_form_dic,
+        #                                    f'{parset7_label1}(A)', f'{parset7_label2}(A)', 
+        #                                    f'{parset7_label3}(mS)', f'{parset7_label4}(A)', 
+        #                                    f'{parset7_label5}(mS)', f'{parset7_label7}(mS)',
+        #                                    f'{parset7_label8}(V)')
         ecProt_groupBox.setLayout(ecProt_form)
 
         # 充电过流设置
         ecWarn_groupBox = QGroupBox(parset_label8)
         ecWarn_groupBox.setStyleSheet(white_bg)
-        ecWarn_form = self.tab3_createForm(self.tab3_form_dic,
-                                           f'{parset8_label1}(A)', f'{parset8_label2}(A)', 
-                                           f'{parset8_label3}(mS)', f'{parset8_label4}(A)', 
-                                           f'{parset8_label5}(mS)', f'{parset8_label6}(mS)',
-                                           f'{parset8_label7}(V)')
+        ecWarn_form = self.tab3_createForm(
+            self.tab3_form_dic,
+            (f'{parset8_label1}(A)', SpinBox(), 0, 655),
+            (f'{parset8_label2}(A)', SpinBox(), 0, 655),
+            (f'{parset8_label3}(mS)', SpinBox(), 0, 32767),
+            (f'{parset8_label4}(A)', SpinBox(), 0, 655),
+            (f'{parset8_label5}(mS)', SpinBox(), 0, 32767),
+            (f'{parset8_label6}(mS)', SpinBox(), 0, 32767),
+            (f'{parset8_label7}(V)', SpinBox(), 0, 655))
+        # ecWarn_form = self.tab3_createForm(self.tab3_form_dic,
+        #                                    f'{parset8_label1}(A)', f'{parset8_label2}(A)', 
+        #                                    f'{parset8_label3}(mS)', f'{parset8_label4}(A)', 
+        #                                    f'{parset8_label5}(mS)', f'{parset8_label6}(mS)',
+        #                                    f'{parset8_label7}(V)')
         ecWarn_groupBox.setLayout(ecWarn_form)
 
         tab3_layout_H2.addWidget(temWarn_groupBox)   # 高温设置
@@ -1109,15 +1179,35 @@ class BmsLayout(QWidget):
         self.tab_setParams.setLayout(tab3_layout)
 
     # 创建Form布局
+    # def tab3_createForm(self, form_dic: dict, *args):
+    #     formName = QFormLayout()
+    #     temp_dic = {}
+    #     for i in args:
+    #         temp_dic[i] = QLineEdit()
+    #         temp_dic[i].setStyleSheet('border: 1px solid #dcd8d8;')
+    #     for k, v in temp_dic.items():
+    #         # print(k, v)
+    #         temp_dic[k].setAlignment(Qt.AlignCenter)
+
+    #         formName.addRow(k, v)
+    #     form_dic.update(temp_dic)
+    #     return formName
+    
+    # 创建Form布局
     def tab3_createForm(self, form_dic: dict, *args):
         formName = QFormLayout()
         temp_dic = {}
-        for i in args:
-            temp_dic[i] = QLineEdit()
-            temp_dic[i].setStyleSheet('border: 1px solid #dcd8d8;')
-        for k, v in temp_dic.items():
-            temp_dic[k].setAlignment(Qt.AlignCenter)
-
+        for index in args:
+            # 0：标题 1：数字框组件 2：最小值 3：最大值 4：小数点位数
+            k = index[0]
+            v = index[1]
+            v.setMinimum(index[2])
+            v.setMaximum(index[3])
+            try:
+                v.setDecimals(index[4])
+            except Exception:
+                pass
+            temp_dic[k] = v
             formName.addRow(k, v)
         form_dic.update(temp_dic)
         return formName
