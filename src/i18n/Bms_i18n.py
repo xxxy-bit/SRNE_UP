@@ -185,7 +185,7 @@ parset5_label6 = _('放电高温保护恢复')
 parset5_label7 = _('均衡开启电压')
 parset5_label8 = _('均衡开启压差')
 parset5_label9 = _('单体休眠电压')
-parset5_label10 = _('单体休眠延时')
+parset5_label10 = _('单体低压休眠延时')
 
 # 低温设置
 parset6_label1 = _('充电低温告警')
@@ -194,8 +194,8 @@ parset6_label3 = _('充电低温保护恢复')
 parset6_label4 = _('放电低温告警')
 parset6_label5 = _('放电低温保护')
 parset6_label6 = _('放电低温保护恢复')
-parset6_label7 = _('电池包截止电压')
-parset6_label8 = _('电池包截止电流')
+parset6_label7 = _('电池充满电压')
+parset6_label8 = _('电池满充电流')
 parset6_label9 = _('低电量告警')
 
 # 放电过流设置
