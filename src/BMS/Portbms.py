@@ -124,8 +124,12 @@ class Portbms(BmsLayout):
         # 擦除历史数据标志位
         self.clear_his_status = False
         
-        # 电池设置标志位
-        self.sys_status = False
+        # 02 电池设置标志位
+        self.sys_status_1 = False
+        
+        # 04 返回相同字节数的标志位
+        self.ver = False
+        self.sys_status_2 = False
         
         # 启用rs485协议解析
         self.rs485_res_status = False
@@ -386,7 +390,8 @@ class Portbms(BmsLayout):
     def readCap_func(self):
         if self.assertStatus() == False: return False
         self.stop_moni()
-        self.sys_status = True
+        self.sys_status_1 = True
+        self.sys_status_2 = True
         self.sys_edit_dic = {}
         self.readCap_timer = QTimer()
         self.readCap_timer_step = 1
@@ -583,6 +588,9 @@ class Portbms(BmsLayout):
             self.getP01_data_btn.setText(bms_logic_label4)
             self.getP01_data_btn.setStyleSheet(open_Button)
             self.low_vol = False
+            
+            # 版本标志位
+            self.ver = True
             
             # 定时器
             self.bms_qtimer_get_monitor = QTimer()
@@ -1002,13 +1010,14 @@ class Portbms(BmsLayout):
                         count += 1
                     self.export_history_csv += '\n'
             # 读取版本号
-            elif res[:6] == f'{bms_version[:4]}04' and len(res) == 18:
+            elif res[:6] == f'{bms_version[:4]}04' and len(res) == 18 and self.ver == True:
                 print('读取版本号')
                 v1 = int(res[6:8], 16)
                 v2 = int(res[8:10], 16)
                 v3 = int(res[10:12], 16)
                 v4 = int(res[12:14], 16)
                 self.version.setText(f'{ver_label1}：{v1}.{v2}.{v3}.{v4}')
+                self.ver = False
             # 读取系统设置-系统时间
             elif res[:6] == f'{bms_sys_time[:4]}06' and self.sys_time and len(res) == 22:
                 print('读取系统设置-系统时间')
@@ -1030,17 +1039,18 @@ class Portbms(BmsLayout):
                 thisTime.setTime(QTime(hour, minutes, seconds))
                 self.now_time.setDateTime(thisTime)
             # 读取系统设置-电量数据
-            elif res[:6] == f'{bms_sys_set1[:4]}06' and len(res) == 22:
+            elif res[:6] == f'{bms_sys_set1[:4]}04' and len(res) == 18 and self.sys_status_2 == True:
                 print('读取系统设置-电量数据')
                 ele_data = pars_data(res, bms_sys_set1 + calc_crc(bms_sys_set1))
                 self.remainCap.setText(ele_data[f'{battery_label3}(AH)'])
                 self.fullCap_Line.setText(ele_data[f'总容量(AH)'])
+                self.sys_status_2 = False
             # 读取系统设置-电量数据2
-            elif res[:6] == f'{bms_sys_set2[:4]}02' and len(res) == 14 and self.sys_status == True:
+            elif res[:6] == f'{bms_sys_set2[:4]}02' and len(res) == 14 and self.sys_status_1 == True:
                 print('读取系统设置-电量数据2')
                 ele_data = pars_data(res, bms_sys_set2 + calc_crc(bms_sys_set2))
                 self.designCap.setText(ele_data[f'设计容量(AH)'])
-                self.sys_status = False
+                self.sys_status_1 = False
             # 历史数据总数 
             elif res[:6] == f'{bms_recent_history[:4]}02' and len(res) == 14:
                 print('历史数据总数')

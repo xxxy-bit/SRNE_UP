@@ -109,7 +109,7 @@ sys_label = """
 sys_Line = """
     QLineEdit{
         background-color:#FFFFFF;
-        font-size: 18pt;
+        font-size: 15pt;
         border: 1px solid #dcd8d8;
     }
 """
