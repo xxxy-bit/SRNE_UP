@@ -448,9 +448,6 @@ class BmsLayout(QWidget):
         time_groupBox_v_toph.addWidget(self.now_time)
         time_groupBox_v_toph.addWidget(self.sync_btn)
 
-        # 同步电脑时间
-        # time_groupBox_v_toph2 = QHBoxLayout()
-
         time_groupBox_v_bomh = QHBoxLayout()
         self.readTime = QPushButton(sysset_label5)
         self.readTime.setStyleSheet(open_Button)
@@ -466,6 +463,56 @@ class BmsLayout(QWidget):
         time_groupBox_v.addLayout(time_groupBox_v_bomh)
         time_groupBox.setLayout(time_groupBox_v)
         sys_layout_left.addWidget(time_groupBox)
+        
+        # 通信选择协议
+        protocol_groupBox = QGroupBox('通信协议选择')
+        protocol_groupBox.setStyleSheet(white_bg)
+        protocol_groupBox.setMaximumHeight(250)
+        protocol_groupBox.setMaximumWidth(250)
+
+        protocol_groupBox_v = QVBoxLayout()
+
+        protocol_groupBox_v_toph = QVBoxLayout()
+        
+        Pro_can = QLabel('Can协议')
+        self.Pro_can_combox = ComboBox()
+        self.Pro_can_list = [
+            'Pylon/派能', 'Growatt/古瑞瓦特', 'Victron/Victron', 'Goodwe/固德威',
+            'Solis/GinLong/锦浪', 'Luxpower/鹏城', 'Sofar/首航', 'KStar/科士达',
+            'SMA/SMA', 'MEGAREVO/迈格瑞能', 'Afore/艾伏', 'SRNE/硕日'
+            ]
+        self.Pro_can_combox.addItems(self.Pro_can_list)
+        
+        Pro_485 = QLabel('485协议')
+        self.Pro_485_combox = ComboBox()
+        self.Pro_485_list = [
+            'Pylon/派能', 'Growatt/古瑞瓦特', 'SRNE/硕日', 'Deye/德业',
+            'Voltronic/日月元', 'Paceic/沛城'
+            ]
+        self.Pro_485_combox.addItems(self.Pro_485_list)
+
+        protocol_groupBox_v_toph.addWidget(Pro_can)
+        protocol_groupBox_v_toph.addWidget(self.Pro_can_combox)
+        protocol_groupBox_v_toph.addWidget(Pro_485)
+        protocol_groupBox_v_toph.addWidget(self.Pro_485_combox)
+        
+        protocol_groupBox_v.addLayout(protocol_groupBox_v_toph)
+        
+        protocol_groupBox_v_bomh = QHBoxLayout()
+        self.Pro_read = QPushButton(sysset_label5)
+        self.Pro_read.setStyleSheet(open_Button)
+        self.Pro_write = QPushButton(systime_label3)
+        self.Pro_write.setStyleSheet(open_Button)
+
+        protocol_groupBox_v_bomh.addWidget(self.Pro_read)
+        protocol_groupBox_v_bomh.addWidget(self.Pro_write)
+
+        protocol_groupBox_v.addLayout(protocol_groupBox_v_toph)
+        protocol_groupBox_v.addStretch(1)
+        protocol_groupBox_v.addLayout(protocol_groupBox_v_bomh)
+
+        protocol_groupBox.setLayout(protocol_groupBox_v)
+        sys_layout_left.addWidget(protocol_groupBox)
 
         # 下边
         sys_layout_right = QHBoxLayout()

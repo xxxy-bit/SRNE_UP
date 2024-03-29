@@ -124,6 +124,9 @@ class Portbms(BmsLayout):
         # 擦除历史数据标志位
         self.clear_his_status = False
         
+        # 读取通信协议标志位
+        self.Pro_status = False
+        
         # 02 电池设置标志位
         self.sys_status_1 = False
         
@@ -229,12 +232,26 @@ class Portbms(BmsLayout):
             sys_edit_obj[i].textEdited.connect(functools.partial(self.setSysParams, sys_edit_obj[i]))
 
         self.adds_btn.clicked.connect(self.adds_btn_func)
+        self.Pro_read.clicked.connect(self.Pro_read_func)
+        self.Pro_write.clicked.connect(self.Pro_write_func)
 
     # 并联监控 槽函数slots
     def pal_monitor_slotsTrigger(self):
         # self.pal_check.clicked.connect(self.pal_check_func)
         self.pal_start.clicked.connect(self.pal_start_func)
 
+    # 系统设置-读取协议
+    def Pro_read_func(self):
+        self.send_msg(bms_sys_protocol + calc_crc(bms_sys_protocol))
+        self.Pro_status = True
+    
+    # 系统设置-写入协议
+    def Pro_write_func(self):
+        index_can = self.Pro_can_combox.currentIndex()
+        index_485 = self.Pro_485_combox.currentIndex()
+        msg = f'0106001b{index_can:02x}{index_485:02x}'
+        self.send_msg(msg + calc_crc(msg))
+    
     # 历史数据-导出历史记录按钮
     def export_history_func(self):
         try:
@@ -952,6 +969,7 @@ class Portbms(BmsLayout):
                             self.getP01_data_btn.setText(com_label8)
                             self.getP01_data_btn.setStyleSheet(close_Button)
                             QMessageBox.information(self, 'tips', bms_logic_label28, QMessageBox.Ok)
+            
             # 蜂鸣器状态
             elif res[:6] == f'{bms_beep[:4]}02' and len(res) == 14 and self.beep_tag:
                 print('蜂鸣器状态')
@@ -1009,6 +1027,7 @@ class Portbms(BmsLayout):
                         self.export_history_csv += p06[k] + ','
                         count += 1
                     self.export_history_csv += '\n'
+            
             # 读取版本号
             elif res[:6] == f'{bms_version[:4]}04' and len(res) == 18 and self.ver == True:
                 print('读取版本号')
@@ -1018,6 +1037,7 @@ class Portbms(BmsLayout):
                 v4 = int(res[12:14], 16)
                 self.version.setText(f'{ver_label1}：{v1}.{v2}.{v3}.{v4}')
                 self.ver = False
+            
             # 读取系统设置-系统时间
             elif res[:6] == f'{bms_sys_time[:4]}06' and self.sys_time and len(res) == 22:
                 print('读取系统设置-系统时间')
@@ -1038,6 +1058,7 @@ class Portbms(BmsLayout):
                 thisTime.setDate(QDate(year, month, day))
                 thisTime.setTime(QTime(hour, minutes, seconds))
                 self.now_time.setDateTime(thisTime)
+            
             # 读取系统设置-电量数据
             elif res[:6] == f'{bms_sys_set1[:4]}04' and len(res) == 18 and self.sys_status_2 == True:
                 print('读取系统设置-电量数据')
@@ -1045,19 +1066,32 @@ class Portbms(BmsLayout):
                 self.remainCap.setText(ele_data[f'{battery_label3}(AH)'])
                 self.fullCap_Line.setText(ele_data[f'总容量(AH)'])
                 self.sys_status_2 = False
+            
             # 读取系统设置-电量数据2
             elif res[:6] == f'{bms_sys_set2[:4]}02' and len(res) == 14 and self.sys_status_1 == True:
                 print('读取系统设置-电量数据2')
                 ele_data = pars_data(res, bms_sys_set2 + calc_crc(bms_sys_set2))
                 self.designCap.setText(ele_data[f'设计容量(AH)'])
                 self.sys_status_1 = False
+            
+            # 读取系统设置-通信协议选择
+            elif res[:6] == f'{bms_sys_protocol[:4]}02' and len(res) == 14 and self.Pro_status == True:
+                self.Pro_status = False
+                # 01 03 02 0b 02 3e b5
+                print('读取系统设置-通讯协议')
+                res_can = int(res[6:8], 16)
+                res_485 = int(res[8:10], 16)
+                self.Pro_can_combox.setCurrentIndex(res_can)
+                self.Pro_485_combox.setCurrentIndex(res_485)
+            
             # 历史数据总数 
             elif res[:6] == f'{bms_recent_history[:4]}02' and len(res) == 14:
                 print('历史数据总数')
                 # print(res[6:10])
                 self.num_max = int(res[6:10], 16)
                 # print('self.num_max: {}'.format(self.num_max))
-                
+            
+            # CRC16 校验失败
             if crc_error == False:
                 self.add_tableItem('↑', res)
             else:
