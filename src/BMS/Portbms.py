@@ -1031,11 +1031,16 @@ class Portbms(BmsLayout):
             # 读取版本号
             elif res[:6] == f'{bms_version[:4]}04' and len(res) == 18 and self.ver == True:
                 print('读取版本号')
-                v1 = int(res[6:8], 16)
-                v2 = int(res[8:10], 16)
-                v3 = int(res[10:12], 16)
-                v4 = int(res[12:14], 16)
-                self.version.setText(f'{ver_label1}：{v1}.{v2}.{v3}.{v4}')
+                # v1 = res[6:8]
+                v2 = res[8:10]
+                v3 = res[10:12]
+                v4 = res[12:14]
+                
+                ver2 = int(v2, 16) if int(v2, 16) <= 15 else v2
+                ver3 = int(v3, 16) if int(v3, 16) <= 15 else v3
+                ver4 = int(v4, 16) if int(v4, 16) <= 15 else v4
+                
+                self.version.setText(f'{ver_label1}：{ver2}.{ver3}.{ver4}')
                 self.ver = False
             
             # 读取系统设置-系统时间
