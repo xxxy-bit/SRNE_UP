@@ -200,6 +200,7 @@ class Portbms(BmsLayout):
         self.hisShow.clicked.connect(self.his_show)
         self.export_history.clicked.connect(self.export_history_func)
         self.clearShow.clicked.connect(self.clear_his_msg)
+        self.clearScreen.clicked.connect(self.clear_Screen_msg)
 
     # 参数设置 槽函数slots
     def setParams_slotsTrigger(self):
@@ -746,6 +747,20 @@ class Portbms(BmsLayout):
     def reset_default(self):
         if self.assertStatus() == False: return False
         self.send_msg(bms_reset + calc_crc(bms_reset))
+    
+    # 清屏历史数据
+    def clear_Screen_msg(self):
+        if self.ser.isOpen() == False:
+            return QMessageBox.information(self, 'Error', bms_logic_label7, QMessageBox.Ok)
+        self.clearRow_btn(self.hisTable)
+        try:
+            self.hisTime.stop()
+        except Exception as e:
+            print(e)
+        self.his_status = False
+        self.hisShow.setText(hisdata_label1)
+        self.start_moni()
+        self.export_history.setEnabled(False)
     
     # 擦除历史数据
     def clear_his_msg(self):

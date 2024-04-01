@@ -479,7 +479,7 @@ class BmsLayout(QWidget):
         self.Pro_can_list = [
             'Pylon/派能', 'Growatt/古瑞瓦特', 'Victron/Victron', 'Goodwe/固德威',
             'Solis/GinLong/锦浪', 'Luxpower/鹏城', 'Sofar/首航', 'KStar/科士达',
-            'SMA/SMA', 'MEGAREVO/迈格瑞能', 'Afore/艾伏', 'SRNE/硕日'
+            'SMA/SMA', 'MEGAREVO/迈格瑞能', 'Afore/艾伏', 'SRNE/硕日', 'RV-C'
             ]
         self.Pro_can_combox.addItems(self.Pro_can_list)
         
@@ -1217,6 +1217,7 @@ class BmsLayout(QWidget):
         tab4_layout_table = QVBoxLayout()
         tab4_layout_table_btn_H = QHBoxLayout()
         self.hisShow = QPushButton(hisdata_label1)
+        self.clearScreen = QPushButton(parset9_label2)
         self.export_history = QPushButton(hisdata_label3)
         self.export_history.setEnabled(False)
         self.clearShow = QPushButton(hisdata_label2)
@@ -1238,6 +1239,7 @@ class BmsLayout(QWidget):
         # self.hisTable.setColumnWidth(41,150)    # PACK+/-温度(最高)(℃)
 
         tab4_layout_table_btn_H.addWidget(self.hisShow)
+        tab4_layout_table_btn_H.addWidget(self.clearScreen)
         tab4_layout_table_btn_H.addWidget(self.export_history)
         tab4_layout_table_btn_H.addWidget(self.clearShow)
 
