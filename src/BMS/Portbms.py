@@ -1051,9 +1051,9 @@ class Portbms(BmsLayout):
                 v3 = res[10:12]
                 v4 = res[12:14]
                 
-                ver2 = int(v2, 16) if int(v2, 16) <= 15 else v2
-                ver3 = int(v3, 16) if int(v3, 16) <= 15 else v3
-                ver4 = int(v4, 16) if int(v4, 16) <= 15 else v4
+                ver2 = int(v2, 16) if int(v2, 16) <= 9 else v2
+                ver3 = int(v3, 16) if int(v3, 16) <= 9 else v3
+                ver4 = int(v4, 16) if int(v4, 16) <= 9 else v4
                 
                 self.version.setText(f'{ver_label1}：{ver2}.{ver3}.{ver4}')
                 self.ver = False
