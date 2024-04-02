@@ -496,8 +496,6 @@ class BmsLayout(QWidget):
         protocol_groupBox_v_toph.addWidget(Pro_485)
         protocol_groupBox_v_toph.addWidget(self.Pro_485_combox)
         
-        protocol_groupBox_v.addLayout(protocol_groupBox_v_toph)
-        
         protocol_groupBox_v_bomh = QHBoxLayout()
         self.Pro_read = QPushButton(sysset_label5)
         self.Pro_read.setStyleSheet(open_Button)
