@@ -841,8 +841,8 @@ class Portbms(BmsLayout):
             # print('self.hisNum: {}'.format(self.hisNum))
             return 0
         
-        if self.num_max > 500:
-            self.num_max = 500
+        # if self.num_max > 500:
+        #     self.num_max = 500
         if self.hisNum <= self.num_max:
             num = f'{bms_history[:5]}{self.hisNum:03x}0036'
             self.send_msg(f'{num}{calc_crc(num)}')
