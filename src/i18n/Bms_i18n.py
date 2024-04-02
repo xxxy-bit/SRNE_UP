@@ -242,7 +242,7 @@ systime_label2 = _('同步时间')
 systime_label3 = _('写入')
 
 # 历史数据页
-hisdata_label1 = _('获取最近历史数据(1~100)')
+hisdata_label1 = _('获取最近历史数据')
 hisdata_label2 = _('擦除历史数据')
 hisdata_label3 = _('导出历史记录')
 hisdata_label4 = _('继续')
