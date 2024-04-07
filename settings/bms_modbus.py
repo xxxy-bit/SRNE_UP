@@ -292,7 +292,14 @@ def get_bms_modbus_list():
                 "5":bms_history_label29,
                 "6":bms_history_label30,
                 "7":bms_history_label31,
-                "8":bms_history_label32
+                "8":bms_history_label32,
+                "9":'BMS Scommunite Success',
+                "10":'BLE Scommunite Success',
+                "11":'WIFI Scommunite Success',
+                "12":'BIT 12',
+                "13":'BIT 13',
+                "14":'BIT 14',
+                "15":'BIT 15',
             }],
             bms_history_label5 + "1":[9, 1, 1, "", {
                 "0":"cell" + bms_parse_label1,
