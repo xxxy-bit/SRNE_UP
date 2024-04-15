@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import os, locale, functools
+import os, locale, functools, gettext
 from PyQt5 import QtCore, QtWidgets, QtCore
 from PyQt5.QtCore import QSettings
 from ui.main_meun import Ui_MainWindow as main_menu
+from .update.update import download_update_from_url
 from .QssStyle import *
 
 
@@ -12,6 +13,8 @@ class MainWindow(QtWidgets.QMainWindow, main_menu):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi(self)
+        
+        # self.setWindowTitle('11111')
         
         print(f'当前版本：{self.windowTitle()}')
         
@@ -28,10 +31,6 @@ class MainWindow(QtWidgets.QMainWindow, main_menu):
         self.lang_en.triggered.connect(functools.partial(self.change_language, 'en_US'))
         self.lang_zh.triggered.connect(functools.partial(self.change_language, 'zh_CN'))
         
-        # 隐藏 充电器 和 逆变器 的按钮，仅提供给bms使用
-        # self.acchargeButton.hide()
-        # self.InverterButton.hide()
-        
         self.acchargerBtn.clicked.connect(self.goAcCharger) # 跳转AC充电器
         self.acchargerBtn.enterEvent = self.ac_enEvent
         self.acchargerBtn.leaveEvent = self.ac_leEvent
@@ -47,6 +46,8 @@ class MainWindow(QtWidgets.QMainWindow, main_menu):
         self.bmsBtn.clicked.connect(self.goBms) # 跳转BMS
         self.bmsBtn.enterEvent = self.bms_enEvent
         self.bmsBtn.leaveEvent = self.bms_leEvent
+        
+        # self.update_version()
     
     def ac_enEvent(self, event):
         self.ac_bg.setStyleSheet(main_ac_bg_ent_event)
@@ -119,3 +120,17 @@ class MainWindow(QtWidgets.QMainWindow, main_menu):
         _app = QtWidgets.QApplication.instance()
         _app.installTranslator(self.trans)
         self.retranslateUi(self)
+
+    # 版本更新
+    def update_version(self):
+        
+        set_dir = os.path.join(os.getcwd(), 'settings', 'dynamic.ini')
+        setting = QSettings(set_dir, QSettings.IniFormat)
+        
+        temp_file = os.path.join(os.getcwd(), 'update', 'update.zip')
+        
+        download_update_from_url(setting.value('url'), temp_file)
+        
+        print(setting.value('version'))
+        print(setting.value('url'))
+        
