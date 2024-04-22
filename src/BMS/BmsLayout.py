@@ -232,42 +232,42 @@ class BmsLayout(QWidget):
         # self.palTable.setColumnCount(4)
         # self.palTable.setHorizontalHeaderLabels(['11','12','13','14'])
         
-        self.col_labels = [
-            'Cell' + palnum_label1 + '_1', 'Cell' + palnum_label1 +
-            '_2', 'Cell' + palnum_label1 + '_3', 'Cell' + palnum_label1 + '_4',
-            'Cell' + palnum_label1 + '_5', 'Cell' + palnum_label1 +
-            '_6', 'Cell' + palnum_label1 + '_7', 'Cell' + palnum_label1 + '_8',
-            'Cell' + palnum_label1 + '_9', 'Cell' + palnum_label1 + '_10', 'Cell' +
-            palnum_label1 + '_11', 'Cell' + palnum_label1 + '_12',
-            'Cell' + palnum_label1 + '_13', 'Cell' + palnum_label1 + '_14', 'Cell' +
-            palnum_label1 + '_15', 'Cell' + palnum_label1 + '_16',
-            palnum_label2 + '_1', palnum_label2 + '_2', palnum_label2 +
-            '_3', palnum_label2 + '_4', palnum_label2 + '_5',
-            palnum_label2 + '_6', palnum_label2 +
-            '_7', palnum_label2 + '_8', palnum_label2 + '_9',
-            palnum_label3, 'PACK ' + paldata_label4, 'PACK ' +
-            battery_label3, 'PACK ' + battery_label4,
-            palnum_label7, palnum_label8, 'PACK SOC',
-            'Cell' + palnum_label9 + '_1', 'Cell' + palnum_label9 +
-            '_2', 'Cell' + palnum_label9 + '_3', 'Cell' + palnum_label9 + '_4',
-            'Cell' + palnum_label9 + '_5', 'Cell' + palnum_label9 +
-            '_6', 'Cell' + palnum_label9 + '_7', 'Cell' + palnum_label9 + '_8',
-            'Cell' + palnum_label9 + '_9', 'Cell' + palnum_label9 + '_10', 'Cell' +
-            palnum_label9 + '_11', 'Cell' + palnum_label9 + '_12',
-            'Cell' + palnum_label9 + '_13', 'Cell' + palnum_label9 + '_14', 'Cell' +
-            palnum_label9 + '_15', 'Cell' + palnum_label9 + '_16',
-            palnum_label2 + palnum_label9 + '_1', palnum_label2 + palnum_label9 + '_2', palnum_label2 +
-            palnum_label9 + '_3', palnum_label2 + palnum_label9 +
-            '_4', palnum_label2 + palnum_label9 + '_5',
-            palnum_label2 + palnum_label9 + '_6', palnum_label2 + palnum_label9 +
-            '_7', palnum_label2 + palnum_label9 + '_8', palnum_label2 + palnum_label9 + '_9',
-            palnum_label10, palnum_label11, palnum_label12, f'{group_tabel10}_1',
-            f'{group_tabel10}_2', palnum_label14, palnum_label15, group_tabel8,
-            palnum_label16 + '_1', palnum_label16 +
-            '_2', f'{group_tabel9}_1', f'{group_tabel9}_2',
-        ]
-        self.palTable.setRowCount(len(self.col_labels))
-        self.palTable.setVerticalHeaderLabels(self.col_labels)
+        # self.col_labels = [
+        #     'Cell' + palnum_label1 + '_1', 'Cell' + palnum_label1 +
+        #     '_2', 'Cell' + palnum_label1 + '_3', 'Cell' + palnum_label1 + '_4',
+        #     'Cell' + palnum_label1 + '_5', 'Cell' + palnum_label1 +
+        #     '_6', 'Cell' + palnum_label1 + '_7', 'Cell' + palnum_label1 + '_8',
+        #     'Cell' + palnum_label1 + '_9', 'Cell' + palnum_label1 + '_10', 'Cell' +
+        #     palnum_label1 + '_11', 'Cell' + palnum_label1 + '_12',
+        #     'Cell' + palnum_label1 + '_13', 'Cell' + palnum_label1 + '_14', 'Cell' +
+        #     palnum_label1 + '_15', 'Cell' + palnum_label1 + '_16',
+        #     palnum_label2 + '_1', palnum_label2 + '_2', palnum_label2 +
+        #     '_3', palnum_label2 + '_4', palnum_label2 + '_5',
+        #     palnum_label2 + '_6', palnum_label2 +
+        #     '_7', palnum_label2 + '_8', palnum_label2 + '_9',
+        #     palnum_label3, 'PACK ' + paldata_label4, 'PACK ' +
+        #     battery_label3, 'PACK ' + battery_label4,
+        #     palnum_label7, palnum_label8, 'PACK SOC',
+        #     'Cell' + palnum_label9 + '_1', 'Cell' + palnum_label9 +
+        #     '_2', 'Cell' + palnum_label9 + '_3', 'Cell' + palnum_label9 + '_4',
+        #     'Cell' + palnum_label9 + '_5', 'Cell' + palnum_label9 +
+        #     '_6', 'Cell' + palnum_label9 + '_7', 'Cell' + palnum_label9 + '_8',
+        #     'Cell' + palnum_label9 + '_9', 'Cell' + palnum_label9 + '_10', 'Cell' +
+        #     palnum_label9 + '_11', 'Cell' + palnum_label9 + '_12',
+        #     'Cell' + palnum_label9 + '_13', 'Cell' + palnum_label9 + '_14', 'Cell' +
+        #     palnum_label9 + '_15', 'Cell' + palnum_label9 + '_16',
+        #     palnum_label2 + palnum_label9 + '_1', palnum_label2 + palnum_label9 + '_2', palnum_label2 +
+        #     palnum_label9 + '_3', palnum_label2 + palnum_label9 +
+        #     '_4', palnum_label2 + palnum_label9 + '_5',
+        #     palnum_label2 + palnum_label9 + '_6', palnum_label2 + palnum_label9 +
+        #     '_7', palnum_label2 + palnum_label9 + '_8', palnum_label2 + palnum_label9 + '_9',
+        #     palnum_label10, palnum_label11, palnum_label12, f'{group_tabel10}_1',
+        #     f'{group_tabel10}_2', palnum_label14, palnum_label15, group_tabel8,
+        #     palnum_label16 + '_1', palnum_label16 +
+        #     '_2', f'{group_tabel9}_1', f'{group_tabel9}_2',
+        # ]
+        # self.palTable.setRowCount(len(self.col_labels))
+        # self.palTable.setVerticalHeaderLabels(self.col_labels)
 
         pal_layout_bottom.addWidget(self.palTable)
 
