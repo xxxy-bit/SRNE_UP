@@ -240,6 +240,7 @@ class Portbms(BmsLayout):
     def pal_monitor_slotsTrigger(self):
         # self.pal_check.clicked.connect(self.pal_check_func)
         self.pal_start.clicked.connect(self.pal_start_func)
+        # self.pal_start.clicked.connect(self.pal_start_func2)
 
     # 系统设置-读取协议
     def Pro_read_func(self):
@@ -271,6 +272,46 @@ class Portbms(BmsLayout):
                 QMessageBox.Yes | QMessageBox.No) == QMessageBox.Yes:
             os.startfile(open_file)
 
+    # 并联监控开始-测试
+    def pal_start_func2(self):
+        
+        self.col_labels = [
+            'Cell' + palnum_label1 + '_1', 'Cell' + palnum_label1 +
+            '_2', 'Cell' + palnum_label1 + '_3', 'Cell' + palnum_label1 + '_4',
+            'Cell' + palnum_label1 + '_5', 'Cell' + palnum_label1 +
+            '_6', 'Cell' + palnum_label1 + '_7', 'Cell' + palnum_label1 + '_8',
+            'Cell' + palnum_label1 + '_9', 'Cell' + palnum_label1 + '_10', 'Cell' +
+            palnum_label1 + '_11', 'Cell' + palnum_label1 + '_12',
+            'Cell' + palnum_label1 + '_13', 'Cell' + palnum_label1 + '_14', 'Cell' +
+            palnum_label1 + '_15', 'Cell' + palnum_label1 + '_16',
+            palnum_label2 + '_1', palnum_label2 + '_2', palnum_label2 +
+            '_3', palnum_label2 + '_4', palnum_label2 + '_5',
+            palnum_label2 + '_6', palnum_label2 +
+            '_7', palnum_label2 + '_8', palnum_label2 + '_9',
+            palnum_label3, 'PACK ' + paldata_label4, 'PACK ' +
+            battery_label3, 'PACK ' + battery_label4,
+            palnum_label7, palnum_label8, 'PACK SOC',
+            'Cell' + palnum_label9 + '_1', 'Cell' + palnum_label9 +
+            '_2', 'Cell' + palnum_label9 + '_3', 'Cell' + palnum_label9 + '_4',
+            'Cell' + palnum_label9 + '_5', 'Cell' + palnum_label9 +
+            '_6', 'Cell' + palnum_label9 + '_7', 'Cell' + palnum_label9 + '_8',
+            'Cell' + palnum_label9 + '_9', 'Cell' + palnum_label9 + '_10', 'Cell' +
+            palnum_label9 + '_11', 'Cell' + palnum_label9 + '_12',
+            'Cell' + palnum_label9 + '_13', 'Cell' + palnum_label9 + '_14', 'Cell' +
+            palnum_label9 + '_15', 'Cell' + palnum_label9 + '_16',
+            palnum_label2 + palnum_label9 + '_1', palnum_label2 + palnum_label9 + '_2', palnum_label2 +
+            palnum_label9 + '_3', palnum_label2 + palnum_label9 +
+            '_4', palnum_label2 + palnum_label9 + '_5',
+            palnum_label2 + palnum_label9 + '_6', palnum_label2 + palnum_label9 +
+            '_7', palnum_label2 + palnum_label9 + '_8', palnum_label2 + palnum_label9 + '_9',
+            palnum_label10, palnum_label11, palnum_label12, f'{group_tabel10}_1',
+            f'{group_tabel10}_2', palnum_label14, palnum_label15, group_tabel8,
+            palnum_label16 + '_1', palnum_label16 +
+            '_2', f'{group_tabel9}_1', f'{group_tabel9}_2',
+        ]
+        self.palTable.setRowCount(len(self.col_labels))
+        self.palTable.setVerticalHeaderLabels(self.col_labels)
+    
     # 并联监控-开始获取信息按钮
     def pal_start_func(self):
         if self.pal_start.text() == palset_label2:
@@ -283,6 +324,9 @@ class Portbms(BmsLayout):
             self.palTable.setColumnCount(int(self.pack_total.currentText()))
             self.palTable.clearContents()
             
+            # 是否已获取到电压与温度个数
+            self.get_parallel_vol_tmp = False
+
             self.pal_start_time = QTimer()
             self.pal_start_time_setp = 1
             self.pal_start_time.timeout.connect(self.pal_start_func_timer)
@@ -299,21 +343,31 @@ class Portbms(BmsLayout):
         adr = ''
         for i in num:
             adr += hex(ord(i))[2:]
-        if self.pal_start_time_setp <= int(self.pack_total.currentText()):
-            if self.repeat == False:
-                self.repeat = True
-                txt = f'7E 32 35 {adr} 34 36 34 32 45 30 30 32 {adr}'
-            else:
-                self.repeat = False
-                txt = f'7E 32 35 {adr} 34 36 34 34 45 30 30 32 {adr}'
-                self.pal_start_time_setp += 1
+        
+        if self.get_parallel_vol_tmp == False:
+            self.pal_start_time_setp = 1
+            txt = f'7E 32 35 {3031} 34 36 34 32 45 30 30 32 {3031}'
             self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
-
+        
         else:
-            self.pal_start_time.stop()
-            self.pal_start.setText(palset_label2)
-            self.rs485_res_status = False
-            self.start_moni()
+            
+            # 42 44 轮询发送
+            if self.pal_start_time_setp <= int(self.pack_total.currentText()):
+                if self.repeat == False:
+                    self.repeat = True
+                    txt = f'7E 32 35 {adr} 34 36 34 32 45 30 30 32 {adr}'
+                else:
+                    self.repeat = False
+                    txt = f'7E 32 35 {adr} 34 36 34 34 45 30 30 32 {adr}'
+                    self.pal_start_time_setp += 1
+                # print(adr)
+                self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
+
+            else:
+                self.pal_start_time.stop()
+                self.pal_start.setText(palset_label2)
+                self.rs485_res_status = False
+                self.start_moni()
 
     # 开关蜂鸣器
     def buzzer_switch(self):
@@ -353,6 +407,7 @@ class Portbms(BmsLayout):
     def dormancy_switch(self):
         self.send_msg(bms_sleep_on + calc_crc(bms_sleep_on))
 
+    # 实时监控-测试模式
     def testmode_btn_func(self):
         if self.testmode_btn.text() == switch_label6:
             self.testmode_btn.setText(switch_label7)
@@ -1136,72 +1191,144 @@ class Portbms(BmsLayout):
                     self.add_tableItem('↑', res)
                     return 0
                 
-            elif len(res) == 312:  # 获取 PACK 模拟量响应信息
-                msg = res[30:-10]  # 去掉前缀报文和校验码
-                adr = ''
-                for k,v in self.json_rs485['获取PACK模拟量响应信息'].items():
-                    temp = ''
-                    for i in range(v[0], v[0]+v[1], 2):
-                        temp += chr(int(msg[i:i + 2], 16))
-                    if k == 'Command':
-                        adr = int(temp, 16)
-                    elif palnum_label2 in k or bms_history_label3 in k: # 温度、电流
-                        data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))} {v[3]}'
-                    else:
-                        data = f'{Common.format_num(int(temp, 16) / abs(v[2]))} {v[3]}'
-                    if k in self.col_labels:
-                        self.palTable.setItem(self.col_labels.index(k), int(adr)-1, QTableWidgetItem(str(data)))
+            # elif len(res) == 312:  # 获取 PACK 模拟量响应信息
+            #     msg = res[30:-10]  # 去掉前缀报文和校验码
+            #     adr = ''
+                # for k,v in self.json_rs485['获取PACK模拟量响应信息'].items():
+                #     temp = ''
+                #     for i in range(v[0], v[0]+v[1], 2):
+                #         temp += chr(int(msg[i:i + 2], 16))
+                #     if k == 'Command':
+                #         adr = int(temp, 16)
+                #     elif palnum_label2 in k or bms_history_label3 in k: # 温度、电流
+                #         data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))} {v[3]}'
+                #     else:
+                #         data = f'{Common.format_num(int(temp, 16) / abs(v[2]))} {v[3]}'
+                #     if k in self.col_labels:
+                #         self.palTable.setItem(self.col_labels.index(k), int(adr)-1, QTableWidgetItem(str(data)))
+
+            # 获取 PACK 模拟量响应信息 42 (未获取电压温度个数)
+            elif res[14:18] == '3432' and self.get_parallel_vol_tmp == False:
                 
-            elif len(res) == 200:  # 获取 PACK 告警量
-                msg = res[30:-10]
-                adr = ''
-                for k,v in self.json_rs485['获取PACK告警量'].items():
-                    pack_warn = False
-                    temp = ''
-                    for i in range(v[0], v[0]+v[1], 2):
-                        temp += chr(int(msg[i:i + 2], 16))
-                    data = int(temp, 16)
-                    if k == 'Command':
-                        adr = int(temp, 16)
-                    elif 'Cell' in k or palnum_label11 in k:    # 'PACK总电压'
-                        if data == 0:
-                            data = bms_pal_logic_label1
-                        elif data == 1:
-                            data = bms_pal_logic_label2
-                            pack_warn = True
-                        elif data == 2:
-                            data = bms_parse_label1
-                            pack_warn = True
-                    elif palnum_label10 in k or palnum_label12 in k:  # 'PACK充电'、'PACK放电'
-                        if data == 0:
-                            data = bms_pal_logic_label1
-                        elif data == 2:
-                            data = bms_pal_logic_label3
-                            pack_warn = True
-                    elif palnum_label2 in k:    # '温度'
-                        if data == 0:
-                            data = bms_pal_logic_label1
-                        if data == 1:
-                            data = bms_pal_logic_label4
-                            pack_warn = True
-                        elif data == 2:
-                            data = bms_pal_logic_label5
-                            pack_warn = True
+                # 完整协议示例：
+                # self.json_rs485
+                
+                # 电压个数 3130 → 16
+                vol_num = res[34:38]
+                vol_asc2hex = chr(int(vol_num[:2], 16)) + chr(int(vol_num[2:], 16))
+                vol_hex2dec = int(vol_asc2hex, 16)
+                print(vol_hex2dec)
+                
+                # 温度个数 3039 → 09
+                tmp_num = res[vol_hex2dec*8+38 : vol_hex2dec*8+42]
+                tmp_asc2hex = chr(int(tmp_num[:2], 16)) + chr(int(tmp_num[2:], 16))
+                tmp_hex2dec = int(tmp_asc2hex, 16)
+                print(tmp_hex2dec)
+                
+                # PACK 模拟量协议
+                self.parallel_pack_simulate = {
+                    "Command":[0, 4, 1, ""],
+                    "电池单体个数":[4, 4, 1, ""]
+                }
+                
+                # 动态生成电压个数
+                for i in range(1, vol_hex2dec+1):
+                    self.parallel_pack_simulate[f"Cell{palnum_label1}_{i}"] = [i*8, 8, 1, "mV"]
+                
+                # 动态生成温度个数
+                self.parallel_pack_simulate["监测温度个数"] = [(vol_hex2dec+1)*8, 4, 1, ""]
+                for i in range(0, tmp_hex2dec):
+                    self.parallel_pack_simulate[f"{palnum_label2}_{i+1}"] = [i*8+140, 8, -10, "℃"]
+                
+                tmp_end_index = (tmp_hex2dec-1)*8+140
+                
+                # 添加结尾部分的协议
+                self.parallel_pack_simulate[palnum_label3] = [tmp_end_index+8, 8, -100, "A"]                    # PACK电流
+                self.parallel_pack_simulate[f"PACK {paldata_label4}"] = [tmp_end_index+8+8, 8, -100, "V"]       # 总电压
+                self.parallel_pack_simulate[f"PACK {battery_label3}"] = [tmp_end_index+8+8+8, 8, 100, "AH"]     # 剩余容量
+                self.parallel_pack_simulate["用户自定义个数"] = [tmp_end_index+8+8+8+8, 4, 1, ""]
+                self.parallel_pack_simulate[f"PACK {battery_label4}"] = [tmp_end_index+8+8+8+8+4, 8, 100, "AH"] # 充满容量
+                self.parallel_pack_simulate[palnum_label7] = [tmp_end_index+8+8+8+8+4+8, 8, 1, ""]              # 充放电循环次数
+                self.parallel_pack_simulate[palnum_label8] = [tmp_end_index+8+8+8+8+4+8+8, 8, 100, "AH"]        # PACK设计容量
+                self.parallel_pack_simulate["PACK SOC"] = [tmp_end_index+8+8+8+8+4+8+8+8, 8, 1, "%"]
+                
+                print(self.parallel_pack_simulate)
+                
+                # 已获得电压与温度个数
+                self.get_parallel_vol_tmp = True
+            
+            # 获取 PACK 模拟量响应信息 42 (已获取电压温度个数)
+            # elif res[14:18] == '3432' and self.get_parallel_vol_tmp:
+            #     # self.parallel_pack_simulate
+            #     msg = res[30:-10]  # 去掉前缀报文和校验码
+            #     adr = ''
+            #     for k,v in self.parallel_pack_simulate.items():
+            #         temp = ''
+            #         for i in range(v[0], v[0]+v[1], 2):
+            #             temp += chr(int(msg[i:i + 2], 16))
+            #         if k == 'Command':
+            #             adr = int(temp, 16)
+            #         elif palnum_label2 in k or bms_history_label3 in k: # 温度、电流
+            #             data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))} {v[3]}'
+            #         else:
+            #             data = f'{Common.format_num(int(temp, 16) / abs(v[2]))} {v[3]}'
+            #         if k in self.col_labels:
+            #             self.palTable.setItem(self.col_labels.index(k), int(adr)-1, QTableWidgetItem(str(data)))
+
+                        
+            # elif res[14:18] == '3434':
+            #     print(3434)
+            
+            # elif len(res) == 200:  # 获取 PACK 告警量
+            #     msg = res[30:-10]
+            #     adr = ''
+            #     for k,v in self.json_rs485['获取PACK告警量'].items():
+            #         pack_warn = False
+            #         temp = ''
+            #         for i in range(v[0], v[0]+v[1], 2):
+            #             temp += chr(int(msg[i:i + 2], 16))
+            #         data = int(temp, 16)
+            #         if k == 'Command':
+            #             adr = int(temp, 16)
+            #         elif 'Cell' in k or palnum_label11 in k:    # 'PACK总电压'
+            #             if data == 0:
+            #                 data = bms_pal_logic_label1
+            #             elif data == 1:
+            #                 data = bms_pal_logic_label2
+            #                 pack_warn = True
+            #             elif data == 2:
+            #                 data = bms_parse_label1
+            #                 pack_warn = True
+            #         elif palnum_label10 in k or palnum_label12 in k:  # 'PACK充电'、'PACK放电'
+            #             if data == 0:
+            #                 data = bms_pal_logic_label1
+            #             elif data == 2:
+            #                 data = bms_pal_logic_label3
+            #                 pack_warn = True
+            #         elif palnum_label2 in k:    # '温度'
+            #             if data == 0:
+            #                 data = bms_pal_logic_label1
+            #             if data == 1:
+            #                 data = bms_pal_logic_label4
+            #                 pack_warn = True
+            #             elif data == 2:
+            #                 data = bms_pal_logic_label5
+            #                 pack_warn = True
                     
-                    # 保护状态_1、保护状态_2、指示状态、控制状态、故障状态、告警状态_1、告警状态_2
-                    elif k == f'{group_tabel10}_1' or k == f'{group_tabel10}_2' or k == palnum_label14 or k == palnum_label15 \
-                    or k == group_tabel8 or k == f'{group_tabel9}_1' or k == f'{group_tabel9}_2':
-                        data = bin(int(temp, 16))[2:].zfill(8)
-                        warn_list = []
-                        for a,b in v[4].items():
-                            if data[-(int(a)+1)] == '1':
-                                warn_list.append(b)
-                        data = '，'.join(warn_list)
-                    if k in self.col_labels:
-                        self.palTable.setItem(self.col_labels.index(k), int(adr)-1, QTableWidgetItem(str(data)))
-                        if pack_warn:
-                            self.palTable.item(self.col_labels.index(k), int(adr)-1).setForeground(Qt.red)
-                    
+            #         # 保护状态_1、保护状态_2、指示状态、控制状态、故障状态、告警状态_1、告警状态_2
+            #         elif k == f'{group_tabel10}_1' or k == f'{group_tabel10}_2' or k == palnum_label14 or k == palnum_label15 \
+            #         or k == group_tabel8 or k == f'{group_tabel9}_1' or k == f'{group_tabel9}_2':
+            #             data = bin(int(temp, 16))[2:].zfill(8)
+            #             warn_list = []
+            #             for a,b in v[4].items():
+            #                 if data[-(int(a)+1)] == '1':
+            #                     warn_list.append(b)
+            #             data = '，'.join(warn_list)
+            #         if k in self.col_labels:
+            #             self.palTable.setItem(self.col_labels.index(k), int(adr)-1, QTableWidgetItem(str(data)))
+            #             if pack_warn:
+            #                 self.palTable.item(self.col_labels.index(k), int(adr)-1).setForeground(Qt.red)
+
             self.add_tableItem('↑', res)
 
     

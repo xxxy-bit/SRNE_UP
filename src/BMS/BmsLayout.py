@@ -231,6 +231,7 @@ class BmsLayout(QWidget):
         self.palTable.setStyleSheet(white_bg)
         # self.palTable.setColumnCount(4)
         # self.palTable.setHorizontalHeaderLabels(['11','12','13','14'])
+        
         self.col_labels = [
             'Cell' + palnum_label1 + '_1', 'Cell' + palnum_label1 +
             '_2', 'Cell' + palnum_label1 + '_3', 'Cell' + palnum_label1 + '_4',

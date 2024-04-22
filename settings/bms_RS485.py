@@ -6,6 +6,7 @@ def get_bms_rs485_list():
         "获取PACK模拟量响应信息":{
             "Command":[0, 4, 1, ""],
             "电池单体个数":[4, 4, 1, ""],
+            
             f"Cell{palnum_label1}_1":[8, 8, 1, "mV"],
             f"Cell{palnum_label1}_2":[16, 8, 1, "mV"],
             f"Cell{palnum_label1}_3":[24, 8, 1, "mV"],
@@ -22,6 +23,7 @@ def get_bms_rs485_list():
             f"Cell{palnum_label1}_14":[112, 8, 1, "mV"],
             f"Cell{palnum_label1}_15":[120, 8, 1, "mV"],
             f"Cell{palnum_label1}_16":[128, 8, 1, "mV"],
+            
             "监测温度个数":[136, 4, 1, ""],
             f"{palnum_label2}_1":[140, 8, -10, "℃"],
             f"{palnum_label2}_2":[148, 8, -10, "℃"],
@@ -32,6 +34,7 @@ def get_bms_rs485_list():
             f"{palnum_label2}_7":[188, 8, -10, "℃"],
             f"{palnum_label2}_8":[196, 8, -10, "℃"],
             f"{palnum_label2}_9":[204, 8, -10, "℃"],
+            
             palnum_label3:[212, 8, -100, "A"],              # PACK电流
             f"PACK {paldata_label4}":[220, 8, -100, "V"],    # 总电压
             f"PACK {battery_label3}":[228, 8, 100, "AH"],    # 剩余容量
@@ -44,6 +47,7 @@ def get_bms_rs485_list():
         "获取PACK告警量":{
             "Command":[0, 4, 1, ""],
             "电池单体告警个数":[4, 4, 1, ""],
+            
             f"Cell{palnum_label9}_1":[8, 4, 1, ""],
             f"Cell{palnum_label9}_2":[12, 4, 1, ""],
             f"Cell{palnum_label9}_3":[16, 4, 1, ""],
@@ -70,6 +74,7 @@ def get_bms_rs485_list():
             f"{palnum_label2}{palnum_label9}_7":[100, 4, 1, ""],
             f"{palnum_label2}{palnum_label9}_8":[104, 4, 1, ""],
             f"{palnum_label2}{palnum_label9}_9":[108, 4, 1, ""],
+            
             palnum_label10:[112, 4, 1, ""],
             palnum_label11:[116, 4, 1, ""],
             palnum_label12:[120, 4, 1, ""],
