@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>SRNE v0.1.4.1</string>
+   <string>SRNE v0.1.4.2</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/images/ui.qrc">
@@ -470,7 +470,7 @@ font-family: &quot;微软雅黑&quot;;</string>
      <rect>
       <x>-1603</x>
       <y>303</y>
-      <width>117</width>
+      <width>109</width>
       <height>82</height>
      </rect>
     </property>
