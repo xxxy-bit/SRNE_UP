@@ -133,3 +133,12 @@ white_bg = """
         border: 0px;
     }
 """
+
+white_bg_null = """
+    QGroupBox {
+        border: 0px;
+    }
+    QTableWidget {
+        border: 0px;
+    }
+"""

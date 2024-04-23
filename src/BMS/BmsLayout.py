@@ -229,46 +229,9 @@ class BmsLayout(QWidget):
         pal_layout_bottom = QHBoxLayout()
         self.palTable = QTableWidget()
         self.palTable.setStyleSheet(white_bg)
-        # self.palTable.setColumnCount(4)
-        # self.palTable.setHorizontalHeaderLabels(['11','12','13','14'])
         
-        # self.col_labels = [
-        #     'Cell' + palnum_label1 + '_1', 'Cell' + palnum_label1 +
-        #     '_2', 'Cell' + palnum_label1 + '_3', 'Cell' + palnum_label1 + '_4',
-        #     'Cell' + palnum_label1 + '_5', 'Cell' + palnum_label1 +
-        #     '_6', 'Cell' + palnum_label1 + '_7', 'Cell' + palnum_label1 + '_8',
-        #     'Cell' + palnum_label1 + '_9', 'Cell' + palnum_label1 + '_10', 'Cell' +
-        #     palnum_label1 + '_11', 'Cell' + palnum_label1 + '_12',
-        #     'Cell' + palnum_label1 + '_13', 'Cell' + palnum_label1 + '_14', 'Cell' +
-        #     palnum_label1 + '_15', 'Cell' + palnum_label1 + '_16',
-        #     palnum_label2 + '_1', palnum_label2 + '_2', palnum_label2 +
-        #     '_3', palnum_label2 + '_4', palnum_label2 + '_5',
-        #     palnum_label2 + '_6', palnum_label2 +
-        #     '_7', palnum_label2 + '_8', palnum_label2 + '_9',
-        #     palnum_label3, 'PACK ' + paldata_label4, 'PACK ' +
-        #     battery_label3, 'PACK ' + battery_label4,
-        #     palnum_label7, palnum_label8, 'PACK SOC',
-        #     'Cell' + palnum_label9 + '_1', 'Cell' + palnum_label9 +
-        #     '_2', 'Cell' + palnum_label9 + '_3', 'Cell' + palnum_label9 + '_4',
-        #     'Cell' + palnum_label9 + '_5', 'Cell' + palnum_label9 +
-        #     '_6', 'Cell' + palnum_label9 + '_7', 'Cell' + palnum_label9 + '_8',
-        #     'Cell' + palnum_label9 + '_9', 'Cell' + palnum_label9 + '_10', 'Cell' +
-        #     palnum_label9 + '_11', 'Cell' + palnum_label9 + '_12',
-        #     'Cell' + palnum_label9 + '_13', 'Cell' + palnum_label9 + '_14', 'Cell' +
-        #     palnum_label9 + '_15', 'Cell' + palnum_label9 + '_16',
-        #     palnum_label2 + palnum_label9 + '_1', palnum_label2 + palnum_label9 + '_2', palnum_label2 +
-        #     palnum_label9 + '_3', palnum_label2 + palnum_label9 +
-        #     '_4', palnum_label2 + palnum_label9 + '_5',
-        #     palnum_label2 + palnum_label9 + '_6', palnum_label2 + palnum_label9 +
-        #     '_7', palnum_label2 + palnum_label9 + '_8', palnum_label2 + palnum_label9 + '_9',
-        #     palnum_label10, palnum_label11, palnum_label12, f'{group_tabel10}_1',
-        #     f'{group_tabel10}_2', palnum_label14, palnum_label15, group_tabel8,
-        #     palnum_label16 + '_1', palnum_label16 +
-        #     '_2', f'{group_tabel9}_1', f'{group_tabel9}_2',
-        # ]
-        # self.palTable.setRowCount(len(self.col_labels))
-        # self.palTable.setVerticalHeaderLabels(self.col_labels)
-
+        # 此处表格在逻辑代码中根据电压和温度个数自动生成
+        
         pal_layout_bottom.addWidget(self.palTable)
 
         pal_layout.addLayout(pal_layout_top)
@@ -279,7 +242,7 @@ class BmsLayout(QWidget):
     # 系统设置
     def sys_setingUI(self):
         # 最外层
-        sys_layout = QHBoxLayout()
+        sys_layout = QVBoxLayout()
 
         # 上边
         sys_layout_left = QHBoxLayout()
@@ -515,6 +478,42 @@ class BmsLayout(QWidget):
 
         # 下边
         sys_layout_right = QHBoxLayout()
+
+        # 固件升级
+        firmware_upgrade_groupBox = QGroupBox('固件升级')
+        # firmware_upgrade_groupBox.setStyleSheet(white_bg_null)
+        firmware_upgrade_groupBox.setStyleSheet(white_bg)
+        firmware_upgrade_groupBox.setMaximumHeight(250)
+        firmware_upgrade_groupBox.setMaximumWidth(250)
+        
+        firmware_upgrade_groupBox_v = QVBoxLayout()
+        
+        self.fu_btn = QPushButton('固件升级')
+        self.fu_btn.setStyleSheet(open_Button)
+        
+        firmware_upgrade_groupBox_v.addWidget(self.fu_btn)
+        firmware_upgrade_groupBox.setLayout(firmware_upgrade_groupBox_v)
+        
+        # 下边的占位符，用于布局美观。如增加后续功能会相应修改
+        hold1_groupBox = QGroupBox('')
+        hold1_groupBox.setStyleSheet(white_bg_null)
+        hold1_groupBox.setMaximumHeight(250)
+        hold1_groupBox.setMaximumWidth(250)
+        
+        hold2_groupBox = QGroupBox('')
+        hold2_groupBox.setStyleSheet(white_bg_null)
+        hold2_groupBox.setMaximumHeight(250)
+        hold2_groupBox.setMaximumWidth(250)
+        
+        hold3_groupBox = QGroupBox('')
+        hold3_groupBox.setStyleSheet(white_bg_null)
+        hold3_groupBox.setMaximumHeight(250)
+        hold3_groupBox.setMaximumWidth(250)
+        
+        sys_layout_right.addWidget(firmware_upgrade_groupBox)
+        sys_layout_right.addWidget(hold1_groupBox)
+        sys_layout_right.addWidget(hold2_groupBox)
+        sys_layout_right.addWidget(hold3_groupBox)
 
         sys_layout.addLayout(sys_layout_left)
         sys_layout.addLayout(sys_layout_right)

@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import time, datetime, serial, logging, os, functools
+import time, datetime, serial, logging, os, functools, subprocess
 import serial.tools.list_ports
 from src.i18n.Bms_i18n import *
 from src.BMS.tools.CRC16Util import calc_crc
 from utils.Common import Common
 from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox
-from PyQt5.QtCore import QDate, QObject, QTime, QDateTime, QTimer, Qt, QThread, pyqtSignal
+from PyQt5.QtCore import QDate, QTime, QDateTime, QTimer, Qt, QThread, pyqtSignal
 from PyQt5.QtGui import QFont
 from .BmsLayout import BmsLayout
 from .DataPars import pars_data
@@ -235,11 +235,20 @@ class Portbms(BmsLayout):
         self.adds_btn.clicked.connect(self.adds_btn_func)
         self.Pro_read.clicked.connect(self.Pro_read_func)
         self.Pro_write.clicked.connect(self.Pro_write_func)
+        self.fu_btn.clicked.connect(self.fu_btn_func)
 
     # 并联监控 槽函数slots
     def pal_monitor_slotsTrigger(self):
-        # self.pal_check.clicked.connect(self.pal_check_func)
         self.pal_start.clicked.connect(self.pal_start_func)
+
+    # 系统设置-固件升级
+    def fu_btn_func(self):
+        
+        # 指定 EXE 文件的路径
+        exe_path = os.path.join(os.getcwd(), 'settings', 'sriap-1.33.exe')
+        
+        # 使用 Popen() 函数打开 EXE 文件
+        subprocess.Popen([exe_path])
 
     # 系统设置-读取协议
     def Pro_read_func(self):
@@ -329,7 +338,6 @@ class Portbms(BmsLayout):
             # 创建完成开始读数据
             self.pal_start_time_setp = 1
             return 0
-        
         
         num = f'{self.pal_start_time_setp:02d}'
         adr = ''

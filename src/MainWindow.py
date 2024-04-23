@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os, locale, functools, gettext
+import os, locale, functools
 from PyQt5 import QtCore, QtWidgets, QtCore
 from PyQt5.QtCore import QSettings
 from ui.main_meun import Ui_MainWindow as main_menu
