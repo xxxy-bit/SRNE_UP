@@ -231,6 +231,14 @@ sysset_label4 = _('总容量')
 sysset_label5 = _('读取')
 sysset_label6 = _('设置')
 
+# 固件升级
+update_label1 = _('固件升级')
+
+# 通信协议选择
+com_label1 = _('通信协议选择')
+com_label2 = _('CAN 协议')
+com_label3 = _('485 协议')
+
 # 数据校准
 datacal_label1 = _('数据校准')
 datacal_label2 = _('校准')

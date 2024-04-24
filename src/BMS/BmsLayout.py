@@ -429,7 +429,7 @@ class BmsLayout(QWidget):
         sys_layout_left.addWidget(time_groupBox)
         
         # 通信选择协议
-        protocol_groupBox = QGroupBox('通信协议选择')
+        protocol_groupBox = QGroupBox(com_label1)
         protocol_groupBox.setStyleSheet(white_bg)
         protocol_groupBox.setMaximumHeight(250)
         protocol_groupBox.setMaximumWidth(250)
@@ -438,7 +438,7 @@ class BmsLayout(QWidget):
 
         protocol_groupBox_v_toph = QVBoxLayout()
         
-        Pro_can = QLabel('Can协议')
+        Pro_can = QLabel(com_label2)
         self.Pro_can_combox = ComboBox()
         self.Pro_can_list = [
             'Pylon/派能', 'Growatt/古瑞瓦特', 'Victron/Victron', 'Goodwe/固德威',
@@ -447,7 +447,7 @@ class BmsLayout(QWidget):
             ]
         self.Pro_can_combox.addItems(self.Pro_can_list)
         
-        Pro_485 = QLabel('485协议')
+        Pro_485 = QLabel(com_label3)
         self.Pro_485_combox = ComboBox()
         self.Pro_485_list = [
             'Pylon/派能', 'Growatt/古瑞瓦特', 'SRNE/硕日', 'Deye/德业',
@@ -480,7 +480,7 @@ class BmsLayout(QWidget):
         sys_layout_right = QHBoxLayout()
 
         # 固件升级
-        firmware_upgrade_groupBox = QGroupBox('固件升级')
+        firmware_upgrade_groupBox = QGroupBox(update_label1)
         # firmware_upgrade_groupBox.setStyleSheet(white_bg_null)
         firmware_upgrade_groupBox.setStyleSheet(white_bg)
         firmware_upgrade_groupBox.setMaximumHeight(250)
@@ -488,7 +488,7 @@ class BmsLayout(QWidget):
         
         firmware_upgrade_groupBox_v = QVBoxLayout()
         
-        self.fu_btn = QPushButton('固件升级')
+        self.fu_btn = QPushButton(update_label1)
         self.fu_btn.setStyleSheet(open_Button)
         
         firmware_upgrade_groupBox_v.addWidget(self.fu_btn)
