@@ -1108,10 +1108,10 @@ class BmsLayout(QWidget):
             (f'{parset5_label4}(℃)', DoubleSpinBox(), -40, 120, 1),
             (f'{parset5_label5}(℃)', DoubleSpinBox(), -40, 120, 1),
             (f'{parset5_label6}(℃)', DoubleSpinBox(), -40, 120, 1),
-            (f'{parset5_label7}(V)', DoubleSpinBox(), 0, 65),
-            (f'{parset5_label8}(mV)', SpinBox(), 0, 65500),
-            (f'{parset5_label9}(V)', DoubleSpinBox(),0 , 65),
-            (f'{parset5_label10}(min)', SpinBox(), 0, 300))
+            (f'{parset5_label11}(℃)', DoubleSpinBox(), -40, 120, 1),
+            (f'{parset5_label12}(℃)', DoubleSpinBox(), -40, 120, 1),
+            (f'{parset6_label7}(V)', DoubleSpinBox(), 0, 65),
+            (f'{parset6_label8}(A)', SpinBox(), 0, 650))
         temWarn_groupBox.setLayout(temWarn_form)
 
         # 低温设置
@@ -1125,8 +1125,8 @@ class BmsLayout(QWidget):
             (f'{parset6_label4}(℃)', DoubleSpinBox(), -40, 120, 1),
             (f'{parset6_label5}(℃)', DoubleSpinBox(), -40, 120, 1),
             (f'{parset6_label6}(℃)', DoubleSpinBox(), -40, 120, 1),
-            (f'{parset6_label7}(V)', DoubleSpinBox(), 0, 65),
-            (f'{parset6_label8}(A)', SpinBox(), 0, 650),
+            (f'{parset6_label10}(℃)', DoubleSpinBox(), -40, 120, 1),
+            (f'{parset6_label11}(℃)', DoubleSpinBox(), -40, 120, 1),
             (f'{parset6_label9}(%)', SpinBox(), 0, 100))
         temProt_groupBox.setLayout(temProt_form)
 
@@ -1141,7 +1141,9 @@ class BmsLayout(QWidget):
             (f'{parset7_label4}(A)', SpinBox(), 0, 655),
             (f'{parset7_label5}(mS)', SpinBox(), 0, 32767),
             (f'{parset7_label7}(mS)', SpinBox(), 0, 32767),
-            (f'{parset7_label8}(V)', SpinBox(), 0, 655))
+            (f'{parset7_label8}(V)', SpinBox(), 0, 655),
+            (f'{parset5_label7}(V)', DoubleSpinBox(), 0, 65),
+            (f'{parset5_label8}(mV)', SpinBox(), 0, 65500))
         ecProt_groupBox.setLayout(ecProt_form)
 
         # 充电过流设置
@@ -1155,7 +1157,9 @@ class BmsLayout(QWidget):
             (f'{parset8_label4}(A)', SpinBox(), 0, 655),
             (f'{parset8_label5}(mS)', SpinBox(), 0, 32767),
             (f'{parset8_label6}(mS)', SpinBox(), 0, 32767),
-            (f'{parset8_label7}(V)', SpinBox(), 0, 655))
+            (f'{parset8_label7}(V)', SpinBox(), 0, 655),
+            (f'{parset5_label9}(V)', DoubleSpinBox(),0 , 65),
+            (f'{parset5_label10}(min)', SpinBox(), 0, 300))
         ecWarn_groupBox.setLayout(ecWarn_form)
 
         tab3_layout_H2.addWidget(temWarn_groupBox)   # 高温设置

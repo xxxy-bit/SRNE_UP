@@ -243,6 +243,14 @@ class Portbms(BmsLayout):
 
     # 系统设置-固件升级
     def fu_btn_func(self):
+        print(self.ser.isOpen())
+        
+        # 串口自动关闭
+        try:
+            if self.ser.isOpen():
+                self.openPort()
+        except Exception:
+            pass
         
         # 指定 EXE 文件的路径
         exe_path = os.path.join(os.getcwd(), 'settings', 'sriap-1.33.exe')
