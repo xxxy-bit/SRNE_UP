@@ -1193,7 +1193,7 @@ class Portbms(BmsLayout):
                     return 0
             
             # 获取 PACK 模拟量响应信息 42 (未获取电压温度个数)
-            elif res[14:18] == '3432' and self.get_parallel_vol_tmp == False:
+            elif res[26:30] == '3432' and self.get_parallel_vol_tmp == False:
                 
                 # 完整协议示例：
                 # self.json_rs485
@@ -1333,7 +1333,7 @@ class Portbms(BmsLayout):
                 self.get_parallel_vol_tmp = True
             
             # 获取 PACK 模拟量响应信息 42 (已获取电压温度个数)
-            elif res[14:18] == '3432' and self.get_parallel_vol_tmp:
+            elif res[26:30] == '3432' and self.get_parallel_vol_tmp:
                 msg = res[30:-10]  # 去掉前缀报文和校验码
                 adr = ''
                 for k,v in self.parallel_pack_simulate.items():
@@ -1350,7 +1350,7 @@ class Portbms(BmsLayout):
                         self.palTable.setItem(self.col_labels.index(k), int(adr)-1, QTableWidgetItem(str(data)))
 
             # 获取 PACK 告警量 44 (已获取电压温度个数)
-            elif res[14:18] == '3434' and self.get_parallel_vol_tmp:
+            elif res[26:30] == '3434' and self.get_parallel_vol_tmp:
                 msg = res[30:-10]
                 adr = ''
                 for k,v in self.parallel_pack_tmp.items():
