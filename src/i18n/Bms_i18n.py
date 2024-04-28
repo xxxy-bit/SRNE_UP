@@ -105,8 +105,8 @@ error_label4 = _('总低压报警')
 # 并联数据
 paldata_label1 = _('平均电压')
 paldata_label2 = _('平均SOC')
-paldata_label3 = _('总电流')    # 总电压
-paldata_label4 = _('总电压')    # 总电压
+paldata_label3 = _('总电流')
+paldata_label4 = _('总电压')
 
 # 电芯数据
 celldata_label1 = _('最高电芯电压')

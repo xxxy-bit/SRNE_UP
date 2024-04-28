@@ -122,19 +122,22 @@ class BmsLayout(QWidget):
         # 总电流
         self.total_elc = QLineEdit()
         self.total_elc.setStyleSheet('border: 0px')
-        self.total_elc.setAlignment(Qt.AlignRight)
+        self.total_elc.setAlignment(Qt.AlignCenter)
 
         data_groupBox_h_right_elc = QHBoxLayout()
-        data_groupBox_h_right_elc.addWidget(QLabel(paldata_label3 + '(A)：'))
+        self.pal_total_elc = QLabel(paldata_label3 + '(A)：')
+        
+        data_groupBox_h_right_elc.addWidget(self.pal_total_elc)
         data_groupBox_h_right_elc.addWidget(self.total_elc)
 
         # 平均电压
         self.avg_voltage = QLineEdit()
         self.avg_voltage.setStyleSheet('border: 0px')
-        self.avg_voltage.setAlignment(Qt.AlignRight)
+        self.avg_voltage.setAlignment(Qt.AlignCenter)
 
         data_groupBox_h_right_vol = QHBoxLayout()
-        data_groupBox_h_right_vol.addWidget(QLabel(paldata_label1 + '(V)：'))
+        self.pal_avg_vol = QLabel(paldata_label1 + '(V)：')
+        data_groupBox_h_right_vol.addWidget(self.pal_avg_vol)
         data_groupBox_h_right_vol.addWidget(self.avg_voltage)
 
         data_groupBox_h_rightV.addLayout(data_groupBox_h_right_elc)
@@ -156,8 +159,10 @@ class BmsLayout(QWidget):
         # 最高电芯电压
         self.cell_max = QLineEdit()
         self.cell_max.setStyleSheet(bin_cell_LineEdit)
+        self.cell_max.setAlignment(Qt.AlignCenter)
         self.cell_max_posi = QLineEdit()
         self.cell_max_posi.setStyleSheet(bin_cell_LineEdit)
+        self.cell_max_posi.setAlignment(Qt.AlignCenter)
 
         celldata_groupBox_v_h1_h1 = QHBoxLayout()
         cell_form_bg = QWidget()
@@ -170,8 +175,10 @@ class BmsLayout(QWidget):
         # 最高电芯温度
         self.cell_max_tmp = QLineEdit()
         self.cell_max_tmp.setStyleSheet(bin_cell_LineEdit)
+        self.cell_max_tmp.setAlignment(Qt.AlignCenter)
         self.cell_max_tmp_posi = QLineEdit()
         self.cell_max_tmp_posi.setStyleSheet(bin_cell_LineEdit)
+        self.cell_max_tmp_posi.setAlignment(Qt.AlignCenter)
 
         celldata_groupBox_v_h1_h2 = QHBoxLayout()
         cell_form2_bg = QWidget()
@@ -189,8 +196,10 @@ class BmsLayout(QWidget):
         # 最低电芯电压
         self.cell_min = QLineEdit()
         self.cell_min.setStyleSheet(bin_cell2_LineEdit)
+        self.cell_min.setAlignment(Qt.AlignCenter)
         self.cell_min_posi = QLineEdit()
         self.cell_min_posi.setStyleSheet(bin_cell2_LineEdit)
+        self.cell_min_posi.setAlignment(Qt.AlignCenter)
 
         celldata_groupBox_v_h2_h1 = QHBoxLayout()
         cell_form3_bg = QWidget()
@@ -203,8 +212,10 @@ class BmsLayout(QWidget):
         # 最低电芯温度
         self.cell_min_tmp = QLineEdit()
         self.cell_min_tmp.setStyleSheet(bin_cell2_LineEdit)
+        self.cell_min_tmp.setAlignment(Qt.AlignCenter)
         self.cell_min_tmp_posi = QLineEdit()
         self.cell_min_tmp_posi.setStyleSheet(bin_cell2_LineEdit)
+        self.cell_min_tmp_posi.setAlignment(Qt.AlignCenter)
 
         celldata_groupBox_v_h2_h2 = QHBoxLayout()
         cell_form4_bg = QWidget()

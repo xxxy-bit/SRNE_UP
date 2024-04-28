@@ -243,7 +243,6 @@ class Portbms(BmsLayout):
 
     # 系统设置-固件升级
     def fu_btn_func(self):
-        print(self.ser.isOpen())
         
         # 串口自动关闭
         try:
@@ -361,9 +360,13 @@ class Portbms(BmsLayout):
                 self.repeat = False
                 txt = f'7E 32 35 {adr} 34 36 34 34 45 30 30 32 {adr}'
                 self.pal_start_time_setp += 1
-            # print(adr)
             self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
-
+        
+        # 获取所有并机数据后，再获取总体数据
+        elif self.pal_start_time_setp == int(self.pack_total.currentText()) + 1:
+            self.send_msg(f'7e3235303134363631453030323031464432460d')
+            self.pal_start_time_setp += 1
+        
         else:
             self.pal_start_time.stop()
             self.pal_start.setText(palset_label2)
@@ -1357,6 +1360,7 @@ class Portbms(BmsLayout):
                     pack_warn = False
                     temp = ''
                     for i in range(v[0], v[0]+v[1], 2):
+                        # ASCII 转成 十六进制
                         temp += chr(int(msg[i:i + 2], 16))
                     data = int(temp, 16)
                     if k == 'Command2':
@@ -1400,7 +1404,43 @@ class Portbms(BmsLayout):
                         if pack_warn:
                             self.palTable.item(self.col_labels.index(k), int(adr)-1).setForeground(Qt.red)
 
+            # 获取电池系统运行模拟量信息
+            elif res[26:30] == '3631':
+                msg = res[34:-10]
+                # print(msg)
+                for k,v in self.json_rs485['获取电池系统运行模拟量信息'].items():
+                    temp = ''
+                    for i in range(v[0], v[0]+v[1], 2):
+                        # ASCII 转成 十六进制
+                        temp += chr(int(msg[i:i + 2], 16))
+                    data = int(temp, 16)
+                    print(k, data)
+                    if k == '电池组系统总电流':
+                        data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))}'
+                        self.total_elc.setText(data)
+                    elif k == '电池组系统SOC':
+                        self.bin_avg_soc.setValue(data)
+                    elif k == '电池组系统总平均电压':
+                        data = f'{Common.format_num(data / abs(v[2]))}'
+                        self.avg_voltage.setText(data)
+                    elif k == '单芯最高电压':
+                        self.cell_max.setText(str(data))
+                    elif k == '单芯最高电压所在模块':
+                        self.cell_max_posi.setText(str(data))
+                    elif k == '单芯最低电压':
+                        self.cell_min.setText(str(data))
+                    elif k == '单芯最低电压所在模块':
+                        self.cell_min_posi.setText(str(data))
+                    elif k == '单芯最高温度':
+                        data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))}'
+                        self.cell_max_tmp.setText(data)
+                    elif k == '单芯最高温度所在模块':
+                        self.cell_max_tmp_posi.setText(str(data))
+                    elif k == '单芯最低温度':
+                        data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))}'
+                        self.cell_min_tmp.setText(data)
+                    elif k == '单芯最低温度所在模块':
+                        self.cell_min_tmp_posi.setText(str(data))
+                        
             self.add_tableItem('↑', res)
-
-    
     
