@@ -1414,7 +1414,7 @@ class Portbms(BmsLayout):
                         # ASCII 转成 十六进制
                         temp += chr(int(msg[i:i + 2], 16))
                     data = int(temp, 16)
-                    print(k, data)
+                    # print(k, data)
                     if k == '电池组系统总电流':
                         data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))}'
                         self.total_elc.setText(data)
