@@ -294,6 +294,9 @@ class Portbms(BmsLayout):
             self.stop_moni()
             self.pal_start.setText(palset_label3)
             
+            # 总电流累加
+            self.pal_count_elc = 0
+            
             self.rs485_res_status = True
             self.repeat = False
             self.palTable.setColumnCount(int(self.pack_total.currentText()))
@@ -1345,6 +1348,10 @@ class Portbms(BmsLayout):
                         temp += chr(int(msg[i:i + 2], 16))
                     if k == 'Command':
                         adr = int(temp, 16)
+                    elif k == palnum_label3:
+                        num = Common.format_num(Common.signBit_func(temp) / abs(v[2]))
+                        data = f'{num} {v[3]}'
+                        self.pal_count_elc += num   # 总电流累加
                     elif palnum_label2 in k or bms_history_label3 in k: # 温度、电流
                         data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))} {v[3]}'
                     else:
@@ -1407,7 +1414,7 @@ class Portbms(BmsLayout):
             # 获取电池系统运行模拟量信息
             elif res[26:30] == '3631':
                 msg = res[34:-10]
-                # print(msg)
+                print(msg)
                 for k,v in self.json_rs485['获取电池系统运行模拟量信息'].items():
                     temp = ''
                     for i in range(v[0], v[0]+v[1], 2):
@@ -1416,8 +1423,10 @@ class Portbms(BmsLayout):
                     data = int(temp, 16)
                     # print(k, data)
                     if k == '电池组系统总电流':
-                        data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))}'
-                        self.total_elc.setText(data)
+                        # data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))}'
+                        # self.total_elc.setText(data)
+                        self.total_elc.setText(str(self.pal_count_elc))
+                        
                     elif k == '电池组系统SOC':
                         self.bin_avg_soc.setValue(data)
                     elif k == '电池组系统总平均电压':

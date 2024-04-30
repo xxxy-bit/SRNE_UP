@@ -9,7 +9,7 @@ from PyQt5.QtCore import Qt
 from .QssStyle import *
 from utils.Common import Common
 from src.OrderList import *
-from qfluentwidgets import SpinBox, DoubleSpinBox, DateTimeEdit, ProgressRing, SwitchButton, ComboBox, TableWidget, PushButton
+from qfluentwidgets import CheckBox, SpinBox, DoubleSpinBox, DateTimeEdit, ProgressRing, SwitchButton, ComboBox, TableWidget, PushButton
 
 
 class BmsLayout(QWidget):
@@ -88,14 +88,17 @@ class BmsLayout(QWidget):
 
         self.pack_total = ComboBox()
         self.pack_total.addItems([str(i) for i in range(1, 16)])
+        self.pal_loop_status = CheckBox('并机轮询')
+        
         self.pal_start = QPushButton(palset_label2)
         self.pal_start.setStyleSheet(open_Button)
 
         ed4 = [
             QLabel(palset_label1 + '：'), self.pack_total,
             '', self.pal_start
+            # self.pal_loop_status, self.pal_start
         ]
-        positions4 = [(i, j) for i in range(2) for j in range(2)]
+        positions4 = [(i, j) for i in range(3) for j in range(2)]
         for positions4, ed4 in zip(positions4, ed4):
             if ed4 != '':
                 pal_sys_groupBox_grid.addWidget(ed4, *positions4)
