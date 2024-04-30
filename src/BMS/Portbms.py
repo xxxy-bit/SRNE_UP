@@ -1425,7 +1425,7 @@ class Portbms(BmsLayout):
                     if k == '电池组系统总电流':
                         # data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))}'
                         # self.total_elc.setText(data)
-                        self.total_elc.setText(str(self.pal_count_elc))
+                        self.total_elc.setText(str(round(self.pal_count_elc, 2)))
                         
                     elif k == '电池组系统SOC':
                         self.bin_avg_soc.setValue(data)
