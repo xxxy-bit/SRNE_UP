@@ -92,11 +92,11 @@ class BmsLayout(QWidget):
         
         self.pal_start = QPushButton(palset_label2)
         self.pal_start.setStyleSheet(open_Button)
-
+        
         ed4 = [
             QLabel(palset_label1 + '：'), self.pack_total,
-            '', self.pal_start
-            # self.pal_loop_status, self.pal_start
+            # '', self.pal_start,
+            self.pal_loop_status, self.pal_start
         ]
         positions4 = [(i, j) for i in range(3) for j in range(2)]
         for positions4, ed4 in zip(positions4, ed4):
@@ -243,6 +243,7 @@ class BmsLayout(QWidget):
         pal_layout_bottom = QHBoxLayout()
         self.palTable = QTableWidget()
         self.palTable.setStyleSheet(white_bg)
+        self.palTable.setColumnCount(16)
         
         # 此处表格在逻辑代码中根据电压和温度个数自动生成
         

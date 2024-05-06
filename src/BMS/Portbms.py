@@ -239,7 +239,8 @@ class Portbms(BmsLayout):
 
     # 并联监控 槽函数slots
     def pal_monitor_slotsTrigger(self):
-        self.pal_start.clicked.connect(self.pal_start_func)
+        # self.pal_start.clicked.connect(self.pal_start_func)
+        self.pal_start.clicked.connect(self.pal_single_func)
 
     # 系统设置-固件升级
     def fu_btn_func(self):
@@ -287,6 +288,80 @@ class Portbms(BmsLayout):
                 QMessageBox.Yes | QMessageBox.No) == QMessageBox.Yes:
             os.startfile(open_file)
 
+    # 并联监控-获取单个设备数据
+    def pal_single_func(self):
+        if self.assertStatus() == False: return False
+        self.stop_moni()
+        
+        self.rs485_res_status = True
+        self.repeat = False
+        # self.palTable.setColumnCount(16)
+        self.palTable.clearContents()
+
+        # 获取电压与温度个数
+        self.get_parallel_vol_tmp = False
+        # 单数据，42/44轮询发送
+        self.pal_single_repeat = False
+        
+        self.pal_single_time = QTimer()
+        self.pal_single_time_setp = 0
+        self.pal_single_time.timeout.connect(self.pal_single_func_timer)
+        self.pal_single_time.start(2000)
+
+    # 并联监控-获取单个设备数据-计时器
+    def pal_single_func_timer(self):
+        # 先获取电压和温度个数
+        if self.get_parallel_vol_tmp == False:
+            self.pal_single_time_setp = 0
+            txt = f'7E 32 35 {3031} 34 36 34 32 45 30 30 32 {3031}'
+            self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
+            return 0
+        # 然后根据个数创建表格
+        elif self.pal_single_time_setp == 0 and self.get_parallel_vol_tmp:
+            # 创建表格列表 行字段
+            self.pal_get_vol_tmp_func()
+            
+            # 创建完成开始读数据
+            self.pal_single_time_setp = 1
+            return 0
+        
+        num = f'{int(self.pack_total.currentText()):02d}'
+        adr = ''
+        for i in num:
+            adr += hex(ord(i))[2:]
+        
+        # 42 44 轮询发送
+        if self.pal_single_repeat == False:
+            self.pal_single_repeat = True
+            txt = f'7E 32 35 {adr} 34 36 34 32 45 30 30 32 {adr}'
+        else:
+            self.pal_single_repeat = False
+            txt = f'7E 32 35 {adr} 34 36 34 34 45 30 30 32 {adr}'
+        self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
+
+    # 并联监控-获取电压与温度个数
+    def pal_get_vol_tmp_func(self):
+        
+        # 添加 模拟量 与 告警量 进表格
+        self.create_col_labels = {}
+        self.create_col_labels.update(self.parallel_pack_simulate)
+        self.create_col_labels.update(self.parallel_pack_tmp)
+        del self.create_col_labels["Command"]
+        del self.create_col_labels["电池单体个数"]
+        del self.create_col_labels["监测温度个数"]
+        del self.create_col_labels["用户自定义个数"]
+        del self.create_col_labels["Command2"]
+        del self.create_col_labels["电池单体告警个数"]
+        del self.create_col_labels["监测温度告警个数"]
+        
+        # 把key作为行字段添加到表格
+        self.col_labels = []
+        for key, value in self.create_col_labels.items():
+            self.col_labels.append(key)
+            
+        self.palTable.setRowCount(len(self.col_labels))
+        self.palTable.setVerticalHeaderLabels(self.col_labels)
+
     # 并联监控-开始获取信息按钮
     def pal_start_func(self):
         if self.pal_start.text() == palset_label2:
@@ -325,25 +400,8 @@ class Portbms(BmsLayout):
             return 0
         # 然后根据个数创建表格
         elif self.pal_start_time_setp == 0 and self.get_parallel_vol_tmp:
-            # 添加 模拟量 与 告警量 进表格
-            self.create_col_labels = {}
-            self.create_col_labels.update(self.parallel_pack_simulate)
-            self.create_col_labels.update(self.parallel_pack_tmp)
-            del self.create_col_labels["Command"]
-            del self.create_col_labels["电池单体个数"]
-            del self.create_col_labels["监测温度个数"]
-            del self.create_col_labels["用户自定义个数"]
-            del self.create_col_labels["Command2"]
-            del self.create_col_labels["电池单体告警个数"]
-            del self.create_col_labels["监测温度告警个数"]
-            
-            # 把key作为行字段添加到表格
-            self.col_labels = []
-            for key, value in self.create_col_labels.items():
-                self.col_labels.append(key)
-                
-            self.palTable.setRowCount(len(self.col_labels))
-            self.palTable.setVerticalHeaderLabels(self.col_labels)
+            # 创建表格列表 行字段
+            self.pal_get_vol_tmp_func()
             
             # 创建完成开始读数据
             self.pal_start_time_setp = 1
@@ -1351,7 +1409,10 @@ class Portbms(BmsLayout):
                     elif k == palnum_label3:
                         num = Common.format_num(Common.signBit_func(temp) / abs(v[2]))
                         data = f'{num} {v[3]}'
-                        self.pal_count_elc += num   # 总电流累加
+                    
+                        # TODO: 如果是全设备轮询，则需要累加
+                        # self.pal_count_elc += num   # 总电流累加
+                    
                     elif palnum_label2 in k or bms_history_label3 in k: # 温度、电流
                         data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))} {v[3]}'
                     else:
