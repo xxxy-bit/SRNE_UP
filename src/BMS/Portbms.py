@@ -95,8 +95,14 @@ class Portbms(BmsLayout):
         self.connStatus.setFormat(bms_logic_label16)
         self.proTimer.start(100)
         
-        # 实时监控的开启状态
+        # 是否正在开启实时监控
         self.moni_switch = False
+        
+        # 是否正在获取单台PACK
+        self.pal_single_status = False
+        
+        # 是否正在获取多台PACK
+        self.pal_many_status = False
         
         # 登录状态
         self.login = False
@@ -239,8 +245,9 @@ class Portbms(BmsLayout):
 
     # 并联监控 槽函数slots
     def pal_monitor_slotsTrigger(self):
-        # self.pal_start.clicked.connect(self.pal_start_func)
-        self.pal_start.clicked.connect(self.pal_single_func)
+        # self.pal_single_start.clicked.connect(self.pal_start_func)
+        self.pal_single_start.clicked.connect(self.pal_single_func)
+        self.pal_loop_status.clicked.connect(self.pal_loop_func)
 
     # 系统设置-固件升级
     def fu_btn_func(self):
@@ -290,23 +297,41 @@ class Portbms(BmsLayout):
 
     # 并联监控-获取单个设备数据
     def pal_single_func(self):
-        if self.assertStatus() == False: return False
-        self.stop_moni()
-        
-        self.rs485_res_status = True
-        self.repeat = False
-        # self.palTable.setColumnCount(16)
-        self.palTable.clearContents()
+        if self.pal_single_start.text() == palset_label2:
+            if self.assertStatus() == False: return False
+            self.pal_single_start.setText(palset_label3)
+            
+            # 单PACK获取中
+            self.pal_single_status = True
+            
+            # 暂停单机监控与并联轮询
+            try:
+                if self.pal_many_time.isActive():
+                    self.pal_loop_status.setChecked(False)
+                    self.pal_loop_func()
+            except Exception:
+                print('except pal_single_func')
+            self.stop_moni()
+            
+            # 启用rs485协议
+            self.rs485_res_status = True
+            
 
-        # 获取电压与温度个数
-        self.get_parallel_vol_tmp = False
-        # 单数据，42/44轮询发送
-        self.pal_single_repeat = False
-        
-        self.pal_single_time = QTimer()
-        self.pal_single_time_setp = 0
-        self.pal_single_time.timeout.connect(self.pal_single_func_timer)
-        self.pal_single_time.start(2000)
+            # 获取电压与温度个数
+            self.get_parallel_vol_tmp = False
+            # 单数据，42/44轮询发送
+            self.pal_single_repeat = False
+            
+            self.pal_single_time = QTimer()
+            self.pal_single_time_setp = 0
+            self.pal_single_time.timeout.connect(self.pal_single_func_timer)
+            self.pal_single_time.start(2000)
+        else:
+            self.pal_single_status = False
+            self.rs485_res_status = False
+            self.pal_single_time.stop()
+            self.pal_single_start.setText(palset_label2)
+            self.start_moni()
 
     # 并联监控-获取单个设备数据-计时器
     def pal_single_func_timer(self):
@@ -362,35 +387,47 @@ class Portbms(BmsLayout):
         self.palTable.setRowCount(len(self.col_labels))
         self.palTable.setVerticalHeaderLabels(self.col_labels)
 
-    # 并联监控-开始获取信息按钮
-    def pal_start_func(self):
-        if self.pal_start.text() == palset_label2:
-            if self.assertStatus() == False: return False
+    # 并联监控-并联轮询
+    def pal_loop_func(self):
+        if self.pal_loop_status.isChecked():
+            if self.assertStatus() == False:
+                self.pal_loop_status.setChecked(False)
+                return 0
+            
+            # 开启并联轮询
+            self.pal_many_status = True
+            
+            # 暂停单机监控与单PACK监控
+            try:
+                if self.pal_single_time.isActive():
+                    self.pal_single_func()
+            except Exception:
+                print('except pal_loop_func')
             self.stop_moni()
-            self.pal_start.setText(palset_label3)
             
             # 总电流累加
             self.pal_count_elc = 0
             
             self.rs485_res_status = True
-            self.repeat = False
-            self.palTable.setColumnCount(int(self.pack_total.currentText()))
+            self.pal_many_repeat = False
             self.palTable.clearContents()
             
             # 是否已获取到电压与温度个数
             self.get_parallel_vol_tmp = False
 
-            self.pal_start_time = QTimer()
-            self.pal_start_time_setp = 0
-            self.pal_start_time.timeout.connect(self.pal_start_func_timer)
-            self.pal_start_time.start(2000)
-        else:
-            self.pal_start_time.stop()
-            self.pal_start.setText(palset_label2)
-            self.start_moni()
+            self.pal_many_time = QTimer()
+            self.pal_many_time_step = 0
+            self.pal_many_time.timeout.connect(self.pal_many_func_timer)
+            self.pal_many_time.start(2000)
             
-    # 并联监控-开始获取信息按钮-计时器
-    def pal_start_func_timer(self):
+        else:
+            self.pal_many_status = False
+            self.rs485_res_status = False
+            self.pal_many_time.stop()
+            self.start_moni()
+
+    # 并联监控-并联轮询-计时器
+    def pal_many_func_timer(self):
         
         # 先获取电压和温度个数
         if self.get_parallel_vol_tmp == False:
@@ -411,28 +448,97 @@ class Portbms(BmsLayout):
         adr = ''
         for i in num:
             adr += hex(ord(i))[2:]
+        print(adr)
         
         # 42 44 轮询发送
-        if self.pal_start_time_setp <= int(self.pack_total.currentText()):
-            if self.repeat == False:
-                self.repeat = True
+        if self.pal_start_time_setp <= 16:
+            if self.pal_many_repeat == False:
+                self.pal_many_repeat = True
                 txt = f'7E 32 35 {adr} 34 36 34 32 45 30 30 32 {adr}'
             else:
-                self.repeat = False
+                self.pal_many_repeat = False
                 txt = f'7E 32 35 {adr} 34 36 34 34 45 30 30 32 {adr}'
                 self.pal_start_time_setp += 1
             self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
-        
-        # 获取所有并机数据后，再获取总体数据
-        elif self.pal_start_time_setp == int(self.pack_total.currentText()) + 1:
-            self.send_msg(f'7e3235303134363631453030323031464432460d')
+            
+        elif self.pal_start_time_setp == 17:
+            self.send_msg(f'7e 32 35 30 31 34 36 36 31 45 30 30 32 30 31 46 44 32 46 0d')
             self.pal_start_time_setp += 1
         
-        else:
-            self.pal_start_time.stop()
-            self.pal_start.setText(palset_label2)
-            self.rs485_res_status = False
-            self.start_moni()
+        elif self.pal_start_time_setp > 17:
+            self.pal_start_time_setp = 1
+
+    # # 并联监控-开始获取信息按钮
+    # def pal_start_func(self):
+    #     if self.pal_single_start.text() == palset_label2:
+    #         if self.assertStatus() == False: return False
+    #         self.stop_moni()
+    #         self.pal_single_start.setText(palset_label3)
+            
+    #         # 总电流累加
+    #         self.pal_count_elc = 0
+            
+    #         self.rs485_res_status = True
+    #         self.repeat = False
+    #         self.palTable.setColumnCount(int(self.pack_total.currentText()))
+    #         self.palTable.clearContents()
+            
+    #         # 是否已获取到电压与温度个数
+    #         self.get_parallel_vol_tmp = False
+
+    #         self.pal_start_time = QTimer()
+    #         self.pal_start_time_setp = 0
+    #         self.pal_start_time.timeout.connect(self.pal_start_func_timer)
+    #         self.pal_start_time.start(2000)
+    #     else:
+    #         self.pal_start_time.stop()
+    #         self.pal_single_start.setText(palset_label2)
+    #         self.start_moni()
+            
+    # # 并联监控-开始获取信息按钮-计时器
+    # def pal_start_func_timer(self):
+        
+    #     # 先获取电压和温度个数
+    #     if self.get_parallel_vol_tmp == False:
+    #         self.pal_start_time_setp = 0
+    #         txt = f'7E 32 35 {3031} 34 36 34 32 45 30 30 32 {3031}'
+    #         self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
+    #         return 0
+    #     # 然后根据个数创建表格
+    #     elif self.pal_start_time_setp == 0 and self.get_parallel_vol_tmp:
+    #         # 创建表格列表 行字段
+    #         self.pal_get_vol_tmp_func()
+            
+    #         # 创建完成开始读数据
+    #         self.pal_start_time_setp = 1
+    #         return 0
+        
+    #     num = f'{self.pal_start_time_setp:02d}'
+    #     adr = ''
+    #     for i in num:
+    #         adr += hex(ord(i))[2:]
+        
+    #     # 42 44 轮询发送
+    #     if self.pal_start_time_setp <= int(self.pack_total.currentText()):
+    #         if self.repeat == False:
+    #             self.repeat = True
+    #             txt = f'7E 32 35 {adr} 34 36 34 32 45 30 30 32 {adr}'
+    #         else:
+    #             self.repeat = False
+    #             txt = f'7E 32 35 {adr} 34 36 34 34 45 30 30 32 {adr}'
+    #             self.pal_start_time_setp += 1
+    #         self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
+        
+    #     # 获取所有并机数据后，再获取总体数据
+    #     elif self.pal_start_time_setp == int(self.pack_total.currentText()) + 1:
+    #         self.send_msg(f'7e 32 35 30 31 34 36 36 31 45 30 30 32 30 31 46 44 32 46 0d')
+    #         self.pal_start_time_setp += 1
+        
+    #     else:
+    #         self.pal_start_time.stop()
+    #         self.pal_single_start.setText(palset_label2)
+    #         self.rs485_res_status = False
+    #         self.start_moni()
 
     # 开关蜂鸣器
     def buzzer_switch(self):
@@ -721,6 +827,12 @@ class Portbms(BmsLayout):
         
         if self.getP01_data_btn.text() == com_label8:
             if self.assertStatus() == False: return False
+            
+            # 判断是否已经开启并联轮询
+            if self.pal_single_status or self.pal_many_status:
+                return QMessageBox.information(self, 'Error', bms_logic_label38, QMessageBox.Ok)
+            
+            # 开启单机监控
             self.moni_switch = True
             
             self.getP01_data_btn.setText(bms_logic_label4)
@@ -1410,8 +1522,9 @@ class Portbms(BmsLayout):
                         num = Common.format_num(Common.signBit_func(temp) / abs(v[2]))
                         data = f'{num} {v[3]}'
                     
-                        # TODO: 如果是全设备轮询，则需要累加
-                        # self.pal_count_elc += num   # 总电流累加
+                        # 如果开启并联轮询，则总电流累加
+                        if self.pal_loop_status.isChecked():
+                            self.pal_count_elc += num
                     
                     elif palnum_label2 in k or bms_history_label3 in k: # 温度、电流
                         data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))} {v[3]}'
@@ -1494,8 +1607,10 @@ class Portbms(BmsLayout):
                         data = f'{Common.format_num(data / abs(v[2]))}'
                         self.avg_voltage.setText(data)
                     elif k == '单芯最高电压':
+                        print(temp)
                         self.cell_max.setText(str(data))
                     elif k == '单芯最高电压所在模块':
+                        print(temp)
                         self.cell_max_posi.setText(str(data))
                     elif k == '单芯最低电压':
                         self.cell_min.setText(str(data))

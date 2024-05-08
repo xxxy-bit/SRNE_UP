@@ -88,15 +88,15 @@ class BmsLayout(QWidget):
 
         self.pack_total = ComboBox()
         self.pack_total.addItems([str(i) for i in range(1, 16)])
-        self.pal_loop_status = CheckBox('并机轮询')
+        self.pal_loop_status = CheckBox(palset_label4)
         
-        self.pal_start = QPushButton(palset_label2)
-        self.pal_start.setStyleSheet(open_Button)
+        self.pal_single_start = QPushButton(palset_label2)
+        self.pal_single_start.setStyleSheet(open_Button)
         
         ed4 = [
-            QLabel(palset_label1 + '：'), self.pack_total,
-            # '', self.pal_start,
-            self.pal_loop_status, self.pal_start
+            QLabel('PACK ' + '：'), self.pack_total,
+            # '', self.pal_single_start,
+            self.pal_loop_status, self.pal_single_start
         ]
         positions4 = [(i, j) for i in range(3) for j in range(2)]
         for positions4, ed4 in zip(positions4, ed4):
@@ -444,7 +444,7 @@ class BmsLayout(QWidget):
         sys_layout_left.addWidget(time_groupBox)
         
         # 通信选择协议
-        protocol_groupBox = QGroupBox(com_label1)
+        protocol_groupBox = QGroupBox(protocol_label1)
         protocol_groupBox.setStyleSheet(white_bg)
         protocol_groupBox.setMaximumHeight(250)
         protocol_groupBox.setMaximumWidth(250)
@@ -453,7 +453,7 @@ class BmsLayout(QWidget):
 
         protocol_groupBox_v_toph = QVBoxLayout()
         
-        Pro_can = QLabel(com_label2)
+        Pro_can = QLabel(protocol_label2)
         self.Pro_can_combox = ComboBox()
         self.Pro_can_list = [
             'Pylon/派能', 'Growatt/古瑞瓦特', 'Victron/Victron', 'Goodwe/固德威',
@@ -462,7 +462,7 @@ class BmsLayout(QWidget):
             ]
         self.Pro_can_combox.addItems(self.Pro_can_list)
         
-        Pro_485 = QLabel(com_label3)
+        Pro_485 = QLabel(protocol_label3)
         self.Pro_485_combox = ComboBox()
         self.Pro_485_list = [
             'Pylon/派能', 'Growatt/古瑞瓦特', 'SRNE/硕日', 'Deye/德业',

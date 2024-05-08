@@ -93,8 +93,9 @@ pal_label4 = _('电芯数据')
 
 # 并联设置
 palset_label1 = _('Pack 数量')
-palset_label2 = _('获取数据')
+palset_label2 = _('获取单台PACK数据')
 palset_label3 = _('取消')
+palset_label4 = _('并联轮询')
 
 # 报警状态
 error_label1 = _('充电状态')
@@ -240,9 +241,9 @@ sysset_label6 = _('设置')
 update_label1 = _('固件升级')
 
 # 通信协议选择
-com_label1 = _('通信协议选择')
-com_label2 = _('CAN 协议')
-com_label3 = _('485 协议')
+protocol_label1 = _('通信协议选择')
+protocol_label2 = _('CAN 协议')
+protocol_label3 = _('485 协议')
 
 # 数据校准
 datacal_label1 = _('数据校准')
@@ -298,6 +299,7 @@ bms_logic_label34 = _('是否需要打开该文件?')
 bms_logic_label35 = _('写入完毕，请重新读取数据.')
 bms_logic_label36 = _('请输入整数')
 bms_logic_label37 = _('串口异常')
+bms_logic_label38 = _('请先停止并联监控')
 
 # 解析数据
 bms_parse_label1 = _('超压')

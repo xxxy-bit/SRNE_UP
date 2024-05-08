@@ -3,7 +3,7 @@ from src.OrderList import *
 
 def get_bms_rs485_list():
     bms_rs485_list = {
-        # 已被动态获取取代
+        # 弃用（已被动态获取取代）
         "获取PACK模拟量响应信息":{
             "Command":[0, 4, 1, ""],
             "电池单体个数":[4, 4, 1, ""],
@@ -45,7 +45,7 @@ def get_bms_rs485_list():
             palnum_label8:[256, 8, 100, "AH"],              # PACK设计容量
             "PACK SOC":[264, 8, 1, "%"]
         },
-        # 已被动态获取取代
+        # 弃用（已被动态获取取代）
         "获取PACK告警量":{
             "Command":[0, 4, 1, ""],
             "电池单体告警个数":[4, 4, 1, ""],
