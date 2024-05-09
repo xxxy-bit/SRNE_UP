@@ -32,7 +32,9 @@ class ResThread(QThread):
         while self.is_running:
             # 读取串口
             try:
+                # self.ser.timeout = 0.7
                 self.res = self.ser.read(1024).hex()
+                # print(self.res)
             except Exception as e:
                 print(e)
             
@@ -1014,6 +1016,11 @@ class Portbms(BmsLayout):
         if self.hisShow.text() == hisdata_label1:   # 获取最近历史数据(1~100)
             if self.ser.isOpen() == False:
                 return QMessageBox.information(self, 'Error', bms_logic_label7, QMessageBox.Ok)
+            
+            # 判断是否已经开启并联轮询
+            if self.pal_single_status or self.pal_many_status:
+                return QMessageBox.information(self, 'Error', bms_logic_label38, QMessageBox.Ok)
+            
             self.stop_moni()
             self.clearRow_btn(self.hisTable)
             
@@ -1588,7 +1595,7 @@ class Portbms(BmsLayout):
             # 获取电池系统运行模拟量信息
             elif res[26:30] == '3631':
                 msg = res[34:-10]
-                print(msg)
+                # print(msg)
                 for k,v in self.json_rs485['获取电池系统运行模拟量信息'].items():
                     temp = ''
                     for i in range(v[0], v[0]+v[1], 2):
@@ -1597,20 +1604,15 @@ class Portbms(BmsLayout):
                     data = int(temp, 16)
                     # print(k, data)
                     if k == '电池组系统总电流':
-                        # data = f'{Common.format_num(Common.signBit_func(temp) / abs(v[2]))}'
-                        # self.total_elc.setText(data)
                         self.total_elc.setText(str(round(self.pal_count_elc, 2)))
-                        
                     elif k == '电池组系统SOC':
                         self.bin_avg_soc.setValue(data)
                     elif k == '电池组系统总平均电压':
                         data = f'{Common.format_num(data / abs(v[2]))}'
                         self.avg_voltage.setText(data)
                     elif k == '单芯最高电压':
-                        print(temp)
                         self.cell_max.setText(str(data))
                     elif k == '单芯最高电压所在模块':
-                        print(temp)
                         self.cell_max_posi.setText(str(data))
                     elif k == '单芯最低电压':
                         self.cell_min.setText(str(data))
