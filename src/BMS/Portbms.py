@@ -32,7 +32,7 @@ class ResThread(QThread):
         while self.is_running:
             # 读取串口
             try:
-                # self.ser.timeout = 0.7
+                self.ser.timeout = 0.7
                 self.res = self.ser.read(1024).hex()
                 # print(self.res)
             except Exception as e:
