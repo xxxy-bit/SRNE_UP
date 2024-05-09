@@ -35,6 +35,7 @@ class ResThread(QThread):
                 self.ser.timeout = 0.7
                 self.res = self.ser.read(1024).hex()
                 # print(self.res)
+                print(self.respondStatusNum)
             except Exception as e:
                 print(e)
             
@@ -46,7 +47,7 @@ class ResThread(QThread):
             else:
                 # 进度条状态
                 self.respondStatusNum += 1
-                if self.respondStatusNum > 100:
+                if self.respondStatusNum > 10:
                     self.respondStatus = False
     
     def close(self):
@@ -962,7 +963,7 @@ class Portbms(BmsLayout):
             
             self.hisTime = QTimer()
             self.hisTime.timeout.connect(self.his_time_func)
-            self.hisTime.start(1000)
+            self.hisTime.start(1500)
             self.hisNum = 0
             self.his_status = True
             self.hisShow.setText(hisdata_label5)
@@ -1297,8 +1298,7 @@ class Portbms(BmsLayout):
                     
                     # 并联发送定时器相关参数
                     self.pal_many_repeat = False    # 重置循环发送的状态
-                    self.pal_start_time_setp += 1   # 跳过获取告警量的指令
-                    print(self.pal_start_time_setp)
+                    self.pal_start_time_setp += 1   # 跳过获取告警量
                     
                     self.add_tableItem('↑', res)
                     return 0
