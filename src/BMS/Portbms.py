@@ -317,7 +317,6 @@ class Portbms(BmsLayout):
             
             # 启用rs485协议
             self.rs485_res_status = True
-            
 
             # 获取电压与温度个数
             self.get_parallel_vol_tmp = False
@@ -469,78 +468,6 @@ class Portbms(BmsLayout):
         
         elif self.pal_start_time_setp > 17:
             self.pal_start_time_setp = 1
-
-    # # 并联监控-开始获取信息按钮
-    # def pal_start_func(self):
-    #     if self.pal_single_start.text() == palset_label2:
-    #         if self.assertStatus() == False: return False
-    #         self.stop_moni()
-    #         self.pal_single_start.setText(palset_label3)
-            
-    #         # 总电流累加
-    #         self.pal_count_elc = 0
-            
-    #         self.rs485_res_status = True
-    #         self.repeat = False
-    #         self.palTable.setColumnCount(int(self.pack_total.currentText()))
-    #         self.palTable.clearContents()
-            
-    #         # 是否已获取到电压与温度个数
-    #         self.get_parallel_vol_tmp = False
-
-    #         self.pal_start_time = QTimer()
-    #         self.pal_start_time_setp = 0
-    #         self.pal_start_time.timeout.connect(self.pal_start_func_timer)
-    #         self.pal_start_time.start(2000)
-    #     else:
-    #         self.pal_start_time.stop()
-    #         self.pal_single_start.setText(palset_label2)
-    #         self.start_moni()
-            
-    # # 并联监控-开始获取信息按钮-计时器
-    # def pal_start_func_timer(self):
-        
-    #     # 先获取电压和温度个数
-    #     if self.get_parallel_vol_tmp == False:
-    #         self.pal_start_time_setp = 0
-    #         txt = f'7E 32 35 {3031} 34 36 34 32 45 30 30 32 {3031}'
-    #         self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
-    #         return 0
-    #     # 然后根据个数创建表格
-    #     elif self.pal_start_time_setp == 0 and self.get_parallel_vol_tmp:
-    #         # 创建表格列表 行字段
-    #         self.pal_get_vol_tmp_func()
-            
-    #         # 创建完成开始读数据
-    #         self.pal_start_time_setp = 1
-    #         return 0
-        
-    #     num = f'{self.pal_start_time_setp:02d}'
-    #     adr = ''
-    #     for i in num:
-    #         adr += hex(ord(i))[2:]
-        
-    #     # 42 44 轮询发送
-    #     if self.pal_start_time_setp <= int(self.pack_total.currentText()):
-    #         if self.repeat == False:
-    #             self.repeat = True
-    #             txt = f'7E 32 35 {adr} 34 36 34 32 45 30 30 32 {adr}'
-    #         else:
-    #             self.repeat = False
-    #             txt = f'7E 32 35 {adr} 34 36 34 34 45 30 30 32 {adr}'
-    #             self.pal_start_time_setp += 1
-    #         self.send_msg(f'{txt}{Common.rs485_chksum(txt)}0D')
-        
-    #     # 获取所有并机数据后，再获取总体数据
-    #     elif self.pal_start_time_setp == int(self.pack_total.currentText()) + 1:
-    #         self.send_msg(f'7e 32 35 30 31 34 36 36 31 45 30 30 32 30 31 46 44 32 46 0d')
-    #         self.pal_start_time_setp += 1
-        
-    #     else:
-    #         self.pal_start_time.stop()
-    #         self.pal_single_start.setText(palset_label2)
-    #         self.rs485_res_status = False
-    #         self.start_moni()
 
     # 开关蜂鸣器
     def buzzer_switch(self):
@@ -1369,8 +1296,9 @@ class Portbms(BmsLayout):
                     self.palTable.setItem(0, int(hex2asc)-1, QTableWidgetItem('OFFLINE'))
                     
                     # 并联发送定时器相关参数
-                    self.repeat = False             # 重置循环发送的状态
+                    self.pal_many_repeat = False    # 重置循环发送的状态
                     self.pal_start_time_setp += 1   # 跳过获取告警量的指令
+                    print(self.pal_start_time_setp)
                     
                     self.add_tableItem('↑', res)
                     return 0
